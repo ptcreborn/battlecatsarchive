@@ -9,7 +9,7 @@
   }
   
   .acc_req_child {
-    height: 30px;
+    height: auto;
     background: white;
     overflow: hidden;
     display: flex;
