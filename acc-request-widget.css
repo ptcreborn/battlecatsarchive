@@ -1,0 +1,47 @@
+  .acc_req_parent {
+    height: 300px;
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    background: black;
+  }
+  
+  .acc_req_child {
+    height: auto;
+    background: white;
+    overflow: hidden;
+    display: flex;
+    margin: 1px;
+    align-items: center;
+  }
+  
+  .acc_req_user_link {
+    background: seagreen;
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: white;
+    font-weight: 700;
+    text-decoration: auto;
+  }
+  
+  .acc_req_child img {
+    display: block;
+    height: 35px !important;
+    width: 35px !important;
+    object-fit: cover;
+    padding-left: 5px;
+  }
+  
+  .acc_req_child div {   	
+    padding: 5px; 
+  }
+  
+  .responsive-text {
+   	font-size: calc(11px + .5em); 
+  }
+  
+  .passive-text {
+   	opacity: 0.5;
+    font-weight: 600;
+  }
