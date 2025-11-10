@@ -17,7 +17,8 @@
   }
   
   .acc_req_user_link {
-    background: seagreen;
+    background: white;
+    border: 1px solid black;
     padding: 2px 5px;
     border-radius: 5px;
     color: white;
