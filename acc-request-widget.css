@@ -14,7 +14,7 @@
     overflow: hidden;
     display: flex;
     margin: 1px;
-    align-items: center;
+    align-items: stretch;
   }
   
   .acc_req_user_link {
@@ -40,7 +40,7 @@
   }
   
   .responsive-text {
-   	font-size: calc(11px + .5em); 
+   	font-size: calc(12px + 1vw); 
   }
   
   .passive-text {
