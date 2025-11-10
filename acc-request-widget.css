@@ -39,7 +39,7 @@
   }
   
   .responsive-text {
-   	font-size: calc(12px + .5vw); 
+   	font-size: calc(12px + 1vw); 
   }
   
   .passive-text {
