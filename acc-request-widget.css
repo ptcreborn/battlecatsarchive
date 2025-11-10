@@ -4,11 +4,12 @@
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
-    background: black;
+    background: white;
+    border: 1px solid black;
   }
   
   .acc_req_child {
-    height: auto;
+    height: 30px;
     background: white;
     overflow: hidden;
     display: flex;
