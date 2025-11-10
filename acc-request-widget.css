@@ -9,11 +9,10 @@
   }
   
   .acc_req_child {
-    height: auto;
+    height: 35px;
     background: white;
     overflow: hidden;
     display: flex;
-    margin: 1px;
     align-items: stretch;
   }
   
