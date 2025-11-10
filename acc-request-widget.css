@@ -18,12 +18,12 @@
   
   .acc_req_user_link {
     background: white;
-    border: 1px solid black;
     padding: 2px 5px;
     border-radius: 5px;
-    color: white;
+    color: black;
     font-weight: 700;
     text-decoration: auto;
+    border: 1px solid black;
   }
   
   .acc_req_child img {
