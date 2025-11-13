@@ -1,6 +1,6 @@
 // November 14, 2025
 
-window.addEventListener('load', async () => {
+(async() => {
     let url = window.location.href;
     url = new URL(url).pathname;
 
@@ -173,4 +173,4 @@ window.addEventListener('load', async () => {
     async function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-}, false);
+})();
