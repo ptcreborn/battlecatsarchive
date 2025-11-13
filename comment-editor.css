@@ -1,0 +1,70 @@
+  .inactive-form {
+   	pointer-events: none;
+    opacity: 0.7;
+  }
+  .active-form {
+   	pointer-events: auto;
+    opacity: 1;
+  }
+  
+  #comment_form textarea {
+      display: block;
+      border: 1px solid white;
+      padding: 30px;
+      font-size: 17px;
+      background: black;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 600;
+  }
+  
+  #comment_form button {
+    display: flex;
+    justify-content: center;
+    font-weight: 600;
+    color: black;
+    background: azure;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid black;
+    align-items: center;
+    font-size: calc(12px + .9vw);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 50px;
+  }
+  
+  #comment_form button img {
+    height: 32px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+    vertical-align: super;
+    margin-right: 10px;
+  }
+  
+  .comment-tools-options {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex: 1;
+    flex-wrap: nowrap;
+    padding: 10px;
+  }
+  
+  #comment_form .attachments {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border: 1px solid black;
+  }
+  
+  #comment_form .attachments img {
+    flex-basis: 200px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    max-height: 100px;
+    object-fit: cover;
+  }
