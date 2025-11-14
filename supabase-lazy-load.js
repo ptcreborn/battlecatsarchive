@@ -1,4 +1,4 @@
-(await async() => {
+async function lazyLoadSupabase() {
 
     let script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
@@ -35,4 +35,4 @@
     async function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-})();
+}
