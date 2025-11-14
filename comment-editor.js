@@ -162,7 +162,6 @@
                 return;
             }
             if (!data.session) {
-                window.alert("You need to login first before commenting to the website.");
                 document.querySelector('#comment_form').classList.remove('inactive-form');
                 document.querySelector('#comment_form').classList.add('active-form');
                 document.getElementById('comment_form').innerHTML = `<a href='https://battlecatsarchive.blogspot.com/p/signin-to-bca.html' class="main-button button" style="width: 100%; margin: 5px;">Login First before commenting.
