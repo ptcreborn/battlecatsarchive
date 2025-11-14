@@ -1,4 +1,4 @@
-await (async() => {
+(await async() => {
 
     let script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
