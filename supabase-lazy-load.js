@@ -14,6 +14,8 @@ async function lazyLoadSupabase() {
 
     window.supabase = supabaseClient;
 
+    console.log(supabase);
+
     // MISC Functions	
     async function initFunctions(dependencies) {
         for (let i = 0; i < dependencies.length; i++)
