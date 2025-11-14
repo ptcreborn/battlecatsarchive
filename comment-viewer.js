@@ -1,14 +1,13 @@
 
 // November 14, 2025
 
-    window.addEventListener('load', async () => {
+(async () => {
         let url = window.location.href;
         url = new URL(url).pathname;		
 
         await checkUrlInSPDB();
 
         async function checkUrlInSPDB() {
-			console.log('start loading comments');
             await initFunctions(['supabase', 'FirebaseModule', 'moment']);
             let {
                 data,
@@ -38,7 +37,6 @@
                 else
                     buildChildComment(comment, fb_data, null, null); // This is the older version....
             }
-			console.log('done loading comments');
         }
 
         function buildChildComment(sp_data, fb_data, attachments, fb_reply) {
@@ -174,4 +172,4 @@
         async function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
-    }, false);
+    })();
