@@ -1,5 +1,4 @@
 // This will be the main comment function for displaying the comment editor if its not a web page.
-// This holds the html of both the comment viewer and comment editor.
 
 (() => {
     const comment_container = document.querySelector('.comment-contentl');
