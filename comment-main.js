@@ -3,7 +3,9 @@
 (() => {
     const comment_container = document.querySelector('.comment-contentl');
     const comment_parent = document.querySelector('div.comment-form');
+    const comment_btn = document.getElementById('show-comment-form');
 
+    comment_btn.style.display = 'none';    
     comment_parent.style.display = 'block';
     comment_parent.innerHTML = `<form class='inactive-form' id='comment_form' action='javascript:submit();'>
   <textarea placeholder='Type comment here...' style='width: 100%; height: 300px;' required></textarea>  
