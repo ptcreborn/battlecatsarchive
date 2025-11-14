@@ -1,4 +1,4 @@
-    window.addEventListener('load', async() => {
+window.addEventListener('load', async() => {
 	let url = window.location.href;
 	url = new URL(url).pathname;
 
