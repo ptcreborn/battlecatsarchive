@@ -55,6 +55,7 @@
                 attachments.forEach(item => {
                     let img = document.createElement('img');
                     img.src = item;
+                    img.onclick = `window.location.href="https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(item)}"`;
                     img_html += img.outerHTML;
                 });
             }
@@ -86,7 +87,7 @@
 		<div class='right-bar'>				
 			${comment_reply_data.hasOwnProperty('comment_id') ? 
 					`<div style="background:beige;padding: 10px; border-radius: 10px; border: 2px solid wheat; margin: 10px 0;">${comment_reply_data.html}<span>${document.getElementById(comment_reply_data.comment_id).querySelector('[comment-data]').innerText}</span></div>`: comment_reply_data}
-			<div>
+			<div style='margin-top: 5px;'>
 				<span comment-data>${fb_data}</span>
 				<div style='display: block; text-align: right;'>
     				<b class="time">${moment(sp_data.fb_id).fromNow()}</b>
