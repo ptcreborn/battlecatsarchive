@@ -150,26 +150,4 @@
             await sleep(1500);
             document.getElementById(id).style.background = `white`;
         }
-
-        // MISC Functions	
-        async function initFunctions(dependencies) {
-            for (let i = 0; i < dependencies.length; i++)
-                await waitFunctionsGetDefined(dependencies[i]);
-        }
-        async function waitFunctionsGetDefined(funcName) {
-            return new Promise(async (resolve) => {
-                while (true) {
-                    try {
-                        funcName = eval(funcName);
-                        resolve(funcName);
-                        break;
-                    } catch (e) {
-                        await sleep(1000);
-                    }
-                }
-            });
-        }
-        async function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
     })();
