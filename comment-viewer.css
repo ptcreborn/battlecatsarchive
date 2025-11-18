@@ -16,8 +16,8 @@
   }
   
   .comment-child .left-bar .profile {
-    height: 64px;
-    width: 64px;
+    height: 64px !important;
+    width: 64px !important;
     object-fit: cover;
     aspect-ratio: 1/1;
     border-radius: 50%;
