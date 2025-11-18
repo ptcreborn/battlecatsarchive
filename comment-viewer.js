@@ -55,7 +55,8 @@
                 attachments.forEach(item => {
                     let img = document.createElement('img');
                     img.src = item;
-                    img.onclick = `window.location.href="https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(item)}"`;
+                    img.setAttribute('onclick', `window.location.href="https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(item)}"`);
+                    img.style.cursor = 'pointer';
                     img_html += img.outerHTML;
                 });
             }
