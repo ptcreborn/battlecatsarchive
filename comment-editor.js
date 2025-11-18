@@ -200,29 +200,6 @@
         }, () => console.log("Error!"));
     }
 
-    async function initFunctions(dependencies) {
-        for (let i = 0; i < dependencies.length; i++)
-            await waitFunctionsGetDefined(dependencies[i]);
-    }
-
-    async function waitFunctionsGetDefined(funcName) {
-        return new Promise(async(resolve) => {
-            while (true) {
-                try {
-                    funcName = eval(funcName);
-                    resolve(funcName);
-                    break;
-                } catch (e) {
-                    await sleep(1000);
-                }
-            }
-        });
-    }
-
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
     function userCommentingDisplay() {
         // this function will temporarily disable the form
         // will change the title to commenting
