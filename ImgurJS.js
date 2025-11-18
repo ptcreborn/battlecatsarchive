@@ -16,10 +16,12 @@ var ImgurJS = {
             xhr.onload = function () {
                 if (xhr.status == 200) {
                     document.getElementById(imgID).src = JSON.parse(xhr.responseText).data.link;
+                    document.getElementById(inputID).value = '';
                     doneUploadCallback();
                 }
                 else {
                     window.alert('ImgurXHR error: Error in uploading... Please try again');
+                    document.getElementById(inputID).value = '';
                     imgLink.error = "Error Uploading in ImgUr";
                 }
             }
@@ -42,10 +44,12 @@ var ImgurJS = {
                     let img = document.createElement('img');
                     img.src = JSON.parse(xhr.responseText).data.link;
                     document.getElementById(divID).appendChild(img);
+                    document.getElementById(inputID).value = '';
                     doneUploadCallback();
                 }
                 else {
                     errorCallback();
+                    document.getElementById(inputID).value = '';
                     window.alert(`ImgurXHR error: Error in uploading... Please try again
                         Status: ${xhr.status}
                         Please try again!`);
