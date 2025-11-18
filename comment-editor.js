@@ -5,7 +5,7 @@
     let win_title = document.title;
 
     window.submit = async() => {
-        await commentSystem();
+        await createComment();
     }
 
     await initFunctions(['FirebaseModule', 'supabase', 'ImgurJS']);
@@ -22,60 +22,62 @@
             document.title = win_title;
         }, () => console.log("Error!"));
 
-    async function commentSystem() {
-        await createComment();
+    // Image Upload Function
+    document.getElementById('btn_uploadImage').addEventListener('click', () => {
+        document.querySelector('#file_attachments').click();
+    });
 
-        // functions //
-        async function createComment() {
-            userCommentingDisplay();
-            let result = await patchUserID();
-            if (!result)
-                return;
-            let comment_form = document.querySelector('#comment_form');
-            let content = document.querySelector('#comment_form textarea').value;
-            let comment_key = new Date().getTime();
-            let uploaded_imgs = document.querySelectorAll('#img_attachments img');
-            let imgs_html = '';
-            let reply_data = ''; // stored as base64 encoded html
-            let imgs = [];
-            uploaded_imgs.forEach(item => {
-                imgs.push(item.src);
-                imgs_html += item.outerHTML;
-            });
-            // Check for reply-data attribute from the comment-form element. Then store!
-            if (comment_form.hasAttribute('reply-data'))
-                reply_data = comment_form.getAttribute('reply-data');
-            // Creating comment record in the FBDB
-            await FirebaseModule.patch(`https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_comments.json`, JSON.stringify({
-                [comment_key]: {
-                    content: {
-                        val: content,
-                        attachments: imgs,
-                        reply_data: reply_data
-                    },
-                    auth: user_id[0].toString()
-                }
-            }));
-            // Creating personal record of the comment for the user in FBDB
-            await FirebaseModule.patch(`https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_users/${user_id[0]}.json`, JSON.stringify({
-                [new Date().getTime()]: {
-                    fb_id: comment_key
-                }
-            }));
-            // Creating a record in the SBDB
-            let { data, error } = await supabase.from('bca-comments').insert({
-                date: 'now()',
-                fb_id: comment_key,
-                user_id: user_id[0],
-                bca_posts: await createBCAUrlRecord()
-            });
-            if (error) {
-                window.alert(error.message);
-                return;
+    // functions //
+    async function createComment() {
+        disableForm();
+        let result = await patchUserID();
+        if (!result)
+            return;
+        let comment_form = document.querySelector('#comment_form');
+        let content = document.querySelector('#comment_form textarea').value;
+        let comment_key = new Date().getTime();
+        let uploaded_imgs = document.querySelectorAll('#img_attachments img');
+        let imgs_html = '';
+        let reply_data = ''; // stored as base64 encoded html
+        let imgs = [];
+        uploaded_imgs.forEach(item => {
+            imgs.push(item.src);
+            imgs_html += item.outerHTML;
+        });
+        // Check for reply-data attribute from the comment-form element. Then store!
+        if (comment_form.hasAttribute('reply-data'))
+            reply_data = comment_form.getAttribute('reply-data');
+        // Creating comment record in the FBDB
+        await FirebaseModule.patch(`https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_comments.json`, JSON.stringify({
+            [comment_key]: {
+                content: {
+                    val: content,
+                    attachments: imgs,
+                    reply_data: reply_data
+                },
+                auth: user_id[0].toString()
             }
-            // Success comment!
-            // Append latest comment to the parent comment container instead of reloading the page.
-            document.getElementById('parent_container_comment').innerHTML += `
+        }));
+        // Creating personal record of the comment for the user in FBDB
+        await FirebaseModule.patch(`https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_users/${user_id[0]}.json`, JSON.stringify({
+            [new Date().getTime()]: {
+                fb_id: comment_key
+            }
+        }));
+        // Creating a record in the SBDB
+        let { data, error } = await supabase.from('bca-comments').insert({
+            date: 'now()',
+            fb_id: comment_key,
+            user_id: user_id[0],
+            bca_posts: await createBCAUrlRecord()
+        });
+        if (error) {
+            window.alert(error.message);
+            return;
+        }
+        // Success comment!
+        // Append latest comment to the parent comment container instead of reloading the page.
+        document.getElementById('parent_container_comment').innerHTML += `
             <div class="comment-child" style="background: beige;">
                 <img style="width: 64px !important; height: 64px !important; object-fit: cover;" src="${document.querySelector('#comment_form button img').src}">
                 <div style="display:block;padding-left:5px;">
@@ -85,60 +87,54 @@
                 </div>
             </div>`;
 
-            await restoreComment();
-        }
+        await restoreComment();
+    }
 
-        async function createBCAUrlRecord() {
-            let url = new URL(window.location.href);
-            // supabase functions takes here
-            let key = await checkIfURLinSPDB();
-            if (!key) {
-                let { data, error } = await supabase.from('bca-website-posts').insert({
-                    date: 'now()',
-                    url: url.pathname
-                }).select('id');
-                if (error) {
-                    window.alert("Error in creating record: " + error.message);
-                    return;
-                }
-
-                key = data[0].id;
-            }
-            return key;
-        }
-
-        async function checkIfURLinSPDB() {
-            let url = new URL(window.location.href);
-            let { data, error } = await supabase.from('bca-website-posts').select('id').eq(
-                'url', url.pathname
-            );
+    async function createBCAUrlRecord() {
+        let url = new URL(window.location.href);
+        // supabase functions takes here
+        let key = await checkIfURLinSPDB();
+        if (!key) {
+            let { data, error } = await supabase.from('bca-website-posts').insert({
+                date: 'now()',
+                url: url.pathname
+            }).select('id');
             if (error) {
-                window.alert("Error has been encountered! " + error.message);
+                window.alert("Error in creating record: " + error.message);
                 return;
             }
-            if (data.length > 0) return data[0].id;
-            else return;
+            key = data[0].id;
         }
+        return key;
+    }
 
-        async function patchUserID() {
-            // user_id will be filled with value from function getUserInfo()
-            if (!user_id) return;
-            // index 0: user_id
-            // index 1: user_email
-            await FirebaseModule.patch(`https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_users.json`, JSON.stringify({
-                [user_id[0]]: new Date().getTime()
-            }));
-            return true;
+    async function checkIfURLinSPDB() {
+        let url = new URL(window.location.href);
+        let { data, error } = await supabase.from('bca-website-posts').select('id').eq(
+            'url', url.pathname
+        );
+        if (error) {
+            window.alert("Error has been encountered! " + error.message);
+            return;
         }
+        if (data.length > 0) return data[0].id;
+        else return;
+    }
+
+    async function patchUserID() {
+        // user_id will be filled with value from function getUserInfo()
+        if (!user_id) return;
+        // index 0: user_id
+        // index 1: user_email
+        await FirebaseModule.patch(`https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_users.json`, JSON.stringify({
+            [user_id[0]]: new Date().getTime()
+        }));
+        return true;
     }
 
     async function commentEditorSystem() {
         let user_info = await getUserInfo();
-
         if (!user_info) return;
-
-        // Image Upload Function
-        document.getElementById('btn_uploadImage').addEventListener('click', inputEventTrigger);
 
         async function getUserInfo() {
             user_id = await checkIfUserOnline();
@@ -197,11 +193,7 @@
         }
     }
 
-    function inputEventTrigger() {
-        document.querySelector('#file_attachments').click();
-    }
-
-    function userCommentingDisplay() {
+    function disableForm() {
         // this function will temporarily disable the form
         // will change the title to commenting
         // change the button text to commenting.
@@ -220,7 +212,6 @@
         document.getElementById(id).style.background = `white`;
     }
     async function restoreCommentForm() {
-        document.getElementById('btn_uploadImage').removeEventListener('click', inputEventTrigger);
         document.getElementById('reset-comment-form').style.display = 'none';
         document.querySelector('#comment_form textarea').placeholder = `Type comment here...`;
         document.querySelector('#comment_form textarea').value = ``;
@@ -229,7 +220,6 @@
         document.getElementById('img_attachments').innerHTML = '';
         document.querySelector('#comment_form').removeAttribute('reply-data');
         document.getElementById('cancel-reply-btn').style.display = 'none';
-        document.getElementById('btn_uploadImage').addEventListener('click', inputEventTrigger);
         await scrollToElemID('comment_form');
     }
 
