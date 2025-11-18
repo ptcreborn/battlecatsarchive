@@ -8,8 +8,19 @@
         await commentSystem();
     }
 
-    await initFunctions(['FirebaseModule', 'supabase']);
+    await initFunctions(['FirebaseModule', 'supabase', 'ImgurJS']);
     await commentEditorSystem();
+
+    ImgurJS.uploadMultipleImgs('file_attachments', 'img_attachments',
+        () => {
+            document.getElementById('btn_uploadImage').innerHTML = `<img src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-upload-cloud-vector-icon-png-image_1027251.jpg">Uploading...`;
+            document.getElementById('btn_uploadImage').style = 'opacity: 0.7; pointer-events: none';
+            document.title = "Uploading image...";
+        }, () => {
+            document.getElementById('btn_uploadImage').innerHTML = `<img src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-upload-cloud-vector-icon-png-image_1027251.jpg">Upload Image`;
+            document.getElementById('btn_uploadImage').style = 'opacity: 1; pointer-events: auto';
+            document.title = win_title;
+        }, () => console.log("Error!"));
 
     async function commentSystem() {
         await createComment();
@@ -66,7 +77,7 @@
             // Append latest comment to the parent comment container instead of reloading the page.
             document.getElementById('parent_container_comment').innerHTML += `
             <div class="comment-child" style="background: beige;">
-                <img style="width: 64px; height: 64px; object-fit: cover;" src="${document.querySelector('#comment_form button img').src}">
+                <img style="width: 64px !important; height: 64px !important; object-fit: cover;" src="${document.querySelector('#comment_form button img').src}">
                 <div style="display:block;padding-left:5px;">
                     <span>Your comment has been submitted.</span>
                     <p style="background: white;border: 1px solid seagreen;padding: 0 5px;">${content}</p>
@@ -74,7 +85,7 @@
                 </div>
             </div>`;
 
-            await restoreCommentForm();
+            await restoreComment();
         }
 
         async function createBCAUrlRecord() {
@@ -124,7 +135,7 @@
     async function commentEditorSystem() {
         let user_info = await getUserInfo();
 
-        if(!user_info) return;
+        if (!user_info) return;
 
         // Image Upload Function
         document.getElementById('btn_uploadImage').addEventListener('click', inputEventTrigger);
@@ -188,16 +199,6 @@
 
     function inputEventTrigger() {
         document.querySelector('#file_attachments').click();
-
-        ImgurJS.uploadMultipleImgs('file_attachments', 'img_attachments', () => {
-            document.getElementById('btn_uploadImage').innerHTML = `<img src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-upload-cloud-vector-icon-png-image_1027251.jpg">Uploading...`;
-            document.getElementById('btn_uploadImage').style = 'opacity: 0.7; pointer-events: none';
-            document.title = "Uploading image...";
-        }, () => {
-            document.getElementById('btn_uploadImage').innerHTML = `<img src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-upload-cloud-vector-icon-png-image_1027251.jpg">Upload Image`;
-            document.getElementById('btn_uploadImage').style = 'opacity: 1; pointer-events: auto';
-            document.title = win_title;
-        }, () => console.log("Error!"));
     }
 
     function userCommentingDisplay() {
