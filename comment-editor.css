@@ -27,7 +27,7 @@
     padding: 20px;
     border: 1px solid black;
     align-items: center;
-    font-size: calc(12px + .9vw);
+    font-size: 1.2rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
