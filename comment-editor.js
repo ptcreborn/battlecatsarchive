@@ -8,20 +8,22 @@
         await createComment();
     }
 
+    if(!document.querySelector('#file_attachments') || !document.getElementById('btn_uploadImage')) 
+         return;
+
     await initFunctions(['FirebaseModule', 'supabase', 'ImgurJS']);
     await commentEditorSystem();
 
-    if(document.querySelector('#file_attachments')) 
-        ImgurJS.uploadMultipleImgs('file_attachments', 'img_attachments',
-            () => {
-                document.getElementById('btn_uploadImage').innerHTML = `<img src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-upload-cloud-vector-icon-png-image_1027251.jpg">Uploading...`;
-                document.getElementById('btn_uploadImage').style = 'opacity: 0.7; pointer-events: none';
-                document.title = "Uploading image...";
-            }, () => {
-                document.getElementById('btn_uploadImage').innerHTML = `<img src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-upload-cloud-vector-icon-png-image_1027251.jpg">Upload Image`;
-                document.getElementById('btn_uploadImage').style = 'opacity: 1; pointer-events: auto';
-                document.title = win_title;
-            }, () => console.log("Error!"));
+    ImgurJS.uploadMultipleImgs('file_attachments', 'img_attachments',
+        () => {
+            document.getElementById('btn_uploadImage').innerHTML = `<img src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-upload-cloud-vector-icon-png-image_1027251.jpg">Uploading...`;
+            document.getElementById('btn_uploadImage').style = 'opacity: 0.7; pointer-events: none';
+            document.title = "Uploading image...";
+        }, () => {
+            document.getElementById('btn_uploadImage').innerHTML = `<img src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-upload-cloud-vector-icon-png-image_1027251.jpg">Upload Image`;
+            document.getElementById('btn_uploadImage').style = 'opacity: 1; pointer-events: auto';
+            document.title = win_title;
+        }, () => console.log("Error!"));
 
     // Image Upload Function
     document.getElementById('btn_uploadImage').addEventListener('click', () => {
