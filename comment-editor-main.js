@@ -5,6 +5,9 @@
     const comment_parent = document.querySelector('div.comment-form');
     const comment_btn = document.getElementById('show-comment-form');
 
+    if(!comment_container || !comment_parent || !comment_btn)
+      return;
+
     comment_btn.style.display = 'none';    
     comment_parent.style.display = 'block';
     comment_parent.innerHTML = `<div id='parent_container_comment' class='comment-parent'></div>
