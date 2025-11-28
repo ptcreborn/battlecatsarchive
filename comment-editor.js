@@ -156,8 +156,11 @@
             comment_username.innerText = data.username;
             comment_avatar.src = data.prof_img;
 
-            document.querySelector('#comment_form').classList.remove('inactive-form');
-            document.querySelector('#comment_form').classList.add('active-form');
+            if(document.querySelector('#comment_form')) {                
+                document.querySelector('#comment_form').classList.remove('inactive-form');
+                document.querySelector('#comment_form').classList.add('active-form');
+            }
+
 
             return user_id;
         }
