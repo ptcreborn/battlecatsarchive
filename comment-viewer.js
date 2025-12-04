@@ -5,6 +5,9 @@
         let url = window.location.href;
         url = new URL(url).pathname;		
 
+        if(!document.querySelector('.comment-bubble'))
+            return;
+
         await checkUrlInSPDB();
 
         async function checkUrlInSPDB() {
@@ -27,8 +30,9 @@
                 window.alert("Error in comments_data: " + comments_data.error.message);
                 return;
             }
-            const comment_count = document.querySelector('.all-comments');
-            comment_count.innerText = `${comments_data.data.length > 1 ? `${comments_data.data.length} comments`: `${comments_data.data.length} comment`}`
+            
+            document.querySelector('.all-comments').innerText = `${comments_data.data.length > 1 ? `${comments_data.data.length} comments`: `${comments_data.data.length} comment`}`
+            document.querySelector('.comment-bubble').innerText = `${comments_data.data.length > 1 ? `${comments_data.data.length} comments`: `${comments_data.data.length} comment`}`;
             for (const comment of comments_data.data) {
                 let fb_data = await FirebaseModule.fetchJSON(`https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_comments/${comment.fb_id}/content.json`);
 
