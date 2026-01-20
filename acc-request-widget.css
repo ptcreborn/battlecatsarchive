@@ -39,7 +39,7 @@
   }
   
   .responsive-text {
-    font-size: clamp(3vw, 2vw, 2rem);
+    font-size: clamp(0.8rem, 1.8vw, 1.8rem);
    	/*font-size: calc(12px + 0.8rem); */
   }
   
