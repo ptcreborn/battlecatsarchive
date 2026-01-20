@@ -39,7 +39,8 @@
   }
   
   .responsive-text {
-   	font-size: calc(12px + 0.8rem); 
+    font-size: clamp(3vw, 2vw, 2rem);
+   	/*font-size: calc(12px + 0.8rem); */
   }
   
   .passive-text {
