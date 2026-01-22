@@ -7,6 +7,11 @@
         const mega_api = `https://unpkg.com/megajs/dist/main.browser-es.mjs`;
         const postBody = document.getElementById(`${parent_holder}`);
 
+        if(!postBody) {
+            window.alert("Can't find the parent element.");
+            return;
+        }
+
         let megaAPI = await
         import (mega_api);
     
