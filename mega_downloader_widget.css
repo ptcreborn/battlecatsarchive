@@ -14,9 +14,10 @@
   }
   
   div.child span {
-    font-size: 0.8rem;
+    font-size: 1rem;
     line-height: 0.8rem;
-    text-align: center;    
+    text-align: center;
+    font-weight: 550; 
   }
   
 progress::-moz-progress-bar { background: beige; }
