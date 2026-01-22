@@ -1,0 +1,24 @@
+  .parent {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    background: beige;
+    border: 1px solid darkgray;
+    padding: 5px;
+  }
+  
+  .child {
+   	display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  div.child span {
+    font-size: 0.8rem;
+    line-height: 0.8rem;
+    text-align: center;    
+  }
+  
+progress::-moz-progress-bar { background: beige; }
+progress::-webkit-progress-value { background: beige; }
+progress { color: beige; }
