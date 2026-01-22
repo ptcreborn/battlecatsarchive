@@ -1,8 +1,11 @@
 (async() => {
     // LABEL must be no spaces.
-    window.embedURLMega = async(mega_url, label) => {
+    window.embedURLMega = async(mega_url, label, parent_holder) => {
+        // mega_url is the pure mega link url
+        // label is used for the id of the elements
+        // element is the parent element where the downloads are appended.
         const mega_api = `https://unpkg.com/megajs/dist/main.browser-es.mjs`;
-        const postBody = document.getElementById(`postBody`);
+        const postBody = document.getElementById(`${parent_holder}`);
 
         let megaAPI = await
         import (mega_api);
@@ -38,7 +41,7 @@
   </div>
 </div>`;
 
-        postBody.innerHTML += embed_html;
+        postBody.innerHTML = embed_html;
         await sleep(1000);
         
         const filename = document.getElementById(`${label}_filename`);
