@@ -33,7 +33,7 @@
 " class="main-button button">Download</button>
   </div>
   <div class="child">
-<button id='${label}_btn_save' style="display: none; background: green; font-size: 1rem; border: 1px solid rgba(0, 0, 0, 0.3); height: 30px; text-align: center; margin: 5px auto 0px; width: 100%; color: white; font-weight: 600;
+<button id='${label}_btn_save' style="display: none; background: limegreen; font-size: 1rem; border: 1px solid rgba(0, 0, 0, 0.3); height: 30px; text-align: center; margin: 5px auto 0px; width: 100%; color: white; font-weight: 600;
 ">Save</button>
   </div>
 </div>`;
