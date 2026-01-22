@@ -1,4 +1,4 @@
-async() => {
+(async() => {
     // LABEL must be no spaces.
     window.embedURLMega = async(mega_url, label) => {
         const mega_api = `https://unpkg.com/megajs/dist/main.browser-es.mjs`;
@@ -110,4 +110,4 @@ async() => {
             elem.style.opacity = '1';
         }
     }
-}
+})();
