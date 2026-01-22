@@ -1,6 +1,7 @@
 (async() => {
     // LABEL must be no spaces.
-    window.embedURLMega = async(mega_url, label, parent_holder) => {
+    window.embedURLMega = async(mega_url, parent_holder) => {
+        let label = mega_url.split('#')[1];
         // mega_url is the pure mega link url
         // label is used for the id of the elements
         // element is the parent element where the downloads are appended.
