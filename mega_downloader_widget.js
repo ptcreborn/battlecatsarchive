@@ -90,6 +90,7 @@
                     await sleep(800);
                     enableButton(btn_save);
                     btn_save.innerText = "Save Again.";
+                    btn_save.style.background = "green";
                 }, false);
             });
 
