@@ -114,6 +114,18 @@
         window.replyFunc = async function(id) {
             await onReply(id);
         }
+        
+        window.scrollToElemID = async function(id) {
+            await sleep(100);
+            document.getElementById(id).scrollIntoView({
+                behavior: 'auto',
+                block: 'center',
+                inline: 'center',
+            });
+            document.getElementById(id).style.background = `beige`;
+            await sleep(1500);
+            document.getElementById(id).style.background = `white`;
+        }
 
         async function load_comment() {
             let url = window.location.href;
@@ -155,17 +167,5 @@
             }));
 
             // Notifications for the next step...
-        }
-
-        window.scrollToElemID = async function(id) {
-            await sleep(100);
-            document.getElementById(id).scrollIntoView({
-                behavior: 'auto',
-                block: 'center',
-                inline: 'center',
-            });
-            document.getElementById(id).style.background = `beige`;
-            await sleep(1500);
-            document.getElementById(id).style.background = `white`;
         }
     })();
