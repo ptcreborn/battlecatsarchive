@@ -43,7 +43,7 @@
             }
         }
 
-        function buildChildComment(sp_data, fb_data, attachments, fb_reply) {
+      async function buildChildComment(sp_data, fb_data, attachments, fb_reply) {
             // Needed variables...
             // Username
             // Account Creation Date
@@ -108,7 +108,7 @@
 
             document.getElementById('parent_container_comment').innerHTML += html;
 
-            load_comment();
+            await load_comment();
         }
 
         window.replyFunc = async function(id) {
@@ -126,7 +126,7 @@
             document.getElementById(id).style.border = `2px solid red`;
             await sleep(3000);
             document.getElementById(id).style.background = `white`;
-            document.getElementById(id).style.border = `0px solid red`;
+            document.getElementById(id).style.border = `1px solid rgba(0,0,0,0.1)`;
         }
 
         
@@ -147,6 +147,7 @@
                 document.getElementById(id).style.border = `1px solid red`;
                 document.getElementById(id).style.background = `beige`;
             }
+            return;
         }
 
         async function onReply(id) {
