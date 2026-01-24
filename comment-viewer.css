@@ -11,7 +11,6 @@
     display: flex;
     justify-content: flex-start;
     align-items: stretch;
-    border: 1px solid rgba(0,0,0,0.1);
   }
   
   .comment-child .left-bar .profile {
@@ -33,6 +32,7 @@
     flex-shrink: 0;
     text-align: center;
     padding: 10px;
+    border: 1px solid rgba(0,0,0,0.1);
   }
   
   .comment-child .right-bar {
@@ -40,9 +40,10 @@
     flex-direction: column;
     align-items: stretch;
     justify-content: space-evenly;
-    margin-left: 10px;
     flex: 1;
-    padding-right: 5px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 10px;
   }
   
   .comment-child .time {
