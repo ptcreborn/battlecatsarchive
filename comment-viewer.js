@@ -125,7 +125,7 @@
             });
             document.getElementById(id).style.background = `beige`;
             document.getElementById(id).style.border = `2px solid red`;
-            await sleep(3000);
+            await sleep(1000);
             document.getElementById(id).style.background = `white`;
             document.getElementById(id).style.border = `1px solid rgba(0,0,0,0.1)`;
         }
