@@ -122,7 +122,7 @@
             let id_elem = document.getElementById(id);
 
             if(id_elem) 
-                scrollIntoView(id);
+                scrollToElemID(id);
         }
 
         async function onReply(id) {
