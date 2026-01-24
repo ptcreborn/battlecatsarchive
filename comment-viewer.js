@@ -86,6 +86,7 @@
 				src="${sp_data.user_id.rank_id.rank_image}">
 			</div>
 			<div class="achievements">
+      <b>Joined</b>
 			<span>${moment(sp_data.user_id.created_at).fromNow()}</span><span>${sp_data.user_id.gender === "M" ? `🙍🏻‍♂️`: `👧`}</span>
 			</div>
 				<div style='margin: 5px; display: block; text-align: right;'>
