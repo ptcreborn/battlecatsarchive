@@ -98,15 +98,20 @@
       <b>Joined</b>
 			<span>${moment(sp_data.user_id.created_at).fromNow()}</span><span>${sp_data.user_id.gender === "M" ? `🙍🏻‍♂️`: `👧`}</span>
 			</div>
-				<div style='margin: 5px; display: block; text-align: center;'>
-    				<b class="time">${moment(sp_data.fb_id).fromNow()}</b>
-				</div>
 		</div>
 		<div class='right-bar'>				
 			${comment_reply_data.hasOwnProperty('comment_id') ? 
 					`<div style="background:beige;padding: 10px; border-radius: 10px; border: 2px solid wheat; margin: 10px 0;">${comment_reply_data.html}<span>${document.getElementById(comment_reply_data.comment_id).querySelector('[comment-data]').innerText}</span></div>`: comment_reply_data}
 			<div style='margin-top: 5px;'>
 				<span comment-data>${fb_data}</span>
+			</div>
+      <div style="margin: 5px;text-align: right;">
+				<span comment-data="" style="
+    opacity: 0.5;
+    font-weight: 500;
+    font-size: 0.8rem;
+">·· ${moment(sp_data.fb_id).fromNow()} ··
+</span>
 			</div>
 			<div class='attachments'>
                 ${img_html}
