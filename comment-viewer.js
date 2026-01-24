@@ -81,22 +81,22 @@
 			<img class='profile'
 			src='${sp_data.user_id.prof_img}' onerror="this.onerror=null; this.src='https://charatoon.com/photo/827.png';"/>
 			<a href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${sp_data.user_id.email}'><b username id=${sp_data.user_id.id}>${sp_data.user_id.username}</b></a>
-			<div class="achievements">
+			<div class="achievements" style='margin: 5px;'>
 			<span>${sp_data.user_id.rank_id.rank_name}</span><img class="icon" loading="lazy"
 				src="${sp_data.user_id.rank_id.rank_image}">
 			</div>
 			<div class="achievements">
 			<span>${moment(sp_data.user_id.created_at).fromNow()}</span><span>${sp_data.user_id.gender === "M" ? `🙍🏻‍♂️`: `👧`}</span>
 			</div>
+				<div style='margin: 5px; display: block; text-align: right;'>
+    				<b class="time">${moment(sp_data.fb_id).fromNow()}</b>
+				</div>
 		</div>
 		<div class='right-bar'>				
 			${comment_reply_data.hasOwnProperty('comment_id') ? 
 					`<div style="background:beige;padding: 10px; border-radius: 10px; border: 2px solid wheat; margin: 10px 0;">${comment_reply_data.html}<span>${document.getElementById(comment_reply_data.comment_id).querySelector('[comment-data]').innerText}</span></div>`: comment_reply_data}
 			<div style='margin-top: 5px;'>
 				<span comment-data>${fb_data}</span>
-				<div style='display: block; text-align: right;'>
-    				<b class="time">${moment(sp_data.fb_id).fromNow()}</b>
-				</div>
 			</div>
 			<div class='attachments'>
                 ${img_html}
