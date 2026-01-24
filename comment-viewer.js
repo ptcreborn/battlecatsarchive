@@ -83,9 +83,7 @@
 		<div class='left-bar'>
     <div class="time" style="
     position: absolute;
-    
-    =: 0px;
-    font-size: 1.5rem;
+    font-size: 1rem;
     left: 15px;
     color: black;
 ">#${comment_count}</div>
