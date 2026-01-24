@@ -119,7 +119,7 @@
             let url = window.location.href;
             let searchParams = new URL(url).searchParams;
             let id = searchParams.get('load-comment');
-            let id_elem = document.getElementById(id_elem);
+            let id_elem = document.getElementById(id);
 
             if(id_elem) 
                 scrollIntoView(id);
