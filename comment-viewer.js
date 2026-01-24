@@ -107,10 +107,22 @@
         <div style='width: 100%;' id='comment-form-attached-${sp_data.fb_id}'></div>`;
 
             document.getElementById('parent_container_comment').innerHTML += html;
+
+            load_comment();
         }
 
         window.replyFunc = async function(id) {
             await onReply(id);
+        }
+
+        function load_comment() {
+            let url = window.location.href;
+            let searchParams = new URL(url).searchParams;
+            let id = searchParams.get('load-comment');
+            let id_elem = document.getElementById(id_elem);
+
+            if(id_elem) 
+                scrollIntoView(id);
         }
 
         async function onReply(id) {
