@@ -79,7 +79,7 @@
             let html = `<div id=${sp_data.fb_id} class='comment-child'>
 		<div class='left-bar'>
 			<img class='profile'
-			src='${sp_data.user_id.prof_img}' />
+			src='${sp_data.user_id.prof_img}' onerror="this.onerror=null; this.src='https://charatoon.com/photo/827.png';"/>
 			<a href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${sp_data.user_id.email}'><b username id=${sp_data.user_id.id}>${sp_data.user_id.username}</b></a>
 			<div class="achievements">
 			<span>${sp_data.user_id.rank_id.rank_name}</span><img class="icon" loading="lazy"
