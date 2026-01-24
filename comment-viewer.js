@@ -100,7 +100,7 @@
       <b>Joined</b>
 			<span>${moment(sp_data.user_id.created_at).fromNow()}</span><span>${sp_data.user_id.gender === "M" ? `🙍🏻‍♂️`: `👧`}</span>
 			</div>
-				<div style='margin: 5px; display: block; text-align: right;'>
+				<div style='margin: 5px; display: block; text-align: center;'>
     				<b class="time">${moment(sp_data.fb_id).fromNow()}</b>
 				</div>
 		</div>
