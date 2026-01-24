@@ -138,12 +138,13 @@
             let id_elem = document.getElementById(id);
 
             if(id_elem) {
-                await sleep(100);
+                await sleep(1000);
                 document.getElementById(id).scrollIntoView({
                     behavior: 'auto',
                     block: 'center',
                     inline: 'center',
                 });
+                document.getElementById(id).style.border = `1px solid red`;
                 document.getElementById(id).style.background = `beige`;
             }
         }
