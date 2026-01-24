@@ -123,8 +123,10 @@
                 inline: 'center',
             });
             document.getElementById(id).style.background = `beige`;
-            await sleep(1500);
+            document.getElementById(id).style.border = `1px solid red`;
+            await sleep(3000);
             document.getElementById(id).style.background = `white`;
+            document.getElementById(id).style.border = `0px solid red`;
         }
 
         async function load_comment() {
