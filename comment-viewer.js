@@ -78,6 +78,14 @@
 
             let html = `<div id=${sp_data.fb_id} class='comment-child'>
 		<div class='left-bar'>
+    <div class="time" style="
+    position: absolute;
+    
+    =: 0px;
+    font-size: 1.5rem;
+    left: 15px;
+    color: black;
+">#1</div>
 			<img class='profile'
 			src='${sp_data.user_id.prof_img}' onerror="this.onerror=null; this.src='https://charatoon.com/photo/827.png';"/>
 			<a href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${sp_data.user_id.email}'><b username id=${sp_data.user_id.id}>${sp_data.user_id.username}</b></a>
