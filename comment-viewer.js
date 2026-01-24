@@ -33,17 +33,20 @@
 
             document.querySelector('.all-comments').innerText = `${comments_data.data.length > 1 ? `${comments_data.data.length} comments`: `${comments_data.data.length} comment`}`
             document.querySelector('.comment-bubble').innerText = `${comments_data.data.length}`;
+
+            let comment_count = 0;
             for (const comment of comments_data.data) {
+                comment_count ++;
                 let fb_data = await FirebaseModule.fetchJSON(`https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_comments/${comment.fb_id}/content.json`);
 
                 if (fb_data.hasOwnProperty('val') || fb_data.hasOwnProperty('attachments'))
-                    buildChildComment(comment, fb_data.val, fb_data.attachments, fb_data.reply_data);
+                    buildChildComment(comment_count, comment, fb_data.val, fb_data.attachments, fb_data.reply_data);
                 else
-                    buildChildComment(comment, fb_data, null, null); // This is the older version....
+                    buildChildComment(comment_count, comment, fb_data, null, null); // This is the older version....
             }
         }
 
-      async function buildChildComment(sp_data, fb_data, attachments, fb_reply) {
+      async function buildChildComment(comment_count, sp_data, fb_data, attachments, fb_reply) {
             // Needed variables...
             // Username
             // Account Creation Date
@@ -85,7 +88,7 @@
     font-size: 1.5rem;
     left: 15px;
     color: black;
-">#1</div>
+">#${comment_count}</div>
 			<img class='profile'
 			src='${sp_data.user_id.prof_img}' onerror="this.onerror=null; this.src='https://charatoon.com/photo/827.png';"/>
 			<a href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${sp_data.user_id.email}'><b username id=${sp_data.user_id.id}>${sp_data.user_id.username}</b></a>
