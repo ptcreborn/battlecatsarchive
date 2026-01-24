@@ -83,11 +83,11 @@
 		<div class='left-bar'>
     <div class="time" style="
     position: absolute;
-    font-size: 1rem;
+    font-size: 1.2rem;
     left: 15px;
     color: black;
 ">#${comment_count}</div>
-			<img class='profile'
+			<img class='profile' style='z-index: 100;'
 			src='${sp_data.user_id.prof_img}' onerror="this.onerror=null; this.src='https://charatoon.com/photo/827.png';"/>
 			<a href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${sp_data.user_id.email}'><b username id=${sp_data.user_id.id}>${sp_data.user_id.username}</b></a>
 			<div class="achievements" style='margin: 5px;'>
@@ -105,7 +105,7 @@
 			<div style='margin-top: 5px;'>
 				<span comment-data>${fb_data}</span>
 			</div>
-      <div style="margin: 5px;text-align: right;">
+      <div style="text-align: right;">
 				<span comment-data="" style="
     opacity: 0.5;
     font-weight: 500;
