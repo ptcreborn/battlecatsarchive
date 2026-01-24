@@ -1,0 +1,92 @@
+  .recent_comments_parent {
+    max-height: 300px;
+    height: 300px;
+    overflow: auto;
+    width: 100%;
+    /*background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url("https://i.ytimg.com/vi/et93ikKqazs/maxresdefault.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;*/
+  }
+  
+  #HTML8 {
+   	background: beige;
+    padding: 10px;
+  }
+  
+  div.unclicked-div {
+   	 background: beige;
+  }
+  
+  div.clicked-div {
+   	 background: white;
+  }  
+  
+  .recent_comments_child {
+    height: auto;
+    width: 100%;
+    display: flex;
+    min-width: 300px;
+    max-height: 100px;
+    overflow: hidden;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  .recent_comments_profile {
+    height: auto;
+    overflow: hidden;
+    flex-basis: 8%;
+    margin-left: 5px;
+    max-width: 50px;
+    flex-shrink: 0;
+    flex-grow: 1;
+    aspect-ratio: 1/1;
+    border-radius: 10px;
+  }
+  .recent_comments_profile img {
+    width: 100%;    
+    aspect-ratio: 1/1;
+    object-fit: cover;        
+  }
+  .recent_comments_content {
+    flex-basis: 80%;
+    margin: 0 5px;
+    font-size: clamp(10px, 3vw, 12px);
+    line-height: 1rem;
+    padding: 10px 0;
+    color: white;
+    min-width: 0;
+  }
+  .recent_comments_content span {
+    font-weight: 600;
+    border-radius: 10px;
+    font-size: 12px;
+    color: cornflowerblue;
+  }
+  .recent_comments_content p {
+    font-weight: 600;
+    color: darkolivegreen;
+     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .recent_comments_content i {
+    font-size: 10px;
+    border-radius: 10px;
+    color: slategrey;
+    opacity: 0.8;
+  }
+  .recent_comments_date {
+    color: darkblue;
+    line-height: 1rem;
+    display: flex;
+    align-items: center;
+    opacity: 0.7;
+    font-weight: 600;
+    font-size: 0.7rem;
+    flex-basis: 15%;
+    flex-shrink: 0;
+    flex-grow: 0;
+    justify-content: center;
+  }
