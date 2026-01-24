@@ -115,14 +115,14 @@
             await onReply(id);
         }
 
-        function load_comment() {
+        async function load_comment() {
             let url = window.location.href;
             let searchParams = new URL(url).searchParams;
             let id = searchParams.get('load-comment');
             let id_elem = document.getElementById(id);
 
             if(id_elem) 
-                scrollToElemID(id);
+                await scrollToElemID(id);
         }
 
         async function onReply(id) {
