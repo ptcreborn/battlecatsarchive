@@ -27,7 +27,7 @@
     padding: 20px;
     border: 1px solid black;
     align-items: center;
-    font-size: 1.2rem;
+    font-size: clamp(12px, 2rem, 16px,);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
