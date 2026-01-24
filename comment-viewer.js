@@ -123,7 +123,7 @@
                 inline: 'center',
             });
             document.getElementById(id).style.background = `beige`;
-            document.getElementById(id).style.border = `1px solid red`;
+            document.getElementById(id).style.border = `2px solid red`;
             await sleep(3000);
             document.getElementById(id).style.background = `white`;
             document.getElementById(id).style.border = `0px solid red`;
@@ -135,6 +135,7 @@
             let url = window.location.href;
             let searchParams = new URL(url).searchParams;
             let id = searchParams.get('load-comment');
+            let id_elem = document.getElementById(id);
 
             if(id_elem) {
                 await sleep(100);
