@@ -3,7 +3,6 @@
     display: block;
     color: black;
     font-size: calc(12px + .1vw);
-    padding: 3px;
   }
   
   .comment-child {
