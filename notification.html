@@ -1,0 +1,136 @@
+<style>
+    div.notif-selectable {
+        cursor: pointer;
+        opacity:  1;
+        pointer-events: auto;
+    }
+
+    div.notif-unselectable {
+        cursor: not-allowed;
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    div.notif-hide {
+        display: none;
+    }
+
+    div.notif-toolbar {
+        height: 40px;
+        background: white;
+        color: black;
+        display: flex;
+        justify-content: space-evenly;
+    }
+    div.notif-parent { 
+        position: absolute;
+        min-width: 300px;
+        min-height: 300px;
+        background: lightgrey;
+        right: 10px;
+        z-index: 100;
+        top: 60px;
+        opacity: 1;
+        display: block;
+        max-width: 500px;
+        box-shadow: 10px 10px 35px 0px rgba(0,0,0,0.75);
+        -webkit-box-shadow: 10px 10px 35px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 10px 10px 35px 0px rgba(0,0,0,0.75);
+        border-radius: 10px;
+    }
+    div.notif-toolbar-child {
+        background: darkgrey;
+        width: 33%;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        justify-content: space-between;
+        border-right: 1px solid rgba(0,0,0,0.1);
+        padding-top: 15px;
+    }    
+    div.notif-child-item {
+        background: white;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        display: flex;
+        max-width: 300px;
+        align-items: center;
+    }
+    img.notif-child-img {
+        height: 40px;
+        width: 40px;
+        object-fit: cover;
+        aspect-ratio: 1/1;
+    }
+    span.notif-highlight {
+        font-weight: 550;
+    }
+    span.notif-timeago {
+        float: right;
+        font-size: 11px;
+        min-width: 50px;
+    }
+    div.notif-child-selected {
+        background: white;
+    }
+    span.notif-toolbar-text {
+        font-weight: 600;
+        opacity: 0.7;
+        font-size: 12px;
+        text-align: center;
+    }
+    a.notif-link {
+        color: darkslategray;
+    }
+    div.notif-child-unread {
+        background: lightgoldenrodyellow;
+    }
+    div.notif-child-read {
+        background: lightgrey;
+    }
+</style>
+
+<div class="notif-parent">
+   <div class="notif-toolbar">
+      <div
+         class="notif-child-selected notif-toolbar-child notif-selectable"><img
+         src="https://i.ibb.co/qYD0XxKB/image.png" style="
+         width: 20px;
+         height: 20px;
+         "><span class="notif-toolbar-text">(3) Global</span></div>
+      <div
+         class="notif-toolbar-child notif-selectable"><img
+         src="https://i.ibb.co/27Zmb3YF/image.png" style="
+         width: 20px;
+         height: 20px;
+         "><span class="notif-toolbar-text">(1) Notifs</span></div>
+      <div
+         class="notif-toolbar-child notif-unselectable"><img
+         src="https://i.ibb.co/wN0RL1pf/image.png" style="
+         width: 20px;
+         height: 20px;
+         "><span class="notif-toolbar-text">(10) Items</span></div>
+   </div>
+   <div class="notif-child-item notif-child-unread">
+      <div style="
+         height: 10px;
+         width: 20px;
+         background: red;
+         "></div>
+      <img src="https://i.imgur.com/XpI1IFm.png"
+         class="notif-child-img">
+      <a class="notif-link"><span
+         class="notif-highlight">ptcreborn</span> has tagged your comment
+      in the post 
+      <span class="notif-highlight">"15.1 Update"</span></a>
+      <span class="notif-timeago notif-highlight">3m ago</span>
+   </div>
+   <div class="notif-child-item notif-child-read">
+      <img src="https://bcutobctool.com/attached_assets/image_1764977527960.png"
+         class="notif-child-img">
+      <a class="notif-link"><span
+         class="notif-highlight">ptcreborn</span> has tagged your comment
+      in the post 
+      <span class="notif-highlight">"15.1 Update"</span></a>
+      <span class="notif-timeago notif-highlight">3m ago</span>
+   </div>
+</div>
