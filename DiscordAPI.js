@@ -14,7 +14,7 @@ var DiscordAPI = {
                         "description": message,
                         "color": 3447003,
                         "image": {
-                            url: thumbnail
+                            url: `${thumbnail == '' ? 'https://i.ibb.co/B50ZrRQm/image.png': thumbnail}`
                         },
                         url: `${url == '' ? 'https://battlecatsarchive.blogspot.com/' : url}`
                     }]
