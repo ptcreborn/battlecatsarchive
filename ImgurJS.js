@@ -20,16 +20,15 @@ var ImgurJS = {
 
                     let temp = url.pathname;
                     temp = temp.split('.');
-                    temp += 'm';
+                    temp[0] += 'm';
 
                     if(temp[1] == 'gif') 
                         document.getElementById(imgID).src = url.href;
                     else {
                         temp = temp.join('.');
-                        document.getElementById(imgID).src = temp;
+                        document.getElementById(imgID).src = `https://i.imgur.com${temp}`;
                     }
 
-                    document.getElementById(imgID).src = JSON.parse(xhr.responseText).data.link;
                     document.getElementById(inputID).value = '';
                     doneUploadCallback();
                 } else {
@@ -64,7 +63,7 @@ var ImgurJS = {
                         img.src = JSON.parse(xhr.responseText).data.link;
 
                     else {
-                        temp = temp[0] += 'm';
+                        temp[0] += 'b';
                         temp = temp.join('.');
                     }
 
