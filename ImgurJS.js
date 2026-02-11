@@ -31,6 +31,7 @@ var ImgurJS = {
 
                     document.getElementById(inputID).value = '';
                     doneUploadCallback();
+                    return JSON.parse(xhr.responseText).data.link;
                 } else {
                     window.alert('ImgurXHR error: Error in uploading... Please try again');
                     document.getElementById(inputID).value = '';
@@ -71,6 +72,7 @@ var ImgurJS = {
                     document.getElementById(divID).appendChild(img);
                     document.getElementById(inputID).value = '';
                     doneUploadCallback();
+                    return JSON.parse(xhr.responseText).data.link;
                 } else {
                     errorCallback();
                     document.getElementById(inputID).value = '';
