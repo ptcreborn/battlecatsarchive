@@ -15,6 +15,20 @@ var ImgurJS = {
             xhr.open("POST", "https://api.imgur.com/3/image"); // Boooom!
             xhr.onload = function() {
                 if (xhr.status == 200) {
+                    let url = JSON.parse(xhr.responseText).data.link;
+                    url = new URL(url);
+
+                    let temp = url.pathname;
+                    temp = temp.split('.');
+                    temp += 'm';
+
+                    if(temp[1] == 'gif') 
+                        document.getElementById(imgID).src = url.href;
+                    else {
+                        temp = temp.join('.');
+                        document.getElementById(imgID).src = temp;
+                    }
+
                     document.getElementById(imgID).src = JSON.parse(xhr.responseText).data.link;
                     document.getElementById(inputID).value = '';
                     doneUploadCallback();
