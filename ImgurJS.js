@@ -1,25 +1,24 @@
 var ImgurJS = {
-    uploadImgUr: function (inputID, imgID, uploadingCallback, doneUploadCallback) {
+    uploadImgUr: function(inputID, imgID, uploadingCallback, doneUploadCallback) {
         // inputID is the input field
         // imgID is the DIV that will hold the images preview after being uploaded
         // uploadingCallback is a function to execute while uploading is held
         // doneUploadCallback is a function to execute after an upload is held
-        document.getElementById(inputID).addEventListener('input', function (e) {
+        document.getElementById(inputID).addEventListener('input', function(e) {
             var file = e.target.files[0];
             if (!file || !file.type.match(/image.*/))
-                return;        
+                return;
             uploadingCallback();
             var fd = new FormData();
             fd.append("image", file); // Append the file
             var xhr = new XMLHttpRequest(); // Create the XHR (Cross-Domain XHR FTW!!!) Thank you sooooo much imgur.com
             xhr.open("POST", "https://api.imgur.com/3/image"); // Boooom!
-            xhr.onload = function () {
+            xhr.onload = function() {
                 if (xhr.status == 200) {
                     document.getElementById(imgID).src = JSON.parse(xhr.responseText).data.link;
                     document.getElementById(inputID).value = '';
                     doneUploadCallback();
-                }
-                else {
+                } else {
                     window.alert('ImgurXHR error: Error in uploading... Please try again');
                     document.getElementById(inputID).value = '';
                     imgLink.error = "Error Uploading in ImgUr";
@@ -29,25 +28,37 @@ var ImgurJS = {
             xhr.send(fd);
         }, false);
     },
-    uploadMultipleImgs: function (inputID, divID, uploadingCallback, doneUploadCallback, errorCallback) {
-        document.getElementById(inputID).addEventListener('input', function (e) {
+    uploadMultipleImgs: function(inputID, divID, uploadingCallback, doneUploadCallback, errorCallback) {
+        document.getElementById(inputID).addEventListener('input', function(e) {
             var file = e.target.files[0];
             if (!file || !file.type.match(/image.*/))
-                return;            
+                return;
             uploadingCallback();
             var fd = new FormData();
             fd.append("image", file); // Append the file
             var xhr = new XMLHttpRequest(); // Create the XHR (Cross-Domain XHR FTW!!!) Thank you sooooo much imgur.com
             xhr.open("POST", "https://api.imgur.com/3/image"); // Boooom!
-            xhr.onload = function () {
+            xhr.onload = function() {
                 if (xhr.status == 200) {
                     let img = document.createElement('img');
-                    img.src = JSON.parse(xhr.responseText).data.link;
+
+                    // returning a small thumbnail
+                    let url = new URL(JSON.parse(xhr.responseText).data.link);
+                    let temp = url.pathname.split('.');
+
+                    if (temp[1] == 'gif')
+                        img.src = JSON.parse(xhr.responseText).data.link;
+
+                    else {
+                        temp = temp[0] += 'm';
+                        temp = temp.join('.');
+                    }
+
+                    img.src = `https://i.imgur.com${temp}`;
                     document.getElementById(divID).appendChild(img);
                     document.getElementById(inputID).value = '';
                     doneUploadCallback();
-                }
-                else {
+                } else {
                     errorCallback();
                     document.getElementById(inputID).value = '';
                     window.alert(`ImgurXHR error: Error in uploading... Please try again
