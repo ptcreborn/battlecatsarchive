@@ -1,7 +1,7 @@
 var DiscordAPI = {
-    post: async function(username, avatar, title, message, thumbnail, url) {
+    post: async function(username, avatar, title, message, thumbnail, url, webhook) {
         try {
-            const response = await fetch('https://discord.com/api/webhooks/1469281796368765192/dZEs_0S3SUSr3Lza8EHN3_glyLdU-o7KAyTVrvFbIWhXtYXuKFdaUHlElO6ZOlwoA3-X', {
+            const response = await fetch(webhook, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
