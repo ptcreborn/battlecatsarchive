@@ -1,4 +1,4 @@
-window.addEventListener('load', async() => {
+(async() => {
     // variables
     let title = document.querySelector('[thread-title]');
     let timeago = document.querySelector('[thread-timeago]');
@@ -95,4 +95,4 @@ window.addEventListener('load', async() => {
         await initFunctions(['moment']);
         return moment(date).fromNow();
     }
-}, false);
+})();
