@@ -67,7 +67,7 @@
 
             comment_data = comment_data.data;
 
-            comment_reply_html = `<div class="ui message warning" style="margin: 20px 0 0 0;display: flex; padding: 5px;"><div style="width: 35px;"><img class="icons" src="${imgUrMinify(comment_data.user_id.prof_img)}" style="display: block !important;"></div><div style="width: 100%; padding: 0 5px;"><i onclick="scrollToComment('ptc-child-comment-${item.reply_id}')" class="share icon" style="float: right;cursor: pointer;"></i><span style="display: block;">${comment_data.user_id.username} said: </span>${comment_data.description.substring(0, 300)}...</div></div>`;
+            comment_reply_html = `<div class="ui message warning" style="margin: 0;display: flex; padding: 5px;"><div style="width: 35px;"><img class="icons" src="${imgUrMinify(comment_data.user_id.prof_img)}" style="display: block !important;"></div><div style="width: 100%; padding: 0 5px;"><i onclick="scrollToComment('ptc-child-comment-${item.reply_id}')" class="share icon" style="float: right;cursor: pointer;"></i><span style="display: block;">${comment_data.user_id.username} said: </span>${comment_data.description.substring(0, 300)}...</div></div>`;
         }
 
         document.getElementById('ptc_comment_container').innerHTML += `<div id='ptc-child-comment-${item.id}' class="notification-container-comments ui segment yellow" style="background: #22042a; margin: unset; padding: 5px;">
