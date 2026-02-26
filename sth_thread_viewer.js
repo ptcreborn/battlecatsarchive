@@ -1,4 +1,8 @@
 (async() => {
+	// Created by Lem for Storehaccounts community
+	// February 26, 2026
+	// Build the thread in the page.
+	
     // variables
     let title = document.querySelector('[thread-title]');
     let timeago = document.querySelector('[thread-timeago]');
