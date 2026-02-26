@@ -1,4 +1,9 @@
-(async() => {
+(async() => {	
+    
+    // Created by Lem for Storehaccounts community
+	// February 26, 2026
+	// Uses Quillbot as editor, store all comments in the supabase..
+    
     await initFunctions([
         'supabase',
         'jQuery',
