@@ -1,4 +1,4 @@
-async() => {
+(async() => {
     await initFunctions([
         'supabase',
         'jQuery',
@@ -322,4 +322,4 @@ async() => {
         cancelBtn.classList.add('disabled');
     }
 
-}
+})();
