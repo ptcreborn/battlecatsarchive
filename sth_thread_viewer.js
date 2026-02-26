@@ -51,7 +51,7 @@
         timeago.innerText = `${await getTime(data.date)}`;
         userlink.href = `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${user_data.email}`;
         username.innerText = user_data.username;
-        userprof.src = user_data.prof_img;
+        userprof.src = imgUrMinify(user_data.prof_img);
         userrank.innerText = `Rank: ${user_data.ranks.rank_name}`;
         userage.innerText = `Joined: ${await getTime(user_data.created_at)}`;
         description.innerText = data.description;
@@ -71,6 +71,7 @@
                     event.currentTarget.classList.add('magnify');
                     event.currentTarget.classList.remove('unclicked');
                     event.currentTarget.src = event.currentTarget.src.replace('b.', '.');
+                    event.currentTarget.src = event.currentTarget.src.replace('s.', '.');
                 });
                 images.appendChild(temp_img);
             });
@@ -81,7 +82,7 @@
         let rank_img = document.createElement('img');
         
         country_img.src = `${user_data.country == "Anonymous" ? `https://i.ibb.co/VpHBRVpr/image.png` : `https://flagcdn.com/w320/${user_data.country.toLowerCase()}.png`}`;
-        rank_img.src = `${user_data.ranks.rank_image}`;
+        rank_img.src = `${imgUrMinify(user_data.ranks.rank_image)}`;
 
         badges.appendChild(country_img);
         badges.appendChild(rank_img);             
@@ -94,5 +95,16 @@
     async function getTime(date) {
         await initFunctions(['moment']);
         return moment(date).fromNow();
-    }
+    }	
+
+    function imgUrMinify(url) {
+		const imgurSuffixes = ['', 's', 'b', 't', 'm', 'l', 'h'];
+		const imgUrl = 'https://i.imgur.com/';
+		let filename = url.split(imgUrl)[1].split('.')[0];
+		let extension = url.split(imgUrl)[1].split('.')[1];
+
+		if(imgurSuffixes.includes(filename.substring(filename.length-1, filename.length)))
+			return url	
+		else return `${imgUrl}${filename}s.${extension}`;
+	}
 })();
