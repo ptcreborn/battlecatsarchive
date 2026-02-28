@@ -19,11 +19,10 @@
     const comment_editor = document.querySelector('#ptc_comment_editor');
 
     // check if the user is logged in
-    if (!await checkIfUserLoggedIn())
-        return;
-    // if user is logged in, build the comment editor form
-    if (!await buildCommentEditor())
-        return;
+    if (await checkIfUserLoggedIn())
+        // if user is logged in, build the comment editor form
+        await buildCommentEditor();
+        
     const editor = document.getElementById('ql-comment-editor');
     const actionText = document.getElementById('ql-comment-action');
     const postBtn = document.getElementById('postBtn');
