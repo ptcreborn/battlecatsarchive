@@ -19,9 +19,11 @@
     const comment_editor = document.querySelector('#ptc_comment_editor');
 
     // check if the user is logged in
-    if (await checkIfUserLoggedIn())
-        await buildCommentEditor(); // if user is logged in, build the comment editor form
+    await checkIfUserLoggedIn();
     
+    // if user is logged in, build the comment editor form
+    await buildCommentEditor();
+
     const editor = document.getElementById('ql-comment-editor');
     const actionText = document.getElementById('ql-comment-action');
     const postBtn = document.getElementById('postBtn');
@@ -67,6 +69,11 @@
 
     async function buildCommentEditor() {
         // user has been logged in now...
+        
+        // check if Quill Parent Exists
+        if(!getId('ql-comment-action'))
+            return;
+
         let userData = await supabase.from('users').select('id, username, prof_img').eq('email', `${user_email}`).single();
 
         if (userData.error) {
