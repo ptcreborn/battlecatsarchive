@@ -23,7 +23,7 @@
         }
     }
     async function getCommentsData(threadID) {
-        let { data, error } = await supabase.from('sth_comments').select('*, user_id(username, prof_img, email, ranks(rank_name, rank_image), country)').eq('thread_id', threadID).order('id', { ascending: true });
+        let { data, error } = await supabase.from('sth_comments').select('*, user_id(username, prof_img, email, rank_id(rank_name, rank_image), country)').eq('thread_id', threadID).order('id', { ascending: true });
 
         if (error) {
             window.alert(`${error.message}`);
@@ -79,8 +79,8 @@
 <span thread-country=""><img class="footer-imgs" src="${item.user_id.country == "Anonymous" ? ` https://static.wikia.nocookie.net/361735c0-7535-4dfe-b5d7-6f1683b4550b/scale-to-width/755`: `https://flagcdn.com/w320/${item.user_id.country.toLowerCase()}.png`}">
 <span class="footer">${item.user_id.country == "Anonymous" ? `Homeless Catter`: `${await getCountryName(item.user_id.country)}`}</span>
 </span>&nbsp;
-				<span thread-rank=""><img class="footer-imgs" src="${imgUrMinify(item.user_id.ranks.rank_image)}">
-<span class="footer">${item.user_id.ranks.rank_name}</span>
+				<span thread-rank=""><img class="footer-imgs" src="${imgUrMinify(item.user_id.rank_id.rank_image)}">
+<span class="footer">${item.user_id.rank_id.rank_name}</span>
 </span>
 <button style="margin-right: 15px;border: 1px solid #9b9a9a;font-weight: 400;font-size: 0.8rem;" thread-reply="" onclick="appendEditor(this)">Reply</button><br>
 </div>`;
@@ -126,7 +126,9 @@
 		const imgurSuffixes = ['', 's', 'b', 't', 'm', 'l', 'h'];
 		const imgUrl = 'https://i.imgur.com/';
 
-        if(url.includes(imgUrl))
+        console.log(url);
+
+        if(!url.includes(imgUrl))
             return url;
 
 		let filename = url.split(imgUrl)[1].split('.')[0];
