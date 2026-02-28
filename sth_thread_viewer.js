@@ -104,6 +104,10 @@
     function imgUrMinify(url) {
 		const imgurSuffixes = ['', 's', 'b', 't', 'm', 'l', 'h'];
 		const imgUrl = 'https://i.imgur.com/';
+        
+        if(!imgUrl.includes(url))
+            return;
+        
 		let filename = url.split(imgUrl)[1].split('.')[0];
 		let extension = url.split(imgUrl)[1].split('.')[1];
 
