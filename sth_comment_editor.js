@@ -18,19 +18,10 @@
     const parent_editor = getId('ptc_comment_container');
     const comment_editor = document.querySelector('#ptc_comment_editor');
 
-    // check if the user is logged in
-    await checkIfUserLoggedIn();
-    
-    // if user is logged in, build the comment editor form
-    await buildCommentEditor();
-
     const editor = document.getElementById('ql-comment-editor');
     const actionText = document.getElementById('ql-comment-action');
     const postBtn = document.getElementById('postBtn');
     const cancelBtn = document.getElementById('cancelReplyBtn');
-
-    // build Quill Editor
-    await buildQuillEditor();
 
     async function initializeParentEditor() {
         let parent_html = document.createElement('div');
@@ -69,11 +60,6 @@
 
     async function buildCommentEditor() {
         // user has been logged in now...
-        
-        // check if Quill Parent Exists
-        if(!getId('ql-comment-action'))
-            return;
-
         let userData = await supabase.from('users').select('id, username, prof_img').eq('email', `${user_email}`).single();
 
         if (userData.error) {
@@ -327,4 +313,14 @@
         cancelBtn.classList.add('disabled');
     }
 
+
+    // EXECUTE
+    // check if the user is logged in
+    if (!await checkIfUserLoggedIn())
+        return;
+    // if user is logged in, build the comment editor form
+    if (!await buildCommentEditor())
+        return;
+    // build Quill Editor
+    await buildQuillEditor();
 })();
