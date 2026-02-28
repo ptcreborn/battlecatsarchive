@@ -1,9 +1,4 @@
-(async() => {	
-    
-    // Created by Lem for Storehaccounts community
-	// February 26, 2026
-	// Uses Quillbot as editor, store all comments in the supabase..
-    
+(async() => {
     await initFunctions([
         'supabase',
         'jQuery',
@@ -39,7 +34,7 @@
 
     async function initializeParentEditor() {
         let parent_html = document.createElement('div');
-        parent_html.innerHTML = `<div id='comment_editor_footer_loader' class="ui segment"> <div class="ui active dimmer"> <div class="ui indeterminate text loader">Preparing Comment Editor</div> </div> <br/> <br/> <br/> </div> <div id='ptc_comment_editor' class='ui inverted message' style='display: none; padding: 0;'> </div>`;
+        parent_html.innerHTML = `<div id='comment_editor_footer_loader' class="ui segment"> <div class="ui active dimmer"> <div class="ui indeterminate text loader">Preparing Comment Editor</div> </div> <br/> <br/> <br/> </div> <div id='ptc_comment_editor' class='ui inverted message' style='display: none; padding: 0; margin-top: 20px;'> </div>`;
         document.querySelector('#postBody').appendChild(parent_html);
     }
 
