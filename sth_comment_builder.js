@@ -2,7 +2,7 @@
 
 	// Created by Lem for Storehaccounts community
 	// February 26, 2026
-	// Serves to build all the comments within the requested thread.
+	// Serves to build all the comments within the requested thread...
 	
 	await initFunctions(['moment', 'supabase']);
     await getComments();
