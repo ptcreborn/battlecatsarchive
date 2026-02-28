@@ -15,7 +15,7 @@
     let description = document.querySelector('[thread-description]');
     let images = document.querySelector('[thread-images]');
 
-    // get the data from thread or requested url
+    // get the data from thread or requested url...
     await getThreadData();
 
     async function getThreadData() {
