@@ -126,8 +126,6 @@
 		const imgurSuffixes = ['', 's', 'b', 't', 'm', 'l', 'h'];
 		const imgUrl = 'https://i.imgur.com/';
 
-        console.log(url);
-
         if(!url.includes(imgUrl))
             return url;
 
