@@ -18,10 +18,20 @@
     const parent_editor = getId('ptc_comment_container');
     const comment_editor = document.querySelector('#ptc_comment_editor');
 
+    // check if the user is logged in
+    if (!await checkIfUserLoggedIn())
+        return;
+    // if user is logged in, build the comment editor form
+    if (!await buildCommentEditor())
+        return;
+        
     const editor = document.getElementById('ql-comment-editor');
     const actionText = document.getElementById('ql-comment-action');
     const postBtn = document.getElementById('postBtn');
     const cancelBtn = document.getElementById('cancelReplyBtn');
+
+    // build Quill Editor
+    await buildQuillEditor();
 
     async function initializeParentEditor() {
         let parent_html = document.createElement('div');
@@ -313,14 +323,4 @@
         cancelBtn.classList.add('disabled');
     }
 
-
-    // EXECUTE
-    // check if the user is logged in
-    if (!await checkIfUserLoggedIn())
-        return;
-    // if user is logged in, build the comment editor form
-    if (!await buildCommentEditor())
-        return;
-    // build Quill Editor
-    await buildQuillEditor();
 })();
