@@ -51,6 +51,8 @@
 
         user_data = user_data.data;
 
+        console.log(user_data);
+
         title.innerText = data.title;
         timeago.innerText = `${await getTime(data.date)}`;
         userlink.href = `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${user_data.email}`;
@@ -86,7 +88,7 @@
         let rank_img = document.createElement('img');
         
         country_img.src = `${user_data.country == "Anonymous" ? `https://i.ibb.co/VpHBRVpr/image.png` : `https://flagcdn.com/w320/${user_data.country.toLowerCase()}.png`}`;
-        rank_img.src = `${imgUrMinify(user_data.ranks.rank_image)}`;
+        rank_img.src = `${imgUrMinify(user_data.rank_id.rank_image)}`;
 
         badges.appendChild(country_img);
         badges.appendChild(rank_img);             
@@ -106,7 +108,7 @@
 		const imgUrl = 'https://i.imgur.com/';
         
         if(!imgUrl.includes(url))
-            return;
+            return url;
 
 		let filename = url.split(imgUrl)[1].split('.')[0];
 		let extension = url.split(imgUrl)[1].split('.')[1];
