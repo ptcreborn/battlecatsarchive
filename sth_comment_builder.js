@@ -1,135 +1,377 @@
-(async () => {
+(async() => {
+    await initFunctions([
+        'supabase',
+        'jQuery',
+        'FirebaseModule'
+    ]);
 
-	// Created by Lem for Storehaccounts community
-	// February 26, 2026
-	// Serves to build all the comments within the requested thread.
-	
-	await initFunctions(['moment', 'supabase']);
-    await getComments();
+    let commentid = '';
+    let replyid = '';
+    let replytargetdummy;
+    let isReplying = false;
+    let user_id = '';
+    let thread_id = '';
+    let user_email = '';
 
-    async function getComments() {
-        // check the id of the thread
-        let threadID = atob(getThreadID());
+    // initialize parent comment editor
+    await initializeParentEditor();
+    const parent_editor = getId('ptc_comment_container');
+    const comment_editor = document.querySelector('#ptc_comment_editor');
 
-        if (!threadID) {
-            window.alert('Invalid Thread ID.');
+    window.appendEditor = async(elem) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        let comment_target;
+        let reply_target;
+        replyid = undefined;
+
+        if (elem.parentNode.id.includes('reply')) {
+            replyid = elem.parentNode.id;
+            reply_target = getId(replyid);
+
+            while (elem.parentNode.id.includes('reply'))
+                elem = elem.parentNode;
+        }
+        comment_target = getId(elem.parentNode.id);
+
+
+        if (!comment_target || !comment_editor) {
+            await initFunctions(['ModalCreator']);
+            ModalCreator.popFunction(new Date().getTime(), "Please Login first before replying to a comment.",
+                "You are not yet logged in. To share your ideas and thoughts, you can log in with google account or discord account for free. Do you want to log in?",
+                'google icon', 'Login', () => {
+                    window.location.href = 'https://storehaccounts.blogspot.com/p/sign-in-with-storehaccounts.html';
+                });
             return;
         }
-        await getCommentCount(threadID);
-        let comments_data = await getCommentsData(threadID);
 
-        for (const item of comments_data) {
-            await buildCommentData(item);
+        if (reply_target) {
+            replytargetdummy = reply_target.querySelector('[thread-comments] > p').cloneNode(true);
+            replytargetdummy.innerHTML = `<span class="ui"><i class="reply icon"></i></span>${reply_target.querySelector('[thread-user-img]').outerHTML} ${reply_target.querySelector('[thread-user-name]').outerHTML} ${reply_target.querySelector('[thread-action]').outerHTML}... ${replytargetdummy.textContent.substring(0, 50)}...`;
+            replytargetdummy.classList.add('ui', 'basic', 'label');
+            replytargetdummy.style.cursor = 'pointer';
+            replytargetdummy.setAttribute('onclick', `spotCommentFromCommentEditor("${replyid}")`);
+            reply_target.appendChild(comment_editor);
+        } else comment_target.appendChild(comment_editor);
+
+        scrollIntoViewportByElement(comment_editor);
+
+        commentid = comment_target.id;
+
+        if (getId('ql-comment-action')) {
+            getId('ql-comment-action').innerText = "Reply";
+            getId('postBtn').innerText = "Reply";
         }
+        if (getId('cancelReplyBtn'))
+            getId('cancelReplyBtn').style.display = "block";
+
+        isReplying = true;
     }
-    async function getCommentsData(threadID) {
-        let { data, error } = await supabase.from('sth_comments').select('*, user_id(username, prof_img, email, ranks(rank_name, rank_image), country)').eq('thread_id', threadID).order('id', { ascending: true });
+
+    // check if the user is logged in
+    if (!await checkIfUserLoggedIn())
+        return;
+    // if user is logged in, build the comment editor form
+    if (!await buildCommentEditor())
+        return;
+        
+    const editor = document.getElementById('ql-comment-editor');
+    const actionText = document.getElementById('ql-comment-action');
+    const postBtn = document.getElementById('postBtn');
+    const cancelBtn = document.getElementById('cancelReplyBtn');
+
+    // build Quill Editor
+    await buildQuillEditor();
+
+    async function initializeParentEditor() {
+        let parent_html = document.createElement('div');
+        parent_html.innerHTML = `<div id='comment_editor_footer_loader' class="ui segment"> <div class="ui active dimmer"> <div class="ui indeterminate text loader">Preparing Comment Editor</div> </div> <br/> <br/> <br/> </div> <div id='ptc_comment_editor' class='ui inverted message' style='display: none; padding: 10px; margin-top: 20px;'> </div>`;
+        document.querySelector('#postBody').appendChild(parent_html);
+    }
+
+    async function checkIfUserLoggedIn() {
+        let { data, error } = await supabase.auth.getSession();
 
         if (error) {
-            window.alert(`${error.message}`);
+            window.alert(`Error encountered: ${error.message}`);
             return;
         }
 
-        return data;
-    }
-    async function getCommentCount(threadID) {
-        let data = await supabase.from('sth_comments').select('*', {
-            count: 'exact',
-            head: 'true'
-        }).eq('thread_id', threadID);
+        if (!data.session) {
+            // user has been logged in right now...
+            comment_editor.classList.add('ui', 'compact', 'floating', 'warning', 'message', 'inverted');
+            comment_editor.innerHTML = `<h4>Please <a class="ui blue basic label" href="https://storehaccounts.blogspot.com/p/sign-in-with-storehaccounts.html"><i icon="blind icon"></i>sign in first</a> before commenting :)</h4>`;
+            comment_editor.style.display = 'block';
+            getId('comment_editor_footer_loader').remove();
+            return;
+        }
 
-        query('thread-comment-count').innerText = data.count > 1 ? `${data.count} comments` :
-            `${data.count} comment`;
-    }
-    async function buildCommentData(item) {
-        let image_data = [];
-        let image_html = '';
-        let comment_reply_html = '';
+        user_email = data.session.user.email;
 
-        if (item.images) {
-            await initFunctions(['FirebaseModule']);
-            image_data = await FirebaseModule.get(`https://storehaccounts-website-default-rtdb.firebaseio.com/sth_community_images/comments/${item.images}.json`);
-            if (image_data) {
-                JSON.parse(image_data).forEach(element => {
-                    image_html += `<img src='${element}' class='glow-border unclicked' onclick='magnifyImage(this)'/>`;
+        // checking thread id too!
+        thread_id = atob(new URL(window.location.href).searchParams.get('thread'));
+        if (!thread_id) {
+            window.alert(`Invalid thread id! Please reload the page.`);
+            return;
+        }
+
+        return true;
+    }
+
+    async function buildCommentEditor() {
+        // user has been logged in now...
+        let userData = await supabase.from('users').select('id, username, prof_img').eq('email', `${user_email}`).single();
+
+        if (userData.error) {
+            window.alert(`Error detected: ${userData.error.message}`);
+            return;
+        }
+
+        if (!userData.data) {
+            window.alert(`User ${data.session.user.email} does not exists in the website.`);
+            return;
+        }
+
+        userData = userData.data;
+        user_id = userData.id;
+
+        let tempo_comment_html = document.createElement('div');
+        tempo_comment_html.innerHTML = `<div class='ui floating message'><div>Please be respectful! Add your <span class='ui inverted large black label' id='ql-comment-action'></span></div></div> <div id="ql-comment-editor" class='ui loading inverted attached segment'> </div> <div id="ql-toolbar-container" class='ui inverted attached segment' style='background: beige;'> <div class="ui blue image label"> <img src="${userData.prof_img}"> ${userData.username} </div> <span class="ql-formats"> <button class="ql-bold"></button> <button class="ql-italic"></button> <button class="ql-underline"></button> <button class="ql-strike"></button> </span> <span class="ql-formats"></span> <span class="ql-formats"> <button class="ql-list" value="ordered"></button> <button class="ql-list" value="bullet"></button> </span> <span class="ql-formats"> <button class="ql-link"></button> <button class="ql-image"></button> <button class="ql-video"></button> </span> <span class="ql-formats"> <button class="ql-clean"></button> </span> </div> <div class="ui inverted attached segment" style="min-height: 80px;"> <button id="postBtn" class="ui blue disabled inverted button" style="float: left;">Type something...</button>
+<button id="cancelReplyBtn" style="display: none; float: right;" class="ui red inverted button">Cancel Reply</button> </div>`;
+        getId('ptc_comment_editor').appendChild(tempo_comment_html);
+
+        return true;
+    }
+
+    async function buildQuillEditor() {
+        getId('ql-comment-action').innerText = "Comment";
+
+        // Appending JQUERY for Quill
+        (() => {
+            let script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js';
+            document.querySelector('body').appendChild(script);
+        })();
+
+        // setting up Quill Editor
+        await initFunctions(['Quill']);
+        const quill = new Quill('#ql-comment-editor', {
+            modules: {
+                syntax: false,
+                toolbar: '#ql-toolbar-container'
+            },
+            theme: "snow"
+        });
+
+        comment_editor.style.display = 'block';
+        getId('comment_editor_footer_loader').remove();
+
+        quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+            let ops = []
+            delta.ops.forEach(op => {
+                if (op.insert && typeof op.insert === 'string') {
+                    ops.push({
+                        insert: op.insert
+                    })
+                }
+            })
+            delta.ops = ops
+            return delta
+        })
+
+        const limit = 1000;
+        const minlimit = 10;
+
+        quill.on('text-change', function(delta, old, source) {
+            if (source == 'user') {
+                if (quill.getLength() > limit) {
+                    quill.deleteText(limit, quill.getLength());
+                } else if (quill.getLength() < minlimit) {
+                    postBtn.innerText = "Type something...";
+                    postBtn.classList.add('disabled');
+                } else if (quill.getLength() > minlimit && quill.getLength() < limit) {
+                    postBtn.classList.remove('disabled');
+                    postBtn.innerText = `${actionText.innerText}`;
+                }
+            }
+        });
+
+        let editorForm = document.querySelector('#ql-comment-editor > div');
+        while (!editorForm) {
+            setTimeout(() => {
+                editorForm = document.querySelector('#ql-comment-editor > div');
+            }, 300);
+        }
+        editorForm.classList.add('ui', 'inverted', 'attached', 'segment');
+        document.querySelector('#ql-comment-editor').classList.remove('loading');
+
+        // load all button listeners
+        loadListeners();
+    }
+
+    getId('postBtn').addEventListener('click', async() => {
+        submitComment();
+    });
+
+    window.appendEditor = async(elem) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        let comment_target;
+        let reply_target;
+        replyid = undefined;
+
+        if (elem.parentNode.id.includes('reply')) {
+            replyid = elem.parentNode.id;
+            reply_target = getId(replyid);
+
+            while (elem.parentNode.id.includes('reply'))
+                elem = elem.parentNode;
+        }
+        comment_target = getId(elem.parentNode.id);
+
+
+        if (!comment_target || !comment_editor) {
+            await initFunctions(['ModalCreator']);
+            ModalCreator.popFunction(new Date().getTime(), "Please Login first before replying to a comment.",
+                "You are not yet logged in. To share your ideas and thoughts, you can log in with google account or discord account for free. Do you want to log in?",
+                'google icon', 'Login', () => {
+                    window.location.href = 'https://storehaccounts.blogspot.com/p/sign-in-with-storehaccounts.html';
                 });
-            }
+            return;
         }
 
-        if (item.reply_id) {
-            // means this comment is a reply, embedding the comment its pointing to.			
-            let comment_data = await supabase.from('sth_comments').select('description, user_id(prof_img, username)').eq('id', item.reply_id).single();
+        if (reply_target) {
+            replytargetdummy = reply_target.querySelector('[thread-comments] > p').cloneNode(true);
+            replytargetdummy.innerHTML = `<span class="ui"><i class="reply icon"></i></span>${reply_target.querySelector('[thread-user-img]').outerHTML} ${reply_target.querySelector('[thread-user-name]').outerHTML} ${reply_target.querySelector('[thread-action]').outerHTML}... ${replytargetdummy.textContent.substring(0, 50)}...`;
+            replytargetdummy.classList.add('ui', 'basic', 'label');
+            replytargetdummy.style.cursor = 'pointer';
+            replytargetdummy.setAttribute('onclick', `spotCommentFromCommentEditor("${replyid}")`);
+            reply_target.appendChild(comment_editor);
+        } else comment_target.appendChild(comment_editor);
 
-            if (comment_data.error) {
-                window.alert(`Error occured in retrieving comment data: ${comment_data.error.message}`);
-                return;
-            }
+        scrollIntoViewportByElement(comment_editor);
 
-            comment_data = comment_data.data;
+        commentid = comment_target.id;
 
-            comment_reply_html = `<div class="ui message warning" style="margin: 0;display: flex; padding: 5px;"><div style="min-width: 35px;"><img class="icons" src="${imgUrMinify(comment_data.user_id.prof_img)}" style="display: block !important;"></div><div style="width: calc(100% - 35px); padding: 0 5px;"><i onclick="scrollToComment('ptc-child-comment-${item.reply_id}')" class="share icon" style="float: right;cursor: pointer;"></i><span style="display: block;">${comment_data.user_id.username} said: </span>${comment_data.description.substring(0, 300)}...</div></div>`;
+        if (getId('ql-comment-action')) {
+            getId('ql-comment-action').innerText = "Reply";
+            getId('postBtn').innerText = "Reply";
+        }
+        if (getId('cancelReplyBtn'))
+            getId('cancelReplyBtn').style.display = "block";
+
+        isReplying = true;
+    }
+
+    async function submitComment() {
+        // check the description
+        // check the user_id
+        // check the thread_id
+        // check if the comment is a reply
+
+        disableForm();
+
+        let reply_id = null;
+
+        await initFunctions(['FirebaseModule', `supabase`]);
+
+        await uploadAllImages();
+        let description = getContent();
+
+        console.log(description);
+
+        if (isReplying) {
+            reply_id = document.querySelector('#ptc_comment_editor').parentNode.id; // this is the target comment that will be replied to.
+            reply_id = reply_id.split('ptc-child-comment-')[1];
         }
 
-        document.getElementById('ptc_comment_container').innerHTML += `<div id='ptc-child-comment-${item.id}' class="notification-container-comments ui segment yellow" style="background: #22042a; margin: unset; padding: 5px;">
-<img class="icons" src="${imgUrMinify(item.user_id.prof_img)}" thread-user-img="">
-<span class="notification-date" thread-time-ago="">${parseDate(item.date)}</span>
-<span class="footer" thread-user-name="">${item.user_id.username}</span>&nbsp;
-				<span class="footer" thread-action="">${item.reply_id ? `replied to a comment`: `commented`}</span>...${comment_reply_html}
-				<span style="display: block;" thread-comments="">${item.description}</span><div>${image_html}</div>
-<span thread-country=""><img class="footer-imgs" src="${item.user_id.country == "Anonymous" ? ` https://static.wikia.nocookie.net/361735c0-7535-4dfe-b5d7-6f1683b4550b/scale-to-width/755`: `https://flagcdn.com/w320/${item.user_id.country.toLowerCase()}.png`}">
-<span class="footer">${item.user_id.country == "Anonymous" ? `Homeless Catter`: `${await getCountryName(item.user_id.country)}`}</span>
-</span>&nbsp;
-				<span thread-rank=""><img class="footer-imgs" src="${imgUrMinify(item.user_id.ranks.rank_image)}">
-<span class="footer">${item.user_id.ranks.rank_name}</span>
-</span>
-<button style="margin-right: 15px;border: 1px solid #9b9a9a;font-weight: 400;font-size: 0.8rem;" thread-reply="" onclick="appendEditor(this)">Reply</button><br>
-</div>`;
+        // writing the comment in the supabase
+        let { data, error } = await supabase.from('sth_comments').insert({
+            date: 'now()',
+            description: description,
+            user_id: user_id,
+            thread_id: thread_id,
+            reply_id: reply_id
+        });
 
-	}
-	function getThreadID() {
-		return new URL(window.location.href).searchParams.get('thread');
-	}
-	function query(str) {
-		return document.querySelector(`[${str}]`);
-	}
-	function parseDate(date) {
-		return moment(date).fromNow();
-	}
-	window.magnifyImage = (image) => {
-		image.classList.add('magnify');
-		image.classList.remove('unclicked');
-		image.src = image.src.replace('b.', '.');
-		image.src = image.src.replace('s.', '.');
-	}
-	async function getCountryName(country_code) {
-			let country = await fetch(`https://restcountries.com/v3.1/alpha/${country_code}`)
-			.then(res => res.json())
-			.then(data => {
-				return data[0].name.official
-			});
-			return country;
-	}
-	window.scrollToComment = async (id) => {
-		let element = document.getElementById(id);
+        if (error) {
+            window.alert(`Error in creating a record in comments table.
+                
+                ${error.message}`);
+            return;
+        }
+
+        window.location.reload();
+    }
+
+    async function uploadAllImages() {
+        let allImgs = document.querySelector('#ql-comment-editor div').querySelectorAll('img');
+
+        if (allImgs.length > 0)
+            for (const items of allImgs) {
+                let newsrc = await ImgurJS.uploadB64Img(dataURItoBlob(items.src));
+                const imgUrl = 'https://i.imgur.com/';
+                let filename = newsrc.link.split(imgUrl)[1].split('.')[0];
+                let extension = newsrc.link.split(imgUrl)[1].split('.')[1];
+                items.classList.add('unclicked');
+                items.setAttribute('onclick', 'magnifyImage(this)');
+                if (extension != 'gif')
+                    items.src = `${imgUrl}${filename}s.${extension}`;
+                else
+                    items.src = `${imgUrl}${filename}.${extension}`;
+            }
+    }
+
+    function loadListeners() {
+        cancelBtn.addEventListener('click', async() => {
+            parent_editor.parentNode.insertBefore(comment_editor, parent_editor.nextSibling);
+            actionText.innerText = "Comment";
+            postBtn.innerText = "Comment";
+            cancelReplyBtn.style.display = "none";
+            isReplying = false;
+        });
+    }
+
+    async function scrollIntoViewportByElement(element) {
         element.scrollIntoView({
             block: "center",
             behavior: "smooth"
         });
-		
-		element.classList.add('comment-selected');
-		element.style.background = '#34300d';
-		await sleep(2000);
-		element.classList.remove('comment-selected');
-		element.style.background = '#22042a';
     }
-	function imgUrMinify(url) {
-		const imgurSuffixes = ['', 's', 'b', 't', 'm', 'l', 'h'];
-		const imgUrl = 'https://i.imgur.com/';
-		let filename = url.split(imgUrl)[1].split('.')[0];
-		let extension = url.split(imgUrl)[1].split('.')[1];
 
-		if(imgurSuffixes.includes(filename.substring(filename.length-1, filename.length)))
-			return url	
-		else return `${imgUrl}${filename}s.${extension}`;
-	}
+    function dataURItoBlob(dataURI) {
+        // convert base64/URLEncoded data component to raw binary data held in a string
+        var byteString;
+        if (dataURI.split(',')[0].indexOf('base64') >= 0)
+            byteString = atob(dataURI.split(',')[1]);
+        else
+            byteString = unescape(dataURI.split(',')[1]);
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        // write the bytes of the string to a typed array
+        var ia = new Uint8Array(byteString.length);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ia], { type: mimeString });
+    }
+
+    function getContent() {
+        return document.querySelector('#ql-comment-editor div').innerHTML.replace(/<p>(\s|&nbsp;|<br>)*<\/p>/g, '');
+    }
+
+    function getId(id) {
+        return document.getElementById(id);
+    }
+
+    function disableForm() {
+        postBtn.classList.add('disabled');
+        postBtn.innerHTML = `<i class="loading spinner icon"></i>${actionText.innerText}ing...`;
+        editor.querySelector('div').setAttribute('contenteditable', false);
+        parent_editor.classList.add('disabled');
+        cancelBtn.classList.add('disabled');
+    }
+
 })();
