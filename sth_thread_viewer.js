@@ -51,8 +51,6 @@
 
         user_data = user_data.data;
 
-        console.log(user_data);
-
         title.innerText = data.title;
         timeago.innerText = `${await getTime(data.date)}`;
         userlink.href = `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${user_data.email}`;
