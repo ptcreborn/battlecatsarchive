@@ -42,7 +42,7 @@
         query('thread-parent').id = thread_id;
 
         // get user details
-        let user_data = await supabase.from('users').select('username, email, prof_img, created_at, ranks(rank_name, rank_image), country').eq('id', data.user_id).single();
+        let user_data = await supabase.from('users').select('username, email, prof_img, created_at, rank_id(rank_name, rank_image), country').eq('id', data.user_id).single();
 
         if(user_data.error) {
             window.alert(`Error detected in getting user info: ${user_data.error.message}`);
@@ -56,7 +56,7 @@
         userlink.href = `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${user_data.email}`;
         username.innerText = user_data.username;
         userprof.src = imgUrMinify(user_data.prof_img);
-        userrank.innerText = `Rank: ${user_data.ranks.rank_name}`;
+        userrank.innerText = `Rank: ${user_data.rank_id.rank_name}`;
         userage.innerText = `Joined: ${await getTime(user_data.created_at)}`;
         description.innerText = data.description;
 
@@ -107,7 +107,7 @@
         
         if(!imgUrl.includes(url))
             return;
-        
+
 		let filename = url.split(imgUrl)[1].split('.')[0];
 		let extension = url.split(imgUrl)[1].split('.')[1];
 
