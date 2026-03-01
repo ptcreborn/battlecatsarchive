@@ -430,14 +430,17 @@
 
         // Patch for firebase...
         await initFunctions(['FirebaseModule']);
-        await FirebaseModule.post(`https://storehaccounts-website-default-rtdb.firebaseio.com/lowkeep.json`,
+        await FirebaseModule.patch(`https://storehaccounts-website-default-rtdb.firebaseio.com/lowkeep.json`,
             JSON.stringify({
-                username: data.username,
-                email: data.email,
-                img: data.userprofimg,
-                message: `Look at **${data.acc_name} Account Version ${data.acc_ver}**            
-            which has **${data.stocks} stocks left!**`,
-                href: `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${data.email}`
+                [new Date().getTime()]: {
+                    username: data.username,
+                    email: data.email,
+                    img: data.userprofimg,
+                    acc_name: data.acc_name,
+                    accver: data.acc_ver,
+                    stock: data.stocks,
+                    href: `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${data.email}`
+                }
             })
         );
     }
