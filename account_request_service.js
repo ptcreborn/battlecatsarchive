@@ -1,61 +1,66 @@
 (async() => {
 
-    // Account Service Management
-    // This script runs the accounts service such as requesting, displaying and managing accounts to the users.
+        // Account Service Management
+        // This script runs the accounts service such as requesting, displaying and managing accounts to the users.
 
-    const cards_parent = document.getElementById('cards_parent');
-    const disable = 'opacity: 7; pointer-events: none';
-    const enable = 'opacity: 1; pointer-events: auto';
-    let session = '';
-    let userRequestLimit = 0;
-    let isUpdating = false;
-    let userEmail = ``;
-    let acc_ver = ``;
-    const maxLimit = 50;
+        const cards_parent = document.getElementById('cards_parent');
+        const disable = 'opacity: 7; pointer-events: none';
+        const enable = 'opacity: 1; pointer-events: auto';
+        let session = '';
+        let userRequestLimit = 0;
+        let isUpdating = false;
+        let userEmail = ``;
+        let acc_ver = ``;
+        let username = ``;
+        let user_prof_img = ``;
+        const maxLimit = 50;
 
-    await initFunctions(['supabase']);
-    await selectAccountVersion();
+        await initFunctions(['supabase']);
+        await selectAccountVersion();
 
-    // Functions
-    window.request = async(account_name, account_id, account_ads) => {
-        event.target.innerText = "Please wait...";
-        await requestAccount(account_name, account_id, account_ads);
-    }
+        // Functions
+        window.request = async(account_name, account_id, account_ads) => {
+            event.target.innerText = "Please wait...";
+            await requestAccount(account_name, account_id, account_ads);
+        }
+        window.askReplenish = async() => {
 
-    async function requestAccount(account_name, account_id, account_ads) {
-        cards_parent.style = disable;
-        // search Firebase for available codes.
-        // x = available
-        // y = processing
-        // z = not available
+        }
 
-        //let acc_name_ver = `${acc_ver.split('-').length == 3 ? `EN-${acc_ver}`: `${acc_ver}`} (${account_name})`;
+        async function requestAccount(account_name, account_id, account_ads) {
+            cards_parent.style = disable;
+            // search Firebase for available codes.
+            // x = available
+            // y = processing
+            // z = not available
 
-        const db = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_bucket/${acc_ver}`;
+            //let acc_name_ver = `${acc_ver.split('-').length == 3 ? `EN-${acc_ver}`: `${acc_ver}`} (${account_name})`;
 
-        await initFunctions(['FirebaseModule']);
+            const db = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_bucket/${acc_ver}`;
 
-        let accounts = await FirebaseModule.fetchJSON(`${db}/${account_name}.json`);
-        let keys = Object.keys(accounts);
+            await initFunctions(['FirebaseModule']);
 
-        // find account from firebase and check its status        
-        let code = keys.find(item => accounts[item].status == "x");
-        await FirebaseModule.patch(`${db}/${account_name}/${code}.json`, JSON.stringify({
-            modified: new Date().getTime(),
-            status: "y"
-        }));
+            let accounts = await FirebaseModule.fetchJSON(`${db}/${account_name}.json`);
+            let keys = Object.keys(accounts);
 
-        // store the code to HEAP in firebase
-        const heap_db = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_heap.json`;
+            // find account from firebase and check its status        
+            let code = keys.find(item => accounts[item].status == "x");
+            await FirebaseModule.patch(`${db}/${account_name}/${code}.json`, JSON.stringify({
+                modified: new Date().getTime(),
+                status: "y"
+            }));
 
-        let url_id = await FirebaseModule.post(`${heap_db}`, JSON.stringify({
-            code: code,
-            ads: account_ads,
-            progress: 0,
-            time: new Date().getTime(),
-            name: account_name,
-            id: account_id,
-            ver: `${acc_ver.split('-').length == 3 ? `EN-${acc_ver}`: `${acc_ver}`} (${account_name})`
+            // store the code to HEAP in firebase
+            const heap_db = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_heap.json`;
+
+            let url_id = await FirebaseModule.post(`${heap_db}`, JSON.stringify({
+                            code: code,
+                            ads: account_ads,
+                            progress: 0,
+                            time: new Date().getTime(),
+                            name: account_name,
+                            id: account_id,
+                            ver: `${acc_ver.split('-').length == 3 ? `EN-${acc_ver}`: `${acc_ver}`} (${account_name})`
         }));
 
         url_id = JSON.parse(url_id).name;
@@ -100,7 +105,7 @@
         return data;
     }
     async function checkForSession() {
-        // check if the user has pending session
+        // check if the user has pending account session
         // if yes, redirect to that session
         // let the user finish the session
         // or the user can cancel it
@@ -215,7 +220,14 @@
                 <div class="extra content">
                 <div class="ui two buttons">
                     <button ${qty <= 0 ? "style='display: none;'" : ""} onclick="request('${val.name}', ${val.id}, ${val.ads})" class="ui green button">Request</button>
-                    <button ${qty > 99 ? "style='display: none;'" : ""} class="ui red button">Ask to Replenish</button>
+                    <button ${qty > 99 ? "style='display: none;'" : ""} class="ui red button" onclick="notifyAdminReplenish('${btoa(JSON.stringify({
+                        acc_name: val.name,
+                        acc_ver: account_version,
+                        username: username,
+                        userprofimg: user_prof_img,
+                        email: userEmail,
+                        stocks: qty
+                    }))}')">Ask to Replenish</button>
                 </div>
                 </div>
             </div>`;
@@ -236,6 +248,17 @@
             window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
             return;
         }
+
+        // get some users info
+        let user_info_data = await supabase.select('username, prof_img').from('users').eq('email', data.session.user.email).single();
+
+        if(user_info_data.error) {
+            window.alert(`Error in getting user info data: ${user_info_data.data.error}`);
+            return;
+        }
+
+        username = user_info_data.username;
+        user_prof_img = user_info_data.prof_img;
 
         return data.session.user.email;
     }    
@@ -347,5 +370,45 @@
                 }));
             }
         }
+    }
+
+    async function notifyAdminReplenish(b64_data) {
+        // what things to do
+        // notify about the following
+        // version, account name, remaining stock number
+        // username and user profile image
+
+        // DATA Flow
+        // acc_name: val.name,
+        // acc_ver: account_version,
+        // username: username,
+        // userprofimg: user_prof_img,
+        // email: userEmail
+        // stocks: qty
+
+        appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/25e615a6de3fa46d6ae1f3b23b3d67decc1eb94d/DiscordAPI.js');
+        await initFunctions('DiscordAPI');
+        const webhook_url = `https://discord.com/api/webhooks/1477622870476722238/2OHXQHsVQnojJOopXYu0FPu-ZzLqfjB95dJvRJSPN9umOheNh2QPlqWwkhWB-qO07qOA`;
+
+        let data = b64_data;
+
+        try {    
+            data = atob(b64_data);
+            data = JSON.parse(data);    
+            await initFunctions
+        } catch (error) {
+            window.alert(`Error detected in parsing: ${error}`);
+            return;
+        }
+
+        // DiscordAPI (username, avatar, title, message, thumbnail, url, webhook)
+        DiscordAPI(
+            data.username,
+            data.userprofimg,
+            `Asking to replenish ${data.acc_name}`,
+            `User ${data.username} is asking admin to replenish ${data.acc_ver} ${data.acc_name} with ${data.stocks} LEFT!`,
+            `${data.userprofimg}`,
+            `${webhook_url}`
+        );
     }
 })();
