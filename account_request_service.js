@@ -406,7 +406,6 @@
         try {
             data = atob(b64_data);
             data = JSON.parse(data);
-            await initFunctions
         } catch (error) {
             window.alert(`Error detected in parsing: ${error}`);
             return;
