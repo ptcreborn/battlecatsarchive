@@ -165,7 +165,7 @@
       <h2 style="
     enter;
     min-width: 40px;
-">#${rank}</h2><img loading="lazy" src="${item.prof_img}" style="
+">#${rank}</h2><img onerror="this.src='https://i.ibb.co/cXNr777G/image.png'; this.onerror=null;" src="${item.prof_img}" style="
          flex-basis: 100px;
          max-width: 50px;
          height: 50px;
