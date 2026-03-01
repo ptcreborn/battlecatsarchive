@@ -372,7 +372,7 @@
         }
     }
 
-    async function notifyAdminReplenish(b64_data) {
+    window.notifyAdminReplenish = async(b64_data) => {
         // what things to do
         // notify about the following
         // version, account name, remaining stock number
