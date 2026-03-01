@@ -416,7 +416,7 @@
         await DiscordAPI.post(
             data.username,
             data.userprofimg,
-            `Account Alert -> Please Replenish ${data.acc_name} ${data.acc_ver}`,
+            `Account Alert -> Please Replenish ${data.acc_name} [${data.acc_ver}]`,
             `**${data.username}** is asking admin to             
             replenish **${data.acc_name} Account Version ${data.acc_ver}**            
             which has **${data.stocks} stocks left!**
