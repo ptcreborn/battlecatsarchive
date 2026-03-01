@@ -397,7 +397,6 @@
         // stocks: qty
 
         btn.classList.add('disabled');
-        btn.innerText = `Submitted!`;
 
         appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/31fba5b4968ddd3edf3a690e2de7046bb8f6a701/DiscordAPI.js');
         await initFunctions(['DiscordAPI']);
@@ -443,5 +442,7 @@
                 }
             })
         );
+        
+        btn.innerText = `Submitted!`;
     }
 })();
