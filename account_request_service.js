@@ -23,9 +23,6 @@
         event.target.innerText = "Please wait...";
         await requestAccount(account_name, account_id, account_ads);
     }
-    window.askReplenish = async () => {
-
-    }
 
     async function requestAccount(account_name, account_id, account_ads) {
         cards_parent.style = disable;
@@ -201,6 +198,8 @@
             return;
         }
 
+        console.log(username, user_prof_img);
+
         if (data.length > 0) {
             for (const val of data) {
                 // val.ads
@@ -228,9 +227,9 @@
                 <div class="extra content">
                 <div class="ui two buttons">
                     <button ${qty <= 0 ? "style='display: none;'" : ""} onclick="request('${val.name}', ${val.id}, ${val.ads})" class="ui green button">Request</button>
-                    <button ${qty > 99 ? "style='display: none;'" : ""} class="ui red button" onclick="notifyAdminReplenish('${btoa(JSON.stringify({
+                    <button ${qty > 99 ? "style='display: none;'" : ""} class="ui red button" onclick="notifyAdminReplenish(this, '${btoa(JSON.stringify({
                         acc_name: val.name,
-                        acc_ver: account_version,
+                        acc_ver: account_version.value,
                         username: username,
                         userprofimg: user_prof_img,
                         email: userEmail,
@@ -268,8 +267,12 @@
             return;
         }
 
+        user_info_data = user_info_data.data;
+
         username = user_info_data.username;
         user_prof_img = user_info_data.prof_img;
+
+        console.log(user_info_data);
 
         return data.session.user.email;
     }
@@ -383,7 +386,7 @@
         }
     }
 
-    window.notifyAdminReplenish = async (b64_data) => {
+    window.notifyAdminReplenish = async (btn, b64_data) => {
         // what things to do
         // notify about the following
         // version, account name, remaining stock number
@@ -397,7 +400,10 @@
         // email: userEmail
         // stocks: qty
 
-        appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/25e615a6de3fa46d6ae1f3b23b3d67decc1eb94d/DiscordAPI.js');
+        btn.classList.add('disabled');
+        btn.innerText = `Submitted!`;
+
+        appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/31fba5b4968ddd3edf3a690e2de7046bb8f6a701/DiscordAPI.js');
         await initFunctions(['DiscordAPI']);
         const webhook_url = `https://discord.com/api/webhooks/1477622870476722238/2OHXQHsVQnojJOopXYu0FPu-ZzLqfjB95dJvRJSPN9umOheNh2QPlqWwkhWB-qO07qOA`;
 
@@ -412,19 +418,18 @@
         }
 
         // DiscordAPI (username, avatar, title, message, thumbnail, url, webhook)
-        console.log(            data.username,
-            data.userprofimg,
-            `Asking to replenish ${data.acc_name}`,
-            `User ${data.username} is asking admin to replenish ${data.acc_ver} ${data.acc_name} with ${data.stocks} LEFT!`,
-            `${data.userprofimg}`,
-            `${webhook_url}`);
-            
-        DiscordAPI.post(
+
+        await DiscordAPI.post(
             data.username,
             data.userprofimg,
-            `Asking to replenish ${data.acc_name}`,
-            `User ${data.username} is asking admin to replenish ${data.acc_ver} ${data.acc_name} with ${data.stocks} LEFT!`,
-            `${data.userprofimg}`,
+            `Account Alert -> Please Replenish ${data.acc_name} ${data.acc_ver}`,
+            `**${data.username}** is asking admin to             
+            replenish **${data.acc_name} Account Version ${data.acc_ver}**            
+            which has **${data.stocks} stocks left!**
+            
+            Thank you ADMIN!`,
+            ``,
+            `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${data.email}`,
             `${webhook_url}`
         );
     }
