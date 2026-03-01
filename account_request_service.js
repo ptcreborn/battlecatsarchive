@@ -418,7 +418,6 @@
         }
 
         // DiscordAPI (username, avatar, title, message, thumbnail, url, webhook)
-
         await DiscordAPI.post(
             data.username,
             data.userprofimg,
@@ -431,6 +430,18 @@
             ``,
             `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${data.email}`,
             `${webhook_url}`
+        );
+
+        // Patch for firebase...
+        await initFunctions(['FirebaseModule']);
+        await FirebaseModule.post(`https://storehaccounts-website-default-rtdb.firebaseio.com/lowkeep.json`,
+            JSON.stringify({
+                username: data.username,
+                email: data.email,
+                message: `Look at **${data.acc_name} Account Version ${data.acc_ver}**            
+            which has **${data.stocks} stocks left!**`,
+                href: `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${data.email}`
+            })
         );
     }
 })();
