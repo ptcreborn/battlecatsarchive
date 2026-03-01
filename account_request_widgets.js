@@ -33,12 +33,12 @@
             emails: users_email
         });
 
-        if(users_data.error) {
+        if (users_data.error) {
             window.alert(`Error detected: ${users_data.error.message}`);
             return;
         }
 
-        if(users_data.data.length < 1) {
+        if (users_data.data.length < 1) {
             window.alert("Error returning data of users image and username");
             return;
         }
@@ -47,7 +47,7 @@
 
         let collections_html = '';
 
-        for (let i=0; i<data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             let elem = data[i];
             let user_data = users_data[i];
 
@@ -56,7 +56,7 @@
                 <div class='responsive-text'><a class='acc_req_user_link ' href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${elem.email}'>${user_data.split('#')[0]}</a> already got <a href='https://battlecatsarchive.blogspot.com/search/label/accounts'> ${elem.type.name}</a> account</div>
                 <div class='responsive-text passive-text'>${moment(elem.date).fromNow()}</div>
             </div>`;
-            
+
             document.getElementById('acc_req_parent').innerHTML += html;
         }
 
@@ -97,5 +97,121 @@
         }
     }
 
+    // For getTopAccountRequester
+    let rank = 1;
+    const top_account_requester_parent = document.getElementById('top_account_requester');
 
+    await getTopAccountRequester();
+
+    async function getTopAccountRequester() {
+        let data = await supabase.rpc('refresh_top_account_requesters');
+        if (data.error) {
+            window.alert(`${data.error.message}`);
+            return;
+        }
+
+        if (data.status == 204) {
+            // means successful requests
+
+            let accs_data = await supabase.from('top_account_requester_data').select('*');
+
+            if (accs_data.error) {
+                window.alert(`${accs_data.error.message}`);
+                return;
+            }
+
+            if (accs_data.data.length > 0) {
+                accs_data.data.forEach((item, index) => {
+                    if (index == 0) {
+                        top_account_requester_parent.innerHTML = `<div style="
+      display: flex;
+      background: beige;
+      height: auto;
+      justify-content: space-evenly;
+      align-items: center;
+      padding: 5px;
+      border: 1px solid black;
+      ">
+      <a href="https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${item.email}"><img loading="lazy" src="${item.prof_img}" style="
+         flex-basis: 100px;
+         max-width: 100px;
+         height: 100px;
+         object-fit: cover;
+         aspect-ratio: 1/1;
+         "></a>
+      <div style="
+         flex-basis: 80%;
+         flex-grow: 3;
+         display: flex;
+         line-height: 20px;
+         justify-content: space-between;
+         align-items: center;
+         ">
+         <h2 style="
+            line-height: 30px;
+            padding: 10px;
+            flex-basis: 130px;
+            "><span>Top ${rank++}</span><br><span style="
+    color: crimson;
+    font-size: 2rem;
+">${item.username}</span></h2>
+         <div style="
+    flex-basis: 150px;
+    flex-grow: 1;
+"><span style="
+            font-weight: 500;
+            font-size: clamp(1rem, 1.6vw, 1.6rem);
+            "><a href="https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${item.email}">${item.username}</a> has joined ${moment(new Date(item.created_at)).fromNow()} and has able to <a href="https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${item.email}">requests</a> <b>${item.numofrequest} accounts</b></span></div>
+      </div>
+   </div>`;
+                    } else {
+                        top_account_requester_parent.innerHTML += `<div style="
+      display: flex;
+      background: white;
+      height: auto;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid black;
+      ">
+      <h2 style="
+    enter;
+    min-width: 40px;
+">#${rank}</h2><img loading="lazy" src="${item.prof_img}" style="
+         flex-basis: 100px;
+         max-width: 50px;
+         height: 50px;
+         object-fit: cover;
+         aspect-ratio: 1/1;
+         margin: 5px;
+         align-self: center;
+         ">
+      <div style="
+         flex-basis: 60%;
+         flex-grow: 3;
+         padding-right: 10px;
+         line-height: 15px;
+         ">
+         <span style="
+            font-weight: 600;
+            "><a href="https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${item.email}">${item.username}</a> serves <b>Rank#${rank++}</b></span>
+            <br/>
+         <span style="
+            ">Requested <b>${item.numofrequest} accounts</b></span>
+      </div>
+   <span style="
+            line-height: 10px;
+            margin: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0.7;
+            ">${moment(new Date(item.created_at)).fromNow()}</span></div>`;
+                    }
+                    top_account_requester_parent.classList.remove('ui', 'loading', 'floating', 'segment');
+                });
+            } else {
+                window.alert("No data has been returned or empty requests.");
+                return;
+            }
+        }
+    }
 })();
