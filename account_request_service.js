@@ -198,8 +198,6 @@
             return;
         }
 
-        console.log(username, user_prof_img);
-
         if (data.length > 0) {
             for (const val of data) {
                 // val.ads
@@ -271,8 +269,6 @@
 
         username = user_info_data.username;
         user_prof_img = user_info_data.prof_img;
-
-        console.log(user_info_data);
 
         return data.session.user.email;
     }
@@ -438,6 +434,7 @@
             JSON.stringify({
                 username: data.username,
                 email: data.email,
+                img: data.userprofimg,
                 message: `Look at **${data.acc_name} Account Version ${data.acc_ver}**            
             which has **${data.stocks} stocks left!**`,
                 href: `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${data.email}`
