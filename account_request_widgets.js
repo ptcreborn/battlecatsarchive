@@ -11,16 +11,6 @@
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    function produceCSS() {
-        const css_link = 'https://rawcdn.githack.com/ptcreborn/battlecatsarchive/331e1ea6716611ca71bb16d2f33eeec9abc415db/acc-request-widget.css';
-
-        let link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = css_link;
-
-        document.head.appendChild(link);
-    }
-
     async function buildRecentRequest() {
         let { data, error } = await supabase.from('account-requests').select('date, type(name), email').order('date', { ascending: false }).limit(60);
         if (error) {
