@@ -1,66 +1,66 @@
-(async() => {
+(async () => {
 
-        // Account Service Management
-        // This script runs the accounts service such as requesting, displaying and managing accounts to the users.
+    // Account Service Management
+    // This script runs the accounts service such as requesting, displaying and managing accounts to the users.
 
-        const cards_parent = document.getElementById('cards_parent');
-        const disable = 'opacity: 7; pointer-events: none';
-        const enable = 'opacity: 1; pointer-events: auto';
-        let session = '';
-        let userRequestLimit = 0;
-        let isUpdating = false;
-        let userEmail = ``;
-        let acc_ver = ``;
-        let username = ``;
-        let user_prof_img = ``;
-        const maxLimit = 50;
+    const cards_parent = document.getElementById('cards_parent');
+    const disable = 'opacity: 7; pointer-events: none';
+    const enable = 'opacity: 1; pointer-events: auto';
+    let session = '';
+    let userRequestLimit = 0;
+    let isUpdating = false;
+    let userEmail = ``;
+    let acc_ver = ``;
+    let username = ``;
+    let user_prof_img = ``;
+    const maxLimit = 50;
 
-        await initFunctions(['supabase']);
-        await selectAccountVersion();
+    await initFunctions(['supabase']);
+    await selectAccountVersion();
 
-        // Functions
-        window.request = async(account_name, account_id, account_ads) => {
-            event.target.innerText = "Please wait...";
-            await requestAccount(account_name, account_id, account_ads);
-        }
-        window.askReplenish = async() => {
+    // Functions
+    window.request = async (account_name, account_id, account_ads) => {
+        event.target.innerText = "Please wait...";
+        await requestAccount(account_name, account_id, account_ads);
+    }
+    window.askReplenish = async () => {
 
-        }
+    }
 
-        async function requestAccount(account_name, account_id, account_ads) {
-            cards_parent.style = disable;
-            // search Firebase for available codes.
-            // x = available
-            // y = processing
-            // z = not available
+    async function requestAccount(account_name, account_id, account_ads) {
+        cards_parent.style = disable;
+        // search Firebase for available codes.
+        // x = available
+        // y = processing
+        // z = not available
 
-            //let acc_name_ver = `${acc_ver.split('-').length == 3 ? `EN-${acc_ver}`: `${acc_ver}`} (${account_name})`;
+        //let acc_name_ver = `${acc_ver.split('-').length == 3 ? `EN-${acc_ver}`: `${acc_ver}`} (${account_name})`;
 
-            const db = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_bucket/${acc_ver}`;
+        const db = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_bucket/${acc_ver}`;
 
-            await initFunctions(['FirebaseModule']);
+        await initFunctions(['FirebaseModule']);
 
-            let accounts = await FirebaseModule.fetchJSON(`${db}/${account_name}.json`);
-            let keys = Object.keys(accounts);
+        let accounts = await FirebaseModule.fetchJSON(`${db}/${account_name}.json`);
+        let keys = Object.keys(accounts);
 
-            // find account from firebase and check its status        
-            let code = keys.find(item => accounts[item].status == "x");
-            await FirebaseModule.patch(`${db}/${account_name}/${code}.json`, JSON.stringify({
-                modified: new Date().getTime(),
-                status: "y"
-            }));
+        // find account from firebase and check its status        
+        let code = keys.find(item => accounts[item].status == "x");
+        await FirebaseModule.patch(`${db}/${account_name}/${code}.json`, JSON.stringify({
+            modified: new Date().getTime(),
+            status: "y"
+        }));
 
-            // store the code to HEAP in firebase
-            const heap_db = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_heap.json`;
+        // store the code to HEAP in firebase
+        const heap_db = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_heap.json`;
 
-            let url_id = await FirebaseModule.post(`${heap_db}`, JSON.stringify({
-                            code: code,
-                            ads: account_ads,
-                            progress: 0,
-                            time: new Date().getTime(),
-                            name: account_name,
-                            id: account_id,
-                            ver: `${acc_ver.split('-').length == 3 ? `EN-${acc_ver}`: `${acc_ver}`} (${account_name})`
+        let url_id = await FirebaseModule.post(`${heap_db}`, JSON.stringify({
+            code: code,
+            ads: account_ads,
+            progress: 0,
+            time: new Date().getTime(),
+            name: account_name,
+            id: account_id,
+            ver: `${acc_ver.split('-').length == 3 ? `EN-${acc_ver}`: `${acc_ver}`} (${account_name})`
         }));
 
         url_id = JSON.parse(url_id).name;
@@ -93,7 +93,10 @@
         //window.location.href = `https://battlecatsarchive.blogspot.com/p/ads-central.html?code=${url_id}`;
     }
     async function checkRequestLimit() {
-        let { data, error } = await supabase.rpc('account_request_check_limit', {
+        let {
+            data,
+            error
+        } = await supabase.rpc('account_request_check_limit', {
             arg_email: userEmail
         });
 
@@ -186,7 +189,12 @@
     async function buildMenu() {
         if (!await checkIfUserOnline()) return;
 
-        let { data, error } = await supabase.from('accounts').select('id, description, name, ads, qty, request_count').order('ads', { ascending: false });
+        let {
+            data,
+            error
+        } = await supabase.from('accounts').select('id, description, name, ads, qty, request_count').order('ads', {
+            ascending: false
+        });
 
         if (error) {
             window.alert(`Error: ${error.message}`);
@@ -237,7 +245,10 @@
     }
 
     async function checkIfUserOnline() {
-        let { data, error } = await supabase.auth.getSession();
+        let {
+            data,
+            error
+        } = await supabase.auth.getSession();
         if (error) {
             window.alert(`${error.message}`);
             return;
@@ -250,9 +261,9 @@
         }
 
         // get some users info
-        let user_info_data = await supabase.select('username, prof_img').from('users').eq('email', data.session.user.email).single();
+        let user_info_data = await supabase.from('users').select('username, prof_img').eq('email', data.session.user.email).single();
 
-        if(user_info_data.error) {
+        if (user_info_data.error) {
             window.alert(`Error in getting user info data: ${user_info_data.data.error}`);
             return;
         }
@@ -261,7 +272,7 @@
         user_prof_img = user_info_data.prof_img;
 
         return data.session.user.email;
-    }    
+    }
 
     async function selectAccountVersion() {
         // this function will generate all available account versions
@@ -276,7 +287,7 @@
 
         keys.forEach(val => document.getElementById('account_version').innerHTML += `<option value='${val}'>${val.split('-').length == 3 ? `EN ${val}`: `${val}`}</option>`);
 
-        version_selector.addEventListener('change', async() => {
+        version_selector.addEventListener('change', async () => {
             acc_ver = version_selector.value;
             document.getElementById('h2_title').innerText = `Request Battle Cats Accounts Version ${acc_ver} for FREE!`;
             document.getElementById('form_parent').classList.add('ui', 'segment', 'loading');
@@ -286,9 +297,9 @@
             // Main Execution
             if (!isUpdating) {
                 userEmail = await checkIfUserOnline();
-                if(!userEmail)
+                if (!userEmail)
                     return;
-                
+
                 session = await checkForSession();
                 userRequestLimit = await checkRequestLimit();
 
@@ -340,7 +351,7 @@
 
         let data = await FirebaseModule.fetchJSON(db);
 
-        if(!data) 
+        if (!data)
             return 0;
 
         let keys = Object.keys(data);
@@ -361,7 +372,7 @@
 
 
 
-        for(const item of acc_key_arr) {
+        for (const item of acc_key_arr) {
             let data = await FirebaseModule.fetchJSON(`${db}/${item}.json`);
 
             if (new Date().getTime() - data.modified > ms) {
@@ -372,7 +383,7 @@
         }
     }
 
-    window.notifyAdminReplenish = async(b64_data) => {
+    window.notifyAdminReplenish = async (b64_data) => {
         // what things to do
         // notify about the following
         // version, account name, remaining stock number
@@ -387,14 +398,14 @@
         // stocks: qty
 
         appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/25e615a6de3fa46d6ae1f3b23b3d67decc1eb94d/DiscordAPI.js');
-        await initFunctions('DiscordAPI');
+        await initFunctions(['DiscordAPI']);
         const webhook_url = `https://discord.com/api/webhooks/1477622870476722238/2OHXQHsVQnojJOopXYu0FPu-ZzLqfjB95dJvRJSPN9umOheNh2QPlqWwkhWB-qO07qOA`;
 
         let data = b64_data;
 
-        try {    
+        try {
             data = atob(b64_data);
-            data = JSON.parse(data);    
+            data = JSON.parse(data);
             await initFunctions
         } catch (error) {
             window.alert(`Error detected in parsing: ${error}`);
@@ -402,7 +413,7 @@
         }
 
         // DiscordAPI (username, avatar, title, message, thumbnail, url, webhook)
-        DiscordAPI(
+        DiscordAPI.post(
             data.username,
             data.userprofimg,
             `Asking to replenish ${data.acc_name}`,
