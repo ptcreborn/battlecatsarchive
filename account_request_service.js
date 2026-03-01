@@ -412,6 +412,13 @@
         }
 
         // DiscordAPI (username, avatar, title, message, thumbnail, url, webhook)
+        console.log(            data.username,
+            data.userprofimg,
+            `Asking to replenish ${data.acc_name}`,
+            `User ${data.username} is asking admin to replenish ${data.acc_ver} ${data.acc_name} with ${data.stocks} LEFT!`,
+            `${data.userprofimg}`,
+            `${webhook_url}`);
+            
         DiscordAPI.post(
             data.username,
             data.userprofimg,
