@@ -42,7 +42,7 @@
 
             let html = `<div class='acc_req_child'>
                 <img src='${user_data.split('#')[1]}'/>
-                <div class='responsive-text'><a class='acc_req_user_link ' href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${elem.email}'>${user_data.split('#')[0]}</a> already got <a href='https://battlecatsarchive.blogspot.com/search/label/accounts'> ${elem.type.name}</a> account</div>
+                <div class='responsive-text'><a style='background: ${getRandomDarkColor()}; color: white;' class='acc_req_user_link ' href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${elem.email}'>${user_data.split('#')[0]}</a> already got <a href='https://battlecatsarchive.blogspot.com/search/label/accounts'> ${elem.type.name}</a> account</div>
                 <div class='responsive-text passive-text'>${moment(elem.date).fromNow()}</div>
             </div>`;
 
@@ -202,5 +202,13 @@
                 return;
             }
         }
+    }
+
+    function getRandomDarkColor() {
+        const hue = Math.floor(Math.random() * 360); // any color
+        const saturation = 60 + Math.random() * 30; // 60–90%
+        const lightness = 20 + Math.random() * 25; // 20–45% (dark)
+
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
     }
 })();
