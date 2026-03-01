@@ -3,7 +3,6 @@
     // this JS file builds the widgets file in account request page.
     // widgets such as the top 10 account requester and recent account requests
 
-    produceCSS();
     await initFunctions(['supabase', 'moment']);
     await cookieLoadFast();
 
