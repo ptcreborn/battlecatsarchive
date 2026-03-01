@@ -121,7 +121,7 @@
       padding: 5px;
       border: 1px solid black;
       ">
-      <a href="https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${item.email}"><img loading="lazy" src="${item.prof_img}" style="
+      <a href="https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${item.email}"><img onerror="this.src='https://i.ibb.co/cXNr777G/image.png'; this.onerror=null;" src="${item.prof_img}" style="
          flex-basis: 100px;
          max-width: 100px;
          height: 100px;
