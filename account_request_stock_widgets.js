@@ -77,12 +77,12 @@
                         max-height: 40px;
                         object-fit: cover;
                         margin: 5px;
-                    "><div><span style="
+                    "><div><a href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${item.email}' style="
                         background: ${getRandomDarkColor()};
                         color: white;
                         padding: 0 5px;
                         font-weight: 550;
-                    ">ADMIN: ${item.email}</span><br><p style='line-height: 1.2rem;font-size: 0.9rem;'>New uploads: <b>[${item.acc} v${item.ver}]</b></br>— Additional: <b>${item.qty} account${item.stock > 1 ? `s` : ``} more!</b></p></div><span style="margin-left: auto; padding: 0 5px; font-weight: 550; line-height: 1rem; font-size: 12px; opacity: 0.7;">${moment(parseInt(key)).fromNow()}</span></div>`;
+                    ">ADMIN: ${item.email}</a><br><p style='line-height: 1.2rem;font-size: 0.9rem;'>New uploads: <b>[${item.acc} v${item.ver}]</b></br>— Additional: <b>${item.qty} account${item.stock > 1 ? `s` : ``} more!</b></p></div><span style="margin-left: auto; padding: 0 5px; font-weight: 550; line-height: 1rem; font-size: 12px; opacity: 0.7;">${moment(parseInt(key)).fromNow()}</span></div>`;
         });
     }
 
