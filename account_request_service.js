@@ -85,6 +85,8 @@
                 email: userEmail
             }
         });
+        
+        await addUserXP(1);
 
         window.location.href = `https://battlecatsarchive.blogspot.com/p/account-reservation.html?request=${btoa(request_parameters)}`;
         //window.location.href = `https://battlecatsarchive.blogspot.com/p/ads-central.html?code=${url_id}`;
