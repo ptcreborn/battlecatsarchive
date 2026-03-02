@@ -102,7 +102,7 @@
         if (data.status == 204) {
             // means successful requests
 
-            let accs_data = await supabase.from('top_account_requester_data').select('*');
+            let accs_data = await supabase.from('refresh_weekly_account_requesters_data').select('*');
 
             if (accs_data.error) {
                 window.alert(`${accs_data.error.message}`);
