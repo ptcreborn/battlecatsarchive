@@ -283,6 +283,7 @@
         let versions = await FirebaseModule.fetchJSON('https://storehaccounts-website-default-rtdb.firebaseio.com/account_ver.json');
 
         let keys = Object.keys(versions);
+        keys = keys.reverse();
 
         keys.forEach(val => document.getElementById('account_version').innerHTML += `<option value='${val}'>${val.split('-').length == 3 ? `EN ${val}`: `${val}`}</option>`);
 
