@@ -1,4 +1,4 @@
-window.addEventListener('load', async() => {
+(async() => {
             const bypass_button = document.getElementById('bypass_button');
             const status_msg = document.getElementById('status_msg');
             const bypass_msg = document.getElementById('bypass_msg');
@@ -285,4 +285,4 @@ window.addEventListener('load', async() => {
             xp_to_add: xp
         });
     }
-}, false);
+})();
