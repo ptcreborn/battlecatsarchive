@@ -1,34 +1,34 @@
-window.addEventListener('load', async () => {
-    const bypass_button = document.getElementById('bypass_button');
-    const status_msg = document.getElementById('status_msg');
-    const bypass_msg = document.getElementById('bypass_msg');
-    let emo = ['🤔', '😎', '🤩'];
+window.addEventListener('load', async() => {
+            const bypass_button = document.getElementById('bypass_button');
+            const status_msg = document.getElementById('status_msg');
+            const bypass_msg = document.getElementById('bypass_msg');
+            let emo = ['🤔', '😎', '🤩'];
 
-    let time_in_sec = 5000;
+            let time_in_sec = 5000;
 
-    await initFunctions(['FirebaseModule', 'moment']);
-    dispatchExpiredUsers();    
-    dispatchExpiredLinkTerminalSession();
-    await loadData();
+            await initFunctions(['FirebaseModule', 'moment']);
+            dispatchExpiredUsers();
+            dispatchExpiredLinkTerminalSession();
+            await loadData();
 
-    async function loadData() {
-        // This is for download bypass including automatically generated url from website and intentionally shorten url
-        if(checkCodeParam('code')){            
-            initDownloadBypass(getCodeParams('code'));
-            finalizeAction(downloadBypass);
-        }    
-        // This is specifically for account bypass which is used for bypassing accounts. This not to show any progress in the screen
-        else if(checkCodeParam('acc_code')) {            
-            initAccountBypass();
-            finalizeAction(accountBypass);
-        }      
-    }
+            async function loadData() {
+                // This is for download bypass including automatically generated url from website and intentionally shorten url
+                if (checkCodeParam('code')) {
+                    initDownloadBypass(getCodeParams('code'));
+                    finalizeAction(downloadBypass);
+                }
+                // This is specifically for account bypass which is used for bypassing accounts. This not to show any progress in the screen
+                else if (checkCodeParam('acc_code')) {
+                    initAccountBypass();
+                    finalizeAction(accountBypass);
+                }
+            }
 
-    function finalizeAction(actionCallback) {
-        let timeout = setInterval(async () => {
-            if(elementInViewport('bypass_button')) {
-                time_in_sec = time_in_sec - 40;
-                status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait ${Math.ceil(time_in_sec/1000)} ${Math.ceil(time_in_sec/1000) > 1 ? `seconds`: `second`}...`;
+            function finalizeAction(actionCallback) {
+                let timeout = setInterval(async() => {
+                            if (elementInViewport('bypass_button')) {
+                                time_in_sec = time_in_sec - 40;
+                                status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait ${Math.ceil(time_in_sec/1000)} ${Math.ceil(time_in_sec/1000) > 1 ? `seconds`: `second`}...`;
                 if (time_in_sec <= -1) {
                     clearInterval(timeout);
 
@@ -97,6 +97,8 @@ window.addEventListener('load', async () => {
         await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-account-requests/${btoa(identity_param.account.email)}.json`, JSON.stringify({
             prog: data.progress
         }));
+
+        await addUserXP(1);
 
         window.location.href = `https://battlecatsarchive.blogspot.com/p/account-progress.html?ongoing=${getCodeParams('ongoing')}&verified=${getCodeParams('verified')}`;
     }
@@ -259,5 +261,28 @@ window.addEventListener('load', async () => {
             (top + height) <= (window.pageYOffset + window.innerHeight) &&
             (left + width) <= (window.pageXOffset + window.innerWidth)
         );
+    }
+
+    
+    // This function will rank the users for each bypass of ads, or request of accounts.
+    async function addUserXP(xp) {
+        // must be online
+        // must complete the following task
+        // must finish the assignment
+
+        let {data, error} = await supabase.auth.getSession();
+        
+        if(error)
+            return;
+
+        if(!data.session)
+            return;
+
+        let email = data.session.user.email;
+
+        await supabase.from('users').rpc('add_xp_to_user', {
+            user_email: email,
+            xp_to_add: xp
+        });
     }
 }, false);
