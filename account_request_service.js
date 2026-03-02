@@ -332,6 +332,8 @@
                         }
                     });
 
+                    await addUserXP(1);
+
                     window.location.href = `https://battlecatsarchive.blogspot.com/p/account-reservation.html?request=${btoa(request_parameters)}`;
                     //window.location.href = `https://battlecatsarchive.blogspot.com/p/ads-central.html?code=${session}`;
                 }
@@ -443,7 +445,32 @@
                 }
             })
         );
-        
+
         btn.innerText = `Submitted!`;
+    }
+
+    // This function will rank the users for each bypass of ads, or request of accounts.
+    async function addUserXP(xp) {
+        // must be online
+        // must complete the following task
+        // must finish the assignment
+
+        let {
+            data,
+            error
+        } = await supabase.auth.getSession();
+
+        if (error)
+            return;
+
+        if (!data.session)
+            return;
+
+        let email = data.session.user.email;
+
+        await supabase.rpc('add_xp_to_user', {
+            user_email: email,
+            xp_to_add: xp
+        });
     }
 })();
