@@ -82,7 +82,7 @@
                         color: white;
                         padding: 0 5px;
                         font-weight: 550;
-                    ">${item.email}</a><br><p style='line-height: 1.2rem;font-size: 0.9rem;'>New uploads: <b>[${item.acc} v${item.ver}]</b></br>— Additional: <b>${item.qty} account${item.stock > 1 ? `s` : ``} more!</b></p></div><span style="margin-left: auto; padding: 0 5px; font-weight: 550; line-height: 1rem; font-size: 12px; opacity: 0.7;">${moment(parseInt(key)).fromNow()}</span></div>`;
+                    ">${item.email}</a><br><p style='line-height: 1.2rem;font-size: 0.9rem;'>${item.qty == 0 ? `Added a new Version!`: `New uploads: `}<b>[${item.acc} v${item.ver}]</b></br>— ${item.qty == 0 ? `New version opened: `: `Additional: `} <b>${item.qty} account${item.stock > 1 ? `s` : ``} more!</b></p></div><span style="margin-left: auto; padding: 0 5px; font-weight: 550; line-height: 1rem; font-size: 12px; opacity: 0.7;">${moment(parseInt(key)).fromNow()}</span></div>`;
         });
     }
 
