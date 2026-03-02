@@ -262,6 +262,7 @@
         const db = `https://storehaccounts-website-default-rtdb.firebaseio.com/account_ver.json`;
         let data = await FirebaseModule.fetchJSON(`${db}`);
         let keys = Object.keys(data);
+        keys = keys.reverse();
 
         keys.forEach(item => {
             selector_version.innerHTML += `<option value="${item}">${item}</option>`;
