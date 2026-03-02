@@ -93,7 +93,7 @@
     await getTopAccountRequester();
 
     async function getTopAccountRequester() {
-        let data = await supabase.rpc('refresh_top_account_requesters');
+        let data = await supabase.rpc('refresh_weekly_account_requesters');
         if (data.error) {
             window.alert(`${data.error.message}`);
             return;
