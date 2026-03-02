@@ -280,7 +280,7 @@
 
         let email = data.session.user.email;
 
-        await supabase.from('users').rpc('add_xp_to_user', {
+        await supabase.rpc('add_xp_to_user', {
             user_email: email,
             xp_to_add: xp
         });
