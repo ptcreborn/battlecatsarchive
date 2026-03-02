@@ -163,8 +163,9 @@
       border: 1px solid black;
       ">
       <h2 style="
-    enter;
-    min-width: 40px;
+    text-align: center;
+    min-width: 45px;
+    font-size: 1.5rem;
 ">#${rank}</h2><img onerror="this.src='https://i.ibb.co/cXNr777G/image.png'; this.onerror=null;" src="${item.prof_img ? item.prof_img : `https://i.ibb.co/cXNr777G/image.png`}" style="
          flex-basis: 100px;
          max-width: 50px;
