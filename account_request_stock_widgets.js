@@ -77,7 +77,7 @@
                         max-height: 40px;
                         object-fit: cover;
                         margin: 5px;
-                    "><div>ADMIN: <a href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${item.email}' style="
+                    "><div><b>ADMIN: </b><a href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${item.email}' style="
                         background: ${getRandomDarkColor()};
                         color: white;
                         padding: 0 5px;
