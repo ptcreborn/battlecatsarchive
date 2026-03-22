@@ -103,6 +103,12 @@
         const session_db = `https://storehaccounts-website-default-rtdb.firebaseio.com/session_db/${btoa(email)}.json`;
         await FirebaseModule.patch(session_db, "null");
 
+        // delete item in the cart
+        await FirebaseModule.patch(
+            `https://storehaccounts-website-default-rtdb.firebaseio.com/bca_cart/${btoa(email)}/${params.get('cart')}.json`,
+            `null`
+        )
+
         // update status from the bucket
         await FirebaseModule.patch(bucket_db, JSON.stringify({
             modified: new Date().getTime(),
