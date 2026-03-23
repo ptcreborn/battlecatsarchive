@@ -38,7 +38,7 @@
         let count_elem = parseInt(status_elem.querySelector('[add-qty-status]').textContent);
 
         status_elem.style = `display: block;background: beige;`;
-        status_elem.innerHTML = `You have added <b><span add-qty-status="">${count_elem + 1}</span></b> in your cart. <a style='font-weight: bold; display: block;' target="_blank" href="https://battlecatsarchive.blogspot.com/p/cart.html?user=${btoa(userEmail)}">➡️Checkout now</a>`;
+        status_elem.innerHTML = `You have added <b><span add-qty-status="">${count_elem + 1}</span></b> in your cart. <a style='font-weight: bold; display: block; text-decoration: underline;' target="_blank" href="https://battlecatsarchive.blogspot.com/p/cart.html?user=${btoa(userEmail)}">➡️Checkout now</a>`;
     }
 
     async function processAccount(account_name, account_id, account_ads) {
