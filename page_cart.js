@@ -310,7 +310,7 @@
         // remove the element.
         getID(key).remove();
 
-        let items = document.querySelectorAll('#cart-item-container > div').length - 1;
+        let items = document.querySelectorAll('#cart-item-container > div').length;
 
         if (items == 0) query('h2-title').innerHTML = `Empty Cart - <a class='add-account' href='https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html'>Add Account Now</a>`;
         else query('h2-title').textContent = `${items < 2 ? `${items} item in the Cart`: `${items} items in the Cart`}.`;
