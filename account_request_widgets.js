@@ -160,7 +160,7 @@
       height: auto;
       justify-content: space-between;
       align-items: center;
-      border: 1px solid #cccccc;
+      border: 1px solid #f1f1f1;
       ">
       <h2 style="
     text-align: center;
