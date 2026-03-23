@@ -182,11 +182,11 @@
                 }
 
                 // if the time is 9 pm, then the time limit would be 10 pm, added by 1 hour.
-                let next_hour = new Date().setHours(new Date().getHours() + 1, 0, 0, 0);
+                let next_hour = new Date().setHours(new Date().getHours() + 2, 0, 0, 0);
                 timeCountdown(
                     queryP(clone, 'exact-time'),
                     next_hour,
-                    'You only have 1 hour to get all your accounts, if you missed others, wait for the next time batch. Time left: '
+                    'You only have 2 hours to get all your accounts, if you missed it, wait for the next time batch. Time left: '
                 );
             }
             getID('cart-item-container').appendChild(clone);
@@ -354,7 +354,8 @@
         // adding new expiry for accounts that started bypassing
         // to lessen account bypass spam.
         let date_now = new Date();
-        date_now.setMinutes(new Date().getMinutes() + 15);
+        // once user starts bypassing, 30 minutes grace period is offered to get their account.
+        date_now.setMinutes(new Date().getMinutes() + 30);
 
         if(!acc_data.status)
             await FirebaseModule.patch(
@@ -376,7 +377,8 @@
         let isScheduled = false;
 
         for (const hour of scheduled_times) {
-            if (client_time_now.getHours() == new Date(hour).getHours()) {
+            if (client_time_now.getHours() == new Date(hour).getHours() || client_time_now.getHours() == new Date(hour).getHours() + 1) {
+                // extend schedule to two hours
                 isScheduled = true;
                 break;
             }
@@ -386,6 +388,7 @@
     }
 
     function getNearestHour(elem, arr_time, client_time) {
+        // This function searches for the closest time based on the scheduled one
         // By default set to tomorrow date (12:00 am)
         let nearest_hour = new Date();
         nearest_hour.setDate(new Date().getDate() + 1);
