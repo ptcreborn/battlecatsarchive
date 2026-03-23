@@ -52,6 +52,7 @@
         document.querySelector(`div.parent-cart`).style.display = "block";
 
         user_email = data.session.user.email;
+        document.title = `Cart - ${user_email}`;
         return true;
     }
 
