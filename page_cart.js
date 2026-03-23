@@ -183,7 +183,7 @@
                 }
 
                 // if the time is 9 pm, then the time limit would be 10 pm, added by 1 hour.
-                let next_hour = new Date().setHours(new Date().getHours() + 2, 0, 0, 0);
+                let next_hour = new Date().setHours(new Date().getHours() + 1, 0, 0, 0);
                 timeCountdown(
                     queryP(clone, 'exact-time'),
                     next_hour,
