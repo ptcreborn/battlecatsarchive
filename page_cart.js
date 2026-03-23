@@ -3,6 +3,7 @@
     const scheduled_times = [
         new Date().setHours(0, 0, 0, 0),
         new Date().setHours(2, 0, 0, 0),
+        new Date().setHours(6, 0, 0, 0),
         new Date().setHours(18, 0, 0, 0)
     ];
 
