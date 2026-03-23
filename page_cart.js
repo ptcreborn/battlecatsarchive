@@ -36,6 +36,7 @@
 
         if (!data.session) {
             window.alert(`User is not logged in, please login first. Thank you!`);
+            document.querySelector('#postBody').textContent = `User is not logged in, please login first. Thank you!`;
             window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
             return;
         }
