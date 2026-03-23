@@ -43,6 +43,7 @@
         // check whether the user is requesting its own email address records...
         if (data.session.user.email != getUrlParam()) {
             query('h2-title').textContent = `You are requesting a forbidden user activity, please dispatch. Thank you!`;
+            document.querySelector('#postBody').textContent = `You are requesting a forbidden user activity, please dispatch. Thank you!`;
             window.alert(`You are requesting a forbidden user activity, please dispatch. Thank you!`);
             return;
         }
