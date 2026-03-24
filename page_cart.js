@@ -6,6 +6,8 @@
         new Date().setHours(18, 0, 0, 0)
     ];
 
+    let real_sched_time = '';
+
     query('h2-title').textContent = `Please wait while loading cart...`;
 
     // misc
@@ -182,7 +184,7 @@
                 }
 
                 // if the time is 9 pm, then the time limit would be 10 pm, added by 1 hour.
-                let next_hour = new Date(sched_time).setHours(new Date().getHours() + 2, 0, 0, 0);
+                let next_hour = new Date(real_sched_time).setHours(new Date().getHours() + 1, 0, 0, 0);
                 timeCountdown(
                     queryP(clone, 'exact-time'),
                     next_hour,
@@ -378,13 +380,15 @@
 
         let isScheduled = false;
 
+
         for (const hour of scheduled_times) {
             if (client_time_now.getHours() == new Date(hour).getHours() || client_time_now.getHours() == new Date(hour).getHours() + 1) {
                 // extend schedule to two hours
                 isScheduled = true;
+                real_sched_time = hour;
                 break;
             }
-        }
+        }        
 
         return isScheduled;
     }
