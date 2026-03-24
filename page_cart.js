@@ -315,6 +315,8 @@
 
         if (items == 0) query('h2-title').innerHTML = `Empty Cart - <a class='add-account' href='https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html'>Add Account Now</a>`;
         else query('h2-title').textContent = `${items < 2 ? `${items} item in the Cart`: `${items} items in the Cart`}.`;
+
+        decrementCartCount();
     }
 
     async function getAccount(key, btn) {
@@ -452,6 +454,17 @@
 
     function isItemExpired(cart_data) {
         return cart_data.get_exp <= new Date().getTime() || cart_data.exp <= new Date().getTime();
+    }
+
+    function decrementCartCount() {
+        let count_elem = document.querySelector('#bca_cart span').innerText;
+        let total_count = parseInt(total_count);
+        total_count -= 1;
+
+        if(total_count == 0) 
+            count_elem.remove();
+
+        count_elem.textContent = total_count;
     }
 
     function sortItems() {
