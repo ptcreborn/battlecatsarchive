@@ -33,6 +33,7 @@
         }));
 
         await addUserXP(1);
+        incrementCartCount();
 
         let status_elem = document.getElementById(`parent-${id}`).querySelector('[add-cart-status]');
         let count_elem = parseInt(status_elem.querySelector('[add-qty-status]').textContent);
@@ -673,6 +674,20 @@
 
     function query(id) {
         return document.querySelector(`[${id}]`);
+    }
+
+    function incrementCartCount() {
+        let elem_cart = document.querySelector('#bca_cart span');
+        let count = elem_cart.textContent;
+
+        if(count == 0) {
+            elem_cart.textContent = 0;
+            return;
+        }
+        
+        count = parseInt(count);
+        count += 1;
+        elem_cart.textContent = count;
     }
 
     searchBox.addEventListener('input', () => {
