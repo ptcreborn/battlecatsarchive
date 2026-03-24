@@ -680,7 +680,11 @@
         let elem_cart = document.querySelector('#bca_cart span');
         let count = elem_cart.textContent;
 
-        elem_cart.style.display = `block`;
+        if(count == "") {
+            count = 1;
+            elem_cart.style.display = `block`;
+            return;
+        }            
         
         count = parseInt(count);
         count += 1;
