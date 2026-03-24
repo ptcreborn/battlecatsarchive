@@ -457,8 +457,8 @@
     }
 
     function decrementCartCount() {
-        let count_elem = document.querySelector('#bca_cart span').innerText;
-        let total_count = parseInt(total_count);
+        let count_elem = document.querySelector('#bca_cart span');
+        let total_count = parseInt(count_elem.innerText);
         total_count -= 1;
 
         if(total_count == 0) 
