@@ -113,85 +113,88 @@
                 continue;
             }
 
-            const template = query('cart-item-template');
-            const clone = template.cloneNode(true).content.children[0];
-            const stock = await checkCurrentStock(user_data.ver, user_data.name);
+            new Promise(async(resolve, reject) => {
+                const template = query('cart-item-template');
+                const clone = template.cloneNode(true).content.children[0];
+                const stock = await checkCurrentStock(user_data.ver, user_data.name);
 
-            let sched_time = `${getNearestHour(
-                queryP(clone, 'counter-data'),
-                 scheduled_times, 
-                 client_time_now
-            )}`;
-            let format_sched_time = new Date(sched_time).toLocaleString('en-US', {
-                hour: 'numeric',
-                minute: 'numeric',
-                hour12: true
-            });
+                let sched_time = `${getNearestHour(
+                    queryP(clone, 'counter-data'),
+                    scheduled_times, 
+                    client_time_now
+                )}`;
+                let format_sched_time = new Date(sched_time).toLocaleString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                });
+                
+                getID('cart-item-container').appendChild(clone);
 
-            clone.id = key;
-            queryP(clone, 'cart-item-name').textContent = `${user_data.name} (v${user_data.ver})`;
-            queryP(clone, 'exact-time').textContent = `Please get back here ASAP at exactly ${format_sched_time}`;
-            queryP(clone, 'cart-added-expiry').textContent = `Expiring in ${moment(user_data.exp).fromNow()}`;
-            queryP(clone, 'cart-added-date').textContent = `Order #: ${key}`;
-            queryP(clone, 'cart-status').textContent = `${stock < 1 ? "Out of Stock": "Creating"}`;
-            queryP(clone, 'acc-ads').textContent = `${user_data.ads}x ads`;
+                clone.id = key;
+                queryP(clone, 'cart-item-name').textContent = `${user_data.name} (v${user_data.ver})`;
+                queryP(clone, 'exact-time').textContent = `Please get back here ASAP at exactly ${format_sched_time}`;
+                queryP(clone, 'cart-added-expiry').textContent = `Expiring in ${moment(user_data.exp).fromNow()}`;
+                queryP(clone, 'cart-added-date').textContent = `Order #: ${key}`;
+                queryP(clone, 'cart-status').textContent = `${stock < 1 ? "Out of Stock": "Creating"}`;
+                queryP(clone, 'acc-ads').textContent = `${user_data.ads}x ads`;
 
-            // Cancel Button
-            queryP(clone, 'btn-cancel-order').addEventListener('click', async () => {
-                cancelOrder(queryP(clone, 'btn-cancel-order'), key);
-            });
-
-            // Activating Get Button depending on conditions
-            if (isAccountReady()) {
-                // Add Button
-                queryP(clone, 'btn-get-acc').addEventListener('click', async (event) => {
-                    getAccount(key, event.target);
+                // Cancel Button
+                queryP(clone, 'btn-cancel-order').addEventListener('click', async () => {
+                    cancelOrder(queryP(clone, 'btn-cancel-order'), key);
                 });
 
-                // Means the account is to be resumed.
-                if(user_data.status == "processing") {
-                    queryP(clone, 'btn-get-acc').classList.remove('disabled');
-                    queryP(clone, 'btn-get-acc').classList.add('available');
-                    queryP(clone, 'btn-get-acc').textContent = `Resume`;
+                // Activating Get Button depending on conditions
+                if (isAccountReady()) {
+                    // Add Button
+                    queryP(clone, 'btn-get-acc').addEventListener('click', async (event) => {
+                        getAccount(key, event.target);
+                    });
 
-                    // Set status to available
-                    queryP(clone, 'cart-status').textContent = "In Process.";
-                    queryP(clone, 'cart-status').classList.add('warning');
-                    queryP(clone, 'cart-status').classList.remove('creating');
+                    // Means the account is to be resumed.
+                    if(user_data.status == "processing") {
+                        queryP(clone, 'btn-get-acc').classList.remove('disabled');
+                        queryP(clone, 'btn-get-acc').classList.add('available');
+                        queryP(clone, 'btn-get-acc').textContent = `Resume`;
 
-                    // Set warning status 
-                    queryP(clone, 'exact-time').classList.remove('warning');
-                    queryP(clone, 'exact-time').classList.add('available');
-                    queryP(clone, 'cart-item-status').innerHTML = `You can now get your account enclosed with the time specified below.`;
-                    
-                    queryP(clone, 'cart-added-expiry').textContent = `Expiring in ${moment(user_data.get_exp).fromNow()}`;
-                    queryP(clone, 'cart-added-expiry').classList.add('warning', 'bold');
+                        // Set status to available
+                        queryP(clone, 'cart-status').textContent = "In Process.";
+                        queryP(clone, 'cart-status').classList.add('warning');
+                        queryP(clone, 'cart-status').classList.remove('creating');
+
+                        // Set warning status 
+                        queryP(clone, 'exact-time').classList.remove('warning');
+                        queryP(clone, 'exact-time').classList.add('available');
+                        queryP(clone, 'cart-item-status').innerHTML = `You can now get your account enclosed with the time specified below.`;
+                        
+                        queryP(clone, 'cart-added-expiry').textContent = `Expiring in ${moment(user_data.get_exp).fromNow()}`;
+                        queryP(clone, 'cart-added-expiry').classList.add('warning', 'bold');
+                    }
+                    else {            
+                        // Means new to bypasss.                    
+                        queryP(clone, 'btn-get-acc').classList.remove('disabled');
+                        queryP(clone, 'btn-get-acc').classList.add('available');
+
+                        // Set status to available
+                        queryP(clone, 'cart-status').textContent = "Available";
+                        queryP(clone, 'cart-status').classList.add('available');
+                        queryP(clone, 'cart-status').classList.remove('creating');
+
+                        // Set warning status 
+                        queryP(clone, 'exact-time').classList.remove('warning');
+                        queryP(clone, 'exact-time').classList.add('available');
+                        queryP(clone, 'cart-item-status').innerHTML = `You can now get your account enclosed with the time specified below.`;
+                    }
+
+                    // if the time is 9 pm, then the time limit would be 10 pm, added by 1 hour.
+                    let next_hour = new Date(real_sched_time).setHours(new Date().getHours() + 1, 0, 0, 0);
+                    timeCountdown(
+                        queryP(clone, 'exact-time'),
+                        next_hour,
+                        'You only have 2 hours to get all your accounts, if you missed it, wait for the next time batch. Time left: '
+                    );
                 }
-                else {            
-                    // Means new to bypasss.                    
-                    queryP(clone, 'btn-get-acc').classList.remove('disabled');
-                    queryP(clone, 'btn-get-acc').classList.add('available');
-
-                    // Set status to available
-                    queryP(clone, 'cart-status').textContent = "Available";
-                    queryP(clone, 'cart-status').classList.add('available');
-                    queryP(clone, 'cart-status').classList.remove('creating');
-
-                    // Set warning status 
-                    queryP(clone, 'exact-time').classList.remove('warning');
-                    queryP(clone, 'exact-time').classList.add('available');
-                    queryP(clone, 'cart-item-status').innerHTML = `You can now get your account enclosed with the time specified below.`;
-                }
-
-                // if the time is 9 pm, then the time limit would be 10 pm, added by 1 hour.
-                let next_hour = new Date(real_sched_time).setHours(new Date().getHours() + 1, 0, 0, 0);
-                timeCountdown(
-                    queryP(clone, 'exact-time'),
-                    next_hour,
-                    'You only have 2 hours to get all your accounts, if you missed it, wait for the next time batch. Time left: '
-                );
-            }
-            getID('cart-item-container').appendChild(clone);
+            });
         }
         getID('cart-item-container').style.display = 'block';
         query('h2-title').textContent = `${keys.length > 1 ? `${keys.length} items`: `${keys.length} item`} in the Cart.`;
