@@ -682,6 +682,7 @@
 
         if(count == "") {
             count = 1;
+            elem_cart.textContent = count;
             elem_cart.style.display = `block`;
             return;
         }            
