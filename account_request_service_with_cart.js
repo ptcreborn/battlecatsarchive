@@ -680,10 +680,7 @@
         let elem_cart = document.querySelector('#bca_cart span');
         let count = elem_cart.textContent;
 
-        if(count == 0) {
-            elem_cart.textContent = 0;
-            return;
-        }
+        elem_cart.style.display = `block`;
         
         count = parseInt(count);
         count += 1;
@@ -710,10 +707,6 @@
         else
             result.innerText = `Showing ${container.querySelectorAll(':scope > *:not([style*="display: none"])').length} result/s...`;
     });
-
-    window.reportStock = async () => {
-
-    }
 
     window.requestAccount = async (event) => {
         event.target.innerText = "Adding now...";
