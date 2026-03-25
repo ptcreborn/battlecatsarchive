@@ -42,8 +42,9 @@
                         border-bottom: 1px solid ${getRandomDarkColor()};
                         display: flex;
                         align-items: center;
-                    "><img src="${item.img}" style="
-                        max-height: 40px;
+                    "><img src="${item.img}" alt='${item.username} requests low-stock' loading='lazy' style="
+                        height: 40px;
+                        width: 40px;
                         object-fit: cover;
                         margin: 5px;
                     "><div><span style="
