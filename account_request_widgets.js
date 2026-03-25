@@ -41,7 +41,7 @@
             let user_data = users_data[i];
 
             let html = `<div class='acc_req_child'>
-                <img onerror='this.src = "https://i.ibb.co/cXNr777G/image.png"; this.onerror=null' src='${user_data.split('#')[1]}'/>
+                <img alt='${elem.email} requests an account' loading='lazy' onerror='this.src = "https://i.ibb.co/cXNr777G/image.png"; this.onerror=null' src='${user_data.split('#')[1]}'/>
                 <div class='responsive-text'><a style='background: ${getRandomGradient()}; color: white;' class='acc_req_user_link ' href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${elem.email}'>${user_data.split('#')[0]}</a> already got <a href='https://battlecatsarchive.blogspot.com/search/label/accounts'> ${elem.type.name}</a> account</div>
                 <div class='responsive-text passive-text'>${moment(elem.date).fromNow()}</div>
             </div>`;
@@ -121,7 +121,7 @@
       padding: 5px;
       border: 1px solid #cccccc;
       ">
-      <a href="https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${item.email}"><img onerror="this.src='https://i.ibb.co/cXNr777G/image.png'; this.onerror=null;" src="${item.prof_img ? item.prof_img : `https://i.ibb.co/cXNr777G/image.png`}" style="
+      <a href="https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${item.email}"> alt='${item.email}' loading='lazy' onerror="this.src='https://i.ibb.co/cXNr777G/image.png'; this.onerror=null;" src="${item.prof_img ? item.prof_img : `https://i.ibb.co/cXNr777G/image.png`}" style="
          flex-basis: 100px;
          max-width: 100px;
          height: 100px;
@@ -166,7 +166,7 @@
     text-align: center;
     min-width: 45px;
     font-size: 1.5rem;
-">#${rank}</h2><img onerror="this.src='https://i.ibb.co/cXNr777G/image.png'; this.onerror=null;" src="${item.prof_img ? item.prof_img : `https://i.ibb.co/cXNr777G/image.png`}" style="
+">#${rank}</h2><img loading='lazy' alt='${item.email}' onerror="this.src='https://i.ibb.co/cXNr777G/image.png'; this.onerror=null;" src="${item.prof_img ? item.prof_img : `https://i.ibb.co/cXNr777G/image.png`}" style="
          flex-basis: 100px;
          max-width: 50px;
          height: 50px;
