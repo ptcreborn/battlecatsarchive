@@ -20,7 +20,7 @@
 
     // Listeners
     document.getElementById('btn_tab_lowstock').addEventListener('click', await loadStockRequests());
-    document.getElementById('btn_tab_restock').addEventListener('click', await loadNews());
+    document.getElementById('btn_tab_restock').addEventListener('click', await loadNewStocks());
 
     // By default
     show_tab(document.getElementById('btn_tab_recent'), 'acc_req_parent', 'violet');
@@ -57,7 +57,7 @@
 
     }
 
-    async function loadNews() {
+    async function loadNewStocks() {
         if (document.getElementById('acc_req_restock').children.length > 0)
             return;
 
@@ -74,8 +74,9 @@
                         border-bottom: 1px solid ${getRandomDarkColor()};
                         display: flex;
                         align-items: center;
-                    "><img src="${item.profile}" style="
-                        max-height: 40px;
+                    "><img src="${item.profile}" alt='admin ${item.email} restock ${item.acc}' loading='lazy' style="
+                        height: 40px;
+                        width: 40px;
                         object-fit: cover;
                         margin: 5px;
                     "><div><b>ADMIN: </b><a href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${item.email}' style="
