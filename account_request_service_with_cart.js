@@ -286,7 +286,6 @@
         }
 
         user_info_data = user_info_data.data;
-
         username = user_info_data.username;
         user_prof_img = user_info_data.prof_img;
 
@@ -313,8 +312,10 @@
             // Main Execution
             if (!isUpdating) {
                 userEmail = await checkIfUserOnline();
-                if (!userEmail)
+                if (!userEmail) {
+                    window.alert(`Invalid user email address, please login first.`);
                     return;
+                }
 
                 // Fresh Start
                 await buildCompactMenu();
