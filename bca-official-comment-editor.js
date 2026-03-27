@@ -11,7 +11,7 @@
             <h4 id='bca_action_status' style="margin-left: auto; text-align: right;">Add a comment</h4>
         </div>
 
-        <div class="bca-editor" contenteditable="true" placeholder="Discuss this Cat Unit or Stage strategy..."></div>
+        <div class="bca-editor" contenteditable="true" placeholder="Discuss something with this topic..."></div>
 
         <div class="bca-footer">
             <div class="bca-user-info">
