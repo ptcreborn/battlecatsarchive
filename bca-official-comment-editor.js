@@ -461,30 +461,49 @@
         async function postCommentToSupabase(fbid, website_post_id, user_id) {
             // Post to supabase
             let target_ids = getTargetCommentIDS();
-            let { data, error } = await supabase.from('bca-comments').insert({
-                date: 'now()',
-                fb_id: fbid,
-                bca_posts: website_post_id,
-                user_id: user_id,
-                parent_id: target_ids.parent.replace('bca-comment-', '')
-            }).select().single();
+            let payload = {};
 
-            if(data) {
-                // this adds the root_id same as comments_id
-                let update_data = await supabase
-                .from('bca-comments')
-                .update({
-                    root_id: data.id
-                }).eq('id', data.id);
-
-                if(update_data.error) {
-                    window.alert(`Update error: ${update_data.error.message}`);
-                    return;
+            // check if the comment is reply state.
+            if (target_ids.parent)
+                payload = {
+                    date: 'now()',
+                    fb_id: fbid,
+                    bca_posts: website_post_id,
+                    user_id: user_id,
+                    parent_id: target_ids.parent.replace('bca-comment-', ''),
+                    root_id: target_ids.root.replace('bca-comment-', '')
+                }
+            else {
+                payload = {
+                    date: 'now()',
+                    fb_id: fbid,
+                    bca_posts: website_post_id,
+                    user_id: user_id,
+                    parent_id: target_ids.parent.replace('bca-comment-', '')
                 }
             }
 
+            let { data, error } = await supabase.from('bca-comments').insert(payload).select().single();
+
             if (error) {
                 window.alert(`Error message: ${error.message}`);
+                return;
+            }
+
+            if (!target_ids.parent && data) {
+                // this adds the root_id same as comments_id
+                let update_data = await supabase
+                    .from('bca-comments')
+                    .update({
+                        root_id: data.id
+                    }).eq('id', data.id);
+
+                if (update_data.error) {
+                    window.alert(`Update error: ${update_data.error.message}`);
+                    return;
+                }
+            } else {
+                window.alert(`Error in inserting record in comments table`)
                 return;
             }
         }
@@ -551,7 +570,7 @@
             let previousElem = editor.previousElementSibling;
 
             let root_id = previousElem.dataset.rootid || (previousElem.id.includes('bca-comment-') ? previousElem.id : null);
-            let parent_id = previousElem.id.includes('bca-comment-') ? previousElem.id : null;            
+            let parent_id = previousElem.id.includes('bca-comment-') ? previousElem.id : null;
 
             return {
                 root: root_id,
