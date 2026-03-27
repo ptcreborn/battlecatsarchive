@@ -6,7 +6,7 @@
             <button onclick="execCmd('italic')" title="Italic"><i>I</i></button>
             <button onclick="execCmd('createLink')" title="Link">🔗</button>            
             <button onclick="document.querySelector('.bca-file-input').click()">🖼️</button>
-            <input type="file" class="bca-file-input" accept="image/*" style="display:none" onchange="handleFileUpload(this.files)">            
+            <input type="file" class="bca-file-input" accept=".jpg, .jpeg, .png, .gif, .bmp, image/jpeg, image/png, image/gif, image/bmp" style="display:none" onchange="handleFileUpload(this.files)">            
             <button onclick="addYoutubeVideo()">🎥 </button>            
             <h4 id='bca_action_status' style="margin-left: auto; text-align: right;">Add a comment</h4>
         </div>
