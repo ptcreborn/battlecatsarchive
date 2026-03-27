@@ -456,6 +456,11 @@
 
     async function removeCartItem(user_email, key) {
         await FirebaseModule.patch(`https://storehaccounts-website-default-rtdb.firebaseio.com/bca_cart/${btoa(user_email)}/${key}.json`, 'null');
+        decrementCartCount();
+        await cancelOrder(
+            getID(key),
+            key
+        );
     }
 
     function isItemExpired(cart_data) {
