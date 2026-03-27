@@ -7,6 +7,7 @@
     ];
 
     let real_sched_time = '';
+    const db = `https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart`;
 
     query('h2-title').textContent = `Please wait while loading cart...`;
 
@@ -70,7 +71,7 @@
         // account id from suapabase
         // user_id from supabase
 
-        cart_db = `https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart/${btoa(user_email)}`;
+        cart_db = `${db}/${btoa(user_email)}`;
 
         let cart_data = await FirebaseModule.fetchJSON(`${cart_db}.json`);
 
@@ -238,7 +239,7 @@
 
             // store the code to bca_cart
             await FirebaseModule.patch(
-                `https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart/${btoa(user_email)}/${cart_fbdb_id}.json`,
+                `${db}/${btoa(user_email)}/${cart_fbdb_id}.json`,
                 JSON.stringify({
                     heap_code: code
                 }));
@@ -304,7 +305,7 @@
         elem.classList.add('disabled');
         elem.textContent = `Removing...`;
 
-        let cart_data = await FirebaseModule.fetchJSON(`https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart/${btoa(user_email)}/${key}.json`);
+        let cart_data = await FirebaseModule.fetchJSON(`${db}/${btoa(user_email)}/${key}.json`);
 
         if (cart_data.status == "processing") {
             // check fro the heap code
@@ -329,7 +330,7 @@
         let status = getID(key).querySelector('[cart-status]');
         document.querySelector('div#cart-item-container').classList.add('disabled');
 
-        const db = `https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart/`;
+        const db = `${db}`;
 
         let acc_data = await FirebaseModule.fetchJSON(`${db}/${btoa(user_email)}/${key}.json`);
 
@@ -455,7 +456,7 @@
     }
 
     async function removeCartItem(user_email, key) {
-        await FirebaseModule.patch(`https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart/${btoa(user_email)}/${key}.json`, 'null');
+        await FirebaseModule.patch(`${db}/${btoa(user_email)}/${key}.json`, 'null');
         decrementCartCount();
     }
 
