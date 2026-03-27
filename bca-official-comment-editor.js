@@ -460,12 +460,29 @@
 
         async function postCommentToSupabase(fbid, website_post_id, user_id) {
             // Post to supabase
+            let target_ids = getTargetCommentIDS();
             let { data, error } = await supabase.from('bca-comments').insert({
                 date: 'now()',
                 fb_id: fbid,
                 bca_posts: website_post_id,
-                user_id: user_id
-            });
+                user_id: user_id,
+                parent_id: target_ids.parent_id,
+                root_id: target_ids.root_id
+            }).select().single();
+
+            if(data) {
+                // this adds the root_id same as comments_id
+                let update_data = await supabase
+                .from('bca-comments')
+                .update({
+                    root_id: data.id
+                }).eq('id', data.id);
+
+                if(update_data.error) {
+                    window.alert(`Update error: ${update_data.error.message}`);
+                    return;
+                }
+            }
 
             if (error) {
                 window.alert(`Error message: ${error.message}`);
