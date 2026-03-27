@@ -479,7 +479,7 @@
                     fb_id: fbid,
                     bca_posts: website_post_id,
                     user_id: user_id,
-                    parent_id: target_ids.parent.replace('bca-comment-', '')
+                    parent_id: target_ids.parent
                 }
             }
 
