@@ -163,7 +163,7 @@
             formData.append('image', file);
 
             const loadingId = "img-" + new Date().getTime();
-            insertHTMLAtCursor(`<img loading='lazy' alt='upload-img-${loadingId}' id="${loadingId}" src="https://i.imgur.com/vGKqN5O.gif" style="display: block; width: 90%; box-shadow: 1px 1px 5px 1px #909090;">`);
+            insertHTMLAtCursor(`<img class='bca-img-attachment' loading='lazy' alt='upload-img-${loadingId}' id="${loadingId}" src="https://i.imgur.com/vGKqN5O.gif" style="display: block; width: 90%; box-shadow: 1px 1px 5px 1px #909090;">`);
 
             try {
                 const response = await fetch('https://api.imgur.com/3/image', {
@@ -370,7 +370,7 @@
             // 2. The "Functional Attributes"
             const allowedAttrs = {
                 'a': ['href', 'target'],
-                'img': ['src', 'alt', 'width', 'height'],
+                'img': ['src', 'alt', 'width', 'height', 'class', 'loading'],
                 'iframe': ['src', 'width', 'height', 'frameborder', 'allowfullscreen']
             };
 
