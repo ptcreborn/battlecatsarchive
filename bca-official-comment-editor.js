@@ -466,7 +466,7 @@
                 fb_id: fbid,
                 bca_posts: website_post_id,
                 user_id: user_id,
-                parent_id: target_ids.parent_id
+                parent_id: target_ids.parent_id.replace('bca-comment-', '')
             }).select().single();
 
             if(data) {
