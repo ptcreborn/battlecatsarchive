@@ -334,8 +334,6 @@
         let status = getID(key).querySelector('[cart-status]');
         document.querySelector('div#cart-item-container').classList.add('disabled');
 
-        const db = `${db}`;
-
         let acc_data = await FirebaseModule.fetchJSON(`${db}/${btoa(user_email)}/${key}.json`);
 
         if (!acc_data) {
