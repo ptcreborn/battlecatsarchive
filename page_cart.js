@@ -196,7 +196,10 @@
             });
         }
         getID('cart-item-container').style.display = 'block';
-        query('h2-title').textContent = `${keys.length > 1 ? `${keys.length} items`: `${keys.length} item`} in the Cart.`;
+        let cart_count = getID('cart-item-container').childNodes.length || 0;
+        query('h2-title').textContent = `${cart_count > 1 ? `${cart_count} items`: `${cart_count} item`} in the Cart.`;
+        if(cart_count == 0)
+            query('h2-title').innerHTML = `Empty Cart - <a class='add-account' href='https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html'>Add Account Now</a>`;
         sortItems();
     }
 
@@ -454,14 +457,6 @@
     async function removeCartItem(user_email, key) {
         await FirebaseModule.patch(`https://storehaccounts-website-default-rtdb.firebaseio.com/bca_cart/${btoa(user_email)}/${key}.json`, 'null');
         decrementCartCount();
-        getID(key).remove();
-        let cart_count = getID('cart-item-container').childNodes.length || 0;
-        if (cart_count == 0)
-            query('h2-title').innerHTML = `Empty Cart - <a class='add-account' href='https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html'>Add Account Now</a>`;
-        else {
-            query('h2-title').textContent = `${cart_count > 1 ? `${cart_count} items`: `${cart_count} item`} in the Cart.`;
-
-        }
     }
 
     function isItemExpired(cart_data) {
