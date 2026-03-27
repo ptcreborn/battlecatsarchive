@@ -27,7 +27,7 @@
 
     let signin_html = `<div class="bca-comment-section">
   <div class="bca-lock-container">
-    <div class="bca-desc-box bca-is-locked">
+    <div class="bca-is-locked">
       
       <div class="bca-lock-content">
         <div class="bca-lock-icon">🔒</div>
