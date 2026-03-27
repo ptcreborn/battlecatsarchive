@@ -163,7 +163,7 @@
             formData.append('image', file);
 
             const loadingId = "img-" + new Date().getTime();
-            insertHTMLAtCursor(`<img loading='lazy' alt='upload-img-${loadingId}' id="${loadingId}" src="https://i.imgur.com/vGKqN5O.gif" style="display: block;">`);
+            insertHTMLAtCursor(`<img loading='lazy' alt='upload-img-${loadingId}' id="${loadingId}" src="https://i.imgur.com/vGKqN5O.gif" style="display: block; width: 90%;">`);
 
             try {
                 const response = await fetch('https://api.imgur.com/3/image', {
