@@ -99,13 +99,13 @@
             let user_data = user_cart_data[key];
 
             // Checking for expired item in the CART
-            if(user_data.exp <= new Date().getTime()) {
+            if (user_data.exp <= new Date().getTime()) {
                 // Expired Cart
                 await removeCartItem(user_email, key);
-                continue; 
+                continue;
             }
 
-            if(user_data.get_exp <= new Date().getTime()) {          
+            if (user_data.get_exp <= new Date().getTime()) {
                 // Expired Bypass Session      
                 // Reset the account to available in the bucket.
                 await restoreHeapCode(user_data);
@@ -113,7 +113,7 @@
                 continue;
             }
 
-            new Promise(async(resolve, reject) => {
+            new Promise(async (resolve, reject) => {
                 const template = query('cart-item-template');
                 const clone = template.cloneNode(true).content.children[0];
                 const stock = await checkCurrentStock(user_data.ver, user_data.name);
@@ -128,7 +128,7 @@
                     minute: 'numeric',
                     hour12: true
                 });
-                
+
                 getID('cart-item-container').appendChild(clone);
 
                 clone.id = key;
@@ -152,7 +152,7 @@
                     });
 
                     // Means the account is to be resumed.
-                    if(user_data.status == "processing") {
+                    if (user_data.status == "processing") {
                         queryP(clone, 'btn-get-acc').classList.remove('disabled');
                         queryP(clone, 'btn-get-acc').classList.add('available');
                         queryP(clone, 'btn-get-acc').textContent = `Resume`;
@@ -166,11 +166,10 @@
                         queryP(clone, 'exact-time').classList.remove('warning');
                         queryP(clone, 'exact-time').classList.add('available');
                         queryP(clone, 'cart-item-status').innerHTML = `You can now get your account enclosed with the time specified below.`;
-                        
+
                         queryP(clone, 'cart-added-expiry').textContent = `Expiring in ${moment(user_data.get_exp).fromNow()}`;
                         queryP(clone, 'cart-added-expiry').classList.add('warning', 'bold');
-                    }
-                    else {            
+                    } else {
                         // Means new to bypasss.                    
                         queryP(clone, 'btn-get-acc').classList.remove('disabled');
                         queryP(clone, 'btn-get-acc').classList.add('available');
@@ -228,19 +227,18 @@
         let code = '';
 
         // check if the trigger is to resume the bypass..
-        if(cart_data.status == "processing")
+        if (cart_data.status == "processing")
             code = cart_data.heap_code;
-        else {        
+        else {
             // find account from firebase and check its status        
             code = keys.find(item => accounts[item].status == "x");
 
             // store the code to bca_cart
             await FirebaseModule.patch(
-                `https://storehaccounts-website-default-rtdb.firebaseio.com/bca_cart/${btoa(user_email)}/${cart_fbdb_id}.json`, 
+                `https://storehaccounts-website-default-rtdb.firebaseio.com/bca_cart/${btoa(user_email)}/${cart_fbdb_id}.json`,
                 JSON.stringify({
                     heap_code: code
-                }
-            ));
+                }));
 
             await FirebaseModule.patch(`${db}/${account_name}/${code}.json`, JSON.stringify({
                 modified: new Date().getTime(),
@@ -305,12 +303,11 @@
 
         let cart_data = await FirebaseModule.fetchJSON(`https://storehaccounts-website-default-rtdb.firebaseio.com/bca_cart/${btoa(user_email)}/${key}.json`);
 
-        if(cart_data.status == "processing") {
+        if (cart_data.status == "processing") {
             // check fro the heap code
             await restoreHeapCode(cart_data);
             await removeCartItem(user_email, key);
-        }
-        else await removeCartItem(user_email, key);
+        } else await removeCartItem(user_email, key);
 
         // remove the element.
         getID(key).remove();
@@ -333,18 +330,18 @@
 
         let acc_data = await FirebaseModule.fetchJSON(`${db}/${btoa(user_email)}/${key}.json`);
 
-        if(!acc_data) {
+        if (!acc_data) {
             window.alert(`This item has already been received or finished bypassing.`);
             window.location.reload();
             return;
         }
 
         // check first if expired
-        if(isItemExpired(acc_data)) {
+        if (isItemExpired(acc_data)) {
             window.alert(`This item has already expired!`);
-            window.location.reload();  
-            return;          
-        }            
+            window.location.reload();
+            return;
+        }
 
         await FirebaseModule.patch(`${db}/${btoa(user_email)}/${key}.json`, JSON.stringify({
             status: 'processing'
@@ -356,7 +353,7 @@
         btn.textContent = `Processing`;
         btn.classList.add('disabled');
 
-        acc_ver = acc_data.ver;        
+        acc_ver = acc_data.ver;
 
         // adding new expiry for accounts that started bypassing
         // to lessen account bypass spam.
@@ -364,7 +361,7 @@
         // once user starts bypassing, 30 minutes grace period is offered to get their account.
         date_now.setMinutes(new Date().getMinutes() + 30);
 
-        if(!acc_data.status)
+        if (!acc_data.status)
             await FirebaseModule.patch(
                 `${db}/${btoa(user_email)}/${key}.json`,
                 JSON.stringify({
@@ -391,7 +388,7 @@
                 real_sched_time = hour;
                 break;
             }
-        }        
+        }
 
         return isScheduled;
     }
@@ -458,6 +455,13 @@
         await FirebaseModule.patch(`https://storehaccounts-website-default-rtdb.firebaseio.com/bca_cart/${btoa(user_email)}/${key}.json`, 'null');
         decrementCartCount();
         getID(key).remove();
+        let cart_count = getID('cart-item-container').childNodes.length || 0;
+        if (cart_count == 0)
+            query('h2-title').innerHTML = `Empty Cart - <a class='add-account' href='https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html'>Add Account Now</a>`;
+        else {
+            query('h2-title').textContent = `${cart_count > 1 ? `${cart_count} items`: `${cart_count} item`} in the Cart.`;
+
+        }
     }
 
     function isItemExpired(cart_data) {
@@ -469,7 +473,7 @@
         let total_count = parseInt(count_elem.innerText);
         total_count -= 1;
 
-        if(total_count == 0) 
+        if (total_count == 0)
             count_elem.remove();
 
         count_elem.textContent = total_count;
