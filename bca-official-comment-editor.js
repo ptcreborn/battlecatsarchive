@@ -267,6 +267,16 @@
             disable(submitBtn, 'Posting...');
             disable(editor, null);
 
+            // Get the content of the comments
+            let content = gatherCommentInfo();
+
+            if (!content) {
+                window.alert(`Please type anything before submitting a comment. Thank you!`);
+                enable(submitBtn, 'Post Comment');
+                enable(editor, null);
+                return;
+            }
+
             await initFunctions(['supabase', 'FirebaseModule']);
 
             // First check if the url existing in the "bca-website-posts"
@@ -281,16 +291,6 @@
             // Second create the comment, first gather all specific elements from the comment such as useremail or userid.
             let user_id = await gatherUserInfo();
             if (!user_id) {
-                enable(submitBtn, 'Post Comment');
-                enable(editor, null);
-                return;
-            }
-
-            // Get the content of the comments
-            let content = gatherCommentInfo();
-
-            if (!content) {
-                window.alert(`Please type anything before submitting a comment. Thank you!`);
                 enable(submitBtn, 'Post Comment');
                 enable(editor, null);
                 return;
