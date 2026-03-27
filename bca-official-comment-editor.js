@@ -534,8 +534,8 @@
             const editor = document.getElementById('bca_comment_editor');
             let previousElem = editor.previousElementSibling;
 
-            let root_id = previousElem.root_id || previousElem.id;
-            let parent_id = previousElem.id;
+            let root_id = previousElem.dataset.rootid || (previousElem.id.includes('bca-comment-') ? previousElem.id : null);
+            let parent_id = previousElem.id.includes('bca-comment-') ? previousElem.id : null;            
 
             return {
                 root: root_id,
