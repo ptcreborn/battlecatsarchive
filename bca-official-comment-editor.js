@@ -54,6 +54,7 @@
 
       async function initializeComment() {
           appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
+          appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/b382b6842ffbc853111f02cc3f94617f862ed15a/bca-comment-editor.css');
 
           // Check session first
           user_email = await checkSession();
