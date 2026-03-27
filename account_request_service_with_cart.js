@@ -4,6 +4,10 @@
     // This script runs the accounts service such as requesting, displaying and managing accounts to the users.
     // Modified March 23, 2026.
 
+    // move the database to storehaccounts-talk
+    // this will reduce the load in the storehaccounts-website firebase
+    // https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart
+
     const cards_parent = document.getElementById('account_selections_container');
     const disable = 'opacity: 7; pointer-events: none';
     const enable = 'opacity: 1; pointer-events: auto';
