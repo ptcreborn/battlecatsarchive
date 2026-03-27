@@ -302,6 +302,9 @@
             // Create a record to Supabase
             await postCommentToSupabase(fbid, website_post_id, user_id);
 
+            // Add user XP
+            await addUserXP(2);
+
             window.location.reload();
         }
 
@@ -480,6 +483,30 @@
                 return;
 
             return data.session.user.email;
+        }
+
+        async function addUserXP(xp) {
+            // must be online
+            // must complete the following task
+            // must finish the assignment
+
+            let {
+                data,
+                error
+            } = await supabase.auth.getSession();
+
+            if (error)
+                return;
+
+            if (!data.session)
+                return;
+
+            let email = data.session.user.email;
+
+            await supabase.rpc('add_xp_to_user', {
+                user_email: email,
+                xp_to_add: xp
+            });
         }
 
         function disable(elem, str) {
