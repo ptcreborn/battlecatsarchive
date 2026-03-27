@@ -37,6 +37,9 @@
             container.appendChild(clone);
         });
 
+        // APPEND THE CSS FILE TO DESIGN THE COMMENT EDITOR
+        appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/b382b6842ffbc853111f02cc3f94617f862ed15a/bca-comment-editor.css');
+
         container.appendChild(fragment);
     }
 
