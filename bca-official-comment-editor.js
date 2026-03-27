@@ -502,9 +502,6 @@
                     window.alert(`Update error: ${update_data.error.message}`);
                     return;
                 }
-            } else {
-                window.alert(`Error in inserting record in comments table`)
-                return;
             }
         }
 
