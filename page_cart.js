@@ -196,7 +196,7 @@
             });
         }
         getID('cart-item-container').style.display = 'block';
-        let cart_count = getID('cart-item-container').childNodes.length || 0;
+        let cart_count = document.querySelector('#bca_cart span').textContent || 0;
         query('h2-title').textContent = `${cart_count > 1 ? `${cart_count} items`: `${cart_count} item`} in the Cart.`;
         if(cart_count == 0)
             query('h2-title').innerHTML = `Empty Cart - <a class='add-account' href='https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html'>Add Account Now</a>`;
