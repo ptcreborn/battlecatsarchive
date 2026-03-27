@@ -20,7 +20,7 @@
     await selectAccountVersion();
 
     async function addToCart(account_name, ads, id) {
-        const db = `https://storehaccounts-website-default-rtdb.firebaseio.com/bca_cart/${btoa(userEmail)}.json`;
+        const db = `https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart/${btoa(userEmail)}.json`;
 
         await FirebaseModule.patch(db, JSON.stringify({
             [new Date().getTime()]: {
