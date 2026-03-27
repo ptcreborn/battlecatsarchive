@@ -267,8 +267,6 @@
             disable(submitBtn, 'Posting...');
             disable(editor, null);
 
-            console.log(getTargetCommentIDS());
-
             // Get the content of the comments
             let content = gatherCommentInfo();
 
