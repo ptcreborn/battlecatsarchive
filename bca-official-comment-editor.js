@@ -303,7 +303,7 @@
             await postCommentToSupabase(fbid, website_post_id, user_id);
 
             // Add user XP
-            await addUserXP(2);
+            await addUserXP(1);
 
             window.location.reload();
         }
