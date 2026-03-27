@@ -466,8 +466,7 @@
                 fb_id: fbid,
                 bca_posts: website_post_id,
                 user_id: user_id,
-                parent_id: target_ids.parent_id,
-                root_id: target_ids.root_id
+                parent_id: target_ids.parent_id
             }).select().single();
 
             if(data) {
