@@ -267,6 +267,8 @@
             disable(submitBtn, 'Posting...');
             disable(editor, null);
 
+            console.log(getTargetCommentIDS());
+
             // Get the content of the comments
             let content = gatherCommentInfo();
 
@@ -526,12 +528,19 @@
         }
 
 
-        function getParentID() {
+        function getTargetCommentIDS() {
+            // IF THE NEXT ELEMENT has root id
+            // COPY the root it and add it to the new reply to be comment
+            const editor = document.getElementById('bca_comment_editor');
+            let previousElem = editor.previousElementSibling;
 
-        }
+            let root_id = previousElem.root_id || previousElem.id;
+            let parent_id = previousElem.id;
 
-        function getRootID() {
-
+            return {
+                root: root_id,
+                parent: parent_id
+            }
         }
     }
 
