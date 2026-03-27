@@ -1,5 +1,9 @@
 (async () => {
 
+    // move the database to storehaccounts-talk
+    // this will reduce the load in the storehaccounts-website firebase
+    // https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart
+
     const scheduled_times = [
         new Date().setHours(0, 0, 0, 0),
         new Date().setHours(6, 0, 0, 0),
