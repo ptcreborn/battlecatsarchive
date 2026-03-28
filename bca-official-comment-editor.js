@@ -364,7 +364,7 @@
             if (!htmlInput) return "";
 
             const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = htmlInput;
+            tempDiv.innerHTML = htmlInput.trim();
 
             // 1. The "Keepers" (White-list)
             // Added 'br' so your line breaks don't vanish!
@@ -418,6 +418,7 @@
 
             // Run the recursion
             cleanNode(tempDiv);
+            trimContentEditable(tempDiv);
 
             // 3. Get innerHTML and perform Final Polish
             let result = tempDiv.innerHTML;
@@ -431,7 +432,30 @@
                 result = result.replace(/(<br\s*\/?>\s*){2,}/gi, '<br>'); // Collapse Enters
             }
 
-            return result.trim();
+            return result;
+        }
+
+        function trimContentEditable(el) {
+            while (el.lastChild) {
+                const last = el.lastChild;
+
+                // If it's a <br>, remove it
+                if (last.nodeName === 'BR') {
+                    el.removeChild(last);
+                    continue;
+                }
+
+                // If it's an empty div like <div><br></div> or just empty
+                if (
+                    last.nodeName === 'DIV' &&
+                    (last.innerHTML.trim() === '' || last.innerHTML.trim() === '<br>')
+                ) {
+                    el.removeChild(last);
+                    continue;
+                }
+
+                break; // stop when last node has real content
+            }
         }
 
         async function postCommentToFirebase(user_id, content) {
