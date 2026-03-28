@@ -309,6 +309,10 @@
         elem.classList.add('disabled');
         elem.textContent = `Removing...`;
 
+        const item_elem = getID(key);
+
+        item_elem.classList.add('disabled');    
+
         let cart_data = await FirebaseModule.fetchJSON(`${db}/${btoa(user_email)}/${key}.json`);
 
         if (cart_data.status == "processing") {
@@ -323,9 +327,7 @@
         let items = document.querySelectorAll('#cart-item-container > div').length;
 
         if (items == 0) query('h2-title').innerHTML = `Empty Cart - <a class='add-account' href='https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html'>Add Account Now</a>`;
-        else query('h2-title').textContent = `${items < 2 ? `${items} item in the Cart`: `${items} items in the Cart`}.`;
-
-        decrementCartCount();
+        else query('h2-title').textContent = `${items < 2 ? `${items} item in the Cart`: `${items} items in the Cart`}.`;        
     }
 
     async function getAccount(key, btn) {
