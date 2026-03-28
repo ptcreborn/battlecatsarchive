@@ -86,6 +86,7 @@
         }
 
         // 3. Character Counter & Editor Logic
+        const main_editor = document.getElementById('bca_comment_editor');
         const editor = document.querySelector('.bca-editor');
         const submitBtn = document.querySelector('.bca-submit-btn');
 
@@ -262,7 +263,7 @@
 
         async function processComment() {
             disable(submitBtn, 'Posting...');
-            disable(editor, null);
+            disable(main_editor, null);
 
             // Get the content of the comments
             let content = gatherCommentInfo();
@@ -270,7 +271,7 @@
             if (!content) {
                 window.alert(`Please type anything before submitting a comment. Thank you!`);
                 enable(submitBtn, 'Post Comment');
-                enable(editor, null);
+                enable(main_editor, null);
                 return;
             }
 
@@ -281,7 +282,7 @@
             let website_post_id = await upsertUrlSPDB();
             if (!website_post_id) {
                 enable(submitBtn, 'Post Comment');
-                enable(editor, null);
+                enable(main_editor, null);
                 return;
             }
 
@@ -289,7 +290,7 @@
             let user_id = await gatherUserInfo();
             if (!user_id) {
                 enable(submitBtn, 'Post Comment');
-                enable(editor, null);
+                enable(main_editor, null);
                 return;
             }
 
