@@ -1,6 +1,4 @@
 (async () => {
-    new Promise(async (resolve, reject) => {
-
         // move the database to storehaccounts-talk
         // this will reduce the load in the storehaccounts-website firebase
         // https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart
@@ -119,9 +117,11 @@
                     continue;
                 }
 
+                const template = query('cart-item-template');
+                const clone = template.cloneNode(true).content.children[0];
+                getID('cart-item-container').appendChild(clone);
+
                 new Promise(async (resolve, reject) => {
-                    const template = query('cart-item-template');
-                    const clone = template.cloneNode(true).content.children[0];
                     const stock = await checkCurrentStock(user_data.ver, user_data.name);
 
                     let sched_time = `${getNearestHour(
@@ -134,8 +134,6 @@
                         minute: 'numeric',
                         hour12: true
                     });
-
-                    getID('cart-item-container').appendChild(clone);
 
                     clone.id = key;
                     queryP(clone, 'cart-item-name').textContent = `${user_data.name} (v${user_data.ver})`;
@@ -525,5 +523,4 @@
                 xp_to_add: xp
             });
         }
-    });
 })();
