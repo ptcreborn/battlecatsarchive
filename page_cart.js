@@ -93,7 +93,7 @@
         }));
 
         if (!user_cart_data) { // empty cart
-            query('h2-title').innerHTML = `Empty Cart - <a class='add-account' href='https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html'>Add Account Now</a>`;
+            query('h2-title').innerHTML = `Empty Cart`;
             return;
         }
 
@@ -204,7 +204,7 @@
         let cart_count = document.querySelector('#bca_cart span') ? document.querySelector('#bca_cart span').textContent : 0;
         query('h2-title').textContent = `${cart_count > 1 ? `${cart_count} items`: `${cart_count} item`} in the Cart.`;
         if(cart_count == 0)
-            query('h2-title').innerHTML = `Empty Cart - <a class='add-account' href='https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html'>Add Account Now</a>`;
+            query('h2-title').innerHTML = `Empty Cart`;
         sortItems();
     }
 
@@ -326,7 +326,7 @@
 
         let items = document.querySelectorAll('#cart-item-container > div').length;
 
-        if (items == 0) query('h2-title').innerHTML = `Empty Cart - <a class='add-account' href='https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html'>Add Account Now</a>`;
+        if (items == 0) query('h2-title').innerHTML = `Empty Cart`;
         else query('h2-title').textContent = `${items < 2 ? `${items} item in the Cart`: `${items} items in the Cart`}.`;        
     }
 
