@@ -1,4 +1,4 @@
-       /* --- CSS STYLES --- */
+         /* --- CSS STYLES --- */
         /* Container and Layout */
 .bca-archive-comment-container {    
   width: 100%;
@@ -69,6 +69,9 @@
     padding: 12px 20px;
     background: #fdfdfd;
     border-top: 1px solid #eee;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 10px;
 }
 
 .bca-user-info {
@@ -77,6 +80,7 @@
     gap: 10px;
     font-size: 13px;
     color: #666;
+    flex: 1 1 130px;
 }
 
 .bca-user-info img {
@@ -98,6 +102,7 @@
     font-weight: bold;
     cursor: pointer;
     transition: transform 0.1s, background 0.2s;
+    width: 100%;
 }
 
 .bca-submit-btn:hover {
