@@ -1,51 +1,48 @@
 (async() => {
     let comment_html = `
     <div class="bca-comment-editor">
-        <div class="bca-toolbar">
-            <button onclick="execCmd('bold')" title="Bold"><b>B</b></button>
-            <button onclick="execCmd('italic')" title="Italic"><i>I</i></button>
-            <button onclick="execCmd('createLink')" title="Link">🔗</button>            
-            <button onclick="document.querySelector('.bca-file-input').click()">🖼️</button>
-            <input type="file" class="bca-file-input" accept=".jpg, .jpeg, .png, .gif, .bmp, image/jpeg, image/png, image/gif, image/bmp" style="display:none" onchange="handleFileUpload(this.files)">            
-            <button onclick="addYoutubeVideo()">🎥 </button>            
-            <h4 id='bca_action_status' style="margin-left: auto; text-align: right;">Add a comment</h4>
-        </div>
+    <div class="bca-toolbar">
+        <div style="
+    flex: 1 1 200px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+"><button onclick="execCmd('bold')" title="Bold"><b>B</b></button><button
+                onclick="execCmd('italic')"
+                title="Italic"><i>I</i></button><button
+                onclick="execCmd('createLink')" title="Link">🔗</button><button
+                onclick="document.querySelector('.bca-file-input').click()">🖼️</button><button
+                onclick="addYoutubeVideo()">🎥 </button></div><h4
+            id="bca_action_status"
+            style="text-align: right;flex: 1 0 100px;margin: 0;min-width: 100px;">Add
+            a comment</h4>
 
-        <div class="bca-editor" contenteditable="true" placeholder="Discuss something with this topic..."></div>
-
-        <div class="bca-footer">
-            <div class="bca-user-info">
-                <span id="location-text">Detecting location...</span>
-                <img id="user-flag" src="" width="25" style="display:none;" alt="Flag">
-            </div>
-            
-            <div class="bca-actions">
-                <button class="bca-submit-btn" onclick="submitComment()">Post Comment</button>
-            </div>
-        </div>
-    </div>`;
-
-    let signin_html = `<div class="bca-comment-section">
-  <div class="bca-lock-container">
-    <div class="bca-is-locked">
-      
-      <div class="bca-lock-content">
-        <div class="bca-lock-icon">🔒</div>
-        
-        <h2 class="bca-lock-title">COMMUNICATION BLOCKED</h2>
-        <p class="bca-lock-text">
-          "The Cat God requires identification before you can transmit data to the archive."
-        </p>
-        
-        <div class="bca-lock-actions">
-          <a href='https://battlecatsarchive.blogspot.com/p/signin-to-bca.html' class="bca-btn-game bca-btn-confirm" id="bca-login-trigger">
-            LOGIN / SIGN UP
-          </a>
-        </div>
-      </div>
+        <input type="file" class="bca-file-input"
+            accept=".jpg, .jpeg, .png, .gif, .bmp, image/jpeg, image/png, image/gif, image/bmp"
+            style="display:none" onchange="handleFileUpload(this.files)">
 
     </div>
-  </div>
+
+    <div class="bca-editor" contenteditable="true"
+        placeholder="Discuss something with this topic..."></div>
+
+    <div class="bca-footer">
+        <div class="bca-user-info">
+            <span id="location-text">Posting from: </span>
+            <img id="user-flag" src="https://flagcdn.com/w40/ph.png" width="25"
+                style="display: inline-block;" alt="Flag">
+        </div>
+
+        <div class="bca-actions" style="
+    flex: 1 0 150px;
+    width: 100%;
+">
+            <button class="bca-submit-btn" onclick="submitComment()">Post
+                Comment</button>
+        </div>
+    </div>
 </div>`;
 
     window.requestIdleCallback(initializeComment);
