@@ -565,7 +565,7 @@
             let previousElem = editor.previousElementSibling;
 
             let root_id = previousElem.dataset.rootid || (previousElem.id.includes('bca-comment-') ? previousElem.id : null);
-            let parent_id = previousElem.id.includes('bca-comment-') ? previousElem.id : null;
+            let parent_id = previousElem.dataset.parentid || (previousElem.id.includes('bca-comment-') ? previousElem.id : null);
 
             return {
                 root: root_id,
