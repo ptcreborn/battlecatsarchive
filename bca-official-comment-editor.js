@@ -76,17 +76,54 @@
 
             document.execCommand('defaultParagraphSeparator', false, 'code');
 
-
-            if (command === 'createLink') {
-                let url = prompt("Enter the URL:", "https://");
-                if (url) document.execCommand(command, false, url);
-            } else if(command === 'code') 
-                document.execCommand('formatBlock', false, 'pre');
-             else {
-                document.execCommand(command, false, null);
+            switch (command) {
+                case 'createLink':
+                    {
+                        let url = prompt("Enter the URL:", "https://");
+                        if (url) document.execCommand(command, false, url);
+                    }
+                case 'code':
+                    {
+                        applyCustomCodeBlock('code', 'code-box');
+                    }
+                case 'warning':
+                    {
+                        applyCustomCodeBlock('div', 'alert-message warning');
+                    }
+                case 'info':
+                    {
+                        applyCustomCodeBlock('div', 'alert-message passed');
+                    }
+                case 'error':
+                    {
+                        applyCustomCodeBlock('div', 'alert-message error');
+                    }
+                case 'success':
+                    {
+                        applyCustomCodeBlock('div', 'alert-message success');
+                    }
             }
             editor.focus();
         }
+
+        function applyCustomCodeBlock(tag, className) {
+            const selection = window.getSelection();
+
+            if (!selection.rangeCount) return;
+
+            const range = selection.getRangeAt(0);
+            const selectedContent = range.toString();
+
+            // Create your custom HTML structure
+            // You can add your 'Menu Cream' background or specific font here
+            const customHtml = `<${tag} class="${className}" >${selectedContent || ' '}</${tag}>`;
+
+            // Use insertHTML to inject the custom div
+            document.execCommand('insertHTML', false, customHtml);
+        }
+
+        // Example Usage:
+        // applyCustomCodeBlock('comment-code-block');
 
         // 3. Character Counter & Editor Logic
         const main_editor = document.getElementById('bca_comment_editor');
