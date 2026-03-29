@@ -591,9 +591,13 @@
             return fbid;
         }
 
-        async function postCommentToSupabase(fbid, website_post_id, user_id) {
+        async function postCommentToSupabase(fbid, website_post_id, user_id) {            
             // Post to supabase
-            let target_ids = getTargetCommentIDS();
+            let target_ids = {
+                parent: main_editor.dataset.parentid,
+                root: main_editor.dataset.rootid
+            }
+            
             let payload = {};
 
             // check if the comment is reply state.
@@ -700,21 +704,6 @@
                 editor.querySelector('.bca-submit-btn').textContent = `Cooldown in ${max_count}...`;
                 max_count--;
                 await sleep(1000);
-            }
-        }
-
-        function getTargetCommentIDS() {
-            // IF THE NEXT ELEMENT has root id
-            // COPY the root it and add it to the new reply to be comment
-            const editor = document.getElementById('bca_comment_editor');
-            let previousElem = editor.previousElementSibling;
-
-            let root_id = previousElem.dataset.rootid || (previousElem.id.includes('bca-comment-') ? previousElem.id : null);
-            let parent_id = (previousElem.id.includes('bca-comment-') ? previousElem.id : null);
-
-            return {
-                root: root_id,
-                parent: parent_id
             }
         }
 
