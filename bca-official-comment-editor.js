@@ -414,7 +414,7 @@
             // Add user XP
             await addUserXP(1);
 
-            window.location.reload();
+            appendComment();
         }
 
         async function upsertUrlSPDB() {
@@ -706,6 +706,30 @@
                 root: root_id,
                 parent: parent_id
             }
+        }
+
+        function appendComment() {
+            let clone = document.querySelector('[comment-wrapper-template]').content.cloneNode(true).children[0];
+
+            // get user info from localstorage
+            let user_data = localStorage.getItem('user');
+
+            if(!user_data)
+                window.location.reload();
+
+            let user_email = atob(user_data).email;
+            let user_prof = atob(user_data).profile;
+
+            clone.querySelector('.bca-desc-avatar').src = user_prof;
+            clone.querySelector('.bca-desc-name').textContent = user_email;
+            clone.querySelector('.bca-desc-rarity').textContent = `You've earned 1 XP.`;
+            clone.querySelector('.bca-desc-rank').textContent = `Your comment has been added.`;
+            clone.querySelector('.bca-desc-stats').remove();
+            clone.querySelector('.bca-btn-reply').remove();
+            clone.querySelector('.bca-btn-reply').remove();
+            clone.querySelector('.bca-desc-header').style.background = `#2c2c2c`;
+
+            editor.before(clone);
         }
     }
 
