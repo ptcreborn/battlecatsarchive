@@ -370,8 +370,6 @@
                 root: main_editor.dataset.rootid
             }
 
-            console.log('my ids: ', target_ids);
-
             disable(submitBtn, 'Posting...');
             disable(main_editor, null);
 
@@ -726,8 +724,6 @@
                 parent_editor = document.getElementById(target_ids.parent);
             else 
                 parent_editor = document.getElementById('trigger_comment_editor');
-
-            console.log(parent_editor);
 
             // get user info from localstorage
             let user_data = localStorage.getItem('user');
