@@ -597,7 +597,7 @@
                 parent: main_editor.dataset.parentid,
                 root: main_editor.dataset.rootid
             }
-            
+
             let payload = {};
 
             // check if the comment is reply state.
@@ -623,7 +623,7 @@
             let { data, error } = await supabase.from('bca-comments').insert(payload).select().single();
 
             if (error) {
-                window.alert(`Error message: ${error.message}`);
+                window.alert(`Error postCommentToSupabase: ${error.message}`);
                 return;
             }
 
