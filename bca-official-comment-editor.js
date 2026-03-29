@@ -416,7 +416,7 @@
             await addUserXP(1);
 
             // Add newly added comment to the thread
-            appendComment();
+            appendComment(target_ids);
             editor.innerHTML = ``;
             enable(main_editor, null);
 
@@ -714,16 +714,16 @@
             }
         }
 
-        function appendComment() {
+        function appendComment(target_ids) {
             let clone = document.querySelector('[comment-wrapper-template]').content.cloneNode(true).children[0];
-            let parent_editor = document.getElementById('bca_comment_editor');
+            let parent_editor;
 
             // select the parent container to be appended to.
             // if it has parent_id, then append next to the parent_id
             // if it has no parent_id then append next to comment button
 
-            if(parent_editor?.dataset?.parentid)
-                parent_editor = document.getElementById(parent_editor.dataset.parentid);
+            if(target_ids.parent)
+                parent_editor = document.getElementById(target_ids.parent);
             else 
                 parent_editor = document.getElementById('trigger_comment_editor');
 
