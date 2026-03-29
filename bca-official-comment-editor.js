@@ -706,7 +706,7 @@
             let max_count = 5;
 
             while(max_count > -1) {
-                editor.querySelector('.bca-submit-btn').textContent = `Cooldown.. ${max_count}.`;
+                editor.querySelector('.bca-submit-btn').textContent = `Cooldown in ${max_count}...`;
                 max_count--;
                 await sleep(1000);
             }
