@@ -103,7 +103,7 @@
     </div>
 </div>`;
 
-    window.requestIdleCallback(initializeComment);
+    window.requestIdleCallback(initializeComment, {timeout: 2000});
 
     let user_email = '';
 
