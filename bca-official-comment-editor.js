@@ -103,9 +103,9 @@
     </div>
 </div>`;
 
+    window.requestIdleCallback(initializeComment);
+
     let user_email = '';
-    
-    initializeComment();
 
     async function initializeComment() {
         appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
@@ -417,13 +417,13 @@
             // Add newly added comment to the thread
             appendComment();
             editor.innerHTML = ``;
+            enable(main_editor, null);
 
             // Cooldown the comment editor for 5 seconds
             await cooldown();
             
             // Enable the editor again.
             enable(submitBtn, 'Post Comment');
-            enable(main_editor, null);
         }
 
         async function upsertUrlSPDB() {
@@ -703,7 +703,7 @@
 
         async function cooldown() {
             const editor = document.getElementById('bca_comment_editor');
-            let max_count = 5;
+            let max_count = 10;
 
             while(max_count > -1) {
                 editor.querySelector('.bca-submit-btn').textContent = `Cooldown in ${max_count}...`;
