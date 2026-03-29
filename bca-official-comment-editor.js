@@ -15,7 +15,7 @@
 <button onclick="execCmd('warning')" title="Warning"><b>⚠️Warning</b></button>
 <button onclick="execCmd('error')" title="Error"><b>❌Error</b></button>
 <button onclick="execCmd('code')" title="Code"><b>💻Code</b></button>
-<button onclick="execCmd('reset')" title="Code"><b>Reset</b></button>
+<button onclick="execCmd('reset')" title="Code"><b>🚫Reset</b></button>
 <button onclick="execCmd('italic')" title="Italic"><i>I</i></button>
 <button onclick="execCmd('createLink')" title="Link">🔗</button><button
                 onclick="document.querySelector('.bca-file-input').click()">🖼️</button><button
@@ -87,31 +87,38 @@
                         let url = prompt("Enter the URL:", "https://");
                         if (url) document.execCommand(command, false, url);
                     }
+                    break;
                 case 'code':
                     {
                         applyCustomCodeBlock('code', 'code-box');
                     }
+                    break;
                 case 'warning':
                     {
                         applyCustomCodeBlock('div', 'alert-message warning');
                     }
+                    break;
                 case 'info':
                     {
                         applyCustomCodeBlock('div', 'alert-message passed');
                     }
+                    break;
                 case 'error':
                     {
                         applyCustomCodeBlock('div', 'alert-message error');
                     }
+                    break;
                 case 'success':
                     {
                         applyCustomCodeBlock('div', 'alert-message success');
                     }
+                    break;
                 case 'reset':
                     {
                         let clear = window.confirm('Do you want to clear the editor?');
                         if(clear) editor.innerHTML = '';
                     }
+                    break;
             }
             editor.focus();
         }
