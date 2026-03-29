@@ -716,6 +716,15 @@
             let clone = document.querySelector('[comment-wrapper-template]').content.cloneNode(true).children[0];
             const parent_editor = document.getElementById('bca_comment_editor');
 
+            // select the parent container to be appended to.
+            // if it has parent_id, then append next to the parent_id
+            // if it has no parent_id then append next to comment button
+
+            if(parent_editor?.dataset?.rootid)
+                parent_editor = document.getElementById(parent_editor.dataset.rootid);
+            else 
+                parent_editor = document.getElementById('trigger_comment_editor');
+
             // get user info from localstorage
             let user_data = localStorage.getItem('user');
             user_data = JSON.parse(atob(user_data));
@@ -733,10 +742,12 @@
             clone.querySelector('.bca-btn-reply').remove();
             clone.querySelector('.bca-btn-replies').remove();
             clone.querySelector('.bca-btn-timeago').textContent = `${new Date()}`;
-            clone.querySelector('.bca-desc-header').style.background = `#252525`;
+            clone.querySelector('.bca-desc-header').style.background = `beige`;
+            clone.querySelector('.bca-desc-name').style.color = `#252525`;
+            clone.querySelector('.bca-desc-rarity').style.color = `#252525`;
             clone.querySelector('.bca-desc-text').innerHTML = editor.innerHTML;
 
-            parent_editor.before(clone);
+            parent_editor.after(clone);
         }
     }
 
