@@ -10,11 +10,12 @@
     justify-content: flex-start;
     flex-wrap: wrap;
 ">
-<button onclick="execCmd('info')" title="Info"><b>Info</b></button>
-<button onclick="execCmd('success')" title="Success"><b>Success</b></button>
-<button onclick="execCmd('warning')" title="Warning"><b>Warning</b></button>
-<button onclick="execCmd('error')" title="Error"><b>Error</b></button>
-<button onclick="execCmd('code')" title="Code"><b>Code</b></button>
+<button onclick="execCmd('info')" title="Info"><b>ℹ️Info</b></button>
+<button onclick="execCmd('success')" title="Success"><b>✅Success</b></button>
+<button onclick="execCmd('warning')" title="Warning"><b>⚠️Warning</b></button>
+<button onclick="execCmd('error')" title="Error"><b>❌Error</b></button>
+<button onclick="execCmd('code')" title="Code"><b>💻Code</b></button>
+<button onclick="execCmd('reset')" title="Code"><b>Reset</b></button>
 <button onclick="execCmd('italic')" title="Italic"><i>I</i></button>
 <button onclick="execCmd('createLink')" title="Link">🔗</button><button
                 onclick="document.querySelector('.bca-file-input').click()">🖼️</button><button
@@ -105,6 +106,11 @@
                 case 'success':
                     {
                         applyCustomCodeBlock('div', 'alert-message success');
+                    }
+                case 'reset':
+                    {
+                        let clear = window.confirm('Do you want to clear the editor?');
+                        if(clear) editor.innerHTML = '';
                     }
             }
             editor.focus();
