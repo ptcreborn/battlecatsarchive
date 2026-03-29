@@ -160,7 +160,7 @@
                 case 'reset':
                     {
                         let clear = window.confirm('Do you want to clear the editor?');
-                        if(clear) editor.innerHTML = '';
+                        if (clear) editor.innerHTML = '';
                     }
                     break;
             }
@@ -407,7 +407,7 @@
 
             // Create a record to Supabase
             let res = await postCommentToSupabase(fbid, website_post_id, user_id, target_ids);
-            if(!res)
+            if (!res)
                 return;
 
             // Add user XP
@@ -420,7 +420,7 @@
 
             // Cooldown the comment editor for 5 seconds
             await cooldown();
-            
+
             // Enable the editor again.
             enable(submitBtn, 'Post Comment');
         }
@@ -599,7 +599,7 @@
             return fbid;
         }
 
-        async function postCommentToSupabase(fbid, website_post_id, user_id, target_ids) {            
+        async function postCommentToSupabase(fbid, website_post_id, user_id, target_ids) {
             // Post to supabase
             let payload = {};
 
@@ -641,10 +641,10 @@
                 if (update_data.error) {
                     window.alert(`Update error: ${update_data.error.message}`);
                     return;
-                }
-                else 
+                } else
                     return true;
-            }
+            } else
+                return true;
         }
 
         async function checkSession() {
@@ -705,7 +705,7 @@
             const editor = document.getElementById('bca_comment_editor');
             let max_count = 10;
 
-            while(max_count > -1) {
+            while (max_count > -1) {
                 editor.querySelector('.bca-submit-btn').textContent = `Cooldown in ${max_count}...`;
                 max_count--;
                 await sleep(1000);
@@ -720,7 +720,7 @@
             let user_data = localStorage.getItem('user');
             user_data = JSON.parse(atob(user_data));
 
-            if(!user_data)
+            if (!user_data)
                 window.location.reload();
 
             let user_email = user_data.email;
