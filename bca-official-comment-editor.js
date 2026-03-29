@@ -720,8 +720,8 @@
             // if it has parent_id, then append next to the parent_id
             // if it has no parent_id then append next to comment button
 
-            if(parent_editor?.dataset?.rootid)
-                parent_editor = document.getElementById(parent_editor.dataset.rootid);
+            if(parent_editor?.dataset?.parentid)
+                parent_editor = document.getElementById(parent_editor.dataset.parentid);
             else 
                 parent_editor = document.getElementById('trigger_comment_editor');
 
@@ -745,6 +745,7 @@
             clone.querySelector('.bca-desc-header').style.background = `beige`;
             clone.querySelector('.bca-desc-name').style.color = `#252525`;
             clone.querySelector('.bca-desc-rarity').style.color = `#252525`;
+            clone.querySelector('.bca-desc-rank').style.color = `#252525`;
             clone.querySelector('.bca-desc-text').innerHTML = editor.innerHTML;
 
             parent_editor.after(clone);
