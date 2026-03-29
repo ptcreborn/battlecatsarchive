@@ -710,6 +710,7 @@
 
         function appendComment() {
             let clone = document.querySelector('[comment-wrapper-template]').content.cloneNode(true).children[0];
+            const parent_editor = document.getElementById('bca_comment_editor');
 
             // get user info from localstorage
             let user_data = localStorage.getItem('user');
@@ -729,7 +730,7 @@
             clone.querySelector('.bca-btn-reply').remove();
             clone.querySelector('.bca-desc-header').style.background = `#2c2c2c`;
 
-            editor.before(clone);
+            parent_editor.before(clone);
         }
     }
 
