@@ -2,26 +2,9 @@
     let comment_html = `
     <div class="bca-comment-editor">
     <div class="bca-toolbar">
-        <div style="
-    flex: 1 1 200px;
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-">
-<button onclick="execCmd('info')" title="Info"><b>ℹ️Info</b></button>
-<button onclick="execCmd('success')" title="Success"><b>✅Success</b></button>
-<button onclick="execCmd('warning')" title="Warning"><b>⚠️Warning</b></button>
-<button onclick="execCmd('error')" title="Error"><b>❌Error</b></button>
-<button onclick="execCmd('code')" title="Code"><b>💻Code</b></button>
-<button onclick="execCmd('reset')" title="Code"><b>🚫Reset</b></button>
-<button onclick="execCmd('italic')" title="Italic"><i>I</i></button>
-<button onclick="execCmd('createLink')" title="Link">🔗</button><button
-                onclick="document.querySelector('.bca-file-input').click()">🖼️</button><button
-                onclick="addYoutubeVideo()">🎥 </button></div><h4
+        <h4
             id="bca_action_status"
-            style="text-align: right;flex: 1 0 100px;margin: 0;min-width: 100px;">Add
+            style="text-align: left;flex: 1 0 100px;margin: 0;min-width: 100px;">Add
             a comment</h4>
 
         <input type="file" class="bca-file-input"
@@ -32,7 +15,24 @@
 
     <div class="bca-editor" contenteditable="true"
         placeholder="Discuss something with this topic..."></div>
-
+<div style="
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    border: 1px solid #9c9c9c;
+    padding: 5px 10px;
+    background: #dcdcdc;
+">
+<button onclick="execCmd('info')" title="Info"><b>ℹ️Info</b></button>
+<button onclick="execCmd('success')" title="Success"><b>✅Success</b></button>
+<button onclick="execCmd('warning')" title="Warning"><b>⚠️Warning</b></button>
+<button onclick="execCmd('error')" title="Error"><b>❌Error</b></button>
+<button onclick="execCmd('code')" title="Code"><b>💻Code</b></button>
+<button onclick="execCmd('reset')" title="Code"><b>🚫Reset</b></button>
+<button onclick="execCmd('italic')" title="Italic"><i>I</i></button>
+<button onclick="execCmd('createLink')" title="Link">🔗</button><button onclick="document.querySelector('.bca-file-input').click()">🖼️</button><button onclick="addYoutubeVideo()">🎥 </button></div>
     <div class="bca-footer">
         <div class="bca-user-info">
             <span id="location-text">Posting from: </span>
@@ -133,7 +133,7 @@
 
             // Create your custom HTML structure
             // You can add your 'Menu Cream' background or specific font here
-            const customHtml = `<${tag} class="${className}" >${selectedContent || ' '}</${tag}><div><br/></div>`;
+            const customHtml = `<${tag} class="${className}" ><p>${selectedContent || ' '}</p></${tag}><div><br/></div>`;
 
             // Use insertHTML to inject the custom div
             document.execCommand('insertHTML', false, customHtml);
