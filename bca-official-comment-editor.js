@@ -749,7 +749,7 @@
             clone.querySelector('.bca-btn-replies').remove();
             clone.querySelector('.bca-btn-timeago').textContent = `${new Date()}`;
             clone.querySelector('.bca-desc-header').style.background = `#252525`;
-            clone.querySelector('.bca-desc-text').textContent = editor.innerHTML;
+            clone.querySelector('.bca-desc-text').innerHTML = editor.innerHTML;
 
             parent_editor.before(clone);
         }
