@@ -70,16 +70,7 @@
 
     <div class="bca-editor" contenteditable="true"
         placeholder="Discuss something with this topic..."></div>
-    <div style="
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    border: 1px solid #b3b3b3;
-    padding: 10px;
-    background: #d7d7d7;
-">
+    <div class="bca-formattings-container">
         <button onclick="execCmd('createLink')"
             title="Link">🔗Link</button><button
             onclick="document.querySelector('.bca-file-input').click()">🖼️Image</button><button
@@ -109,7 +100,7 @@
 
     async function initializeComment() {
         appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
-        appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/9f0b72dbde5318f99756a63355cd9b3d20422d85/bca-comment-editor.css');
+        appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/3b4ec0fd70bcfe7d39b8fc09672e9d0bbd73ed54/bca-comment-editor.css');
 
         // Check session first
         user_email = await checkSession();
