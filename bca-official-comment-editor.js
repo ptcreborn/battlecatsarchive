@@ -285,6 +285,7 @@
                     const imgElement = document.getElementById(loadingId);
                     imgElement.src = result.data.link;
                     imgElement.style.width = "auto";
+                    imgElement.addEventListener('click', () => window.location.href = `https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(result.data.link)}`);
                 }
             } catch (err) {
                 console.error("Upload error:", err);
