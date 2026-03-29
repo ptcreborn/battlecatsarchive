@@ -370,6 +370,8 @@
                 root: main_editor.dataset.rootid
             }
 
+            console.log('my ids: ', target_ids);
+
             disable(submitBtn, 'Posting...');
             disable(main_editor, null);
 
