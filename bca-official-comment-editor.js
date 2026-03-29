@@ -714,7 +714,7 @@
 
         function appendComment() {
             let clone = document.querySelector('[comment-wrapper-template]').content.cloneNode(true).children[0];
-            const parent_editor = document.getElementById('bca_comment_editor');
+            let parent_editor = document.getElementById('bca_comment_editor');
 
             // select the parent container to be appended to.
             // if it has parent_id, then append next to the parent_id
