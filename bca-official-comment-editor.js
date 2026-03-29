@@ -414,11 +414,16 @@
             // Add user XP
             await addUserXP(1);
 
+            // Add newly added comment to the thread
             appendComment();
+            editor.innerHTML = ``;
+
+            // Cooldown the comment editor for 5 seconds
+            await cooldown();
             
+            // Enable the editor again.
             enable(submitBtn, 'Post Comment');
             enable(main_editor, null);
-            editor.innerHTML = ``;
         }
 
         async function upsertUrlSPDB() {
@@ -696,6 +701,16 @@
                 elem.textContent = str;
         }
 
+        async function cooldown() {
+            const editor = document.getElementById('bca_comment_editor');
+            let max_count = 5;
+
+            while(max_count > -1) {
+                editor.querySelector('.bca-submit-btn').textContent = `Cooldown.. ${max_count}.`;
+                max_count--;
+                await sleep(1000);
+            }
+        }
 
         function getTargetCommentIDS() {
             // IF THE NEXT ELEMENT has root id
@@ -724,9 +739,8 @@
                 window.location.reload();
 
             let user_email = user_data.email;
-            let user_prof = user_data.profile;
 
-            clone.querySelector('.bca-desc-avatar').src = user_prof;
+            clone.querySelector('.bca-desc-avatar').src = `https://i.imgur.com/XJaJkyM.gif`;
             clone.querySelector('.bca-desc-name').textContent = user_email;
             clone.querySelector('.bca-desc-rarity').textContent = `You've earned 1 XP.`;
             clone.querySelector('.bca-desc-rank').textContent = `Your comment has been added.`;
@@ -734,7 +748,7 @@
             clone.querySelector('.bca-btn-reply').remove();
             clone.querySelector('.bca-btn-replies').remove();
             clone.querySelector('.bca-btn-timeago').textContent = `${new Date()}`;
-            clone.querySelector('.bca-desc-header').style.background = `#2c2c2c`;
+            clone.querySelector('.bca-desc-header').style.background = `#252525`;
             clone.querySelector('.bca-desc-text').textContent = editor.innerHTML;
 
             parent_editor.before(clone);
