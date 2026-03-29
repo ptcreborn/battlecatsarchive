@@ -364,6 +364,12 @@
         setFlag();
 
         async function processComment() {
+            // ASAP get the ids of parent and root                        
+            let target_ids = {
+                parent: main_editor.dataset.parentid,
+                root: main_editor.dataset.rootid
+            }
+
             disable(submitBtn, 'Posting...');
             disable(main_editor, null);
 
@@ -400,7 +406,9 @@
             let fbid = await postCommentToFirebase(user_id, content);
 
             // Create a record to Supabase
-            await postCommentToSupabase(fbid, website_post_id, user_id);
+            let res = await postCommentToSupabase(fbid, website_post_id, user_id, target_ids);
+            if(!res)
+                return;
 
             // Add user XP
             await addUserXP(1);
@@ -591,13 +599,8 @@
             return fbid;
         }
 
-        async function postCommentToSupabase(fbid, website_post_id, user_id) {            
+        async function postCommentToSupabase(fbid, website_post_id, user_id, target_ids) {            
             // Post to supabase
-            let target_ids = {
-                parent: main_editor.dataset.parentid,
-                root: main_editor.dataset.rootid
-            }
-
             let payload = {};
 
             // check if the comment is reply state.
@@ -639,6 +642,8 @@
                     window.alert(`Update error: ${update_data.error.message}`);
                     return;
                 }
+                else 
+                    return true;
             }
         }
 
