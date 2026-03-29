@@ -9,10 +9,14 @@
     align-items: center;
     justify-content: flex-start;
     flex-wrap: wrap;
-"><button onclick="execCmd('code')" title="Code"><b>C</b></button><button
-                onclick="execCmd('italic')"
-                title="Italic"><i>I</i></button><button
-                onclick="execCmd('createLink')" title="Link">🔗</button><button
+">
+<button onclick="execCmd('info')" title="Info"><b>Info</b></button>
+<button onclick="execCmd('success')" title="Success"><b>Success</b></button>
+<button onclick="execCmd('warning')" title="Warning"><b>Warning</b></button>
+<button onclick="execCmd('error')" title="Error"><b>Error</b></button>
+<button onclick="execCmd('code')" title="Code"><b>Code</b></button>
+<button onclick="execCmd('italic')" title="Italic"><i>I</i></button>
+<button onclick="execCmd('createLink')" title="Link">🔗</button><button
                 onclick="document.querySelector('.bca-file-input').click()">🖼️</button><button
                 onclick="addYoutubeVideo()">🎥 </button></div><h4
             id="bca_action_status"
