@@ -133,7 +133,7 @@
 
             // Create your custom HTML structure
             // You can add your 'Menu Cream' background or specific font here
-            const customHtml = `<${tag} class="${className}" >${selectedContent || ' '}</${tag}>`;
+            const customHtml = `<${tag} class="${className}" >${selectedContent || ' '}</${tag}><div><br/></div>`;
 
             // Use insertHTML to inject the custom div
             document.execCommand('insertHTML', false, customHtml);
