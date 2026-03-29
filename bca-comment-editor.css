@@ -53,7 +53,9 @@
     outline: none;
     font-size: 16px;
     line-height: 1.5;
-    color: #333;
+    color: #565555;
+    font-weight: 900;
+    text-shadow: 1px 1px 1px beige;
 }
 
 .bca-editor:empty:before {
