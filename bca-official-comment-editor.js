@@ -103,9 +103,9 @@
     </div>
 </div>`;
 
-    window.requestIdleCallback(initializeComment, {timeout: 2000});
-
     let user_email = '';
+    
+    initializeComment();
 
     async function initializeComment() {
         appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
