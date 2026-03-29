@@ -1,9 +1,10 @@
-         /* --- CSS STYLES --- */
-        /* Container and Layout */
-.bca-archive-comment-container {    
-  width: 100%;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  margin: 20px 0;
+/* --- CSS STYLES --- */
+/* Container and Layout */
+
+.bca-archive-comment-container {
+    width: 100%;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 20px 0;
 }
 
 .bca-comment-editor {
@@ -11,14 +12,14 @@
     border-radius: 12px;
     background: #fff;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-  
-.bca-reply-mode {
-	margin-left: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+.bca-reply-mode {
+    margin-left: 20px;
+}
 /* Toolbar Section */
+
 .bca-toolbar {
     background: #f8f9fa;
     padding: 10px;
@@ -45,8 +46,8 @@
     color: white;
     border-color: #e68a00;
 }
-
 /* Editable Area */
+
 .bca-editor {
     min-height: 150px;
     padding: 20px;
@@ -62,8 +63,8 @@
     content: attr(placeholder);
     color: #aaa;
 }
-
 /* Footer and User Info */
+
 .bca-footer {
     display: flex;
     justify-content: space-between;
@@ -87,14 +88,14 @@
 
 .bca-user-info img {
     border-radius: 2px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .bca-char-count {
     font-weight: bold;
 }
-
 /* Action Buttons */
+
 .bca-submit-btn {
     background: #ff9800;
     color: white;
@@ -116,11 +117,12 @@
     background: #cc7a00;
     transform: translateY(1px);
 }
-
 /* Media Embeds */
+
 .bca-video-container {
     position: relative;
-    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    padding-bottom: 56.25%;
+    /* 16:9 Aspect Ratio */
     height: 0;
     overflow: hidden;
     max-width: 100%;
@@ -135,28 +137,30 @@
     width: 100%;
     height: 100%;
 }
-      
-      /* The Locked Box Styling */
+/* The Locked Box Styling */
+
 .bca-is-locked {
-  background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); /* Darker theme for "Locked" */
-  border: 4px solid #000;
-  position: relative;
-  min-height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+    background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
+    /* Darker theme for "Locked" */
+    border: 4px solid #000;
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .bca-lock-content {
-  padding: 30px;
-  color: #fff;
+    padding: 30px;
+    color: #fff;
 }
 
 .bca-lock-icon {
-  font-size: 40px;
-  margin-bottom: 10px;
-  filter: drop-shadow(0 0 10px #ffdf00); /* Yellow glow */
+    font-size: 40px;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 10px #ffdf00);
+    /* Yellow glow */
 }
 
 .bca-lock-title {
@@ -168,14 +172,14 @@
 }
 
 .bca-lock-text {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #ccc;
-  margin-bottom: 20px;
-  max-width: 400px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ccc;
+    margin-bottom: 20px;
+    max-width: 400px;
 }
-
 /* Reusing your Battle Cats Button style */
+
 .bca-lock-actions .bca-btn-confirm {
     font-size: 1.1rem;
     padding: 10px 25px;
@@ -185,9 +189,36 @@
     font-weight: 500;
 }
 
+.bca-formattings-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    border: 1px solid #b3b3b3;
+    padding: 10px;
+    background: #d7d7d7;
+}
+
+.bca-formattings-container button {
+    cursor: pointer;
+    outline: none;
+    border: none;
+    height: 30px;
+    padding: 0 20px;
+    flex-grow: 1;
+}
 /* Game-like Pulse Animation */
+
 @keyframes bca-pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); box-shadow: 0 0 15px #00b8ff; }
-  100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px #00b8ff;
+    }
+    100% {
+        transform: scale(1);
+    }
 }
