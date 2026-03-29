@@ -732,6 +732,7 @@
             clone.querySelector('.bca-desc-rank').textContent = `Your comment has been added.`;
             clone.querySelector('.bca-desc-stats').remove();
             clone.querySelector('.bca-btn-reply').remove();
+            clone.querySelector('.bca-btn-replies').remove();
             clone.querySelector('.bca-btn-timeago').textContent = `${new Date()}`;
             clone.querySelector('.bca-desc-header').style.background = `#2c2c2c`;
             clone.querySelector('.bca-desc-text').textContent = editor.innerHTML;
