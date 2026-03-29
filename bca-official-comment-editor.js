@@ -9,7 +9,7 @@
     align-items: center;
     justify-content: flex-start;
     flex-wrap: wrap;
-"><button onclick="execCmd('bold')" title="Bold"><b>B</b></button><button
+"><button onclick="execCmd('code')" title="Code"><b>C</b></button><button
                 onclick="execCmd('italic')"
                 title="Italic"><i>I</i></button><button
                 onclick="execCmd('createLink')" title="Link">🔗</button><button
@@ -76,10 +76,13 @@
 
             document.execCommand('defaultParagraphSeparator', false, 'code');
 
+
             if (command === 'createLink') {
                 let url = prompt("Enter the URL:", "https://");
                 if (url) document.execCommand(command, false, url);
-            } else {
+            } else if(command === 'code') 
+                document.execCommand('formatBlock', false, 'pre');
+             else {
                 document.execCommand(command, false, null);
             }
             editor.focus();
