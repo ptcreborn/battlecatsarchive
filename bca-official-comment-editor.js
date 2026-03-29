@@ -429,7 +429,9 @@
             const allowedAttrs = {
                 'a': ['href', 'target'],
                 'img': ['src', 'alt', 'width', 'height', 'class', 'loading'],
-                'iframe': ['src', 'width', 'height', 'frameborder', 'allowfullscreen']
+                'iframe': ['src', 'width', 'height', 'frameborder', 'allowfullscreen'],
+                'div': ['class'],
+                'pre': ['class']
             };
 
             const cleanNode = (node) => {
