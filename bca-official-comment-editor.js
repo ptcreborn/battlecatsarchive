@@ -727,6 +727,8 @@
             else 
                 parent_editor = document.getElementById('trigger_comment_editor');
 
+            console.log(parent_editor);
+
             // get user info from localstorage
             let user_data = localStorage.getItem('user');
             user_data = JSON.parse(atob(user_data));
