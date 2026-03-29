@@ -416,7 +416,7 @@
 
             appendComment();
             
-            enable(submitBtn, 'Posting...');
+            enable(submitBtn, 'Post Comment');
             enable(main_editor, null);
             editor.innerHTML = ``;
         }
