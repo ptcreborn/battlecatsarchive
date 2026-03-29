@@ -718,12 +718,13 @@
 
             // get user info from localstorage
             let user_data = localStorage.getItem('user');
+            user_data = JSON.parse(atob(user_data));
 
             if(!user_data)
                 window.location.reload();
 
-            let user_email = atob(user_data).email;
-            let user_prof = atob(user_data).profile;
+            let user_email = user_data.email;
+            let user_prof = user_data.profile;
 
             clone.querySelector('.bca-desc-avatar').src = user_prof;
             clone.querySelector('.bca-desc-name').textContent = user_email;
