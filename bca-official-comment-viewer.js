@@ -20,10 +20,9 @@
         // add the comment count to webpage.
         let comment_top_count_snippet = document.querySelector('.comment-bubble');
         let comment_bottom_count_snippet = document.querySelector('.comment-contentl');
-        let comment_parent_container = document.querySelector('div.comment-form');
 
-        comment_top_count_snippet.textContent = `${all_comment_counts == 0 ? ``: all_comment_counts}`;
-        comment_bottom_count_snippet.textContent = `${all_comment_counts == 0 ? ``: `${all_comment_counts} ${all_comment_counts > 1 ? `comments`: `comment`}`}`;
+        // comment_top_count_snippet.textContent = `${all_comment_counts == 0 ? ``: all_comment_counts}`;
+        // comment_bottom_count_snippet.textContent = `${all_comment_counts == 0 ? ``: `${all_comment_counts} ${all_comment_counts > 1 ? `comments`: `comment`}`}`;
 
         if (total_page > 1)
             hasMoreComments = true;
