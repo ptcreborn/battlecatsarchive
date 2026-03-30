@@ -81,7 +81,7 @@
         comment_parent_container.addEventListener('click', (e) => {
             if (e.target.matches('#trigger_comment_editor')) {
                 if (!isTriggered) {
-                    appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/1a6faf6c5a2940f887882a01f9a18f6e869dd329/bca-official-comment-editor.js');
+                    appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/84da4f3ac2c83a947753c336a0fb6fe7edb1fa15/bca-official-comment-editor.js');
                     isTriggered = true;
                     return;
                 }
@@ -98,7 +98,7 @@
     function triggerCommentViewer() {
         setTimeout(() => {
             appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/f5b3d64f08f1ab05a3acac7a7e3f5967b01ad61d/bca-comment-viewer.css');
-            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/c68340bf23b66ebb3da81056aec0cbff1a892725/bca-official-comment-viewer.js');
+            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/84da4f3ac2c83a947753c336a0fb6fe7edb1fa15/bca-official-comment-viewer.js');
         }, 1);
     }
 })();
