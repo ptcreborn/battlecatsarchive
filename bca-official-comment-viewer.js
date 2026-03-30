@@ -103,7 +103,7 @@
 
     async function triggerReplyBtn(clone, item) {
         const editor = document.getElementById('bca_comment_editor');
-        while (!document.querySelector('.bca-editor') || !document.querySelector('.bca-login-prompt')) {
+        while (!document.querySelector('.bca-editor') && !document.querySelector('.bca-login-prompt')) {
             document.getElementById('trigger_comment_editor').click();
             await sleep(1000);
         }
