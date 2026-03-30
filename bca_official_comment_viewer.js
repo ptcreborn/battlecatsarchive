@@ -1,3 +1,4 @@
+
 // March 3, 2026
 
 (async () => {
@@ -15,6 +16,9 @@
         const url = new URL(window.location.href).pathname;
         let all_comment_counts = await getCommentCount(url);
         total_page = Math.ceil(all_comment_counts / 10);
+
+        // add the comment count to webpage.
+        
 
         if (total_page > 1)
             hasMoreComments = true;
@@ -248,7 +252,7 @@
             data,
             error
         } = await supabase.rpc('retrieve_comments', {
-            pathname_url: new URL('https://battlecatsarchive.blogspot.com/2026/03/mods-all-battle-cats-mods-en-version.html').pathname,
+            pathname_url: new URL(window.location.href).pathname,
             pagesize: 10,
             pagenumber: pagenumber
         });
