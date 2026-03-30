@@ -110,9 +110,8 @@ let signin_html = `<div class="bca-login-prompt">
   </div>
 </div>`;
 
-    window.requestIdleCallback(initializeComment);
-
     let user_email = '';
+    await initializeComment();
 
     async function initializeComment() {
         appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
