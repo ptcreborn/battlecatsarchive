@@ -11,6 +11,9 @@
     if (!comment_top_count_snippet || !comment_bottom_count_snippet || !comment_parent_container)
         return;
 
+    comment_parent_container.style.display = 'block';
+    comment_bottom_count_snippet.style.display = 'block';
+
     // Original containers
     let temp_container = document.createElement('div');
     temp_container.innerHTML = `<template comment-wrapper-template>
@@ -77,7 +80,7 @@
         comment_parent_container.addEventListener('click', (e) => {
             if (e.target.matches('#trigger_comment_editor')) {
                 if (!isTriggered) {
-                    appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/5e41c21529d671bf53b5681ab41159cd721f4d54/bca-official-comment-editor.js');
+                    appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/515892ca0ffade0aab555ec175362119f94ca055/bca-official-comment-editor.js');
                     isTriggered = true;
                     return;
                 }
@@ -94,7 +97,7 @@
     function triggerCommentViewer() {
         setTimeout(() => {
             appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/f5b3d64f08f1ab05a3acac7a7e3f5967b01ad61d/bca-comment-viewer.css');
-            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/5e41c21529d671bf53b5681ab41159cd721f4d54/bca-official-comment-viewer.js');
+            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/cdd3136fa18761bb70fccf7261b4c734f3aeb7ab/bca_official_comment_viewer.js');
         }, 1);
     }
 })();
