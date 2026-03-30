@@ -1,30 +1,103 @@
-// This will be the main comment function for displaying the comment editor if its not a web page.
+(async () => {
 
-(() => {
-    const comment_container = document.querySelector('.comment-contentl');
-    const comment_parent = document.querySelector('div.comment-form');
-    const comment_btn = document.getElementById('show-comment-form');
+    // DONE March 30, 2026, 2 WEEKS!
+    // MAIN TRIGGER FOR BCA OFFICIAL COMMENT EDITOR
 
-    if(!comment_container || !comment_parent || !comment_btn)
-      return;
+    // Check whether if the page is a POST. Also check for existing elements if exists
+    let comment_top_count_snippet = document.querySelector('.comment-bubble');
+    let comment_bottom_count_snippet = document.querySelector('.comment-contentl');
+    let comment_parent_container = document.querySelector('div.comment-form');
 
-    comment_btn.style.display = 'none';    
-    comment_parent.style.display = 'block';
-    comment_parent.innerHTML += `<div id='parent_container_comment' class='comment-parent'></div>
-<button onclick='restoreComment();' class="main-button button" style="display: none; width: 100%;" id="reset-comment-form">Add Comment</button><form class='inactive-form' id='comment_form' action='javascript:submit();'>
-  <textarea placeholder='Type comment here...' style='width: 100%; height: 300px;' required></textarea>  
-  <div id='img_attachments' class='attachments'></div>
-  <div class="comment-tools-options">
-    <button type="submit"><img src=""><div style="display: block; text-align: left;">Comment as<u><br><span></span></u></div></button>
-    <input
-    style="display: none;"
-    id="file_attachments"
-    type="file"
-    accept="image/png, image/gif, image/jpeg, image/bmp"
-    placeholder="Change Profile Picture" />
-    <button id="btn_uploadImage" type="button"><img src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-upload-cloud-vector-icon-png-image_1027251.jpg">Upload Image</button>
+    if (!comment_top_count_snippet || !comment_bottom_count_snippet || !comment_parent_container)
+        return;
+
+    comment_parent_container.style.display = 'block';
+    comment_bottom_count_snippet.style.display = 'block';
+
+    // Original containers
+    let temp_container = document.createElement('div');
+    temp_container.innerHTML = `<template comment-wrapper-template>
+  <div class="bca-comment-wrapper">
+    <article class="bca-desc-box">
+      <header class="bca-desc-header">
+        <a title='User Profile Page' class="bca-desc-avatar-wrap">
+          <img src="https://i.imgur.com/6GyibCi.jpeg" alt="Cat Icon" class="bca-desc-avatar">
+        </a>
+        <div class="bca-desc-title-group">
+          <span class="bca-desc-rank">Li'l Cat</span>
+          <span class="bca-desc-name">jasonbourne</span>
+          <span class="bca-desc-rarity">Normal Cat</span>
+        </div>
+        <div class="bca-desc-stats">
+          <span class='bca-desc-xp'></span>
+          <span class='bca-desc-lvl'></span>
+        </div>
+      </header>
+      <div class="bca-desc-content">
+        <div class="bca-desc-text">
+          "Does anyone have the decrypted .pack files for the Evangelion collab? I'm trying to port the background music to the English version."
+        </div>
+      </div>
+      <footer class="bca-desc-footer">
+        <button class="bca-btn-reply">Reply</button>
+        <button class="bca-btn-reply bca-btn-role">Member</button>
+        <button class="bca-btn-timeago"></button>
+        <button class="bca-btn-replies">10 replies</button>
+      </footer>
+    </article>
   </div>
-  <button onclick='restoreComment();' id="cancel-reply-btn" type="button" style="display: none;"><img src="https://img.icons8.com/color/512/cancel--v3.png">Cancel Reply</button>
-</form>`;
-    comment_container.style.display = 'block';
+</template>
+<template reply-widget-template>
+<div class="bca-reply-widget-container alert-message warning"><div
+        class="bca-reply-widget-heading">Replied: <span
+            class="bca-reply-widget-username"></span>
+
+        <img loading='lazy' src="https://i.imgur.com/6GyibCi.jpeg"
+            class="bca-reply-widget-profimg">
+    </div><div class="bca-reply-widget-content"></div></div>
+</template><button class='bca-btn-add-comment' id='trigger_comment_editor'>Loading Comment Editor...
+        </button>
+        <div id='bca_comment_editor' class="bca-archive-comment-container">
+        </div>
+        <section class="bca-comment-section">
+        </section>
+        <button class='bca-btn-add-comment' style='opacity: 0;' id='trigger_load_comments'>Load Comments
+        </button>`;
+
+    comment_parent_container.appendChild(temp_container);
+
+    let isTriggered = false;
+
+    triggerCommentEditor();
+    triggerCommentViewer();
+
+    async function triggerCommentEditor() {
+        let editor_btn = document.getElementById('trigger_comment_editor');
+        const editor = document.getElementById('bca_comment_editor');
+        document.querySelector('.bca-btn-add-comment').textContent = 'Add Comment';
+        document.querySelector('.bca-btn-add-comment').style.display = 'block';
+        document.querySelector('.bca-btn-add-comment').style.opacity = '1';
+        comment_parent_container.addEventListener('click', (e) => {
+            if (e.target.matches('#trigger_comment_editor')) {
+                if (!isTriggered) {
+                    appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/515892ca0ffade0aab555ec175362119f94ca055/bca-official-comment-editor.js');
+                    isTriggered = true;
+                    return;
+                }
+                if (document.querySelector('.bca-comment-editor')) {
+                    document.querySelector('.bca-comment-editor').classList.remove('bca-reply-mode');
+                    document.querySelector('.bca-editor').setAttribute('placeholder', `Discuss something with this topic...`);
+                    document.getElementById('bca_action_status').textContent = `Add a comment`;
+                }
+                editor_btn.after(editor);
+            }
+        });
+    }
+
+    function triggerCommentViewer() {
+        setTimeout(() => {
+            appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/f5b3d64f08f1ab05a3acac7a7e3f5967b01ad61d/bca-comment-viewer.css');
+            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/cdd3136fa18761bb70fccf7261b4c734f3aeb7ab/bca_official_comment_viewer.js');
+        }, 1);
+    }
 })();
