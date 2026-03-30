@@ -71,13 +71,11 @@
     async function triggerCommentEditor() {
         let editor_btn = document.getElementById('trigger_comment_editor');
         const editor = document.getElementById('bca_comment_editor');
-        console.log('triggering comment editor', editor_btn);
         document.querySelector('.bca-btn-add-comment').textContent = 'Add Comment';
         document.querySelector('.bca-btn-add-comment').style.display = 'block';
         document.querySelector('.bca-btn-add-comment').style.opacity = '1';
         comment_parent_container.addEventListener('click', (e) => {
             if (e.target.matches('#trigger_comment_editor')) {
-                console.log('appending editor');
                 if (!isTriggered) {
                     appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/515892ca0ffade0aab555ec175362119f94ca055/bca-official-comment-editor.js');
                     isTriggered = true;
