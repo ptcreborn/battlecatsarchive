@@ -18,7 +18,12 @@
         total_page = Math.ceil(all_comment_counts / 10);
 
         // add the comment count to webpage.
-        
+        let comment_top_count_snippet = document.querySelector('.comment-bubble');
+        let comment_bottom_count_snippet = document.querySelector('.comment-contentl');
+        let comment_parent_container = document.querySelector('div.comment-form');
+
+        comment_top_count_snippet.textContent = `${all_comment_counts == 0 ? ``: all_comment_counts}`;
+        comment_bottom_count_snippet.textContent = `${all_comment_counts == 0 ? ``: `${all_comment_counts} ${all_comment_counts > 1 ? `comments`: `comment`}`}`;
 
         if (total_page > 1)
             hasMoreComments = true;
@@ -32,7 +37,7 @@
         trigger_btn.style.display = 'block';
         trigger_btn.textContent = "Loading more comments...";
         trigger_btn.style.opacity = '0.7';
-        
+
         await sleep(1000);
         isFetching = true;
 
