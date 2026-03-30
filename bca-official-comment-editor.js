@@ -97,6 +97,19 @@
     </div>
 </div>`;
 
+let signin_html = `<div class="bca-login-prompt">
+  <div class="bca-prompt-content">
+    <div class="bca-prompt-icon">!</div>
+    <h3>Log in to BCA Archive</h3>
+    <p>You need an account to post comments or reply to others.</p>
+    
+    <div class="bca-prompt-actions">
+      <button onclick="window.location.href = 'https://battlecatsarchive.blogspot.com/p/signin-to-bca.html'" class="bca-btn bca-btn-primary">Login</button>
+      <button onclick="window.location.href = 'https://battlecatsarchive.blogspot.com/'" class="bca-btn bca-btn-secondary">Go Home</button>
+    </div>
+  </div>
+</div>`;
+
     window.requestIdleCallback(initializeComment);
 
     let user_email = '';
