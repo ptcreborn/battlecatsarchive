@@ -116,7 +116,7 @@ let signin_html = `<div class="bca-login-prompt">
 
     async function initializeComment() {
         appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
-        appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/3b4ec0fd70bcfe7d39b8fc09672e9d0bbd73ed54/bca-comment-editor.css');
+        appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/6658d55772f10011612c271381fdf8086dbd856c/bca-comment-editor.css');
 
         // Check session first
         user_email = await checkSession();
