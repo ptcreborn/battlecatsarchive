@@ -72,9 +72,9 @@
         placeholder="Discuss something with this topic..."></div>
     <div class="bca-formattings-container">
         <button onclick="execCmd('createLink')"
-            title="Link">🔗Link</button><button
-            onclick="document.querySelector('.bca-file-input').click()">🖼️Image</button><button
-            onclick="addYoutubeVideo()">🎥Youtube</button>
+            title="Link"><b>🔗Link</b></button><button
+            onclick="document.querySelector('.bca-file-input').click()"><b>🖼️Image</b></button><button
+            onclick="addYoutubeVideo()"><b>🎥Youtube</b></button>
             <button onclick="execCmd('reset')" title="Code"><b>🚫Reset</b></button>
             </div>
     <div class="bca-footer">
