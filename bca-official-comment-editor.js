@@ -1,3 +1,6 @@
+
+// March 3, 2026
+
 (async() => {
     let comment_html_old = `
  <div class="bca-comment-editor">
@@ -114,7 +117,7 @@
             return;
         }
 
-
+        // Append the fragment to the container
         temp_div.innerHTML = comment_html;
         fragment.appendChild(temp_div);
         document.getElementById('bca_comment_editor').appendChild(fragment);
