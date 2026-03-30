@@ -35,7 +35,6 @@
       </header>
       <div class="bca-desc-content">
         <div class="bca-desc-text">
-          "Does anyone have the decrypted .pack files for the Evangelion collab? I'm trying to port the background music to the English version."
         </div>
       </div>
       <footer class="bca-desc-footer">
@@ -55,12 +54,13 @@
         <img loading='lazy' src="https://i.imgur.com/6GyibCi.jpeg"
             class="bca-reply-widget-profimg">
     </div><div class="bca-reply-widget-content"></div></div>
-</template><button class='bca-btn-add-comment' id='trigger_comment_editor'>Loading Comment Editor...
-        </button>
+</template>
         <div id='bca_comment_editor' class="bca-archive-comment-container">
         </div>
         <section class="bca-comment-section">
         </section>
+        <button class='bca-btn-add-comment' id='trigger_comment_editor'>Loading Comment Editor...
+        </button>
         <button class='bca-btn-add-comment' style='opacity: 0;' id='trigger_load_comments'>Load Comments
         </button>`;
 
@@ -98,7 +98,7 @@
     function triggerCommentViewer() {
         setTimeout(() => {
             appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/f5b3d64f08f1ab05a3acac7a7e3f5967b01ad61d/bca-comment-viewer.css');
-            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/d9a8a1dff3a8d9b987a31a6369d0babdf45ee972/bca-official-comment-viewer.js');
+            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/c68340bf23b66ebb3da81056aec0cbff1a892725/bca-official-comment-viewer.js');
         }, 1);
     }
 })();
