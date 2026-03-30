@@ -32,7 +32,7 @@
                 ver: acc_ver,
                 id: id,
                 ads: ads,
-                exp: new Date().setDate(new Date().getDate() + 1) // This is for one day
+                exp: new Date().setDate(new Date().getDate() + 2) // This is for one day
             }
         }));
 
