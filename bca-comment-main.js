@@ -64,6 +64,7 @@
         <button class='bca-btn-add-comment' style='opacity: 0;' id='trigger_load_comments'>Load Comments
         </button>`;
 
+    comment_parent_container.innerHTML = ``;
     comment_parent_container.appendChild(temp_container);
 
     let isTriggered = false;
