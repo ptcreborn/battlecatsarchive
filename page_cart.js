@@ -87,6 +87,7 @@
 
         async function buildCartItems() {
             let user_cart_data = await getUserCartData();
+                        
             let client_time_now = new Date(new Date().toLocaleString('en-US', {
                 timeZone: 'Asia/Manila'
             }));
@@ -97,6 +98,7 @@
             }
 
             let keys = Object.keys(user_cart_data);
+            let cart_count = keys.length;
 
             // FOR LOOP
             for (const key of keys) { // loop through cart details
@@ -106,6 +108,7 @@
                 if (user_data.exp <= new Date().getTime()) {
                     // Expired Cart
                     await removeCartItem(user_email, key);
+                    cart_count --;
                     continue;
                 }
 
@@ -114,6 +117,7 @@
                     // Reset the account to available in the bucket.
                     await restoreHeapCode(user_data);
                     await removeCartItem(user_email, key);
+                    cart_count --;
                     continue;
                 }
 
@@ -200,7 +204,6 @@
                 });
             }
             getID('cart-item-container').style.display = 'block';
-            let cart_count = document.querySelector('#bca_cart span') ? document.querySelector('#bca_cart span').textContent : 0;
             query('h2-title').textContent = `${cart_count > 1 ? `${cart_count} items` : `${cart_count} item`} in the Cart.`;
             if (cart_count == 0)
                 query('h2-title').innerHTML = `Empty Cart`;
