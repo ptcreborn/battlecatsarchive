@@ -10,7 +10,7 @@
 
     comment_btn.style.display = 'none';    
     comment_parent.style.display = 'block';
-    comment_parent.innerHTML = `<div id='parent_container_comment' class='comment-parent'></div>
+    comment_parent.innerHTML += `<div id='parent_container_comment' class='comment-parent'></div>
 <button onclick='restoreComment();' class="main-button button" style="display: none; width: 100%;" id="reset-comment-form">Add Comment</button><form class='inactive-form' id='comment_form' action='javascript:submit();'>
   <textarea placeholder='Type comment here...' style='width: 100%; height: 300px;' required></textarea>  
   <div id='img_attachments' class='attachments'></div>
