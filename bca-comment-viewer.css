@@ -1,0 +1,321 @@
+/* Container */
+
+.bca-btn-add-comment,
+.bca-btn-load-comments {
+  background: #553232;
+  width: 100%;
+  font-size: 1.3rem;
+  letter-spacing: 5px;
+  color: white;
+  font-weight: bold;
+  margin: 5px 0;
+  padding: 8px 0;
+  display: block;
+  opacity: 0.8;
+  height: 50px;
+}
+
+.bca-comment-section {
+  max-width: 750px;
+  margin: 20px auto;
+  font-family: 'Arial Black', 'Inter', 'Roboto', 'Helvetica Neue', 'Helvetica', sans-serif !important;
+  font-weight: 900;
+  /* Ensures the fallback is as bold as possible */
+  background-color: #fcf8e3;
+  /* Menu Cream */
+  min-width: 300px;
+}
+
+.bca-comment-wrapper {
+  scroll-margin-top: 100px;
+}
+
+/* The Main Description Box */
+.bca-desc-box {
+  background: #ffffff;
+  border: 4px solid #000;
+  border-radius: 12px;
+  /* Description boxes are slightly more "square" */
+  margin-bottom: 20px;
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  min-height: 250px;
+}
+
+/* The Dark Header (Unit Name Area) */
+.bca-desc-header {
+  background-color: #563011;
+  color: #fff;
+  border-bottom: 4px solid #000;
+  padding: 0 20px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 82px;
+}
+
+.bca-desc-avatar-wrap {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #2c2c2c;
+  overflow: hidden;
+  border-radius: 50%;
+  margin: 5px 0;
+  aspect-ratio: 1/1;
+  flex: 1 1 10%;
+  min-width: 30px;
+  max-width: 80px;
+}
+
+.bca-desc-avatar {
+  object-fit: cover;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.bca-desc-title-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 50%;
+}
+
+.bca-desc-rank {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+
+.bca-desc-name {
+  font-size: 0.75rem;
+  color: #d3d0ae;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.bca-desc-rarity {
+  font-size: 0.75rem;
+  color: #d3d0ae;
+  font-weight: bold;
+  line-height: 1.5;
+  border-radius: 5px;
+}
+
+.bca-desc-stats {
+  margin-left: auto;
+  font-size: 0.9rem;
+  color: #acacac;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex: 1 1 20%;
+}
+
+.bca-img-attachment {
+  display: block;
+  width: 90%;
+  box-shadow: 1px 1px 5px 1px #909090;
+}
+
+/* The Content Area */
+.bca-desc-content {
+  padding: 15px 20px;
+  background-color: #f7f7f7;
+  min-height: 80px;
+}
+
+.bca-desc-text {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.4;
+  font-family: 'Arial Black', sans-serif !important;
+}
+
+/* The Footer Actions */
+.bca-desc-footer {
+  padding: 10px;
+  background-color: #bababa;
+  border-top: 3px solid #000;
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 450px) {
+  .bca-desc-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .bca-btn-reply {
+    flex-grow: 1;
+  }
+
+  .bca-btn-timeago {
+    flex-grow: 1;
+  }
+
+  .bca-btn-replies {
+    flex-grow: 1;
+  }
+}
+
+.bca-btn-reply {
+  background: #000000;
+  border: 3px solid #000;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-weight: 900;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: white;
+}
+
+button:active {
+  /* Move the button down 4px */
+  transform: translateY(4px);
+  /* Remove the shadow so it looks flush with the "floor" */
+  box-shadow: 0 0 0 #000;
+}
+
+.bca-btn-role {
+  background: #553232;
+  color: #c8c8c8;
+  margin-left: auto;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.bca-btn-timeago {
+  background: #2e2e2e;
+  border: 3px solid #000;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-weight: 900;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: #cdcdcd;
+}
+
+.bca-btn-replies {
+  border: 3px solid #000;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-weight: 900;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  background: #3de5eb;
+  color: black;
+}
+
+/* Thread Line */
+.bca-replies-list {
+  margin-left: 10px;
+  border-left: 5px solid #563011;
+  margin-top: -20px;
+  border-radius: 12px;
+  display: block;
+  background: wheat;
+  padding: 10px 5px 1px 20px;
+}
+
+/* Media Container */
+.bca-media-attachment {
+  margin-top: 15px;
+  border: 3px solid #000;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #000;
+  /* Black bars for videos/images */
+  display: flex;
+  justify-content: center;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Images */
+.bca-attached-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* YouTube Responsive Wrapper */
+.bca-video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  /* 16:9 Aspect Ratio */
+  height: 0;
+}
+
+.bca-video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Optional: Add a "Media Type" label like the game menus */
+.bca-media-attachment::before {
+  content: "DATA LINKED";
+  position: absolute;
+  background: #00b8ff;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 8px;
+  border: 2px solid #000;
+  border-top: none;
+  border-left: none;
+  z-index: 10;
+  font-weight: 900;
+  border-bottom-right-radius: 5px;
+}
+
+.bca-btn-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.bca-reply-widget-container {
+  background: beige;
+  padding: 10px;
+  border-radius: 5px;
+  line-height: 1rem;
+  font-family: 'Poppins';
+  border: 1px solid #bab7b7 !important;
+  cursor: pointer;
+  display: block;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.bca-reply-widget-heading {
+  display: flex;
+  align-items: center;
+  color: #464646;
+  padding: 5px;
+  flex-wrap: wrap;
+}
+
+.bca-reply-widget-username {
+  font-weight: bold;
+  margin-left: auto;
+}
+
+.bca-reply-widget-content {
+  border-top: 1px solid #dedede;
+  padding-top: 10px;
+}
+
+.bca-reply-widget-profimg {
+  width: 30px !important;
+  height: 30px !important;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-left: 5px;
+}
