@@ -55,12 +55,12 @@
             class="bca-reply-widget-profimg">
     </div><div class="bca-reply-widget-content"></div></div>
 </template>
-        <button class='bca-btn-add-comment' id='trigger_comment_editor'>Loading Comment Editor...
-        </button>
         <div id='bca_comment_editor' class="bca-archive-comment-container">
         </div>
         <section class="bca-comment-section">
         </section>
+        <button class='bca-btn-add-comment' id='trigger_comment_editor'>Loading Comment Editor...
+        </button>
         <button class='bca-btn-add-comment' style='opacity: 0;' id='trigger_load_comments'>Load Comments
         </button>`;
 
@@ -81,7 +81,7 @@
         comment_parent_container.addEventListener('click', (e) => {
             if (e.target.matches('#trigger_comment_editor')) {
                 if (!isTriggered) {
-                    appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/515892ca0ffade0aab555ec175362119f94ca055/bca-official-comment-editor.js');
+                    appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/f87a65170fe80ad45ace817cf9a7aa054278d71b/bca-official-comment-editor.js');
                     isTriggered = true;
                     return;
                 }
@@ -98,7 +98,7 @@
     function triggerCommentViewer() {
         setTimeout(() => {
             appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/f5b3d64f08f1ab05a3acac7a7e3f5967b01ad61d/bca-comment-viewer.css');
-            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/df195c0288da0dfe88d24d6dafdf1c35c67a5fc6/bca-official-comment-viewer.js');
+            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/c68340bf23b66ebb3da81056aec0cbff1a892725/bca-official-comment-viewer.js');
         }, 1);
     }
 })();
