@@ -61,7 +61,7 @@
         </button>        
         <div id='bca_comment_editor' class="bca-archive-comment-container">
         </div>
-        <button class='bca-btn-add-comment' style='opacity: 0;' id='trigger_load_comments'>Load Comments
+        <button class='bca-btn-add-comment' style='opacity: 1;background: #724229;' id='trigger_load_comments'>Load Comments
         </button>`;
 
     comment_parent_container.innerHTML = ``;
@@ -99,7 +99,7 @@
 
     function triggerCommentViewer() {
         setTimeout(() => {
-            appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/fe2291a6666ee8e2b09714e1d3bd5ef4d42fbfdd/bca-comment-viewer.css');
+            appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/c173d5b10b4ea3a3f1ad96062a471c8f51b4fd74/bca-comment-viewer.css');
             appendJSFile('https://raw.githack.com/ptcreborn/battlecatsarchive/javascript/bca-official-comment-viewer.js');
         }, 1);
     }
