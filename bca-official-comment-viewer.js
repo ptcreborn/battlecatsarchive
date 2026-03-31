@@ -27,7 +27,7 @@
         comment_bottom_count_snippet.textContent = `${all_comment_counts == 0 ? `` : `${all_comment_counts} ${all_comment_counts > 1 ? `comments` : `comment`}`}`;
 
         hasMoreComments = total_page > 1;
-        if(!hasMoreComments) {
+        if (!hasMoreComments) {
             load_more_btn.textContent = `You've reached the end`;
             load_more_btn.style.opacity = `0.7`;
         }
@@ -37,7 +37,7 @@
                 triggerLoadMore();
             });
             load_more_btn.style.opacity = `1`;
-            load_more_btn.textContent = `Load Comments ${current_page}/${total_page}`;
+            load_more_btn.textContent = `Load Comments (${current_page}/${total_page})`;
             isFetching = true;
         }
     }
@@ -47,8 +47,7 @@
         // increment the counter as load comment button is triggered
         let trigger_btn = document.getElementById('trigger_load_comments');
         trigger_btn.style.display = 'block';
-        trigger_btn.textContent = `Load Comments ${current_page}/${total_page}`;
-
+        trigger_btn.textContent = "Loading more comments...";
 
         await sleep(1000);
         isFetching = true;
@@ -64,7 +63,7 @@
             trigger_btn.style.opacity = '0.7';
             trigger_btn.textContent = "You've reached the end.";
         } else {
-            trigger_btn.textContent = "Loading more comments";
+            trigger_btn.textContent = `Load Comments (${current_page}/${total_page})`;
         }
     }
 
