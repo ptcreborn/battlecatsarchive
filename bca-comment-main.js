@@ -78,7 +78,7 @@
         document.querySelector('.bca-btn-add-comment').textContent = 'Add Comment';
         document.querySelector('.bca-btn-add-comment').style.display = 'block';
         document.querySelector('.bca-btn-add-comment').style.opacity = '1';
-        comment_parent_container.addEventListener('click', (e) => {
+        comment_parent_container.addEventListener('click', async (e) => {
             if (e.target.matches('#trigger_comment_editor')) {
                 if (!isTriggered) {
                     appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/84da4f3ac2c83a947753c336a0fb6fe7edb1fa15/bca-official-comment-editor.js');
@@ -92,6 +92,7 @@
                     editor.removeAttribute('data-parentid');
                     editor.removeAttribute('data-rootid');
                 }
+                await sleep(300);
                 editor_btn.after(editor);
             }
         });
@@ -100,7 +101,7 @@
     function triggerCommentViewer() {
         setTimeout(() => {
             appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/fe2291a6666ee8e2b09714e1d3bd5ef4d42fbfdd/bca-comment-viewer.css');
-            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/982f26c599324b5add1ebc0864df96f32554d368/bca-official-comment-viewer.js');
+            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/c719ba0f01736dafa929593b6d13aac11280b0f3/bca-official-comment-viewer.js');
         }, 1);
     }
 })();
