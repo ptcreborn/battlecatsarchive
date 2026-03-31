@@ -17,7 +17,7 @@
         const url = new URL(window.location.href).pathname;
         const load_more_btn = document.getElementById('trigger_load_comments');
         let all_comment_counts = await getCommentCount(url);
-        total_page = Math.ceil(all_comment_counts / 10);
+        total_page = Math.ceil((all_comment_counts || 0) / 10);
 
         // add the comment count to webpage.
         let comment_top_count_snippet = document.querySelector('.comment-bubble');
@@ -36,15 +36,13 @@
             load_more_btn.textContent = "Be the first to comment!";
             return;
         }
-        if (!hasMoreComments && !isFetching) {
+        if (hasMoreComments && !isFetching) {
             load_more_btn.addEventListener('click', () => {
                 triggerLoadMore();
             });
             load_more_btn.style.opacity = `1`;
             load_more_btn.textContent = `Load Comments (${current_page}/${total_page})`;
             isFetching = true;
-        } else {
-
         }
     }
 
