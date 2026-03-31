@@ -32,8 +32,8 @@
         hasMoreComments = total_page > 1;
 
         if (!total_page || total_page == 0) {
-            trigger_btn.style.opacity = '0.7';
-            trigger_btn.textContent = "You've reached the end.";
+            load_more_btn.style.opacity = '0.7';
+            load_more_btn.textContent = "You've reached the end.";
             return;
         }
         if (!hasMoreComments && !isFetching) {
