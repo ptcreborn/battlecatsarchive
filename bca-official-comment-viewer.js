@@ -15,6 +15,7 @@
         appendJSFile('https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js');
         await createCommentSkeleton(current_page);
         const url = new URL(window.location.href).pathname;
+        const load_more_btn = document.getElementById('trigger_load_comments');
         let all_comment_counts = await getCommentCount(url);
         total_page = Math.ceil(all_comment_counts / 10);
 
@@ -22,12 +23,17 @@
         let comment_top_count_snippet = document.querySelector('.comment-bubble');
         let comment_bottom_count_snippet = document.querySelector('.comment-contentl p');
 
-        comment_top_count_snippet.textContent = `${all_comment_counts == 0 ? ``: all_comment_counts}`;
-        comment_bottom_count_snippet.textContent = `${all_comment_counts == 0 ? ``: `${all_comment_counts} ${all_comment_counts > 1 ? `comments`: `comment`}`}`;
+        comment_top_count_snippet.textContent = `${all_comment_counts == 0 ? `` : all_comment_counts}`;
+        comment_bottom_count_snippet.textContent = `${all_comment_counts == 0 ? `` : `${all_comment_counts} ${all_comment_counts > 1 ? `comments` : `comment`}`}`;
 
-        if (total_page > 1)
-            hasMoreComments = true;
+        hasMoreComments = total_page > 1;
 
+        if(!isFetching) {
+            load_more_btn.addEventListener('click', () => {
+                triggerLoadMore();
+            });
+            isFetching = true;
+        }
     }
 
     async function triggerLoadMore() {
@@ -271,21 +277,21 @@
     }
 
     // 1. Define the observer
-    const observer = new IntersectionObserver((entries) => {
-        const sentinel = entries[0];
+    // const observer = new IntersectionObserver((entries) => {
+    //     const sentinel = entries[0];
 
-        // isIntersecting is true when the element is visible in the viewport
-        if (sentinel.isIntersecting && !isFetching && hasMoreComments) {
-            triggerLoadMore(); // Your function that fetches from Supabase
-        }
-    }, {
-        root: null, // use the browser viewport
-        rootMargin: '200px', // start loading 200px before the user hits the bottom
-        threshold: 0.1 // trigger when 10% of the sentinel is visible
-    });
+    //     // isIntersecting is true when the element is visible in the viewport
+    //     if (sentinel.isIntersecting && !isFetching && hasMoreComments) {
+    //         triggerLoadMore(); // Your function that fetches from Supabase
+    //     }
+    // }, {
+    //     root: null, // use the browser viewport
+    //     rootMargin: '200px', // start loading 200px before the user hits the bottom
+    //     threshold: 0.1 // trigger when 10% of the sentinel is visible
+    // });
 
-    const target = document.querySelector('#trigger_load_comments');
-    observer.observe(target);
+    // const target = document.querySelector('#trigger_load_comments');
+    // observer.observe(target);
 
     async function fetchFBContents(data) {
         return new Promise(async (resolve, reject) => {
