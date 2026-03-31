@@ -48,6 +48,8 @@
         let trigger_btn = document.getElementById('trigger_load_comments');
         trigger_btn.style.display = 'block';
         trigger_btn.textContent = "Loading more comments...";
+        trigger_btn.style.opacity = "0.7";
+        trigger_btn.style.pointerEvents = "none";
 
         await sleep(1000);
         isFetching = true;
@@ -63,6 +65,8 @@
             trigger_btn.style.opacity = '0.7';
             trigger_btn.textContent = "You've reached the end.";
         } else {
+            trigger_btn.style.opacity = "1";
+            trigger_btn.style.pointerEvents = "auto";
             trigger_btn.textContent = `Load Comments (${current_page}/${total_page})`;
         }
     }
