@@ -31,7 +31,11 @@
 
         hasMoreComments = total_page > 1;
 
-        if(total_page == 0)
+        if (total_page == 0) {
+            trigger_btn.style.opacity = '0.7';
+            trigger_btn.textContent = "You've reached the end.";
+            return;
+        }
         if (!hasMoreComments && !isFetching) {
             load_more_btn.addEventListener('click', () => {
                 triggerLoadMore();
