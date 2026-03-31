@@ -89,6 +89,8 @@
                     document.querySelector('.bca-comment-editor').classList.remove('bca-reply-mode');
                     document.querySelector('.bca-editor').setAttribute('placeholder', `Discuss something with this topic...`);
                     document.getElementById('bca_action_status').textContent = `Add a comment`;
+                    editor.dataset.parentid = null;
+                    editor.dataset.rootid = null;
                 }
                 editor_btn.after(editor);
             }
