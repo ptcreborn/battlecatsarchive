@@ -33,7 +33,7 @@
 
         if (!total_page || total_page == 0) {
             load_more_btn.style.opacity = '0.7';
-            load_more_btn.textContent = "You've reached the end.";
+            load_more_btn.textContent = "Be the first to comment!";
             return;
         }
         if (!hasMoreComments && !isFetching) {
