@@ -100,7 +100,7 @@
     function triggerCommentViewer() {
         setTimeout(() => {
             appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/fe2291a6666ee8e2b09714e1d3bd5ef4d42fbfdd/bca-comment-viewer.css');
-            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/eaa71fbc82f0e72748aceadb6bc5f05a3cf91eba/bca-official-comment-viewer.js');
+            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/83051ebcd7971a8ce865e51d4835acdfc2eff052/bca-official-comment-viewer.js');
         }, 1);
     }
 })();
