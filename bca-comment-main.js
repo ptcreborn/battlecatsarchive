@@ -55,7 +55,7 @@
             class="bca-reply-widget-profimg">
     </div><div class="bca-reply-widget-content"></div></div>
 </template>
-        <button class='bca-btn-add-comment' id='trigger_comment_editor'>Loading Comment Editor....
+        <button class='bca-btn-add-comment' id='trigger_comment_editor'>Loading Comment Editor...
         </button>
         <div id='bca_comment_editor' class="bca-archive-comment-container">
         </div>
@@ -100,7 +100,7 @@
     function triggerCommentViewer() {
         setTimeout(() => {
             appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/fe2291a6666ee8e2b09714e1d3bd5ef4d42fbfdd/bca-comment-viewer.css');
-            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/40ed97c96d041a2c8b06abc398bdc2b95805761c/bca-official-comment-viewer.js');
+            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/eaa71fbc82f0e72748aceadb6bc5f05a3cf91eba/bca-official-comment-viewer.js');
         }, 1);
     }
 })();
