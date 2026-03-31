@@ -55,7 +55,7 @@
             class="bca-reply-widget-profimg">
     </div><div class="bca-reply-widget-content"></div></div>
 </template>
-        <button class='bca-btn-add-comment' id='trigger_comment_editor'>Loading Comment Editor...
+        <button class='bca-btn-add-comment' id='trigger_comment_editor'>Loading Comment Editor....
         </button>
         <div id='bca_comment_editor' class="bca-archive-comment-container">
         </div>
