@@ -90,7 +90,7 @@
                     document.querySelector('.bca-editor').setAttribute('placeholder', `Discuss something with this topic...`);
                     document.getElementById('bca_action_status').textContent = `Add a comment`;
                     editor.removeAttribute('data-parentid');
-                    editor.reremoveAttributemove('data-rootid');
+                    editor.removeAttribute('data-rootid');
                 }
                 editor_btn.after(editor);
             }
