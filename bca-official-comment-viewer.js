@@ -26,19 +26,21 @@
         comment_top_count_snippet.textContent = `${all_comment_counts == 0 ? `` : all_comment_counts}`;
         comment_bottom_count_snippet.textContent = `${all_comment_counts == 0 ? `` : `${all_comment_counts} ${all_comment_counts > 1 ? `comments` : `comment`}`}`;
 
-        hasMoreComments = total_page > 1;
-        if (!hasMoreComments) {
-            load_more_btn.textContent = `You've reached the end`;
-            load_more_btn.style.opacity = `0.7`;
-        }
+        load_more_btn.textContent = `You've reached the end`;
+        load_more_btn.style.opacity = `0.7`;
 
-        if (!isFetching) {
+        hasMoreComments = total_page > 1;
+
+        if(total_page == 0)
+        if (!hasMoreComments && !isFetching) {
             load_more_btn.addEventListener('click', () => {
                 triggerLoadMore();
             });
             load_more_btn.style.opacity = `1`;
             load_more_btn.textContent = `Load Comments (${current_page}/${total_page})`;
             isFetching = true;
+        } else {
+
         }
     }
 
@@ -260,14 +262,14 @@
         let {
             data,
             error
-        } = await supabase.from('bca-website-posts').select("id, bca-comments(count)").eq('url', url).filter('bca-comments.parent_id', 'is', null).single();
+        } = await supabase.from('bca-website-posts').select("id, bca-comments(count)").eq('url', url).filter('bca-comments.parent_id', 'is', null);
 
         if (error) {
             window.alert(`Error detected: ${error.message}`);
             return;
         }
 
-        return data?.['bca-comments']?.[0]?.count;
+        return data?.[0]?.["bca-comments"]?.[0].count;
     }
 
     async function getDataSupabase(pagenumber) {
