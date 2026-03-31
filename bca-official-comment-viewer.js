@@ -28,10 +28,11 @@
 
         hasMoreComments = total_page > 1;
 
-        if(!isFetching) {
+        if (!isFetching) {
             load_more_btn.addEventListener('click', () => {
                 triggerLoadMore();
             });
+            load_more_btn.textContent = `Load Page ${current_page}/${total_page}`;
             isFetching = true;
         }
     }
@@ -41,8 +42,8 @@
         // increment the counter as load comment button is triggered
         let trigger_btn = document.getElementById('trigger_load_comments');
         trigger_btn.style.display = 'block';
-        trigger_btn.textContent = "Loading more comments...";
-        trigger_btn.style.opacity = '0.7';
+        trigger_btn.textContent = `Load Page ${current_page}/${total_page}`;
+
 
         await sleep(1000);
         isFetching = true;
@@ -54,8 +55,12 @@
 
         await sleep(1000);
         isFetching = false;
-        if (!hasMoreComments)
+        if (!hasMoreComments) {
+            trigger_btn.style.opacity = '0.7';
             trigger_btn.textContent = "You've reached the end.";
+        } else {
+            trigger_btn.textContent = "Loading more comments";
+        }
     }
 
     async function createCommentSkeleton(page_number) {
