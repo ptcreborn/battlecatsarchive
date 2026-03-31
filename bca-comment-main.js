@@ -55,12 +55,12 @@
             class="bca-reply-widget-profimg">
     </div><div class="bca-reply-widget-content"></div></div>
 </template>
-        <div id='bca_comment_editor' class="bca-archive-comment-container">
-        </div>
         <section class="bca-comment-section">
         </section>
         <button class='bca-btn-add-comment' id='trigger_comment_editor'>Loading Comment Editor...
-        </button>
+        </button>        
+        <div id='bca_comment_editor' class="bca-archive-comment-container">
+        </div>
         <button class='bca-btn-add-comment' style='opacity: 0;' id='trigger_load_comments'>Load Comments
         </button>`;
 
@@ -78,7 +78,7 @@
         document.querySelector('.bca-btn-add-comment').textContent = 'Add Comment';
         document.querySelector('.bca-btn-add-comment').style.display = 'block';
         document.querySelector('.bca-btn-add-comment').style.opacity = '1';
-        comment_parent_container.addEventListener('click', async (e) => {
+        comment_parent_container.addEventListener('click', (e) => {
             if (e.target.matches('#trigger_comment_editor')) {
                 if (!isTriggered) {
                     appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/84da4f3ac2c83a947753c336a0fb6fe7edb1fa15/bca-official-comment-editor.js');
@@ -92,7 +92,6 @@
                     editor.removeAttribute('data-parentid');
                     editor.removeAttribute('data-rootid');
                 }
-                await sleep(300);
                 editor_btn.after(editor);
             }
         });
