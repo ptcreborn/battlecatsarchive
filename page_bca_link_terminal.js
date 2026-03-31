@@ -204,7 +204,7 @@
             }
             await activeUsers();
         })
-        .catch(error => window.alert(`Error detected: ${error.message}`));
+        .catch(error => window.alert(`Error detected in dispatchExpiredUsers: `, error.message));
     }
 
     function dispatchExpiredLinkTerminalSession() {
@@ -220,7 +220,8 @@
                     await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal/${key}.json`, 'null');
             }
         })
-        .catch(error => window.alert(`Error detected: ${error.message}`));
+        .catch(error => window.alert(`Error detected in dispatchExpiredLinkTerminalSession: `, error.message));
+
     }
 
     function getCodeParams(param) {
