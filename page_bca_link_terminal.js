@@ -7,8 +7,8 @@
             let time_in_sec = 5000;
 
             await initFunctions(['FirebaseModule', 'moment']);
-            dispatchExpiredUsers();
-            dispatchExpiredLinkTerminalSession();
+            //dispatchExpiredUsers();
+            //dispatchExpiredLinkTerminalSession();
             await loadData();
 
             async function loadData() {
