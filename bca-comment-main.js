@@ -61,7 +61,7 @@
         </button>        
         <div id='bca_comment_editor' class="bca-archive-comment-container">
         </div>
-        <button class='bca-btn-add-comment' style='opacity: 1;background: #724229;' id='trigger_load_comments'>Load Comments
+        <button class='bca-btn-add-comment' style='opacity: 1;background: #724229; letter-spacing: 1px;' id='trigger_load_comments'>Load Comments
         </button>`;
 
     comment_parent_container.innerHTML = ``;
