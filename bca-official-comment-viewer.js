@@ -23,7 +23,7 @@
         let comment_top_count_snippet = document.querySelector('.comment-bubble');
         let comment_bottom_count_snippet = document.querySelector('.comment-contentl p');
 
-        comment_top_count_snippet.textContent = `${all_comment_counts == 0 ? `` : all_comment_counts}`;
+        comment_top_count_snippet.textContent = `${(!all_comment_counts || all_comment_counts == 0) ? `` : all_comment_counts}`;
         comment_bottom_count_snippet.textContent = `${all_comment_counts == 0 ? `` : `${all_comment_counts} ${all_comment_counts > 1 ? `comments` : `comment`}`}`;
 
         load_more_btn.textContent = `You've reached the end`;
