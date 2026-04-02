@@ -46,7 +46,8 @@
 "><a target='_blank' chat-username="" style="
     font-size: 10px;
 "></a>
-      <br/><p chat-data-content style="
+      <br/><p chat-data-content style="margin: 0;
+    font-size: 13px;
 "></p><a target='_blank' style='font-size: 11px;' chat-from-source></a><div style="
     align-self: flex-start;
     display: flex;
