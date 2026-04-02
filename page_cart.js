@@ -228,11 +228,11 @@
 
             //let acc_name_ver = `${acc_ver.split('-').length == 3 ? `EN-${acc_ver}`: `${acc_ver}`} (${account_name})`;
 
-            const db = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_bucket/${acc_ver}`;
+            const bucket_db = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_bucket/${acc_ver}`;
 
             await initFunctions(['FirebaseModule']);
 
-            let accounts = await FirebaseModule.fetchJSON(`${db}/${account_name}.json`);
+            let accounts = await FirebaseModule.fetchJSON(`${bucket_db}/${account_name}.json`);
             let keys = Object.keys(accounts);
             let code = '';
 
