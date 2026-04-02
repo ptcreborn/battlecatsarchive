@@ -13,6 +13,7 @@
 
     const sendBtn = document.getElementById('bca_submit_chat');
     const loadMoreBtn = document.getElementById('chat_load_more');
+    const container = document.getElementById('bca_parent_chat_container');
 
     await initialize();
 
@@ -363,6 +364,7 @@ self.onmessage = async (e) => {
             case "GET_CHATS_ITEMS": {
                 if (result == "SUCCESS") {
                     if (data.trigger == "INITIATE") {
+                        enableElem(container);
                         buildChatHTML(data.data);
                         // add click listener to load more chats.
                         if (!isLoadMoreRegistered) {
