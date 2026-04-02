@@ -7,7 +7,7 @@
             let time_in_sec = 5000;
 
             await initFunctions(['FirebaseModule', 'moment']);
-            activeUsers();
+            //activeUsers();
             // dispatchExpiredUsers();
             // dispatchExpiredLinkTerminalSession();
             await loadData();
@@ -203,7 +203,7 @@
                     await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${value}.json`, "null")
                 }
             }
-            await activeUsers();
+            //await activeUsers();
         })
         .catch(error => window.alert(`Error detected in dispatchExpiredUsers: `, error.message));
     }
