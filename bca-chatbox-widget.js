@@ -61,12 +61,18 @@
     display: inline-block;
 "></div>
       <span style="
-    margin-right: auto;
     opacity: 0.7;
     font-weight: 600;
     font-size: 11px;
     line-height: 1rem;
-" chat-timeago="">3 minutes ago</span>
+" chat-timeago=""></span>
+       <span style="
+    margin-left: auto;
+    opacity: 0.7;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 1rem;
+" loc-data=""></span>
       <img loading="lazy"
 	chat-level style="
     width: 20px;
@@ -111,7 +117,7 @@ self.onmessage = async (e) => {
             let page = payload.page;
             let PAGE_SIZE = payload.pagesize;
 
-            let { data, error } = await self.supabase.from('widget-chat-box').select('id, date, users(username, prof_img, email, ranks(rank_image)), content')
+            let { data, error } = await self.supabase.from('widget-chat-box').select('*, users(username, prof_img, email, ranks(rank_image))')
                 .order('date', { ascending: false })
                 // 2. Grab the first chunk of that ordered list
                 .range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1);
@@ -173,9 +179,7 @@ self.onmessage = async (e) => {
         }
         case "GET_LOCATION": {
             try {
-                const locale = navigator.language; // e.g. "en-PH"
-                const countryCode = locale.split('-')[1];
-                const flagUrl = 'https://flagcdn.com/w80/' + countryCode.toLowerCase() + '.png';
+                const flagUrl = 'https://flagcdn.com/w80/' + payload.code.toLowerCase() + '.png';
 
                 self.postMessage({
                     status: command,
@@ -249,10 +253,11 @@ self.onmessage = async (e) => {
         });
     }
 
-    function getFLAG(selector) {
+    function getFLAG(selector, code) {
         myWorker.postMessage({
             command: 'GET_LOCATION',
-            selector: selector
+            selector: selector,
+            code: code
         });
     }
 
@@ -261,7 +266,7 @@ self.onmessage = async (e) => {
             const res = await fetch('https://ipapi.co/json/');
             const data = await res.json();
 
-            loc_data = JSON.stringify(data);
+            loc_data = data;
         } catch (error) {
             console.log(error);
         }
@@ -307,11 +312,12 @@ self.onmessage = async (e) => {
         clone.querySelector('[chat-timeago]').textContent = `${item?.date ? `${moment(item.date).fromNow()}` : `${moment(new Date().getTime())}`}`;
         clone.querySelector('[chat-username]').href = user_email ? `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${user_email}` : `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
         clone.querySelector('[chat-data-content]').textContent = `${item?.content}`;
+        clone.querySelector('[loc-data]').textContent = `${item?.city ? `${item.city}` : `Banana`}, ${item?.country_name ? `${item.country_name}` : `Universe`}`;
 
-        clone.querySelector('[chat-from-source]').textContent = `/${document.title}`;
-        clone.querySelector('[chat-from-source]').href = `${window.location.href}`;
+        clone.querySelector('[chat-from-source]').textContent = `/${item?.from_source ? `${JSON.parse(item.from_source).title}`: `${document.title}`}`;
+        clone.querySelector('[chat-from-source]').href = `${item?.from_source ? `${JSON.parse(item.from_source).url}`: `${window.location.href}`}`;
 
-        getFLAG(`#${clone.id} [chat-country]`);
+        getFLAG(`#${clone.id} [chat-country]`, item?.country_code ? `${item.country_code}` : `US`);
 
         return clone;
     }
@@ -338,10 +344,13 @@ self.onmessage = async (e) => {
                         document.querySelector('[chat-editor-prof]').src = `https://i.imgur.com/eC4m6v4.png`;
 
                     if (!isSubmitRegistered) {
+
+                        // SENDING CHAT!
                         submit.addEventListener('click', async () => {
                             if (!loc_data)
                                 await getLocData();
                             disableElem(sendBtn);
+
                             if (document.querySelector('#bca_chat_content').value.trim().length == 0) {
                                 window.alert('Type something before sending...');
                                 enableElem(sendBtn);
@@ -351,7 +360,17 @@ self.onmessage = async (e) => {
                                 user_id: data.data?.id,
                                 content: document.querySelector('#bca_chat_content').value,
                                 date: 'now()',
-                                location: JSON.stringify(loc_data)
+                                ip: loc_data.ip,
+                                city: loc_data.city,
+                                country_name: loc_data.country_name,
+                                country_code: loc_data.country_code,
+                                org: loc_data.org,
+                                latitude: loc_data.latitude,
+                                longitude: loc_data.longitude,
+                                from_source: JSON.stringify({
+                                    url: window.location.href,
+                                    title: document.title
+                                })
                             }
                             sendChat(chat_payload);
                         }, false);
@@ -409,28 +428,20 @@ self.onmessage = async (e) => {
             case "NEW_COMMENT": {
                 let new_payload = data.payload;
                 const parent = document.getElementById('bca_chat_box_container');
-                let temp_data;
                 if (new_payload.user_id) {
                     // simplly retrieve the user info...
                     let { data, error } = await supabase.from('users').select('prof_img, username, ranks(rank_image)').eq('id', new_payload.user_id);
 
                     if (error || data?.length == 0) {
-                        parent.appendChild(appendChatItem(temp_data));
+                        parent.appendChild(appendChatItem(new_payload));
                         return;
                     }
 
-                    temp_data = {
-                        users: {
-                            prof_img: data[0].prof_img,
-                            username: data[0].username,
-                            ranks: {
-                                rank_image: data[0].ranks.rank_image
-                            }
-                        },
-                        content: new_payload.content,
-                        date: new_payload.date
-                    }
-                    parent.appendChild(appendChatItem(temp_data));
+                    (new_payload.users ??= {}).prof_img = data[0].prof_img;
+                    (new_payload.users ??= {}).username = data[0].username;
+                    ((new_payload.users ??= {}).ranks ??= {}).rank_image = data[0].ranks.rank_image;
+
+                    parent.appendChild(appendChatItem(new_payload));
                 }
                 else parent.appendChild(appendChatItem(new_payload));
                 document.getElementById('bca_parent_chat_container').scrollTop = document.getElementById('bca_parent_chat_container').scrollHeight;
