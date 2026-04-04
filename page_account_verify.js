@@ -105,7 +105,7 @@
 
         // delete item in the cart
         await FirebaseModule.patch(
-            `https://storehaccounts-website-default-rtdb.firebaseio.com/bca_cart/${btoa(email)}/${params.get('cart')}.json`,
+            `https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart/${btoa(email)}/${params.get('cart')}.json`,
             `null`
         )
 
