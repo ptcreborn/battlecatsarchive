@@ -1,7 +1,7 @@
 
 // CREATED April 5, 2026
 // Created in 2 days
-// FBDB: https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint
+// FBDB: https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint, https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_download_stats
 
 (async () => {
     // check params
