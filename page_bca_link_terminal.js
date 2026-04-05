@@ -158,9 +158,6 @@
                         progress: "completed"
                     })
                 );
-
-                window.location.href = prog_data.targ;
-                return;
             }
 
             window.location.href = `${decodeURIComponent(prog_data.targ)}`;
