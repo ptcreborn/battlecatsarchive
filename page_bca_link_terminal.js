@@ -150,6 +150,19 @@
                 return;
             }
 
+            // for new download system, create a patch to the checkpoint in order to mark that it passes link terminal
+            if(new URL(decodeURIComponent(prog_data.targ)).get('checkpoint')) {
+                await FirebaseModule.patch(
+                    `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint/${new URL(decodeURIComponent(prog_data.targ)).get('checkpoint')}`,
+                    JSON.stringify({
+                        progress: "completed"
+                    })
+                );
+
+                window.location.href = prog_data.targ;
+                return;
+            }
+
             window.location.href = `${decodeURIComponent(prog_data.targ)}`;
         } else {
             // increment the progress on the active users widget in link terminal
