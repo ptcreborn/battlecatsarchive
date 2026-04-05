@@ -17,6 +17,7 @@
     let checkpoint = decodeURIComponent(param.get('checkpoint'));
     param = decodeURIComponent(param.get('api'));
 
+    const root = `aHR0cHM6Ly9naXRodWIuY29tL3B0Y3JlYm9ybi9jSFJqWDNKbFltOXlibDl0YjJSei9yZWxlYXNlcy9kb3dubG9hZC9kdW1wLw==`;
     const message = document.getElementById('message');
     const dlBtn = document.getElementById('triggerBtn');
 
@@ -27,8 +28,10 @@
 
     dlBtn.textContent = `Download ${param}${ext}`;
 
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
     if (!param || !checkpoint || !isLinkTerminalPassed?.progress || !isLinkTerminalPassed?.api || isLinkTerminalPassed.progress !== "completed") {
-        errorMessage("Invalid API Point. Please restart in the beginning and dont try to alter the url.");
+        errorMessage("Invalid or Expired API Point. Please restart in the beginning and dont try to alter the url.");
         return;
     }
 
@@ -57,19 +60,20 @@
                 })
             });
 
-            if (!response.ok) {
-                let errorText = await response.json();
-                console.log(errorText);
-                errorMessage(`Security check failed: ${errorText.error}`);
-                throw new Error("Security check failed. Please refresh.");
-            }
-
             const data = await response.json();
+
+            if (!response.ok) {
+                console.log(data);
+                throw new Error(`Security check failed: ${JSON.stringify(data)}`);
+            }
 
             if (data.downloadUrl) {
                 dlBtn.textContent = `[Started] ${dlBtn.textContent}`;
                 infoMessage("Link authorized! Starting download...");
-                window.location.href = data.downloadUrl;
+                if (isIOS)
+                    download_item(`${atob(root)}${btoa(param).replaceAll('=', '')}.ptcpacks`, param, ext);
+                else
+                    download_item(data.downloadUrl, param, ext);
 
                 setTimeout(() => {
                     infoMessage(`"Download has initiated. Enjoy! Share this to your friends!" You earn 10XP!`);
@@ -80,10 +84,8 @@
                     addUserXP(10);
                     localStorage.setItem(temp_key, new Date().getTime());
                 }
-            } else {
-                errorMessage(`No download URL received: ${data.error}`);
-                throw new Error("No download URL received.");
-            }
+            } else
+                throw new Error(`No download URL received. ${JSON.stringify(data)}`);
 
         } catch (err) {
             errorMessage(`Error detected: ${err}`);
