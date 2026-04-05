@@ -151,9 +151,9 @@
             }
 
             // for new download system, create a patch to the checkpoint in order to mark that it passes link terminal
-            if(new URL(decodeURIComponent(prog_data.targ)).get('checkpoint')) {
+            if(new URL(decodeURIComponent(prog_data.targ)).searchParams.get('checkpoint')) {
                 await FirebaseModule.patch(
-                    `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint/${new URL(decodeURIComponent(prog_data.targ)).get('checkpoint')}`,
+                    `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint/${new URL(decodeURIComponent(prog_data.targ)).searchParams.get('checkpoint')}`,
                     JSON.stringify({
                         progress: "completed"
                     })
