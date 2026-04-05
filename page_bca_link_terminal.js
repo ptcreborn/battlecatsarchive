@@ -1,35 +1,35 @@
-(async() => {
-            const bypass_button = document.getElementById('bypass_button');
-            const status_msg = document.getElementById('status_msg');
-            const bypass_msg = document.getElementById('bypass_msg');
-            let emo = ['🤔', '😎', '🤩'];
+(async () => {
+    const bypass_button = document.getElementById('bypass_button');
+    const status_msg = document.getElementById('status_msg');
+    const bypass_msg = document.getElementById('bypass_msg');
+    let emo = ['🤔', '😎', '🤩'];
 
-            let time_in_sec = 5000;
+    let time_in_sec = 5000;
 
-            await initFunctions(['FirebaseModule', 'moment']);
-            //activeUsers();
-            // dispatchExpiredUsers();
-            // dispatchExpiredLinkTerminalSession();
-            await loadData();
+    await initFunctions(['FirebaseModule', 'moment']);
+    //activeUsers();
+    // dispatchExpiredUsers();
+    // dispatchExpiredLinkTerminalSession();
+    await loadData();
 
-            async function loadData() {
-                // This is for download bypass including automatically generated url from website and intentionally shorten url
-                if (checkCodeParam('code')) {
-                    initDownloadBypass(getCodeParams('code'));
-                    finalizeAction(downloadBypass);
-                }
-                // This is specifically for account bypass which is used for bypassing accounts. This not to show any progress in the screen
-                else if (checkCodeParam('acc_code')) {
-                    initAccountBypass();
-                    finalizeAction(accountBypass);
-                }
-            }
+    async function loadData() {
+        // This is for download bypass including automatically generated url from website and intentionally shorten url
+        if (checkCodeParam('code')) {
+            initDownloadBypass(getCodeParams('code'));
+            finalizeAction(downloadBypass);
+        }
+        // This is specifically for account bypass which is used for bypassing accounts. This not to show any progress in the screen
+        else if (checkCodeParam('acc_code')) {
+            initAccountBypass();
+            finalizeAction(accountBypass);
+        }
+    }
 
-            function finalizeAction(actionCallback) {
-                let timeout = setInterval(async() => {
-                            if (elementInViewport('bypass_button')) {
-                                time_in_sec = time_in_sec - 40;
-                                status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait ${Math.ceil(time_in_sec/1000)} ${Math.ceil(time_in_sec/1000) > 1 ? `seconds`: `second`}...`;
+    function finalizeAction(actionCallback) {
+        let timeout = setInterval(async () => {
+            if (elementInViewport('bypass_button')) {
+                time_in_sec = time_in_sec - 40;
+                status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait ${Math.ceil(time_in_sec / 1000)} ${Math.ceil(time_in_sec / 1000) > 1 ? `seconds` : `second`}...`;
                 if (time_in_sec <= -1) {
                     clearInterval(timeout);
 
@@ -60,12 +60,12 @@
         let acc_name = decodeURIComponent(getCodeParams('verified'));
         let identity_param = decodeURIComponent(getCodeParams('ongoing'));
 
-        if(!code || !acc_name || !identity_param) {
+        if (!code || !acc_name || !identity_param) {
             window.alert("The url parameter has missing datas.");
             return;
         }
 
-        try {            
+        try {
             acc_name = atob(acc_name);
             identity_param = JSON.parse(atob(identity_param));
         } catch (error) {
@@ -77,17 +77,17 @@
 
         let data = await FirebaseModule.fetchJSON(`${heap_db}/${code}.json`);
 
-        if(!data) {
-            window.alert("The request you are trying to bypass has been canceled or expired.");         
+        if (!data) {
+            window.alert("The request you are trying to bypass has been canceled or expired.");
             return;
         }
 
-        if(data.name != acc_name) {
+        if (data.name != acc_name) {
             window.alert("The requested link might have been altered, the signature of your request and the verification does not matched. Maybe you have skipped some page? All you need to do is to start all over again, no worries. Your can still request for account for free.");
             return;
         }
-        
-        
+
+
         data.progress += 1;
 
         // patch the progress to the heap code
@@ -126,7 +126,7 @@
         bypass_button.style = 'pointer-events: none; opacity: 0.7';
         bypass_button.innerText = "Redirecting...";
         let data = await initDownloadBypass(getCodeParams('code'));
-        if(!data)
+        if (!data)
             return;
 
         let code_data = data[0];
@@ -144,16 +144,16 @@
             await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal/${code}.json`, 'null');
 
             // for mega, push to mega downloader
-            if(new URL(decodeURIComponent(prog_data.targ)).origin == "https://mega.nz") {
+            if (new URL(decodeURIComponent(prog_data.targ)).origin == "https://mega.nz") {
                 localStorage.setItem(`${btoa(prog_data.targ)}`, new Date().getTime());
                 window.location.href = `https://battlecatsarchive.blogspot.com/p/download-center.html?code=${btoa(prog_data.targ)}`;
                 return;
             }
 
             // for new download system, create a patch to the checkpoint in order to mark that it passes link terminal
-            if(new URL(decodeURIComponent(prog_data.targ)).searchParams.get('checkpoint')) {
+            if (new URL(decodeURIComponent(prog_data.targ)).searchParams.get('checkpoint')) {
                 await FirebaseModule.patch(
-                    `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint/${new URL(decodeURIComponent(prog_data.targ)).searchParams.get('checkpoint')}`,
+                    `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint/${new URL(decodeURIComponent(prog_data.targ)).searchParams.get('checkpoint')}.json`,
                     JSON.stringify({
                         progress: "completed"
                     })
@@ -180,7 +180,7 @@
 
         let data = await FirebaseModule.fetchJSON(db);
 
-        if(!data)
+        if (!data)
             return;
 
         let keys = Object.keys(data);
@@ -205,36 +205,36 @@
 
     function dispatchExpiredUsers() {
         const db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users.json`;
-        
+
         fetch(`${db}`)
-        .then(data => data.json())
-        .then(async(data) => {
-            let keys = Object.keys(data);
-            for(const value of keys) {
-                let now = new Date().getTime();
-                if(now - value >= 86400000) { // after 1 day
-                    await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${value}.json`, "null")
+            .then(data => data.json())
+            .then(async (data) => {
+                let keys = Object.keys(data);
+                for (const value of keys) {
+                    let now = new Date().getTime();
+                    if (now - value >= 86400000) { // after 1 day
+                        await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${value}.json`, "null")
+                    }
                 }
-            }
-            //await activeUsers();
-        })
-        .catch(error => window.alert(`Error detected in dispatchExpiredUsers: `, error.message));
+                //await activeUsers();
+            })
+            .catch(error => window.alert(`Error detected in dispatchExpiredUsers: `, error.message));
     }
 
     function dispatchExpiredLinkTerminalSession() {
         const db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal.json`;
 
         fetch(`${db}`)
-        .then(data => data.json())
-        .then(async(data) => {
-            let keys = Object.keys(data);
-            for(const key of keys) {
-                let new_data = data[key];
-                if(!await FirebaseModule.fetchJSON(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${new_data.active}.json`)) 
-                    await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal/${key}.json`, 'null');
-            }
-        })
-        .catch(error => window.alert(`Error detected in dispatchExpiredLinkTerminalSession: `, error.message));
+            .then(data => data.json())
+            .then(async (data) => {
+                let keys = Object.keys(data);
+                for (const key of keys) {
+                    let new_data = data[key];
+                    if (!await FirebaseModule.fetchJSON(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${new_data.active}.json`))
+                        await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal/${key}.json`, 'null');
+                }
+            })
+            .catch(error => window.alert(`Error detected in dispatchExpiredLinkTerminalSession: `, error.message));
 
     }
 
@@ -264,7 +264,7 @@
         var width = el.offsetWidth;
         var height = el.offsetHeight;
 
-        while(el.offsetParent) {
+        while (el.offsetParent) {
             el = el.offsetParent;
             top += el.offsetTop;
             left += el.offsetLeft;
@@ -278,19 +278,19 @@
         );
     }
 
-    
+
     // This function will rank the users for each bypass of ads, or request of accounts.
     async function addUserXP(xp) {
         // must be online
         // must complete the following task
         // must finish the assignment
 
-        let {data, error} = await supabase.auth.getSession();
-        
-        if(error)
+        let { data, error } = await supabase.auth.getSession();
+
+        if (error)
             return;
 
-        if(!data.session)
+        if (!data.session)
             return;
 
         let email = data.session.user.email;
