@@ -3,7 +3,7 @@
 // Created in 2 days
 // FBDB: https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint
 
-window.addEventListener('load', async () => {
+(async () => {
     // check params
     appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
     await initFunctions(['FirebaseModule']);
@@ -109,4 +109,4 @@ window.addEventListener('load', async () => {
         dl_filename.textContent = `${count ? `${atob(api)}${count.ext}` : `cant find request...`}`;
         dl_count.textContent = `${count ? Object.keys(count).length : 0} downloads`;
     }
-}, false);
+})();
