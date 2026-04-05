@@ -71,7 +71,7 @@
                 dlBtn.textContent = `[Started] ${dlBtn.textContent}`;
                 infoMessage("Link authorized! Starting download...");
                 if (isIOS)
-                    download_item(`${atob(root)}${btoa(param).replaceAll('=', '')}`, param, ext);
+                    download_item(`${atob(root)}${btoa(param).replaceAll('=', '')}.ptcpacks`, param, ext);
                 else
                     download_item(data.downloadUrl, param, ext);
 
