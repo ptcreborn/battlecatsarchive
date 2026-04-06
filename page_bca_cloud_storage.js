@@ -22,16 +22,15 @@
     const worker = atob('aHR0cHM6Ly9kcnktZ2xhZGUtZWFlMS5qYXNvbmJvdXJuZTE4MTk5Ny53b3JrZXJzLmRldi8=');
     const isLinkTerminalPassed = await FirebaseModule.fetchJSON(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint/${checkpoint}.json`);
 
-    const ext = await FirebaseModule.fetchJSON(`https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_download_stats/${btoa(param)}/ext.json`);
-
-    dlBtn.textContent = `Download ${param || ''}${ext || ''}`;
-
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
     if (!param || !checkpoint || !isLinkTerminalPassed?.progress || !isLinkTerminalPassed?.api || isLinkTerminalPassed.progress !== "completed") {
+        dlBtn.textContent = `No download will proceed.`;
         errorMessage("Invalid or Expired API Point. Please restart in the beginning and dont try to alter the url.");
         return;
     }
+
+    const ext = await FirebaseModule.fetchJSON(`https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_download_stats/${btoa(param)}/ext.json`);
+
+    dlBtn.textContent = `Download ${param}${ext}`;
 
     message.textContent = `Great! You have make it here! You are now ready to download your mod.`;
     dlBtn.style.pointerEvents = 'auto';
