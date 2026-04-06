@@ -1,4 +1,3 @@
-
 // Created on April 5, 2026
 // Created in 2 days
 // FBDB: https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint
@@ -17,7 +16,6 @@
     let checkpoint = decodeURIComponent(param.get('checkpoint'));
     param = decodeURIComponent(param.get('api'));
 
-    const root = `aHR0cHM6Ly9naXRodWIuY29tL3B0Y3JlYm9ybi9jSFJqWDNKbFltOXlibDl0YjJSei9yZWxlYXNlcy9kb3dubG9hZC9kdW1wLw==`;
     const message = document.getElementById('message');
     const dlBtn = document.getElementById('triggerBtn');
 
@@ -26,7 +24,7 @@
 
     const ext = await FirebaseModule.fetchJSON(`https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_download_stats/${btoa(param)}/ext.json`);
 
-    dlBtn.textContent = `Download ${param}${ext}`;
+    dlBtn.textContent = `Download ${param || ''}${ext || ''}`;
 
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
@@ -70,10 +68,7 @@
             if (data.downloadUrl) {
                 dlBtn.textContent = `[Started] ${dlBtn.textContent}`;
                 infoMessage("Link authorized! Starting download...");
-                if (isIOS)
-                    download_item(`${atob(root)}${btoa(param).replaceAll('=', '')}.ptcpacks`, param, ext);
-                else
-                    download_item(data.downloadUrl, param, ext);
+                download_item(data.downloadUrl, param, ext);
 
                 setTimeout(() => {
                     infoMessage(`"Download has initiated. Enjoy! Share this to your friends!" You earn 10XP!`);
