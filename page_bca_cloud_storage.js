@@ -8,7 +8,7 @@
 
     await initFunctions(['FirebaseModule']);
 
-    // Dispatch!
+    // Dispatch requests more than 30 minutes!
     dispatchCheckpointExpired();
     await sleep(3000);
 
@@ -29,6 +29,7 @@
     }
 
     const ext = await FirebaseModule.fetchJSON(`https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_download_stats/${btoa(param)}/ext.json`);
+    const root = await FirebaseModule.fetchJSON(`https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_download_stats/${btoa(param)}/root.json`);
 
     dlBtn.textContent = `Download ${param}${ext}`;
 
@@ -53,7 +54,8 @@
                 body: JSON.stringify({
                     token: isLinkTerminalPassed.api,
                     key: param,
-                    ext: ext
+                    ext: ext,
+                    root: root || "dump"
                 })
             });
 
