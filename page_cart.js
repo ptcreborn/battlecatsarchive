@@ -250,7 +250,7 @@
                         heap_code: code
                     }));
 
-                await FirebaseModule.patch(`${db}/${account_name}/${code}.json`, JSON.stringify({
+                await FirebaseModule.patch(`${bucket_db}/${account_name}/${code}.json`, JSON.stringify({
                     modified: new Date().getTime(),
                     status: "y"
                 }));
