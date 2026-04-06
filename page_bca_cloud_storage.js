@@ -83,6 +83,7 @@
 
         } catch (err) {
             errorMessage(`Error detected: ${err}`);
+            dlBtn.textContent = `No download will proceed.`;
         }
 
     });
