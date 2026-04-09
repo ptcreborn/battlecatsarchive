@@ -46,7 +46,7 @@
         }          
         
         if(data.name == verification) 
-            await showWidget();
+            showWidget();
 
         await sleep(3000);
 
@@ -79,9 +79,10 @@
         // get all the data from account requests widget and build some widget.
 
         const db_widget = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-account-requests.json`;
+        const fragment = document.createDocumentFragment();
         const widget_parent = document.querySelector('.widget-parent');
 
-        let widget_data = await FirebaseModule.fetchJSON(`${db_widget}`);
+        let widget_data = await FirebaseModule.fetchJSON(`${db_widget}?orderBy="ads"&limitToLast=50`);
         let widget_keys = Object.keys(widget_data);
 
         if(!widget_data) {
@@ -101,7 +102,9 @@
                 </div>
                 <div class='flex-progress flex-items'>${users_data.prog >= users_data.ads ? `Completed`: `${users_data.prog}/${users_data.ads}`}</div>`;
 
-            widget_parent.appendChild(widget_child);
+            fragment.appendChild(widget_child);
         }
+
+        widget_parent.appendChild(fragment);
     }
 })();
