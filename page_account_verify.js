@@ -1,5 +1,5 @@
 (async () => {
-        // verify the progress of account bypass
+    // verify the progress of account bypass
     // decrement the qty value of the account
     // delete session
     // delete heap
@@ -13,8 +13,9 @@
     let ver = '';
     let code = '';
     const email = await getUserEmail();
+    const user_id = await getUserID(email);
 
-    if(!email)
+    if (!email)
         return;
 
     code = params.get('code');
@@ -30,14 +31,14 @@
 
     async function getUserEmail() {
         await initFunctions(['supabase']);
-        let {data, error} = await supabase.auth.getSession();
+        let { data, error } = await supabase.auth.getSession();
 
-        if(error) {
+        if (error) {
             window.alert("You're not logged in the website, please login first.");
             return;
         }
 
-        if(!data.session) {
+        if (!data.session) {
             window.alert("No active user's is logged in the website.");
             return;
         }
@@ -117,7 +118,7 @@
 
         // build b64 data information for the account
         let acc_encoded_info = btoa(JSON.stringify({
-            name: `${ver.split('-').length == 3 ? `EN-${ver}`: `${ver}`} (${heap_info.name})`,
+            name: `${ver.split('-').length == 3 ? `EN-${ver}` : `${ver}`} (${heap_info.name})`,
             date: new Date().getTime(),
             progress: heap_info.progress,
             link: atob(bucket_info.link)
@@ -127,12 +128,24 @@
         await supabase.from('account-requests').insert({
             date: "now()",
             type: heap_info.id,
-            email: email,
+            user_id: user_id,
             code: acc_encoded_info,
             status: true
         });
 
         window.location.href = `https://battlecatsarchive.blogspot.com/p/account-generator.html?resource=${acc_encoded_info}`;
+    }
+
+    async function getUserID(email) {
+        let { data, error } = await supabase.from('users').select('id').eq('email', email);
+
+        if (error)
+            return;
+
+        if (!data || data?.length == 0)
+            return;
+
+        return data[0].id;
     }
 
     function sleep(ms) {
