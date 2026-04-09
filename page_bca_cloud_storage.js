@@ -10,6 +10,7 @@
 
     // Dispatch requests more than 30 minutes!
     dispatchCheckpointExpired();
+    buildRelatedDownloads();
     await sleep(3000);
 
     let param = new URL(window.location.href).searchParams;
@@ -156,5 +157,50 @@
             user_email: email,
             xp_to_add: xp
         });
+    }
+
+    async function buildRelatedDownloads() {
+        const db = `https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_download_keys.json?orderBy="$value"&limitToFirst=50`;
+        await initFunctions(['FirebaseModule']);
+        const localStorageCache = "/bca-cloud-storage-cached";
+        let cached_data = localStorage.getItem(localStorageCache);
+        let data = JSON.parse(cached_data || null)?.data || await FirebaseModule.fetchJSON(`${db}`);
+        let keys = Object.keys(data);
+
+        if (!data || !keys)
+            return;
+
+        let fragment = document.createDocumentFragment();
+
+        for (const key of keys) {
+            let clone = document.querySelector('[related-child-template]').content.cloneNode(true).children[0];
+            let link = clone.querySelector('a');
+            link.href = `https://battlecatsarchive.blogspot.com/p/download-initialize.html?id=${encodeURIComponent(atob(key))}`;
+            link.setAttribute('target', '_blank');
+            link.textContent = `Download ${atob(key)}...`;
+            fragment.appendChild(clone);
+        }
+
+        document.getElementById('related_downloads_container').appendChild(fragment);
+
+        // Check localStorageCache, dispatch if morethan 24 hours...
+        if (cached_data) {
+            let parsed = JSON.parse(cached_data);
+            let now = new Date().getTime();
+            let expiry = parsed.exp;
+
+            if (Math.floor(now - expiry) / 1000 / 60 / 60 >= 24) {
+                // EXPIRED, remove the localstorage    
+                localStorage.removeItem(localStorageCache);
+            }
+        } else {
+            // Create a new cache.
+            let now = new Date();
+            now.setDate(now.getDate() + 1);
+            localStorage.setItem(localStorageCache, JSON.stringify({
+                data: data,
+                exp: now
+            }));
+        }
     }
 })();
