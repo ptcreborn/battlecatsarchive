@@ -11,7 +11,7 @@
     }
 
     async function buildRecentRequest() {
-        let { data, error } = await supabase.from('account-requests').select('date, type(name), email').order('date', { ascending: false }).limit(60);
+        let { data, error } = await supabase.from('account-requests').select('date, type(name), user_id(email)').order('date', { ascending: false }).limit(60);
         if (error) {
             window.alert(error.message);
             return;
