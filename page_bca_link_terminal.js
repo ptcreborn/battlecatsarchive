@@ -148,11 +148,11 @@
             await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal/${code}.json`, 'null');
 
             // for mega, push to mega downloader
-            if (new URL(decodeURIComponent(prog_data.targ)).origin == "https://mega.nz") {
-                localStorage.setItem(`${btoa(prog_data.targ)}`, new Date().getTime());
-                window.location.href = `https://battlecatsarchive.blogspot.com/p/download-center.html?code=${btoa(prog_data.targ)}`;
-                return;
-            }
+            // if (new URL(decodeURIComponent(prog_data.targ)).origin == "https://mega.nz") {
+            //     localStorage.setItem(`${btoa(prog_data.targ)}`, new Date().getTime());
+            //     window.location.href = `https://battlecatsarchive.blogspot.com/p/download-center.html?code=${btoa(prog_data.targ)}`;
+            //     return;
+            // }
 
             // for new download system, create a patch to the checkpoint in order to mark that it passes link terminal
             if (new URL(decodeURIComponent(prog_data.targ)).searchParams.get('checkpoint')) {
