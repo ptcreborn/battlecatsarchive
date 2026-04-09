@@ -7,7 +7,7 @@
     let time_in_sec = 5000;
 
     await initFunctions(['FirebaseModule', 'moment']);
-    
+
     activeUsers();
     dispatchExpiredRequest();
     dispatchOfflineUsers();
@@ -178,8 +178,20 @@
         // this function displays people bypassing link terminal
         const db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users.json?orderBy="$key"&limitToLast=50`;
         const parent_container = document.querySelector('#bypass-widget');
+        const LS_index = `activeusers-${btoa(new URL(window.location.href).pathname)}`;
+        const sec_timeout = 1000 * 30;
+        const now = new Date().getTime();
+        let data;
 
-        let data = await FirebaseModule.fetchJSON(db);
+        if (localStorage.getItem(LS_index)) {
+            let expiry_data = JSON.parse(localStorage.getItem(LS_index)?.date || 0)
+            if (now - expiry_data >= sec_timeout)
+                data = await cache_data();
+            else
+                data = JSON.parse(localStorage.getItem(LS_index)).data;
+        } else
+            data = await cache_data();
+
 
         if (!data)
             return;
@@ -201,6 +213,15 @@
                 <span class="time-ago">${moment(parseInt(item_key)).fromNow()}</span>
                 </div>
             </div>`;
+        }
+
+        async function cache_data() {
+            let temp_data = await FirebaseModule.fetchJSON(db);
+            localStorage.setItem(LS_index, JSON.stringify({
+                date: new Date().getTime(),
+                data: temp_data
+            }));
+            return temp_data;
         }
     }
 
