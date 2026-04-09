@@ -60,7 +60,8 @@
     }
 
     async function finishSetup() {
-        form.style = 'opacity: 0.7; pointer-events: none;';
+        form.style.opacity = "0.7";
+        form.style.pointerEvents = "none";
         let isUsernameExist = await checkIfUsernameExists(username.value);
         if (!isUsernameExist) {
             let { data, error } = await supabase.auth.getSession();
@@ -109,8 +110,8 @@
             }
         } else {
             window.alert("The username is already used. Please try new.");
-            username.style.color = 'red';
-            form.style = 'opacity: 1; pointer-events: auto;';
+            form.style.opacity = "1";
+            form.style.pointerEvents = "auto";
         }
     }
 
