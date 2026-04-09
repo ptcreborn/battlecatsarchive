@@ -6,10 +6,6 @@
     await initFunctions(['supabase', 'moment']);
     await cookieLoadFast();
 
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
     async function buildRecentRequest() {
         let { data, error } = await supabase.from('account-requests').select('date, type(name), user_id(email)').order('date', { ascending: false }).limit(60);
         if (error) {
@@ -18,6 +14,9 @@
         }
 
         let users_email = data.map(item => item.user_id.email);
+
+        console.log(users_email);
+
         let users_data = await supabase.rpc('return_user_prof_img', {
             emails: users_email
         });
