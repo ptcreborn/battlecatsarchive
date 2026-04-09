@@ -160,11 +160,11 @@
     }
 
     async function buildRelatedDownloads() {
-        const db = `https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_download_keys.json?orderBy="$value"&limitToFirst=50`;
+        const db = `https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_download_stats.json?orderBy="date"&limitToLast=20`;
         await initFunctions(['FirebaseModule']);
         const localStorageCache = "/bca-cloud-storage-cached";
         let cached_data = localStorage.getItem(localStorageCache);
-        let data = JSON.parse(cached_data || null)?.data || await FirebaseModule.fetchJSON(`${db}`);
+        let data = JSON.parse(cached_data)?.data || await FirebaseModule.fetchJSON(`${db}`);
         let keys = Object.keys(data);
 
         if (!data || !keys)
@@ -189,7 +189,7 @@
             let now = new Date().getTime();
             let expiry = parsed.exp;
 
-            if (Math.floor(now - expiry) / 1000 / 60 / 60 >= 24) {
+            if (Math.floor(now - expiry) / 1000 >= 30) {
                 // EXPIRED, remove the localstorage    
                 localStorage.removeItem(localStorageCache);
             }
