@@ -2,6 +2,70 @@
 // Made for 3 days
 // April 2, 2026
 
+//   <div data="Little Chat" style="
+//     border: 1px solid black;
+//     background: beige;
+//     margin-top: 30px;
+// ">
+//   <h4 style="padding-left: 10px; padding-top: 5px;">Online Chat</h4>
+// <div id='bca_parent_chat_container' style="
+//     display: block;
+//     height: 500px;
+//     border: 1px solid #a7a7a7;
+//     min-height: 50px;
+//     max-height: 500px;
+//     overflow: auto;
+// 	opacity: 0.7;
+// 	pointer-events: none;
+// "><button id='chat_load_more' style="
+//     width: 100%;
+//     border: 1px solid #b7b7b7;
+// ">Load more comments</button><div id='bca_chat_box_container'  style="
+//     border: 1px solid #dadada;
+//     display: flex;
+//     align-items: center;
+//     flex-direction: column;
+//   	justify-content: flex-end;
+// ">
+//   </div></div>
+// <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6102173297126028"
+//      crossorigin="anonymous"></script>
+// <!-- chat_box -->
+// <ins class="adsbygoogle"
+//      style="display:inline-block;width:100%;height:90px"
+//      data-ad-client="ca-pub-6102173297126028"
+//      data-ad-slot="4485715150"></ins>
+// <script>
+//      (adsbygoogle = window.adsbygoogle || []).push({});
+// </script>
+// <form id='form_bca_chat_box' style="
+//     display: flex;
+//     align-items: center;
+//     min-height: 50px;
+//     border: 1px solid red;
+//     opacity: 0.7;
+//     pointer-events: none;
+// " data-gtm-form-interact-id="0">
+//   <img chat-editor-prof="" loading="lazy" style="
+//     width: 30px !important;
+//     height: 50px !important;
+//     object-fit: cover;
+//     align-self: flex-start;
+// "><textarea id='bca_chat_content' type="text" required="" placeholder="Type something..." style="
+//     resize: none;
+//     width: 100%;
+//     height: 50px;
+//     flex: auto;
+// " data-gtm-form-interact-field-id="0"></textarea>
+// <button type='button' id='bca_submit_chat' style="
+//     flex: 1 1 70px;
+//     height: 50px;
+//     align-self: flex-end;
+//     border: 1px solid #d0d0d0;
+//     min-width: 50px;
+// ">Send</button></form>
+// </div>
+
 (async () => {
     let user_email = '';
     let username = '';
