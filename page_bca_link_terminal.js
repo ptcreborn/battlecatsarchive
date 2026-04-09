@@ -7,9 +7,13 @@
     let time_in_sec = 5000;
 
     await initFunctions(['FirebaseModule', 'moment']);
-    //activeUsers();
-    // dispatchExpiredUsers();
-    // dispatchExpiredLinkTerminalSession();
+    
+    activeUsers();
+    dispatchExpiredRequest();
+    dispatchOfflineUsers();
+
+    //  dispatchExpiredUsers();
+    //  dispatchExpiredLinkTerminalSession();
     await loadData();
 
     async function loadData() {
@@ -172,7 +176,7 @@
 
     async function activeUsers() {
         // this function displays people bypassing link terminal
-        const db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users.json`;
+        const db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users.json?orderBy="$key"&limitToLast="50"`;
         const parent_container = document.querySelector('#bypass-widget');
 
         let data = await FirebaseModule.fetchJSON(db);
@@ -296,5 +300,67 @@
             user_email: email,
             xp_to_add: xp
         });
+    }
+
+
+
+    async function dispatchExpiredRequest() {
+        // Morethan 60 minutes dispatch!
+        let minutes_boundary = 1000 * 60 * 60;
+        let expiry_time = new Date().getTime() - minutes_boundary;
+        const lt_db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal.json`;
+        const xhr = new XMLHttpRequest();
+
+        let data = await FirebaseModule.fetchJSON(`${lt_db}?orderBy="active"&endAt="${expiry_time}"`);
+
+        let to_dispatched_data = {};
+
+        Object.keys(data).forEach(key => to_dispatched_data[key] = null);
+
+        xhr.open("PATCH", lt_db, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    console.log("Success! Old records deleted.");
+                } else {
+                    console.error("Error deleting records:", xhr.responseText);
+                }
+            }
+        };
+
+        // 2. Send the manifest as a JSON string
+        xhr.send(JSON.stringify(to_dispatched_data));
+    }
+
+    async function dispatchOfflineUsers() {
+        // Morethan 60 minutes dispatch!
+        let minutes_boundary = 1000 * 60 * 60 * 24;
+        let expiry_time = new Date().getTime() - minutes_boundary;
+        const lt_db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users.json`;
+        const xhr = new XMLHttpRequest();
+
+        let data = await FirebaseModule.fetchJSON(`${lt_db}?orderBy="$key"&endAt="${expiry_time}"`);
+
+        let to_dispatched_data = {};
+
+        Object.keys(data).forEach(key => to_dispatched_data[key] = null);
+
+        xhr.open("PATCH", lt_db, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    console.log("Success! Old records deleted.");
+                } else {
+                    console.error("Error deleting records:", xhr.responseText);
+                }
+            }
+        };
+
+        // 2. Send the manifest as a JSON string
+        xhr.send(JSON.stringify(to_dispatched_data));
     }
 })();
