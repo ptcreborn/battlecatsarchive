@@ -176,7 +176,7 @@
 
     async function activeUsers() {
         // this function displays people bypassing link terminal
-        const db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users.json?orderBy="$key"&limitToLast="50"`;
+        const db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users.json?orderBy="$key"&limitToLast=50`;
         const parent_container = document.querySelector('#bypass-widget');
 
         let data = await FirebaseModule.fetchJSON(db);
@@ -311,7 +311,7 @@
         const lt_db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal.json`;
         const xhr = new XMLHttpRequest();
 
-        let data = await FirebaseModule.fetchJSON(`${lt_db}?orderBy="active"&endAt="${expiry_time}"`);
+        let data = await FirebaseModule.fetchJSON(`${lt_db}?orderBy="active"&endAt=${expiry_time}`);
 
         let to_dispatched_data = {};
 
