@@ -15,8 +15,6 @@
 
         let users_email = data.map(item => item.user_id.email);
 
-        console.log(users_email);
-
         let users_data = await supabase.rpc('return_user_prof_img', {
             emails: users_email
         });
