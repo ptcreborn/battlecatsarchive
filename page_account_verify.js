@@ -110,6 +110,15 @@
             `null`
         )
 
+        // store to account-requests for future reference
+        await supabase.from('account-requests').insert({
+            date: "now()",
+            type: heap_info.id,
+            user_id: user_id,
+            code: acc_encoded_info,
+            status: true
+        });
+
         // update status from the bucket
         await FirebaseModule.patch(bucket_db, JSON.stringify({
             modified: new Date().getTime(),
@@ -123,15 +132,6 @@
             progress: heap_info.progress,
             link: atob(bucket_info.link)
         }));
-
-        // store to account-requests for future reference
-        await supabase.from('account-requests').insert({
-            date: "now()",
-            type: heap_info.id,
-            user_id: user_id,
-            code: acc_encoded_info,
-            status: true
-        });
 
         window.location.href = `https://battlecatsarchive.blogspot.com/p/account-generator.html?resource=${acc_encoded_info}`;
     }
