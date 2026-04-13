@@ -85,6 +85,8 @@
 
         // get informations from the accounts bucket;
         const bucket_db = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_bucket/${ver}/${heap_info.name}/${heap_info.code}.json`;
+        const dispatch_bucket = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_bucket/${ver}/${heap_info.name}.json`;
+
         let bucket_info = await FirebaseModule.fetchJSON(`${bucket_db}`);
 
         if (!bucket_info || bucket_info == "null") {
@@ -133,6 +135,9 @@
             link: atob(bucket_info.link)
         }));
 
+        // dispatch used code from the bucket
+        await dispatchUsedCode(dispatch_bucket);
+
         window.location.href = `https://battlecatsarchive.blogspot.com/p/account-generator.html?resource=${acc_encoded_info}`;
     }
 
@@ -151,4 +156,44 @@
     function sleep(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
+
+    async function dispatchUsedCode(dispatch_bucket) {
+        let done_accounts = await FirebaseModule.fetchJSON(dispatch_bucket);
+
+        if (!done_accounts || done_accounts == 'null')
+            return;
+
+        let keys = Object.keys(done_accounts);
+        let to_dispatch = {};
+
+        keys.filter(key => {
+            if (done_accounts[key].status == "z") {
+                to_dispatch[key] = null;
+                return key;
+            }
+        });
+
+        let res = await updateFirebase(dispatch_bucket, JSON.stringify(to_dispatch));
+
+        if(!res)
+            return;
+    }
+
+    const updateFirebase = async (url, json_data) => {
+        return new Promise(async (resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open("PATCH", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    resolve("Updated:" + JSON.parse(xhr.responseText));
+                }
+                else {
+                    window.alert("error in dispatching used codes.");
+                    reject(null);
+                }
+            };
+        });
+    };
 })();
