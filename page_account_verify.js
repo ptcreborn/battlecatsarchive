@@ -110,7 +110,15 @@
         await FirebaseModule.patch(
             `https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart/${btoa(email)}/${params.get('cart')}.json`,
             `null`
-        )
+        );
+
+        // build b64 data information for the account
+        let acc_encoded_info = btoa(JSON.stringify({
+            name: `${ver.split('-').length == 3 ? `EN-${ver}` : `${ver}`} (${heap_info.name})`,
+            date: new Date().getTime(),
+            progress: heap_info.progress,
+            link: atob(bucket_info.link)
+        }));
 
         // store to account-requests for future reference
         await supabase.from('account-requests').insert({
@@ -125,14 +133,6 @@
         await FirebaseModule.patch(bucket_db, JSON.stringify({
             modified: new Date().getTime(),
             status: "z"
-        }));
-
-        // build b64 data information for the account
-        let acc_encoded_info = btoa(JSON.stringify({
-            name: `${ver.split('-').length == 3 ? `EN-${ver}` : `${ver}`} (${heap_info.name})`,
-            date: new Date().getTime(),
-            progress: heap_info.progress,
-            link: atob(bucket_info.link)
         }));
 
         // dispatch used code from the bucket
@@ -175,11 +175,11 @@
 
         let res = await updateFirebase(dispatch_bucket, JSON.stringify(to_dispatch));
 
-        if(!res)
+        if (!res)
             return;
     }
 
-    const updateFirebase = async (url, json_data) => {
+    async function updateFirebase(url, json_data) {
         return new Promise(async (resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.open("PATCH", url, true);
