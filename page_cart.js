@@ -147,6 +147,12 @@
                     queryP(clone, 'cart-added-date').textContent = `Order #: ${key}`;
                     queryP(clone, 'cart-status').textContent = `${stock < 1 ? "Out of Stock" : "Creating"}`;
                     queryP(clone, 'acc-ads').textContent = `${user_data.ads}x ads`;
+                    
+                    if(stock == 0) {
+                        // out of stock
+                        queryP(clone, 'cart-item-status').textContent = `Currently there's no stock available in the server.`;                        
+                        queryP(clone, 'exact-time').textContent = `This item is currently out of stock, please request re-stock in the official store.`;
+                    }
 
                     // Cancel Button
                     queryP(clone, 'btn-cancel-order').addEventListener('click', async () => {
@@ -154,7 +160,7 @@
                     });
 
                     // Activating Get Button depending on conditions
-                    if (isAccountReady()) {
+                    if (isAccountReady() && stock > 0) {
                         // Add Button
                         queryP(clone, 'btn-get-acc').addEventListener('click', async (event) => {
                             getAccount(key, event.target);
@@ -207,7 +213,7 @@
                     }
                     resolve("Done Building");
                 } catch (error) {
-                    window.alert("Error has occured. Please report this to admin. ", error);
+                    window.alert("Error has occured. Please report this to admin or reload the page for updates. ", error);
                     reject("Error");
                 }
             });
