@@ -122,13 +122,15 @@
 
         let payload_json = {};
         for (const item of links_arr) {
-            let key_date = (new Date().getTime() + performance.now()).toString().replaceAll('.', '');
+            let key_date = new Date().getTime();
 
             payload_json[key_date] = {
                 link: btoa(item),
                 status: "x",
                 modified: key_date
             }
+
+            await sleep(5);
             // await FirebaseModule.post(`${fbdb}`, JSON.stringify({
             //     link: btoa(item),
             //     status: "x",
