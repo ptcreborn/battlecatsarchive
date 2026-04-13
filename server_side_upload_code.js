@@ -18,14 +18,14 @@
     btn_version.addEventListener('click', async () => {
         let lang = window.prompt("Add language such as [EN, JP, KR]");
         let version = window.prompt("Please add a version, format (15-1-0)");
-        
+
         try {
             if (version.split('-').length != 3) {
                 window.alert("Invalid format.");
                 return;
             }
 
-            if(lang.length != 2) {
+            if (lang.length != 2) {
                 window.alert("Language would contain for only 2 characters");
                 return;
             }
@@ -41,7 +41,7 @@
             return;
         }
 
-        if(lang == "EN")
+        if (lang == "EN")
             lang = '';
 
         else lang = `/${lang}-`;
@@ -50,7 +50,7 @@
             [`${lang}${version}`]: new Date().getTime()
         }));
 
-        await DiscordAPI.post (
+        await DiscordAPI.post(
             useremail,
             JSON.parse(atob(localStorage.getItem('user'))).profile,
             `NEW ACCOUNT VERSION WAS ADDED! by Admin ${useremail}`,
@@ -120,13 +120,25 @@
 
         const fbdb = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_bucket/${acc_ver}/${account_name}.json`;
 
+        let payload_json = {};
         for (const item of links_arr) {
-            await FirebaseModule.post(`${fbdb}`, JSON.stringify({
+            let key_date = (new Date().getTime() + performance.now()).toString().replaceAll('.', '');
+
+            payload_json[key_date] = {
                 link: btoa(item),
                 status: "x",
-                modified: new Date().getTime()
-            }));
+                modified: key_date
+            }
+            // await FirebaseModule.post(`${fbdb}`, JSON.stringify({
+            //     link: btoa(item),
+            //     status: "x",
+            //     modified: new Date().getTime()
+            // }));
         }
+
+        let res = await sendPATCH(`${fbdb}`, JSON.stringify(payload_json));
+        if (!res)
+            return;
 
         // update the count of supabase
         await supabase.rpc('add_account_stocks', {
@@ -137,7 +149,7 @@
         // Notify to Discord ...
         // username, avatar, title, message, thumbnail, url, webhook
 
-        await DiscordAPI.post (
+        await DiscordAPI.post(
             useremail,
             JSON.parse(atob(localStorage.getItem('user'))).profile,
             `NEW RESTOCK ACCOUNTS! by Admin ${useremail}`,
@@ -204,9 +216,7 @@
 
         keys.forEach(acc_name => {
             let item_keys = Object.keys(data[acc_name]);
-            let count = item_keys.filter(active_accs => {
-                return data[acc_name][active_accs].status == "x";
-            });
+            let count = item_keys.filter(active_accs => data[acc_name][active_accs].status == "x");
             result_json.push({
                 acc: acc_name,
                 qty: count.length
@@ -236,9 +246,8 @@
         const select = document.getElementById('type_accounts');
         document.querySelectorAll('#type_accounts option').forEach(item => item.remove());
 
-        for (const items of accounts) {
+        for (const items of accounts)
             select.innerHTML += `<option name="${items.name}" value="${items.id}">${items.name}</option>`;
-        }
     }
 
     async function checkSupply() {
@@ -288,6 +297,31 @@
             await buildTable();
 
             selector_version.removeAttribute('disabled');
+        });
+    }
+
+    async function sendPATCH(url, json_data) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+
+            xhr.open("PATCH", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onreadystatechange = function () {
+                // Only do something when the request is FINISHED (state 4)
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        // Return the parsed data only
+                        resolve(JSON.parse(xhr.responseText));
+                    } else {
+                        // Only alert/reject if it actually failed
+                        window.alert("Error: " + xhr.status);
+                        reject(xhr.status);
+                    }
+                }
+            };
+
+            xhr.send(json_data);
         });
     }
 })();
