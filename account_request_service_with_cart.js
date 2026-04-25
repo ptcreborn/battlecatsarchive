@@ -316,10 +316,8 @@
             // Main Execution
             if (!isUpdating) {
                 userEmail = await checkIfUserOnline();
-                if (!userEmail) {
-                    window.alert(`Invalid user email address, please login first.`);
+                if (!userEmail) 
                     return;
-                }
 
                 // Fresh Start
                 await buildCompactMenu();
