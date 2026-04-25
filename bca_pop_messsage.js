@@ -29,7 +29,7 @@
   display: none;
   position: absolute;
   right: 30px; top: 10px;
-  font-size: 28px;
+  font-size: 2rem;
   cursor: pointer;
   color: #333;
   z-index: 100;
