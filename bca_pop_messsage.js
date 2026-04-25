@@ -138,5 +138,5 @@
 
   setTimeout(() => {
     document.querySelector('.close-modal').style.display = 'block';
-  }, 5000);
+  }, 3000);
 })();
