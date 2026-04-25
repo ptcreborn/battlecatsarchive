@@ -31,7 +31,7 @@
 
         await initFunctions(['FirebaseModule', 'moment']);
         const parent = document.getElementById('acc_req_lowstock');
-        let data = await FirebaseModule.fetchJSON('https://storehaccounts-website-default-rtdb.firebaseio.com/lowkeep.json?orderBy="$key"&limitToFirst=20');
+        let data = await FirebaseModule.fetchJSON('https://storehaccounts-website-default-rtdb.firebaseio.com/lowkeep.json?orderBy="$key"&limitToLast=20');
         let keys = Object.keys(data);
         keys = keys.reverse();
 
