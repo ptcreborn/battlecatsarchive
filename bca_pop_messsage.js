@@ -1,6 +1,3 @@
-// Created very Fast April 26, 2026
-// Using adsense code from PTC/ZER Adsense account
-
 (async () => {
   const style_str = `  /* Modal Background */
 .modal-overlay {
@@ -141,5 +138,5 @@
 
   setTimeout(() => {
     document.querySelector('.close-modal').style.display = 'block';
-  }, 3000);
+  }, 5000);
 })();
