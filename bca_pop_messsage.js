@@ -29,7 +29,7 @@
   display: none;
   position: absolute;
   right: 30px; top: 10px;
-  font-size: 2rem;
+  font-size: 3rem;
   cursor: pointer;
   color: #333;
   z-index: 100;
@@ -125,7 +125,7 @@
     } else {
       // check if rested after 2 minutes    
       modal.style.opacity = '0.0001';
-      if (now - LSMODAL >= 20000) {
+      if (now - LSMODAL >= 120000) {
         // show modal
         showModal();
         // set new time
