@@ -75,9 +75,11 @@
 
   const modal = document.getElementById("bca_info_modal");
   const span = document.getElementsByClassName("close-modal")[0];
+  const pathname = new URL(window.location.href).pathname;
 
   // Close modal when clicking (x)
-  initModal();
+  if (!pathname.includes('/p/'))
+    initModal();
 
   span.onclick = function () {
     closeModal();
