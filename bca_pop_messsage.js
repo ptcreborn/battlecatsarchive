@@ -44,11 +44,13 @@
     border-radius: 0;
     padding: 20px;
 ">
+  <div style='display: block; height: 100px max-height: 120px;'>
       <!-- ptc_pop_ads -->
 <ins class="adsbygoogle"
-     style="display:inline-block;width:100%;height:120px"
+     style="display:inline-block;width:100%; height: 100px;"
      data-ad-client="ca-pub-7151582089386175"
      data-ad-slot="8441758107"></ins>
+  </div>
       <h2 id='bca_modal_message'>Hello Catters!</h2><span>We gladly welcome you to this website! There are some updates you would want to know. This notif box will tell everything you need to know. Thank you.</span>
 <br><br>
       <a href='https://battlecatsarchive.blogspot.com/2026/04/ptc-battle-cats-mods-en-update-v15-3-0-mediafire-download.html'>EN 15-3-0 is released!</a><br/>
