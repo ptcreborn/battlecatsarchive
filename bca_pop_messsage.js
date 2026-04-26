@@ -26,13 +26,14 @@
 
 /* Close Button */
 .close-modal {
-  display: none;
-  position: absolute;
-  right: 30px; top: 10px;
-  font-size: 3rem;
-  cursor: pointer;
-  color: #333;
-  z-index: 100;
+    display: none;
+    position: absolute;
+    right: 35px;
+    top: 20px;
+    font-size: 3rem;
+    cursor: pointer;
+    color: #333;
+    z-index: 100;
 }`;
 
   const html_str = `<div id="bca_info_modal" class="modal-overlay" style="display: block;">
