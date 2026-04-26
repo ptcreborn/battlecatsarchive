@@ -128,7 +128,7 @@
     } else {
       // check if rested after 2 minutes    
       modal.style.opacity = '0.0001';
-      if (now - LSMODAL >= 120000) {
+      if (now - LSMODAL >= 30000) {
         // show modal
         showModal();
         // set new time
