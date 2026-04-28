@@ -46,11 +46,13 @@
     padding: 20px;
 ">
   <div style='display: block; height: 100px max-height: 120px;'>
-      <!-- ptc_pop_ads -->
+<!-- ptc_pop_ads -->
 <ins class="adsbygoogle"
-     style="display:inline-block;width:100%; height: 100px;"
+     style="display:block"
      data-ad-client="ca-pub-7151582089386175"
-     data-ad-slot="8441758107"></ins>
+     data-ad-slot="8441758107"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
   </div>
       <h2 id='bca_modal_message'>Hello Catters!</h2><span>We gladly welcome you to this website! There are some updates you would want to know. This notif box will tell everything you need to know. Thank you.</span>
 <br><br>
@@ -130,7 +132,7 @@
     } else {
       // check if rested after 2 minutes    
       modal.style.opacity = '0.0001';
-      if (now - LSMODAL >= 120000) {
+      if (now - LSMODAL >= 3600000) {
         // show modal
         showModal();
         // set new time
