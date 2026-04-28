@@ -547,7 +547,7 @@
 
                 queryP(clone, 'store-account-sold').textContent = `${item.request_count} sold`;
                 queryP(clone, 'store-account-stats').textContent = `${await getTotalRequester(item.id)} users like this...`;
-                queryP(clone, 'store-account-info').querySelectorAll('p')[0].textContent = `${item.description}`; // cat food
+                queryP(clone, 'store-account-info').querySelectorAll('p')[0].textContent = `${item.description.replaceAll('\n', '<br/>')}`; // cat food
 
                 // queryP(clone, 'store-account-info').querySelectorAll('p')[1].textContent = `${item.description.split('\n')[1]}`; // XP
 
