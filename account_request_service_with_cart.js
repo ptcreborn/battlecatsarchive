@@ -546,6 +546,7 @@
                     queryP(clone, 'store-account-stocks').classList.add('low-stock');
 
                 queryP(clone, 'store-account-sold').textContent = `${item.request_count} sold`;
+                queryP(clone, 'store-learn-more').href = `${item.link} ? ${item.link} : 'https://battlecatsarchive.blogspot.com/search/label/accounts'`;
                 queryP(clone, 'store-account-stats').textContent = `${await getTotalRequester(item.id)} users like this...`;
                 queryP(clone, 'store-account-info').querySelectorAll('p')[0].innerHTML = `${item.description.replaceAll('\n', '<br/>')
                     .replaceAll('Consumables', '<b>Consumables</b>')
