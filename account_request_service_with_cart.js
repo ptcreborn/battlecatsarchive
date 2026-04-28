@@ -554,6 +554,7 @@
                     .replaceAll('Upgrades', '<b>Upgrades</b>')
                     .replaceAll('Stages', '<b>Stages</b>')
                     .replaceAll('Talents', '<b>Talents</b>')
+                    .replaceAll('Medals', '<b>Medals</b>')
                 }`; // cat food
 
                 // queryP(clone, 'store-account-info').querySelectorAll('p')[1].textContent = `${item.description.split('\n')[1]}`; // XP
