@@ -79,7 +79,7 @@
             time: new Date().getTime(),
             name: account_name,
             id: account_id,
-            ver: `${acc_ver.split('-').length == 3 ? `EN-${acc_ver}`: `${acc_ver}`} (${account_name})`
+            ver: `${acc_ver.split('-').length == 3 ? `EN-${acc_ver}` : `${acc_ver}`} (${account_name})`
         }));
 
         url_id = JSON.parse(url_id).name;
@@ -250,13 +250,13 @@
                 <div class="ui two buttons">
                     <button ${qty <= 0 ? "style='display: none;'" : ""} onclick="request('${val.name}', ${val.id}, ${val.ads})" class="ui green button">Request</button>
                     <button ${qty > 99 ? "style='display: none;'" : ""} class="ui red button" onclick="notifyAdminReplenish(this, '${btoa(JSON.stringify({
-                        acc_name: val.name,
-                        acc_ver: account_version.value,
-                        username: username,
-                        userprofimg: user_prof_img,
-                        email: userEmail,
-                        stocks: qty
-                    }))}')">Ask to Replenish</button>
+                    acc_name: val.name,
+                    acc_ver: account_version.value,
+                    username: username,
+                    userprofimg: user_prof_img,
+                    email: userEmail,
+                    stocks: qty
+                }))}')">Ask to Replenish</button>
                 </div>
                 </div>
             </div>`;
@@ -316,7 +316,7 @@
             // Main Execution
             if (!isUpdating) {
                 userEmail = await checkIfUserOnline();
-                if (!userEmail) 
+                if (!userEmail)
                     return;
 
                 // Fresh Start
@@ -337,11 +337,11 @@
                 //         return;
                 //     }
 
-        //             window.alert(`Dear user,
-        
-        // You have requested ${userRequestLimit} for today.
-        // The max account request is ${maxLimit} to avoid
-        // abusing the server. Thank you!`);                
+                //             window.alert(`Dear user,
+
+                // You have requested ${userRequestLimit} for today.
+                // The max account request is ${maxLimit} to avoid
+                // abusing the server. Thank you!`);                
                 // else {
 
                 //     await initFunctions(['FirebaseModule']);
@@ -534,19 +534,21 @@
 
             const clone = template.content.cloneNode(true).children[0];
 
-            new Promise(async(resolve, reject) => {
+            new Promise(async (resolve, reject) => {
                 let qty = await fetchQty(item.name);
 
                 // text
                 clone.id = `parent-${item.id}`;
+
                 queryP(clone, 'store-account-name').textContent = `${item.name}`;
                 queryP(clone, 'store-account-ads').textContent = `${item.ads}x ADS`;
                 queryP(clone, 'store-account-stocks').textContent = `${qty} left`;
+                queryP(clone, 'store-learn-more').href = `${item.link ? item.link : 'https://battlecatsarchive.blogspot.com/search/label/accounts'}`;
+
                 if (qty < 50)
                     queryP(clone, 'store-account-stocks').classList.add('low-stock');
 
                 queryP(clone, 'store-account-sold').textContent = `${item.request_count} sold`;
-                queryP(clone, 'store-learn-more').href = `${item.link} ? ${item.link} : 'https://battlecatsarchive.blogspot.com/search/label/accounts'`;
                 queryP(clone, 'store-account-stats').textContent = `${await getTotalRequester(item.id)} users like this...`;
                 queryP(clone, 'store-account-info').querySelectorAll('p')[0].innerHTML = `${item.description.replaceAll('\n', '<br/>')
                     .replaceAll('Consumables', '<b>Consumables</b>')
@@ -556,7 +558,7 @@
                     .replaceAll('Stages', '<b>Stages</b>')
                     .replaceAll('Talents', '<b>Talents</b>')
                     .replaceAll('Medals', '<b>Medals</b>')
-                }`; // cat food
+                    }`; // cat food
 
                 // queryP(clone, 'store-account-info').querySelectorAll('p')[1].textContent = `${item.description.split('\n')[1]}`; // XP
 
@@ -624,7 +626,7 @@
             let {
                 data,
                 error
-            } = await supabase.from('accounts').select('id, name, ads, description, request_count');
+            } = await supabase.from('accounts').select('id, name, ads, description, request_count, link');
 
             if (error) {
                 window.alert(error.message);
@@ -692,13 +694,13 @@
         let elem_cart = document.querySelector('#bca_cart span');
         let count = elem_cart.textContent;
 
-        if(count == "") {
+        if (count == "") {
             count = 1;
             elem_cart.textContent = count;
             elem_cart.style.display = `block`;
             return;
-        }            
-        
+        }
+
         count = parseInt(count);
         count += 1;
         elem_cart.textContent = count;
