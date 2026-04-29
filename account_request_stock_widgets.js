@@ -50,10 +50,10 @@
                         object-fit: cover;
                         margin: 5px;
                     "><div><span style="
-                        color: #c9c9c9;
+                        color: #a7a7a7;
                         padding: 0 5px;
                         font-weight: 550;
-                    ">${item.username}</span> has reported...<br><p style='line-height: 1.2rem;font-size: 0.9rem;'>Please notice <i>[${item.acc_name}... v${item.accver}]</i> — <i>${item.stock} account${item.stock > 1 ? `s` : ``} left.</i></p></div><span style="margin-left: auto; padding: 0 5px; font-weight: 550; line-height: 1rem; font-size: 12px; opacity: 0.7;">${moment(parseInt(key)).fromNow()}</span></a>`;
+                    ">${item.username}</span> has reported...<br><p style='line-height: 1.2rem;font-size: 14px;color: #c57246 !important;'>Please notice <i>[${item.acc_name}... v${item.accver}]</i> — <i>${item.stock} account${item.stock > 1 ? `s` : ``} left.</i></p></div><span style="margin-left: auto; padding: 0 5px; font-weight: 550; line-height: 1rem; font-size: 12px; opacity: 0.7;">${moment(parseInt(key)).fromNow()}</span></a>`;
         });
 
     }
