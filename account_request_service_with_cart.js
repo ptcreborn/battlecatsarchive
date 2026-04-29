@@ -582,7 +582,7 @@
                             acc_ver: acc_ver,
                             username: username,
                             userprofimg: user_prof_img,
-                            emai: userEmail,
+                            email: userEmail,
                             stocks: await fetchQty(item.name)
                         })));
                     });
