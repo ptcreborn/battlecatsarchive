@@ -7,7 +7,7 @@
     await cookieLoadFast();
 
     async function buildRecentRequest() {
-        let { data, error } = await supabase.from('account-requests').select('date, type(name), user_id(email, prof_img)').order('date', { ascending: false }).limit(60);
+        let { data, error } = await supabase.from('account-requests').select('date, type(name), user_id(username, email, prof_img)').order('date', { ascending: false }).limit(60);
         if (error) {
             window.alert(error.message);
             return;
@@ -30,12 +30,13 @@
         // }
 
         let users_data = data.map(item => item.user_id.prof_img);
+        let username_data = data.map(item => item.user_id.username);
 
         let collections_html = '';
 
         for (let i = 0; i < data.length; i++) {
             let elem = data[i];
-            let user_data = users_data[i];
+            let user_data = username_data[i];
 
             let html = `<div class='acc_req_child'>
                 <img alt='${elem.user_id.email} requests an account' loading='lazy' onerror='this.src = "https://i.ibb.co/cXNr777G/image.png"; this.onerror=null' src='${user_data.split('#')[1]}'/>
