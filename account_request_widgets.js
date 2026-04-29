@@ -41,8 +41,6 @@
             let user_data = username_data[i];
             let user_prof = prof_data[i];
 
-            console.log(prof_data[i]);
-
             let html = `<div class='acc_req_child'>
                 <img alt='${email} requests an account' loading='lazy' onerror='this.src = "https://i.ibb.co/cXNr777G/image.png"; this.onerror=null' src='${user_prof}'/>
                 <div class='responsive-text'><a style='background: ${getRandomGradient()}; color: white;' class='acc_req_user_link ' href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${email}'>${user_data}</a> already got <a href='https://battlecatsarchive.blogspot.com/search/label/accounts'> ${elem.type.name}</a> account</div>
