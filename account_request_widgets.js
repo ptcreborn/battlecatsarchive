@@ -29,18 +29,21 @@
         //     return;
         // }
 
-        let users_data = data.map(item => item.user_id.prof_img);
+        let prof_data = data.map(item => item.user_id.prof_img);
         let username_data = data.map(item => item.user_id.username);
+        let email_data = data.map(item => item.user_id.email);
 
         let collections_html = '';
 
         for (let i = 0; i < data.length; i++) {
             let elem = data[i];
+            let email = email_data[i];
             let user_data = username_data[i];
+            let user_prof = prof_data[i];
 
             let html = `<div class='acc_req_child'>
-                <img alt='${elem.user_id.email} requests an account' loading='lazy' onerror='this.src = "https://i.ibb.co/cXNr777G/image.png"; this.onerror=null' src='${user_data.split('#')[1]}'/>
-                <div class='responsive-text'><a style='background: ${getRandomGradient()}; color: white;' class='acc_req_user_link ' href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${elem.user_id.email}'>${user_data}</a> already got <a href='https://battlecatsarchive.blogspot.com/search/label/accounts'> ${elem.type.name}</a> account</div>
+                <img alt='${email} requests an account' loading='lazy' onerror='this.src = "https://i.ibb.co/cXNr777G/image.png"; this.onerror=null' src='${user_prof}'/>
+                <div class='responsive-text'><a style='background: ${getRandomGradient()}; color: white;' class='acc_req_user_link ' href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${email}'>${user_data}</a> already got <a href='https://battlecatsarchive.blogspot.com/search/label/accounts'> ${elem.type.name}</a> account</div>
                 <div class='responsive-text passive-text'>${moment(elem.date).fromNow()}</div>
             </div>`;
 
