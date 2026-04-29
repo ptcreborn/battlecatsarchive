@@ -175,6 +175,7 @@
          flex-grow: 3;
          padding-right: 10px;
          line-height: 15px;
+         color: #b2b2b2;
          ">
          <span style="
             font-weight: 600;
