@@ -558,6 +558,7 @@
                     .replaceAll('Stages', '<b>Stages</b>')
                     .replaceAll('Talents', '<b>Talents</b>')
                     .replaceAll('Medals', '<b>Medals</b>')
+                    .replaceAll('Treasures', '<b>Treasures</b>')
                     }`; // cat food
 
                 // queryP(clone, 'store-account-info').querySelectorAll('p')[1].textContent = `${item.description.split('\n')[1]}`; // XP
@@ -626,7 +627,7 @@
             let {
                 data,
                 error
-            } = await supabase.from('accounts').select('id, name, ads, description, request_count, link');
+            } = await supabase.from('accounts').select('id, name, ads, description, request_count, link').order('ads', {ascending: false});
 
             if (error) {
                 window.alert(error.message);
