@@ -15,7 +15,7 @@
 
         elem.classList.add('focused');
         tab.classList.add('tab_open');
-        document.querySelector('#home_tab > div').className = `ui ${toolbar_color} message`;
+        document.querySelector('#home_tab > div').style.background = `${toolbar_color}`;
     }
 
     // Listeners
