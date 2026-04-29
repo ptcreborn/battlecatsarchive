@@ -23,7 +23,7 @@
     document.getElementById('btn_tab_restock').addEventListener('click', await loadNewStocks());
 
     // By default
-    show_tab(document.getElementById('btn_tab_recent'), 'acc_req_parent', 'violet');
+    show_tab(document.getElementById('btn_tab_recent'), 'acc_req_parent', '#598f6d');
 
     async function loadStockRequests() {
         if (document.getElementById('acc_req_lowstock').children.length > 0)
