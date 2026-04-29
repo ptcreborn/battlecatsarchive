@@ -42,7 +42,7 @@
         let status_elem = document.getElementById(`parent-${id}`).querySelector('[add-cart-status]');
         let count_elem = parseInt(status_elem.querySelector('[add-qty-status]').textContent);
 
-        status_elem.style = `display: block;background: beige;`;
+        status_elem.style = `display: block;`;
         status_elem.innerHTML = `You have added <b><span add-qty-status="">${count_elem + 1}</span></b> in your cart. <a style='font-weight: bold; display: block; text-decoration: underline;' target="_blank" href="https://battlecatsarchive.blogspot.com/p/cart.html?user=${btoa(userEmail)}">➡️Checkout now</a>`;
     }
 
