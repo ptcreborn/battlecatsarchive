@@ -111,7 +111,7 @@
                     if (index == 0) {
                         top_account_requester_parent.innerHTML = `<div style="
       display: flex;
-      background: beige;
+      background: black;
       height: auto;
       justify-content: space-evenly;
       align-items: center;
@@ -153,7 +153,7 @@
                     } else {
                         top_account_requester_parent.innerHTML += `<div style="
       display: flex;
-      background: white;
+      background: black;
       height: auto;
       justify-content: space-between;
       align-items: center;
