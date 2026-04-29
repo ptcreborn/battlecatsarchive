@@ -7,29 +7,29 @@
     await cookieLoadFast();
 
     async function buildRecentRequest() {
-        let { data, error } = await supabase.from('account-requests').select('date, type(name), user_id(email)').order('date', { ascending: false }).limit(60);
+        let { data, error } = await supabase.from('account-requests').select('date, type(name), user_id(email, prof_img)').order('date', { ascending: false }).limit(60);
         if (error) {
             window.alert(error.message);
             return;
         }
 
-        let users_email = data.map(item => item.user_id.email);
+        // let users_email = data.map(item => item.user_id.email);
 
-        let users_data = await supabase.rpc('return_user_prof_img', {
-            emails: users_email
-        });
+        // let users_data = await supabase.rpc('return_user_prof_img', {
+        //     emails: users_email
+        // });
 
-        if (users_data.error) {
-            window.alert(`Error detected: ${users_data.error.message}`);
-            return;
-        }
+        // if (users_data.error) {
+        //     window.alert(`Error detected: ${users_data.error.message}`);
+        //     return;
+        // }
 
-        if (users_data.data.length < 1) {
-            window.alert("Error returning data of users image and username");
-            return;
-        }
+        // if (users_data.data.length < 1) {
+        //     window.alert("Error returning data of users image and username");
+        //     return;
+        // }
 
-        users_data = users_data.data;
+        let users_data = data.map(item => item.user_id.prof_img);
 
         let collections_html = '';
 
