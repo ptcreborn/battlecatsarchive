@@ -116,7 +116,6 @@
       justify-content: space-evenly;
       align-items: center;
       padding: 5px;
-      border: 1px solid #cccccc;
       ">
       <a href="https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${item.email}"><img alt='${item.email}' loading='lazy' onerror="this.src='https://i.ibb.co/cXNr777G/image.png'; this.onerror=null;" src="${item.prof_img ? item.prof_img : `https://i.ibb.co/cXNr777G/image.png`}" style="
          flex-basis: 100px;
@@ -157,7 +156,6 @@
       height: auto;
       justify-content: space-between;
       align-items: center;
-      border: 1px solid #f1f1f1;
       ">
       <h2 style="
     text-align: center;
