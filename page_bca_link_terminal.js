@@ -326,8 +326,8 @@
 
 
     async function dispatchExpiredRequest() {
-        // Morethan 60 minutes dispatch!
-        let minutes_boundary = 1000 * 60 * 60;
+        // Morethan 1 day dispatch!
+        let minutes_boundary = 1000 * 60 * 60 * 24;
         let expiry_time = new Date().getTime() - minutes_boundary;
         const lt_db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal.json`;
         const xhr = new XMLHttpRequest();
@@ -356,7 +356,7 @@
     }
 
     async function dispatchOfflineUsers() {
-        // Morethan 60 minutes dispatch!
+        // Morethan 1 day dispatch!
         let minutes_boundary = 1000 * 60 * 60 * 24;
         let expiry_time = new Date().getTime() - minutes_boundary;
         const lt_db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users.json`;
