@@ -4,7 +4,7 @@
 // FBDB: https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint
 
 (async () => {
-    appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/824309794e18edf23fe3d414dfa29e738db0a235/bca-chatbox-widget.js');
+    //appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/824309794e18edf23fe3d414dfa29e738db0a235/bca-chatbox-widget.js');
     appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
 
     await initFunctions(['FirebaseModule']);
