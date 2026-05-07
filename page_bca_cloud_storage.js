@@ -22,8 +22,9 @@
 
     const worker = atob('aHR0cHM6Ly9kcnktZ2xhZGUtZWFlMS5qYXNvbmJvdXJuZTE4MTk5Ny53b3JrZXJzLmRldi8=');
     const isLinkTerminalPassed = await FirebaseModule.fetchJSON(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint/${checkpoint}.json`);
+    const checkLS_Security = verifyLS(param);
 
-    if (!param || !checkpoint || !isLinkTerminalPassed?.progress || !isLinkTerminalPassed?.api || isLinkTerminalPassed.progress !== "completed") {
+    if (!param || !checkpoint || !checkLS_Security) { //!isLinkTerminalPassed?.progress || !isLinkTerminalPassed?.api || isLinkTerminalPassed.progress !== "completed"
         dlBtn.textContent = `No download will proceed.`;
         errorMessage("Invalid or Expired API Point. Please restart in the beginning and dont try to alter the url.");
         return;
@@ -99,6 +100,28 @@
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    }
+
+    function verifyLS(api) {
+        const name = 'bca_download';
+        let contents = localStorage.getItem(name);
+        contents = JSON.parse(contents);
+
+        // checking if expired
+        let exp = contents[api];
+
+        if (!exp)
+            return;
+
+        let now = new Date().getTime();
+        let lapse = (now - exp) / 1000 / 30; // 30 minutes
+
+        if (lapse >= 30) {
+            delete contents[api];
+            localStorage.setItem(name, JSON.stringify(contents));
+            return;
+        }
+        else return contents[api];
     }
 
     function errorMessage(str) {
