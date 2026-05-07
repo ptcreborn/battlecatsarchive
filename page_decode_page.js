@@ -39,6 +39,8 @@
     // btn.href = `https://battlecatsarchive.blogspot.com/p/setup-link-terminal.html?request=${btoa(JSON.stringify(data))}`;
 
     message.innerText = "You are going to bypass link terminal as everything you did so far is good. Click the button to proceed now.";
+    
+    await sleep(1000);
 
     btn.style.display = 'block';
     btn.innerHTML = `✔️Decoded! Proceed Now.`;
