@@ -1,6 +1,6 @@
 (async() => {
         // wait for 5 seconds before executing any functions
-    await sleep(5000);
+    await sleep(1000);
     let email_ver = await recordUserRequesting();
     if(!email_ver)
         return;
