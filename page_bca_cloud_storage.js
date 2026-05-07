@@ -11,7 +11,6 @@
     // Dispatch requests more than 30 minutes!
     dispatchCheckpointExpired();
     buildRelatedDownloads();
-    await sleep(3000);
 
     let param = new URL(window.location.href).searchParams;
     let checkpoint = decodeURIComponent(param.get('checkpoint'));
