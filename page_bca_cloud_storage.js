@@ -40,7 +40,6 @@
 
     dlBtn.addEventListener('click', async () => {
         // Firebase Fetch
-        dlBtn.style.opacity = '0.7';
         dlBtn.style.pointerEvents = 'none';
         message.textContent = `Downloading...`;
         let temp_key = "cloud-" + checkpoint;
