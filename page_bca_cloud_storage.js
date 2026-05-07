@@ -67,7 +67,7 @@
             }
 
             if (data.downloadUrl) {
-                dlBtn.textContent = `Downloading... Please wait...`;
+                dlBtn.textContent = `Your download started...`;
                 infoMessage("Link authorized! Starting download...");
                 download_item(data.downloadUrl, param, ext);
 
