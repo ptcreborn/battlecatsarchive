@@ -57,6 +57,8 @@
 
     insertLS(param, key);
 
+    await sleep(3000);
+
     message.innerText = "Checkpoint created. You can now proceed.";
 
     btn.style.display = 'block';
