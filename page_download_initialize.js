@@ -5,6 +5,19 @@
 
 (async () => {
     // check params
+
+    if (typeof Storage !== "undefined") {
+        console.log("LocalStorage is supported");
+    } else {
+        window.alert(`
+            
+            Please enable Local Storage, or download Google Chrome. Thank you!
+            
+            The request will not continue.
+            `);
+        return;
+    }
+
     appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
     await initFunctions(['FirebaseModule']);
 
@@ -12,8 +25,10 @@
     const btn = document.getElementById('triggerBtn');
     const dl_count = document.getElementById('dl_count');
     const dl_filename = document.getElementById('dl_filename');
+    const name = "bca_download";
 
-    await sleep(5000);
+    // Collect Garbage
+    garbageCollect();
 
     let param = new URL(window.location.href).searchParams.get('id');
     param = decodeURIComponent(param);
@@ -40,7 +55,7 @@
         })
     );
 
-    await sleep(5000);
+    insertLS(param, key);
 
     message.innerText = "Checkpoint created. You can now proceed.";
 
@@ -108,5 +123,33 @@
         let count = await FirebaseModule.fetchJSON(`https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_download_stats/${api}.json`);
         dl_filename.textContent = `${count ? `${atob(api)}${count.ext}` : `cant find request...`}`;
         dl_count.textContent = `${count ? Object.keys(count).length : 0} downloads`;
+    }
+
+    function garbageCollect() {
+        // delete expired localstorage downloads
+        let contents = localStorage.getItem(name);
+        contents = JSON.parse(contents);
+        let keys = Object.keys(contents);
+        let new_json = {};
+
+        keys.map(key => {
+            let data = contents[key];
+            let now = new Date().getTime();
+            let exp = new Date(data).getTime();
+            let lapse = now - exp;
+            lapse = lapse / 1000;
+
+            if (lapse < 30)
+                new_json[key] = data;
+        });
+
+        localStorage.setItem(name, JSON.stringify(new_json));
+    }
+
+    function insertLS(param, key) {
+        let contents = localStorage.getItem(name);
+        contents = JSON.parse(contents);
+        contents[param] = key;
+        localStorage.setItem(name, JSON.stringify(contents));
     }
 })();
