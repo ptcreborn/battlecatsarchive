@@ -156,7 +156,11 @@
 
     function insertLS(param, key) {
         let contents = localStorage.getItem(name);
-        contents = JSON.parse(contents);
+
+        if (!contents)
+            contents = {};
+        else
+            contents = JSON.parse(contents);
         contents[param] = key;
         localStorage.setItem(name, JSON.stringify(contents));
     }
