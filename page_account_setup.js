@@ -1,5 +1,4 @@
 (async() => {
-    await sleep('5000');
     await buildInformation();
 
     // Functions \\
