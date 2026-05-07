@@ -60,12 +60,9 @@
     message.innerText = "Checkpoint created. You can now proceed.";
 
     btn.style.display = 'block';
-    btn.addEventListener('click', async (e) => {
-        btn.style.opacity = '0.7';
-        btn.style.pointerEvents = 'none';
-        await incrementCount(btoa(param));
-        window.location.href = `https://battlecatsarchive.blogspot.com/p/decode-page.html?id=${key}&decode=${param}`;
-    }, false);
+    await incrementCount(btoa(param));
+    btn.innerHTML = "✔️Proceed Now";
+    btn.href = `https://battlecatsarchive.blogspot.com/p/decode-page.html?id=${key}&decode=${param}`;
 
 
     async function getEncryptionKey(password, salt) {
