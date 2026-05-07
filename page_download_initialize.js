@@ -128,22 +128,30 @@
     function garbageCollect() {
         // delete expired localstorage downloads
         let contents = localStorage.getItem(name);
-        contents = JSON.parse(contents);
-        let keys = Object.keys(contents);
-        let new_json = {};
 
-        keys.map(key => {
-            let data = contents[key];
-            let now = new Date().getTime();
-            let exp = new Date(data).getTime();
-            let lapse = now - exp;
-            lapse = lapse / 1000;
+        if (!contents)
+            return;
 
-            if (lapse < 30)
-                new_json[key] = data;
-        });
+        try {
+            contents = JSON.parse(contents);
+            let keys = Object.keys(contents);
+            let new_json = {};
 
-        localStorage.setItem(name, JSON.stringify(new_json));
+            keys.map(key => {
+                let data = contents[key];
+                let now = new Date().getTime();
+                let exp = new Date(data).getTime();
+                let lapse = now - exp;
+                lapse = lapse / 1000;
+
+                if (lapse < 30)
+                    new_json[key] = data;
+            });
+
+            localStorage.setItem(name, JSON.stringify(new_json));
+        } catch (error) {
+            localStorage.removeItem(name);
+        }
     }
 
     function insertLS(param, key) {
