@@ -104,7 +104,15 @@
     function verifyLS(api) {
         const name = 'bca_download';
         let contents = localStorage.getItem(name);
-        contents = JSON.parse(contents);
+
+        if (!contents)
+            return;
+
+        try {
+            contents = JSON.parse(contents);
+        } catch (error) {
+            return;
+        }
 
         // checking if expired
         let exp = contents[api];
