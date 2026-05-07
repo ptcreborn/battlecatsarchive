@@ -1,10 +1,10 @@
 (async () => {
-    const bypass_button = document.getElementById('bypass_button');
+    const bypass_link = document.getElementById('bypass_link');
     const status_msg = document.getElementById('status_msg');
     const bypass_msg = document.getElementById('bypass_msg');
     let emo = ['🤔', '😎', '🤩'];
 
-    let time_in_sec = 5000;
+    let time_in_sec = Math.floor(Math.random() * (3000 - 1000) + 1000);
 
     await initFunctions(['FirebaseModule', 'moment']);
 
@@ -31,17 +31,16 @@
 
     function finalizeAction(actionCallback) {
         let timeout = setInterval(async () => {
-            if (elementInViewport('bypass_button')) {
+            if (elementInViewport('bypass_link')) {
                 time_in_sec = time_in_sec - 40;
-                status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait ${Math.ceil(time_in_sec / 1000)} ${Math.ceil(time_in_sec / 1000) > 1 ? `seconds` : `second`}...`;
+                // status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait ${Math.ceil(time_in_sec / 1000)} ${Math.ceil(time_in_sec / 1000) > 1 ? `seconds` : `second`}...`;
+                status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait while decoding link...`;
                 if (time_in_sec <= -1) {
                     clearInterval(timeout);
 
-                    // activate button and its function                    
-                    bypass_button.innerText = "Proceed Now";
-                    bypass_button.addEventListener('click', async () => {
-                        await actionCallback();
-                    }, false);
+                    status_msg.innerText = `${emo[1]} Done decoding link...`;
+                    // activate button and its function          
+                    await actionCallback();
                 }
             }
         }, 100);
@@ -57,8 +56,8 @@
         // this method should not show progress and a goal
         // after a clear bypassing, make sure to increment the clicks
         // check the account name from parameter "verified" and the heap data account name if the same
-        bypass_button.style = 'pointer-events: none; opacity: 0.7';
-        bypass_button.innerText = "Redirecting...";
+        // bypass_link.style = 'pointer-events: none; opacity: 0.7';
+        // bypass_link.innerText = "Redirecting...";
 
         let code = decodeURIComponent(getCodeParams('acc_code'));
         let acc_name = decodeURIComponent(getCodeParams('verified'));
@@ -105,7 +104,8 @@
 
         await addUserXP(1);
 
-        window.location.href = `https://battlecatsarchive.blogspot.com/p/account-progress.html?ongoing=${getCodeParams('ongoing')}&verified=${getCodeParams('verified')}`;
+        bypass_link.innerHTML = "✅Proceed Now";
+        bypass_link.href = `https://battlecatsarchive.blogspot.com/p/account-progress.html?ongoing=${getCodeParams('ongoing')}&verified=${getCodeParams('verified')}`;
     }
 
     async function initDownloadBypass(param) {
@@ -127,8 +127,8 @@
     }
 
     async function downloadBypass() {
-        bypass_button.style = 'pointer-events: none; opacity: 0.7';
-        bypass_button.innerText = "Redirecting...";
+        // bypass_link.style = 'pointer-events: none; opacity: 0.7';
+        // bypass_link.innerText = "Redirecting...";
         let data = await initDownloadBypass(getCodeParams('code'));
         if (!data)
             return;
@@ -164,13 +164,16 @@
                 );
             }
 
-            window.location.href = `${decodeURIComponent(prog_data.targ)}`;
+            bypass_link.innerHTML = "✅Proceed Now";
+            bypass_link.href = `${decodeURIComponent(prog_data.targ)}`;
         } else {
             // increment the progress on the active users widget in link terminal
             await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${prog_data.active}.json`, JSON.stringify({
                 prog: code_data.prog + 1
             }));
-            window.location.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html?code=${code}&prog=${code_data.prog + 1}`;
+
+            bypass_link.innerHTML = "✅Proceed Now";
+            bypass_link.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html?code=${code}&prog=${code_data.prog + 1}`;
         }
     }
 
