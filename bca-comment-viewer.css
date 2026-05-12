@@ -111,9 +111,9 @@
 }
 
 .bca-img-attachment {
-  display: block;
-  width: 90%;
-  box-shadow: 1px 1px 5px 1px #909090;
+    display: block;
+    width: 90%;
+    margin: 20px 10px;
 }
 
 /* The Content Area */
