@@ -407,6 +407,8 @@
         const page_name = btoa('BCA_Link_Terminal');
 
         let isBlur = false;
+        let isHidden = false;
+        let isUnload = false;
         let isUnlocked = false;
         let isMobileSite = new URL(window.location.href).searchParams.get('m') === 1;
 
@@ -455,25 +457,37 @@
         }
 
         function onUnload() {
-            if (isBlur && !isUnlocked)
+            if (isBlur && !isUnlocked) {
+                console.log(`unloading now...`);
+                isUnload = true;
                 setLSTime();
+            }
         }
 
         function onVisibilityChange() {
+            window.focus();
             if (document.hidden) {
-                if (!isUnlocked && isBlur) {
+                if (!isUnlocked && isBlur && !isUnload) {
+                    console.log(`valid hidden`);
                     setLSTime();
+                    isHidden = true;
                     hiddenTime = new Date().getTime();
                 }
             } else {
                 // check if the opening of link in new tab is legit by estimated less than 1,000 ms
-                window.focus();
-                let time_register = isMobileSite ? 1000 : 500;
-                if (hiddenTime - blurTime <= time_register)
-                    checkIfBypassDone();
+                if (isHidden) {
+                    console.log(`visible from hidden`);
+                    let time_register = isMobileSite ? 1000 : 500;
+                    if (hiddenTime - blurTime <= time_register)
+                        checkIfBypassDone();
+                    else {
+                        bypass_msg.textContent = `Sorry but the view does not register, please click again.`;
+                        status.textContent = `Try bypassing again.`;
+                    }
+                }
                 else {
-                    bypass_msg.textContent = `Sorry but the view does not register, please try again.`;
-                    status.textContent = `Try bypassing again.`;
+                    console.log(`visible from unload`);
+                    checkIfBypassDone();
                 }
             }
         }
