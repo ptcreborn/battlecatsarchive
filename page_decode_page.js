@@ -33,17 +33,14 @@
     let data = {
         a: 3,
         t: encodeURIComponent(`https://battlecatsarchive.blogspot.com/p/bca-cloud-storage.html?checkpoint=${param.get('id')}&api=${new URL(window.location.href).searchParams.get('decode')}`)
-    }
+    }    
+
+    btn.href = `https://battlecatsarchive.blogspot.com/p/setup-link-terminal.html?request=${btoa(JSON.stringify(data))}`;
+    // btn.href = ` https://battlecatsarchive.blogspot.com/p/bca-cloud-storage.html?checkpoint=${param.get('id')}&api=${new URL(window.location.href).searchParams.get('decode')}`;
 
     message.innerText = "You are going to bypass link terminal as everything you did so far is good. Click the button to proceed now.";
 
     btn.style.display = 'block';
-    btn.href = `https://battlecatsarchive.blogspot.com/p/setup-link-terminal.html?request=${btoa(JSON.stringify(data))}`;
-
-    message.innerText = "You are going to bypass link terminal as everything you did so far is good. Click the button to proceed now.";
-
-    // btn.style.display = 'block';
-    // btn.innerHTML = `✔️Decoded! Proceed Now.`;
-    // btn.href = ` https://battlecatsarchive.blogspot.com/p/bca-cloud-storage.html?checkpoint=${param.get('id')}&api=${new URL(window.location.href).searchParams.get('decode')}`;
+    btn.innerHTML = `✔️Decoded! Proceed Now.`;
 
 })();
