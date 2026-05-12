@@ -10,7 +10,7 @@
 .bca-comment-editor {
     border: 2px solid #333;
     border-radius: 12px;
-    background: #fff;
+    background: #000000;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
@@ -21,7 +21,7 @@
 /* Toolbar Section */
 
 .bca-toolbar {
-    background: #f8f9fa;
+    background: #242424;
     padding: 10px;
     border-bottom: 1px solid #eee;
     display: flex;
