@@ -2,7 +2,7 @@
 
 // May 12, 2026
 
-window.addEventListener('load', async () => {
+(async() => {
     (async () => {
         const bypass_link = document.getElementById('bypass_link');
         const status_msg = document.getElementById('status_msg');
@@ -514,5 +514,5 @@ window.addEventListener('load', async () => {
                 }
             }
         }
-    })();
+    }();
 }, false);
