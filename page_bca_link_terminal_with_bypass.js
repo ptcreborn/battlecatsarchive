@@ -404,9 +404,13 @@
         const status = document.getElementById('status_msg');
         const bypass_msg = document.getElementById('bypass_msg');
         const link = document.getElementById('bypass_link');
+        const page_name = btoa('BCA_Link_Terminal');
 
         let isBlur = false;
         let isUnlocked = false;
+        let isMobileSite = new URL(window.location.href).searchParams.get('m') === 1;
+
+        let blurTime, hiddenTime;
 
         window.focus();
 
@@ -445,6 +449,7 @@
             setTimeout(() => {
                 if (document.activeElement == auction_Iframe && !isUnlocked) {
                     isBlur = true;
+                    blurTime = new Date().getTime();
                 }
             }, 0);
         }
@@ -456,10 +461,20 @@
 
         function onVisibilityChange() {
             if (document.hidden) {
-                if (!isUnlocked && isBlur)
+                if (!isUnlocked && isBlur) {
                     setLSTime();
+                    hiddenTime = new Date().getTime();
+                }
             } else {
-                checkIfBypassDone();
+                // check if the opening of link in new tab is legit by estimated less than 1,000 ms
+                window.focus();
+                let time_register = isMobileSite ? 1000 : 500;
+                if (hiddenTime - blurTime <= time_register)
+                    checkIfBypassDone();
+                else {
+                    bypass_msg.textContent = `Sorry but the view does not register, please try again.`;
+                    status.textContent = `Try bypassing again.`;
+                }
             }
         }
 
