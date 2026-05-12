@@ -477,7 +477,7 @@
                 // check if the opening of link in new tab is legit by estimated less than 1,000 ms
                 if (isHidden) {
                     console.log(`visible from hidden`);
-                    let time_register = isMobileSite ? 1000 : 500;
+                    let time_register = isMobileSite ? 2500 : 1000;
                     if (hiddenTime - blurTime <= time_register)
                         checkIfBypassDone();
                     else {
