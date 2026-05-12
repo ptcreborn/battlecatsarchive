@@ -1,17 +1,16 @@
 
-
-// May 12, 2026
-
 (async () => {
     const bypass_link = document.getElementById('bypass_link');
     const status_msg = document.getElementById('status_msg');
     const bypass_msg = document.getElementById('bypass_msg');
+    const page_name = btoa('BCA_Link_Terminal');
+
     let emo = ['🤔', '😎', '🤩'];
 
     // Reload Detect
     const nav = performance.getEntriesByType("navigation")[0];
     if (nav && nav.type === "reload") {
-        localStorage.removeItem('BCA_Link_Terminal');
+        localStorage.removeItem(atob(page_name));
     }
 
     let time_in_sec = Math.floor(Math.random() * (5000 - 3000) + 3000);
@@ -41,7 +40,7 @@
 
     function finalizeAction(actionCallback) {
         window.blur();
-        if (localStorage.getItem('BCA_Link_Terminal'))
+        if (localStorage.getItem(atob(page_name)))
             time_in_sec = 100;
         let timeout = setInterval(async () => {
             if (elementInViewport('bypass_link') && document.hasFocus()) {
@@ -431,7 +430,7 @@
         // Modern way
         const nav = performance.getEntriesByType("navigation")[0];
         if (nav && nav.type === "reload") {
-            localStorage.removeItem('BCA_Link_Terminal');
+            localStorage.removeItem(atob(page_name));
             isBlur = false;
             isUnlocked = false;
         }
@@ -465,7 +464,7 @@
         }
 
         function setLSTime() {
-            const label = "BCA_Link_Terminal";
+            const label = atob(page_name);
             const now = new Date().getTime();
 
             localStorage.setItem(label, now);
@@ -476,7 +475,7 @@
         }
 
         function checkTime() {
-            let click_time = localStorage.getItem('BCA_Link_Terminal');
+            let click_time = localStorage.getItem(atob(page_name));
             if (!click_time)
                 return;
 
@@ -501,13 +500,13 @@
                     bca_link_ads.style.position = 'static';
 
                     link.addEventListener('click', () => {
-                        localStorage.removeItem('BCA_Link_Terminal');
+                        localStorage.removeItem(atob(page_name));
                     }, false);
                     await actionCallback();
                 } else {
                     bypass_msg.textContent = `Sorry but you must stay there for 5 seconds. Try again!`;
                     status.textContent = `Try bypassing again.`;
-                    localStorage.removeItem('BCA_Link_Terminal');
+                    localStorage.removeItem(atob(page_name));
                     isUnlocked = false;
                 }
             }
