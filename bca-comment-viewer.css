@@ -120,13 +120,13 @@
 /* The Content Area */
 .bca-desc-content {
   padding: 15px 20px;
-  background-color: #f7f7f7;
+  background-color: #222222;
   min-height: 80px;
 }
 
 .bca-desc-text {
   font-size: 1rem;
-  color: #333;
+  color: #dbdbdb;
   line-height: 1.4;
   font-family: 'Arial Black', sans-serif !important;
 }
