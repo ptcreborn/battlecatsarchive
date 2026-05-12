@@ -23,7 +23,6 @@
 .bca-toolbar {
     background: #242424;
     padding: 10px;
-    border-bottom: 1px solid #eee;
     display: flex;
     gap: 8px;
     align-items: center;
@@ -54,9 +53,9 @@
     outline: none;
     font-size: 16px;
     line-height: 1.5;
-    color: #565555;
+    color: #d8d8d8;
     font-weight: 900;
-    text-shadow: 1px 1px 1px beige;
+    background: #151515;
 }
 
 .bca-editor:empty:before {
@@ -70,8 +69,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 12px 20px;
-    background: #fdfdfd;
-    border-top: 1px solid #eee;
+    background: #1a1a1a;
     flex-wrap: wrap;
     align-content: center;
     gap: 10px;
@@ -195,9 +193,8 @@
     align-items: center;
     justify-content: flex-start;
     flex-wrap: wrap;
-    border: 1px solid #b3b3b3;
     padding: 10px;
-    background: #d7d7d7;
+    background: #1a1a1a;
 }
 
 .bca-formattings-container button {
