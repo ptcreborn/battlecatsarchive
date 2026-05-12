@@ -8,11 +8,13 @@
 }
 
 .bca-comment-editor {
-    border: 2px solid #333;
-    border-radius: 12px;
-    background: #fff;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    min-height: 150px;
+    padding: 20px;
+    outline: none;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #cfcfcf;
+    font-weight: 900;
 }
 
 .bca-reply-mode {
@@ -21,9 +23,9 @@
 /* Toolbar Section */
 
 .bca-toolbar {
-    background: #f8f9fa;
+    background: #000000;
     padding: 10px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #515151;
     display: flex;
     gap: 8px;
     align-items: center;
@@ -70,8 +72,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 12px 20px;
-    background: #fdfdfd;
-    border-top: 1px solid #eee;
+    background: #050505;
+    border-top: 1px solid #333333;
     flex-wrap: wrap;
     align-content: center;
     gap: 10px;
@@ -82,7 +84,7 @@
     align-items: center;
     gap: 10px;
     font-size: 13px;
-    color: #666;
+    color: #c3c3c3;
     flex: 1 1 130px;
 }
 
@@ -97,7 +99,7 @@
 /* Action Buttons */
 
 .bca-submit-btn {
-    background: #ff9800;
+    background: #017497;
     color: white;
     border: none;
     padding: 10px 24px;
@@ -195,9 +197,9 @@
     align-items: center;
     justify-content: flex-start;
     flex-wrap: wrap;
-    border: 1px solid #b3b3b3;
+    border: 1px solid #1f1f1f;
     padding: 10px;
-    background: #d7d7d7;
+    background: #693d08;
 }
 
 .bca-formattings-container button {
