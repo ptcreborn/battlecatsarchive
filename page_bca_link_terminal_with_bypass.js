@@ -426,14 +426,23 @@
         let isHidden = false;
         let isUnload = false;
         let isUnlocked = false;
+        let isException = false;
         let isMobileSite = new URL(window.location.href).searchParams.get('m') === 1;
 
         let blurTime, hiddenTime;
 
         window.focus();
 
-        const ads = Array.from(document.querySelectorAll("ins.adsbygoogle"));
+        // Checking if the page is reloaded
+        // Modern way
+        const nav = performance.getEntriesByType("navigation")[0];
+        if (nav && nav.type === "reload") {
+            localStorage.removeItem(atob(page_name));
+            isBlur = false;
+            isUnlocked = false;
+        }
 
+        const ads = Array.from(document.querySelectorAll("ins.adsbygoogle"));
         let checkAllAdsIframeLength = ads.filter(item => item?.querySelector('iframe'));
         let checkAllAdsStatus = ads.filter(item => item?.getAttribute('data-ad-status'));
         let isAdblockerThere = await detectAdBlock();
@@ -461,20 +470,11 @@
             bypass_msg.textContent = `Bypass available now. Start!`;
             link.textContent = "Bypass now";
         } else if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "unfilled") {
-            isUnlocked = true;
-            status.innerHTML = "Unlocking link for you for free! Enjoy My dude!"
+            isException = true;
+            status.innerHTML = "Unlocking link for you for free, Enjoy!"
         } else {
-            isUnlocked = true;
+            isException = true;
             status.innerHTML = "GG you can unlock the link now!";
-        }
-
-        // Checking if the page is reloaded
-        // Modern way
-        const nav = performance.getEntriesByType("navigation")[0];
-        if (nav && nav.type === "reload") {
-            localStorage.removeItem(atob(page_name));
-            isBlur = false;
-            isUnlocked = false;
         }
 
         checkIfBypassDone();
@@ -511,19 +511,19 @@
                 }
             } else {
                 // check if the opening of link in new tab is legit by estimated less than 1,000 ms
-                if (isHidden) {
+                if (isHidden && !isUnlocked) {
                     console.log(`visible from hidden`);
                     let time_register = isMobileSite ? 2500 : 1000;
                     if (hiddenTime - blurTime <= time_register)
                         checkIfBypassDone();
                     else {
-                        bypass_msg.textContent = `⚠️ Sorry but the view does not register, please click again.`;
+                        bypass_msg.innerHTML = `⚠️ Sorry but the view does not register, please click again.`;
                         status.textContent = `Try bypassing again.`;
                     }
                 }
                 else {
-                    console.log(`visible from unload`);
-                    checkIfBypassDone();
+                    if (!isUnlocked)
+                        checkIfBypassDone();
                 }
             }
         }
@@ -550,7 +550,10 @@
         }
 
         async function checkIfBypassDone() {
-            if (checkTime() || isUnlocked) {
+            console.log(`getting in... now ${checkTime()}   ${isUnlocked}`);
+            if ((checkTime() || isException) && !isUnlocked) {
+                console.log(`getting in...`);
+                isException = false;
                 isUnlocked = true;
                 link.textContent = `Loading...`;
                 bypass_msg.textContent = `You have unlocked the link!`;
@@ -568,7 +571,7 @@
             } else if (checkTime() == null && !isUnlocked)
                 return;
             else {
-                bypass_msg.textContent = `⚠️ Sorry but you must stay there for 5 seconds. Try again!`;
+                bypass_msg.innerHTML = `⚠️ Sorry but you must stay there for 5 seconds. Try again!`;
                 status.textContent = `Try bypassing again.`;
                 localStorage.removeItem(atob(page_name));
                 isUnlocked = false;
