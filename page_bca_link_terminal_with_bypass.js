@@ -549,30 +549,28 @@
         }
 
         async function checkIfBypassDone() {
-            if (!isUnlocked) {
-                if (checkTime() == null)
-                    return;
-                if (checkTime() || isUnlocked) {
-                    isUnlocked = true;
-                    link.textContent = `Loading...`;
-                    bypass_msg.textContent = `You have unlocked the link!`;
-                    status.textContent = `Proceed now by clicking the Link Unlock. Thank you!`;
+            if (checkTime() == null && !isUnlocked)
+                return;
+            if (checkTime() || isUnlocked) {
+                isUnlocked = true;
+                link.textContent = `Loading...`;
+                bypass_msg.textContent = `You have unlocked the link!`;
+                status.textContent = `Proceed now by clicking the Link Unlock. Thank you!`;
 
-                    bca_link_ads.style.display = 'block';
-                    bca_link_ads.style.visibility = 'visible';
-                    bca_link_ads.style.opacity = '1';
-                    bca_link_ads.style.position = 'static';
+                bca_link_ads.style.display = 'block';
+                bca_link_ads.style.visibility = 'visible';
+                bca_link_ads.style.opacity = '1';
+                bca_link_ads.style.position = 'static';
 
-                    link.addEventListener('click', () => {
-                        localStorage.removeItem(atob(page_name));
-                    }, false);
-                    await actionCallback();
-                } else {
-                    bypass_msg.textContent = `Sorry but you must stay there for 5 seconds. Try again!`;
-                    status.textContent = `Try bypassing again.`;
+                link.addEventListener('click', () => {
                     localStorage.removeItem(atob(page_name));
-                    isUnlocked = false;
-                }
+                }, false);
+                await actionCallback();
+            } else {
+                bypass_msg.textContent = `Sorry but you must stay there for 5 seconds. Try again!`;
+                status.textContent = `Try bypassing again.`;
+                localStorage.removeItem(atob(page_name));
+                isUnlocked = false;
             }
         }
     }
