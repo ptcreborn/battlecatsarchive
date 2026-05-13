@@ -444,7 +444,7 @@
             checkAllAdsStatus.length === 0 &&
             missingStatusAds.length > 0
         )) {
-            status.innerHTML = "⚠️ Ad-Blocker detected. Please use chrome. Thank you! Please head to Contact Us Page.";
+            status.innerHTML = "⚠️ Ad-Blocker detected. Please use chrome. Thank you! <br/>Please head to <a href='https://battlecatsarchive.blogspot.com/p/contact-us.html'>Contact us page</a>.";
             return;
         }
 
