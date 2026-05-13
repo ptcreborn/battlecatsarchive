@@ -445,6 +445,7 @@
             missingStatusAds.length > 0
         )) {
             status.innerHTML = "⚠️ Ad-Blocker detected. Please use chrome. Thank you! <br/>Please head to <a href='https://battlecatsarchive.blogspot.com/p/contact-us.html'>Contact us page</a>.";
+            link.textContent = "AD-BLOCKER detected!";
             return;
         }
 
@@ -458,7 +459,7 @@
 
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
-            link.textContent = "Proceed Now";
+            link.textContent = "Bypass now";
         } else if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "unfilled") {
             isUnlocked = true;
             status.innerHTML = "Unlocking link for you for free! Enjoy My dude!"
@@ -516,7 +517,7 @@
                     if (hiddenTime - blurTime <= time_register)
                         checkIfBypassDone();
                     else {
-                        bypass_msg.textContent = `Sorry but the view does not register, please click again.`;
+                        bypass_msg.textContent = `⚠️ Sorry but the view does not register, please click again.`;
                         status.textContent = `Try bypassing again.`;
                     }
                 }
@@ -549,8 +550,6 @@
         }
 
         async function checkIfBypassDone() {
-            if (checkTime() == null && !isUnlocked)
-                return;
             if (checkTime() || isUnlocked) {
                 isUnlocked = true;
                 link.textContent = `Loading...`;
@@ -566,8 +565,10 @@
                     localStorage.removeItem(atob(page_name));
                 }, false);
                 await actionCallback();
-            } else {
-                bypass_msg.textContent = `Sorry but you must stay there for 5 seconds. Try again!`;
+            } else if (checkTime() == null && !isUnlocked)
+                return;
+            else {
+                bypass_msg.textContent = `⚠️ Sorry but you must stay there for 5 seconds. Try again!`;
                 status.textContent = `Try bypassing again.`;
                 localStorage.removeItem(atob(page_name));
                 isUnlocked = false;
