@@ -462,12 +462,14 @@
         let checkAllAdsStatus = ads.filter(item => item?.getAttribute('data-ad-status'));
         let isAdblockerThere = await detectAdBlock();
         let missingStatusAds = ads.filter(item => !item.getAttribute('data-ad-status'));
+        let divDetection = ads.filter(item => item.querySelector('div'));
+        let iframeHeightDetection = ads.filter(item => item.querySelector('iframe')?.style.height === "1px" || item.querySelector('iframe')?.style.maxHeight === "1px");
 
         if (isAdblockerThere || (
             checkAllAdsIframeLength.length === 0 &&
             checkAllAdsStatus.length === 0 &&
             missingStatusAds.length > 0
-        )) {
+        ) || iframeHeightDetection.length > 0 || divDetection.length === 0) {
             status.innerHTML = "⚠️ Ad-Blocker detected. Please use chrome. Thank you! <br/>Please head to <a href='https://battlecatsarchive.blogspot.com/p/contact-us.html'>Contact us page</a>.";
             link.textContent = "AD-BLOCKER detected!";
             return;
