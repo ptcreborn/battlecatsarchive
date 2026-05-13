@@ -549,10 +549,8 @@
             return now - click_time >= 7000;
         }
 
-        async function checkIfBypassDone() {
-            console.log(`getting in... now ${checkTime()}   ${isUnlocked}`);
-            if ((checkTime() || isException) && !isUnlocked) {
-                console.log(`getting in...`);
+        async function checkIfBypassDone() {            
+            if ((checkTime() || isException) && !isUnlocked) {                
                 isException = false;
                 isUnlocked = true;
                 link.textContent = `Loading...`;
