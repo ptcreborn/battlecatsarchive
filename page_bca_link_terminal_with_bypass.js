@@ -65,60 +65,67 @@
     }
 
     async function accountBypass() {
-        // get the parameter of "acc_code"
-        // this method should not show progress and a goal
-        // after a clear bypassing, make sure to increment the clicks
-        // check the account name from parameter "verified" and the heap data account name if the same
-        // bypass_link.style = 'pointer-events: none; opacity: 0.7';
-        // bypass_link.innerText = "Redirecting...";
-
-        let code = decodeURIComponent(getCodeParams('acc_code'));
-        let acc_name = decodeURIComponent(getCodeParams('verified'));
-        let identity_param = decodeURIComponent(getCodeParams('ongoing'));
-
-        if (!code || !acc_name || !identity_param) {
-            window.alert("The url parameter has missing datas.");
-            return;
-        }
-
-        try {
-            acc_name = atob(acc_name);
-            identity_param = JSON.parse(atob(identity_param));
-        } catch (error) {
-            window.alert("Sorry the system cant verify the request parameter of the source. The parameters cant be decoded completely.");
-            return;
-        }
-
-        const heap_db = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_heap`;
-
-        let data = await FirebaseModule.fetchJSON(`${heap_db}/${code}.json`);
-
-        if (!data) {
-            window.alert("The request you are trying to bypass has been canceled or expired.");
-            return;
-        }
-
-        if (data.name != acc_name) {
-            window.alert("The requested link might have been altered, the signature of your request and the verification does not matched. Maybe you have skipped some page? All you need to do is to start all over again, no worries. Your can still request for account for free.");
-            return;
-        }
-
-
-        data.progress += 1;
-
-        // patch the progress to the heap code
-        await FirebaseModule.patch(`${heap_db}/${code}.json`, JSON.stringify({
-            progress: data.progress
-        }));
-        // patch the progress to the widget data
-        await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-account-requests/${btoa(identity_param.account.email)}.json`, JSON.stringify({
-            prog: data.progress
-        }));
-
-        await addUserXP(1);
-
         bypass_link.innerHTML = "✅Link Unlocked";
-        bypass_link.href = `https://battlecatsarchive.blogspot.com/p/account-progress.html?ongoing=${getCodeParams('ongoing')}&verified=${getCodeParams('verified')}`;
+        bypass_link.addEventListener('click', async (e) => {
+            bypass_link.style.pointerEvents = 'none';
+            bypass_link.style.opacity = '0.7';
+            e.preventDefault();
+
+            // get the parameter of "acc_code"
+            // this method should not show progress and a goal
+            // after a clear bypassing, make sure to increment the clicks
+            // check the account name from parameter "verified" and the heap data account name if the same
+            // bypass_link.style = 'pointer-events: none; opacity: 0.7';
+            // bypass_link.innerText = "Redirecting...";
+
+            let code = decodeURIComponent(getCodeParams('acc_code'));
+            let acc_name = decodeURIComponent(getCodeParams('verified'));
+            let identity_param = decodeURIComponent(getCodeParams('ongoing'));
+
+            if (!code || !acc_name || !identity_param) {
+                window.alert("The url parameter has missing datas.");
+                return;
+            }
+
+            try {
+                acc_name = atob(acc_name);
+                identity_param = JSON.parse(atob(identity_param));
+            } catch (error) {
+                window.alert("Sorry the system cant verify the request parameter of the source. The parameters cant be decoded completely.");
+                return;
+            }
+
+            const heap_db = `https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_heap`;
+
+            let data = await FirebaseModule.fetchJSON(`${heap_db}/${code}.json`);
+
+            if (!data) {
+                window.alert("The request you are trying to bypass has been canceled or expired.");
+                return;
+            }
+
+            if (data.name != acc_name) {
+                window.alert("The requested link might have been altered, the signature of your request and the verification does not matched. Maybe you have skipped some page? All you need to do is to start all over again, no worries. Your can still request for account for free.");
+                return;
+            }
+
+
+            data.progress += 1;
+
+            // patch the progress to the heap code
+            await FirebaseModule.patch(`${heap_db}/${code}.json`, JSON.stringify({
+                progress: data.progress
+            }));
+            // patch the progress to the widget data
+            await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-account-requests/${btoa(identity_param.account.email)}.json`, JSON.stringify({
+                prog: data.progress
+            }));
+
+            await addUserXP(1);
+
+
+            window.open(`https://battlecatsarchive.blogspot.com/p/account-progress.html?ongoing=${getCodeParams('ongoing')}&verified=${getCodeParams('verified')}`, `_blank`);
+        });
     }
 
     async function initDownloadBypass(param) {
@@ -153,40 +160,48 @@
         // check if the progress hits the goal
         if (code_data.prog == code_data.goal) {
             bypass_msg.innerHTML = "🫡You have made it comrade! Bypass Finish!🫡";
-
-            // remove record from active users
-            await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${prog_data.active}.json`, 'null');
-
-            // remove record from link terminal
-            await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal/${code}.json`, 'null');
-
-            // for mega, push to mega downloader
-            // if (new URL(decodeURIComponent(prog_data.targ)).origin == "https://mega.nz") {
-            //     localStorage.setItem(`${btoa(prog_data.targ)}`, new Date().getTime());
-            //     window.location.href = `https://battlecatsarchive.blogspot.com/p/download-center.html?code=${btoa(prog_data.targ)}`;
-            //     return;
-            // }
-
-            // for new download system, create a patch to the checkpoint in order to mark that it passes link terminal
-            if (new URL(decodeURIComponent(prog_data.targ)).searchParams.get('checkpoint')) {
-                await FirebaseModule.patch(
-                    `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint/${new URL(decodeURIComponent(prog_data.targ)).searchParams.get('checkpoint')}.json`,
-                    JSON.stringify({
-                        progress: "completed"
-                    })
-                );
-            }
-
             bypass_link.innerHTML = "✅Link Unlocked";
-            bypass_link.href = `${decodeURIComponent(prog_data.targ)}`;
+            bypass_link.addEventListener('click', async (e) => {
+                bypass_link.style.pointerEvents = 'none';
+                bypass_link.style.opacity = '0.7';
+                e.preventDefault();
+                e.preventDefault();
+                // remove record from active users
+                await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${prog_data.active}.json`, 'null');
+
+                // remove record from link terminal
+                await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal/${code}.json`, 'null');
+
+                // for mega, push to mega downloader
+                // if (new URL(decodeURIComponent(prog_data.targ)).origin == "https://mega.nz") {
+                //     localStorage.setItem(`${btoa(prog_data.targ)}`, new Date().getTime());
+                //     window.location.href = `https://battlecatsarchive.blogspot.com/p/download-center.html?code=${btoa(prog_data.targ)}`;
+                //     return;
+                // }
+                // for new download system, create a patch to the checkpoint in order to mark that it passes link terminal
+                if (new URL(decodeURIComponent(prog_data.targ)).searchParams.get('checkpoint')) {
+                    await FirebaseModule.patch(
+                        `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint/${new URL(decodeURIComponent(prog_data.targ)).searchParams.get('checkpoint')}.json`,
+                        JSON.stringify({
+                            progress: "completed"
+                        })
+                    );
+                }
+
+                window.open(`${decodeURIComponent(prog_data.targ)}`, `_blank`);
+            });
         } else {
-            // increment the progress on the active users widget in link terminal
-            await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${prog_data.active}.json`, JSON.stringify({
-                prog: code_data.prog + 1
-            }));
-
             bypass_link.innerHTML = "✅Link Unlocked";
-            bypass_link.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html?code=${code}&prog=${code_data.prog + 1}`;
+            bypass_link.addEventListener('click', async (e) => {
+                bypass_link.style.pointerEvents = 'none';
+                bypass_link.style.opacity = '0.7';
+                e.preventDefault();
+                // increment the progress on the active users widget in link terminal
+                await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${prog_data.active}.json`, JSON.stringify({
+                    prog: code_data.prog + 1
+                }));
+                window.open(`https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html?code=${code}&prog=${code_data.prog + 1}`, `_blank`);
+            });
         }
     }
 
@@ -549,8 +564,8 @@
             return now - click_time >= 7000;
         }
 
-        async function checkIfBypassDone() {            
-            if ((checkTime() || isException) && !isUnlocked) {                
+        async function checkIfBypassDone() {
+            if ((checkTime() || isException) && !isUnlocked) {
                 isException = false;
                 isUnlocked = true;
                 link.textContent = `Loading...`;
@@ -562,7 +577,8 @@
                 bca_link_ads.style.opacity = '1';
                 bca_link_ads.style.position = 'static';
 
-                link.addEventListener('click', () => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
                     localStorage.removeItem(atob(page_name));
                 }, false);
                 await actionCallback();
