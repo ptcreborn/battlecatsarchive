@@ -398,6 +398,22 @@
         xhr.send(JSON.stringify(to_dispatched_data));
     }
 
+    async function detectAdBlock() {
+        let adBlockEnabled = false;
+        const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+        await sleep(500);
+        let nodes = document.querySelectorAll('ins.adsbygoogle');
+        nodes = Array.from(nodes);
+        let filtered_nodes = nodes.filter(item => item.hasAttribute('data-ad-status'));
+        try {
+            await fetch(new Request(googleAdUrl)).catch(_ => adBlockEnabled = true);
+        } catch (e) {
+            adBlockEnabled = true;
+        } finally {
+            return adBlockEnabled;
+        }
+    }
+
     async function processRequestBypass(actionCallback) {
         const bca_link_ads = document.getElementById('bca_link_ads');
         const auction_Iframe = bca_link_ads.querySelector('iframe');
@@ -416,6 +432,22 @@
 
         window.focus();
 
+        const ads = Array.from(document.querySelectorAll("ins.adsbygoogle"));
+
+        let checkAllAdsIframeLength = ads.filter(item => item?.querySelector('iframe'));
+        let checkAllAdsStatus = ads.filter(item => item?.getAttribute('data-ad-status'));
+        let isAdblockerThere = await detectAdBlock();
+        let missingStatusAds = ads.filter(item => !item.getAttribute('data-ad-status'));
+
+        if (isAdblockerThere || (
+            checkAllAdsIframeLength.length === 0 &&
+            checkAllAdsStatus.length === 0 &&
+            missingStatusAds.length > 0
+        )) {
+            status.innerHTML = "⚠️ Ad-Blocker detected. Please use chrome. Thank you! Please head to Contact Us Page.";
+            return;
+        }
+
         if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled" && auction_Iframe?.getAttribute('data-load-complete') === "true") {
             // filled
             bca_link_ads.style.display = 'block';
@@ -427,9 +459,12 @@
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
             link.textContent = "Proceed Now";
+        } else if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "unfilled") {
+            isUnlocked = true;
+            status.innerHTML = "Unlocking link for you for free! Enjoy My dude!"
         } else {
-            status.innerHTML = "⚠️ Ad-Blocker detected. Please use chrome. Thank you!";
-            return;
+            isUnlocked = true;
+            status.innerHTML = "GG you can unlock the link now!";
         }
 
         // Checking if the page is reloaded
@@ -517,7 +552,7 @@
             if (!isUnlocked) {
                 if (checkTime() == null)
                     return;
-                if (checkTime()) {
+                if (checkTime() || isUnlocked) {
                     isUnlocked = true;
                     link.textContent = `Loading...`;
                     bypass_msg.textContent = `You have unlocked the link!`;
