@@ -431,7 +431,8 @@
 
     async function processRequestBypass(actionCallback) {
         const bca_link_ads = document.getElementById('bca_link_ads');
-        const auction_Iframe = bca_link_ads.querySelector('iframe');
+        const bidding_ads = bca_link_ads.querySelectorAll('ins.adsbygoogle');
+        const auction_Iframe = Array.from(bidding_ads).filter(item => item.getAttribute('data-ad-status') === "filled")[0]?.querySelector('iframe');
         const status = document.getElementById('status_msg');
         const bypass_msg = document.getElementById('bypass_msg');
         const link = document.getElementById('bypass_link');
