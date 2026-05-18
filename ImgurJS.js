@@ -71,7 +71,7 @@ var ImgurJS = {
                     img.src = `https://i.imgur.com${temp}`;
                     document.getElementById(divID).appendChild(img);
                     document.getElementById(inputID).value = '';
-                    doneUploadCallback();
+                    doneUploadCallback(JSON.parse(xhr.responseText).data.link);
                     return JSON.parse(xhr.responseText).data.link;
                 } else {
                     errorCallback();
