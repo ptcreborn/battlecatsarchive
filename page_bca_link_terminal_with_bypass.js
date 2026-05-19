@@ -484,6 +484,7 @@
             bca_link_ads.style.position = 'absolute';
             bca_link_ads.style.transform = 'translate(-50%, -150px)';
             bca_link_ads.style.left = '50%';
+            bca_link_ads.style.width = '';
 
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
