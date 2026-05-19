@@ -480,9 +480,10 @@
             // filled
             bca_link_ads.style.display = 'block';
             bca_link_ads.style.visibility = 'visible';
-            bca_link_ads.style.top = '-100px';
             bca_link_ads.style.opacity = '0.001';
-            bca_link_ads.style.position = 'relative';
+            bca_link_ads.style.position = 'absolute';
+            bca_link_ads.style.transform = 'translate(-50%, -150px)';
+            bca_link_ads.style.left = '50%';
 
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
