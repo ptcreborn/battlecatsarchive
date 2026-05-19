@@ -55,7 +55,7 @@
 
                     await processRequestBypass(actionCallback);
                 }
-            } else status_msg.textContent = `Please scroll and focus on the link to resume...`;
+            } else status_msg.textContent = `⚠️ Please scroll and focus on the link to resume...`;
         }, 100);
     }
 
