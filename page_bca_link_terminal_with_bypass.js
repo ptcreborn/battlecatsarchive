@@ -43,7 +43,7 @@
         if (localStorage.getItem(atob(page_name)))
             time_in_sec = 100;
         let timeout = setInterval(async () => {
-            if (elementInViewport('bca_link_ads') && document.hasFocus()) {
+            if (elementInViewport('status_msg') && document.hasFocus()) {
                 time_in_sec = time_in_sec - 40;
                 // status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait ${Math.ceil(time_in_sec / 1000)} ${Math.ceil(time_in_sec / 1000) > 1 ? `seconds` : `second`}...`;
                 status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait while decoding link...`;
