@@ -1,4 +1,3 @@
-
 (async () => {
     const bypass_link = document.getElementById('bypass_link');
     const status_msg = document.getElementById('status_msg');
@@ -481,9 +480,11 @@
             bca_link_ads.style.display = 'block';
             bca_link_ads.style.visibility = 'visible';
             bca_link_ads.style.opacity = '0.001';
-            bca_link_ads.style.position = 'absolute';
-            bca_link_ads.style.transform = 'translate(-50%, -150px)';
-            bca_link_ads.style.left = '50%';
+            // bca_link_ads.style.position = 'absolute';
+            // bca_link_ads.style.transform = 'translate(-50%, -150px)';
+            // bca_link_ads.style.left = '50%';
+            bca_link_ads.style.margin = "0 auto";
+            bca_link_ads.style.position = "relative";
             bca_link_ads.style.width = '';
 
             status.textContent = `You can now bypass!`;
