@@ -1,0 +1,73 @@
+.form-input {
+    width: 100%;
+    background: #1c1c1c;
+    color: wheat;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px;
+    border: 1px solid wheat;
+  	margin-bottom: 10px;
+}
+.form-textarea {
+    width: 100%;
+    display: block;
+    background: #1c1c1c;
+    color: wheat;
+    min-height: 300px;
+    resize: none;
+    padding: 20px 10px;
+    box-sizing: border-box;
+    field-sizing: content;
+    border: 1px solid wheat;
+}
+.form-button {
+    color: white;
+    background: #222222;
+    height: 30px;
+    width: 50%;
+    box-shadow: 1px 1px 5px 0px #131313;
+    font-weight: bold;
+    border: 1px solid #a0a0a0;
+}
+.form-attachment {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+  	margin-bottom: 10px;
+}
+  
+#attachment {
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    min-height: 300px;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 30%), rgb(0 0 0 / 66%)), url(https://i.imgur.com/wnX3AsB.png) center / cover no-repeat;
+    margin: 10px 0;
+}
+  
+#attachment img {
+	width: 20% !important;  	
+  	height: 130px !important;
+  	object-fit: cover;
+  	border: 5px solid wheat;
+}
+
+#attachment a {
+    background: #3c0505;
+    width: 20%;
+    padding: 0 5px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    border: 5px solid wheat;
+    line-height: 1rem;
+    height: 130px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
