@@ -1,0 +1,366 @@
+.bca-ticket-main-container {
+    padding: 10px 5px;
+    min-width: 300px;
+    display: none;
+}
+
+.bca-ticket-user-header {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    opacity: 0.9;
+    font-weight: bold;
+}
+
+.bca-ticket-mini-header {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: flex-start;
+    padding-top: 3px;
+}
+
+.bca-ticket-username-container {
+    display: flex;
+    align-items: center;
+}
+
+.bca-ticket-header-stats {
+    padding: 0 5px;
+    position: relative;
+    top: -5px;
+    font-size: 12px;
+}
+
+.bca-ticket-user-avatar {
+    height: 30px !important;
+    width: 30px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+}
+
+.bca-ticket-username-link {
+    font-size: 13px;
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+.bca-ticket-flag {
+    height: 20px !important;
+    object-fit: cover !important;
+    padding-right: 5px !important;
+    opacity: 0.9;
+}
+
+.bca-ticket-trophy {
+    height: 15px !important;
+    object-fit: cover !important;
+    opacity: 0.9;
+}
+
+.bca-ticket-dot {
+    margin: 0 5px;
+    font-weight: bold;
+    font-size: 20px;
+    opacity: 0.7;
+}
+
+.bca-ticket-timestamp {
+    margin-left: auto;
+    font-size: 12px;
+    margin-bottom: auto;
+}
+
+.bca-ticket-title {
+    line-height: 1.5rem;
+    margin: 10px 0;
+}
+
+.bca-ticket-section-margin {
+    margin: 20px 0;
+}
+
+.bca-ticket-section-title {
+    color: yellow;
+}
+
+.bca-ticket-attachment-img {
+    /* Adding !important as requested */
+    max-width: 50% !important;
+    display: block !important;
+    margin-bottom: 10px !important;
+}
+
+.bca-ticket-link-box {
+    width: 100%;
+    display: flex;
+    font-size: 14px;
+    margin-bottom: 5px;
+    height: 30px;
+    align-items: center;
+    font-weight: bold;
+    max-width: 500px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    background: black;
+    border: 1px solid #f5f5dc7a;
+}
+
+.bca-ticket-link-domain {
+    margin-right: 5px;
+    font-style: italic;
+}
+
+
+
+/* COMMENT EDITOR */
+/* REPLY BUTTON */
+.bca-ticket-comment-reply {
+    font-size: 12px !important;
+    display: block !important;
+    margin-left: auto !important;
+    background: #144259 !important;
+    font-weight: bold !important;
+    color: #ffffff !important;
+    padding: 6px 10px !important;
+    cursor: pointer !important;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.bca-ticket-comment-attachments {
+    display: flex;
+    gap: 10px;
+}
+
+.bca-ticket-comment-attachments img {
+    width: 30% !important;
+}
+
+.bca-ticket-comment-attachments button {
+    display: block;
+    background: #48295f;
+    color: white;
+    font-weight: bold;
+    width: 30%;
+}
+
+.bca-ticket-comment-buttons {
+    background: #144259;
+    color: white;
+    font-weight: bold;
+    height: 30px;
+    font-size: 12px;
+    width: 100%;
+    margin-right: 5px;
+}
+
+.bca-ticket-comment-textarea {
+    width: 100%;
+    background: #151515;
+    resize: none;
+    min-height: 150px;
+    color: beige !important;
+    padding: 5px;
+    field-sizing: content;
+    margin: 5px 0;
+}
+
+.bca-ticket-comment-toolbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.bca-comment-attach-preview {
+    display: flex;
+    background: #1b1d26;
+    padding: 1px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #a1a1a1;
+}
+
+.bca-comment-attach-preview b {
+    margin-right: 5px;
+    text-decoration: underline;
+    width: 50px;
+}
+
+.bca-comment-attach-preview p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 5px;
+}
+
+.bca-comment-attach-preview span {
+    margin-left: auto;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 20px;
+    width: 20px;
+}
+
+.bca-comment-avatar {
+    width: 20px !important;
+    object-fit: cover;
+    border-radius: 10px;
+    vertical-align: middle;
+    margin-right: 5px;
+    height: 20px !important;
+}
+  
+/* Comment Styles */
+.bca-ticket-comment-container {
+    background: #202020;
+    margin: 20px 0;
+}
+
+.bca-ticket-comment-header {
+    height: 30px;
+    border-bottom: 1px solid #3c3c3c;
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+    font-weight: bold;
+}
+
+.bca-ticket-comment-username {
+    font-size: 12px;
+    display: flex;
+    gap: 5px;
+}
+
+.bca-ticket-comment-xp {
+    font-size: 12px;
+    margin-left: auto;
+}
+
+.bca-ticket-comment-dot {
+    margin: 0 5px;
+    font-weight: bold;
+    font-size: 20px;
+    opacity: 0.7;
+}
+
+.bca-ticket-comment-rank {
+    font-size: 12px;
+}
+
+.bca-ticket-comment-body {
+    padding: 5px;
+    min-height: 60px;
+}
+
+.bca-ticket-comment-avatar {
+    height: 60px !important;
+    width: 60px !important;
+    float: left !important;
+  	object-fit: cover;
+    margin-right: 10px !important;
+}
+
+.bca-ticket-comment-footer {
+    height: 30px;
+    border-top: 1px solid #3c3c3c;
+    display: flex;
+    align-items: center;
+    opacity: 0.9;
+    padding: 0 5px;
+    background: #202020;
+}
+
+.bca-ticket-comment-label {
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 0.7;
+}
+
+.bca-ticket-comment-trophy {
+    height: 15px !important;
+    margin: 0 5px !important;
+}
+
+.bca-ticket-comment-flag {
+    height: 20px !important;
+    margin: 0 !important;
+}
+
+.bca-ticket-comment-time {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-left: auto;
+}
+
+.bca-ticket-comment-btn {
+    margin: 0 5px;
+    font-size: 14px;
+    background: black;
+    color: white;
+    border-radius: 10px;
+}
+  
+.bca-ticket-comment-attachments {
+    display: flex;
+    margin: 10px 0;
+    gap: 5px;
+    flex-wrap: wrap;
+    opacity: 0.85; 
+}
+
+.bca-ticket-comment-attachments img, .bca-ticket-comment-attachments iframe {
+    max-width: 30% !important;
+    width: 30%;
+}
+  
+.bca-ticket-comment-attachments a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+    background: #2a2a2a;
+    border: 2px solid var(--button-bg-color);
+}    
+  
+.bca-ticket-comment-reply-snippet {
+    background: #191919;
+    border: 1px solid #4d493a;
+    color: #e4e4e4;
+    border-radius: 5px;
+    margin-left: 65px;
+    margin-bottom: 3px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 10px;
+  	cursor: pointer;
+}
+  
+.bca-ticket-comment-reply-snippet span {
+    font-style: italic;
+    font-weight: bold;
+    font-size: 12px;
+    color: #d3d3d3 !important;
+}
+  
+.bca-ticket-comment-reply-snippet p {
+    color: #ffffff !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+  
+.bca-ticket-more {
+    display: block;
+    max-width: 500px;
+    width: 100%;
+    min-width: 300px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
