@@ -33,10 +33,11 @@
         if (error || !data?.length === 0)
             return;
 
-
         let fragment = document.createDocumentFragment();
 
-        for (let item of data) {
+        parent.innerHTML = ``;
+
+        const promises = data.map(async (item) => {
             const clone = ticket.content.cloneNode(true).children[0];
             const comment_count = await countComments(item.fb_id);
             clone.href = `https://battlecatsarchive.blogspot.com/p/ticket-viewer.html?ticket=${item.fb_id}`;
@@ -44,8 +45,12 @@
             clone.querySelector('.bca-ticket-image').src = item.user_id.prof_img;
             clone.querySelectorAll('.bca-ticket-meta span')[0].textContent = moment(parseInt(item.fb_id)).fromNow();
             clone.querySelectorAll('.bca-ticket-meta span')[1].textContent = `${comment_count} ${comment_count > 1 ? `comments` : `comment`}`;
-            fragment.appendChild(clone);
-        }
+            return clone;
+        });
+
+        const elements = await Promise.all(promises);
+
+        for(const item of elements) fragment.appendChild(item);
 
         parent.innerHTML = ``;
         parent.appendChild(fragment);
