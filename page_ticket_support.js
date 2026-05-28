@@ -28,6 +28,11 @@
             }
         });
 
+        let key = `ticket-viewer`;
+        let cached = retrievedData(key);
+        if (cached)
+            return cached;
+
         let { data, error } = await supabase.from('bca-ticket').select('title, user_id(prof_img), fb_id').order('date', { ascending: false });
 
         if (error || !data?.length === 0)
@@ -48,9 +53,11 @@
             return clone;
         });
 
+        cachedData(key, data);
+
         const elements = await Promise.all(promises);
 
-        for(const item of elements) fragment.appendChild(item);
+        for (const item of elements) fragment.appendChild(item);
 
         parent.innerHTML = ``;
         parent.appendChild(fragment);
@@ -71,5 +78,39 @@
     function createDummy() {
         const clone = dummy.content.cloneNode(true).children[0];
         parent.appendChild(clone);
+    }
+
+    function cachedData(key, data) {
+        let exp = new Date().getTime();
+
+        localStorage.setItem(key, JSON.stringify({
+            exp: exp,
+            data: btoa(data)
+        })
+        );
+    }
+
+    function retrievedData(key) {
+        // check for pathname as key
+        let data = localStorage.getItem(key);
+
+        if (!data)
+            return;
+
+        try {
+            JSON.parse(data);
+            atob(data.data);
+        } catch (error) {
+            return;
+        }
+
+        // check for expiration time
+        let now = new Date().getTime();
+        if (now - data.exp >= 120000) {
+            localStorage.removeItem(key);
+            return
+        }
+
+        return data.data;
     }
 })();
