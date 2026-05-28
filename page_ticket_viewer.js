@@ -22,7 +22,6 @@
     }
 
     let data = await getMetaData();
-
     if (!data) {
         document.getElementById('fallback').style.display = 'block';
         document.getElementById('fallback').querySelector('h2').textContent = `Invalid Ticket Number: ${ticket_id}`;
@@ -166,12 +165,19 @@
 
     async function getMetaData() {
         // supabase
+        let key = `ticket-viewer-${ticket_id}`
+        let cached_data = retrievedData(key);
+        if (cached_data)
+            return cached_data;
+
         let { data, error } = await supabase.from('bca-ticket').select('*, user_id(xp, username, prof_img, country, rank_id(rank_name, rank_image), email)').eq('fb_id', ticket_id);
 
         if (error || data?.length == 0)
             return;
 
         let fb_data = await getContent();
+
+        cachedData(key, [data[0], fb_data]);
 
         return [data[0], fb_data];
     }
@@ -409,6 +415,10 @@
         async function getCommentMetadata() {
             // check user metadata
             // ADD LocalStorage as Cache
+            let key = `ticket-comment-${ticket_id}`;
+            let cached_data = retrievedData(key);
+            if(cached_data)
+                return cached_data;
 
             let { data, error } = await supabase.from('bca-ticket-comment')
                 .select('id, fb_id, reply_to, user_id(username, country, prof_img, xp, email, rank_id(rank_name, rank_image))')
@@ -416,6 +426,8 @@
 
             if (error || data?.length === 0)
                 return;
+
+            cachedData(key, data);
 
             return data;
         }
@@ -563,5 +575,39 @@
                 clearInterval(wait);
             }
         }, 300);
+    }
+
+    function cachedData(key, data) {
+        let exp = new Date().getTime();
+
+        localStorage.setItem(key, JSON.stringify({
+            exp: exp,
+            data: btoa(data)
+        })
+        );
+    }
+
+    function retrievedData(key) {
+        // check for pathname as key
+        let data = localStorage.getItem(key);
+
+        if (!data)
+            return;
+
+        try {
+            JSON.parse(data);
+            atob(data.data);
+        } catch (error) {
+            return;
+        }
+
+        // check for expiration time
+        let now = new Date().getTime();
+        if (now - data.exp >= 120000) {
+            localStorage.removeItem(key);
+            return
+        }
+
+        return data.data;
     }
 })();
