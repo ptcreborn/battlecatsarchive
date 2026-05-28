@@ -167,6 +167,7 @@
         // supabase
         let key = `ticket-viewer-${ticket_id}`
         let cached_data = retrievedData(key);
+
         if (cached_data)
             return cached_data;
 
@@ -574,7 +575,7 @@
 
         localStorage.setItem(key, JSON.stringify({
             exp: exp,
-            data: btoa(str_data)
+            data: str_data
         })
         );
     }
@@ -582,25 +583,26 @@
     function retrievedData(key) {
         // check for pathname as key
         let data = localStorage.getItem(key);
+        let base_data, new_data;
 
         if (!data)
             return;
 
         try {
-            JSON.parse(data);
-            atob(data.data);
-            JSON.parse(atob(data.data));
+            base_data = JSON.parse(data);
+            new_data = JSON.parse(base_data.data);
         } catch (error) {
+            console.log('error!');
             return;
         }
 
         // check for expiration time
         let now = new Date().getTime();
-        if (now - data.exp >= 120000) {
+        if (now - JSON.parse(data).exp >= 120000) {
             localStorage.removeItem(key);
             return;
         }
 
-        return data.data;
+        return new_data;
     }
 })();
