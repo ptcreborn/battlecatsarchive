@@ -28,12 +28,13 @@
             }
         });
         
-        let { data, error } = await supabase.from('bca-ticket').select('title, user_id(prof_img), fb_id');
+        let { data, error } = await supabase.from('bca-ticket').select('title, user_id(prof_img), fb_id').order('date', {ascending: false});
 
         if (error || !data?.length === 0)
             return;
 
-        parent.innerHTML = ``;
+
+        let fragment = document.createDocumentFragment();
 
         data.map(async (item) => {
             const clone = ticket.content.cloneNode(true).children[0];
@@ -43,8 +44,11 @@
             clone.querySelector('.bca-ticket-image').src = item.user_id.prof_img;
             clone.querySelectorAll('.bca-ticket-meta span')[0].textContent = moment(parseInt(item.fb_id)).fromNow();
             clone.querySelectorAll('.bca-ticket-meta span')[1].textContent = `${comment_count} ${comment_count > 1 ? `comments` : `comment`}`;
-            parent.appendChild(clone);
+            fragment.appendChild(clone);
         });
+
+        parent.innerHTML = ``;
+        parent.appendChild(fragment);
     }
 
     async function countComments(fb_id) {
