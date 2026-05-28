@@ -28,7 +28,7 @@
             }
         });
 
-        let key = `ticket-viewer`;
+        let key = `ticket-support`;
         let cached = retrievedData(key);
         if (cached)
             return cached;
