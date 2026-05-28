@@ -28,15 +28,7 @@
             }
         });
 
-        let key = `ticket-support`;
-        let cached = retrievedData(key);
-        if (cached)
-            return cached;
-
-        let { data, error } = await supabase.from('bca-ticket').select('title, user_id(prof_img), fb_id').order('date', { ascending: false });
-
-        if (error || !data?.length === 0)
-            return;
+        let data = await getMetaData();
 
         let fragment = document.createDocumentFragment();
 
@@ -53,7 +45,6 @@
             return clone;
         });
 
-        cachedData(key, data);
 
         const elements = await Promise.all(promises);
 
@@ -61,6 +52,21 @@
 
         parent.innerHTML = ``;
         parent.appendChild(fragment);
+    }
+
+    async function getMetaData() {
+        let key = `ticket-support`;
+        let cached = retrievedData(key);
+        if (cached)
+            return cached;
+
+        let { data, error } = await supabase.from('bca-ticket').select('title, user_id(prof_img), fb_id').order('date', { ascending: false });
+
+        if (error || !data?.length === 0)
+            return;
+
+        cachedData(key, data);
+        return data;
     }
 
     async function countComments(fb_id) {
@@ -82,10 +88,11 @@
 
     function cachedData(key, data) {
         let exp = new Date().getTime();
+        let str_data = JSON.stringify(data);
 
         localStorage.setItem(key, JSON.stringify({
             exp: exp,
-            data: btoa(data)
+            data: str_data
         })
         );
     }
@@ -93,24 +100,26 @@
     function retrievedData(key) {
         // check for pathname as key
         let data = localStorage.getItem(key);
+        let base_data, new_data;
 
         if (!data)
             return;
 
         try {
-            JSON.parse(data);
-            atob(data.data);
+            base_data = JSON.parse(data);
+            new_data = JSON.parse(base_data.data);
         } catch (error) {
+            console.log('error!');
             return;
         }
 
         // check for expiration time
         let now = new Date().getTime();
-        if (now - data.exp >= 120000) {
+        if (now - JSON.parse(data).exp >= 120000) {
             localStorage.removeItem(key);
-            return
+            return;
         }
 
-        return data.data;
+        return new_data;
     }
 })();
