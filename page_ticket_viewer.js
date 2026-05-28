@@ -413,21 +413,12 @@
         await buildCommentHTML();
 
         async function getCommentMetadata() {
-            // check user metadata
-            // ADD LocalStorage as Cache
-            let key = `ticket-comment-${ticket_id}`;
-            let cached_data = retrievedData(key);
-            if(cached_data)
-                return cached_data;
-
             let { data, error } = await supabase.from('bca-ticket-comment')
                 .select('id, fb_id, reply_to, user_id(username, country, prof_img, xp, email, rank_id(rank_name, rank_image))')
                 .eq('parent_id', ticket);
 
             if (error || data?.length === 0)
                 return;
-
-            cachedData(key, data);
 
             return data;
         }
@@ -579,10 +570,11 @@
 
     function cachedData(key, data) {
         let exp = new Date().getTime();
+        let str_data = JSON.stringify(data);
 
         localStorage.setItem(key, JSON.stringify({
             exp: exp,
-            data: btoa(data)
+            data: btoa(str_data)
         })
         );
     }
@@ -597,6 +589,7 @@
         try {
             JSON.parse(data);
             atob(data.data);
+            JSON.parse(atob(data.data));
         } catch (error) {
             return;
         }
@@ -605,7 +598,7 @@
         let now = new Date().getTime();
         if (now - data.exp >= 120000) {
             localStorage.removeItem(key);
-            return
+            return;
         }
 
         return data.data;
