@@ -27,8 +27,8 @@
                 yy: '%dy'
             }
         });
-        
-        let { data, error } = await supabase.from('bca-ticket').select('title, user_id(prof_img), fb_id').order('date', {ascending: false});
+
+        let { data, error } = await supabase.from('bca-ticket').select('title, user_id(prof_img), fb_id').order('date', { ascending: false });
 
         if (error || !data?.length === 0)
             return;
@@ -36,7 +36,7 @@
 
         let fragment = document.createDocumentFragment();
 
-        data.map(async (item) => {
+        for (let item of data) {
             const clone = ticket.content.cloneNode(true).children[0];
             const comment_count = await countComments(item.fb_id);
             clone.href = `https://battlecatsarchive.blogspot.com/p/ticket-viewer.html?ticket=${item.fb_id}`;
@@ -45,7 +45,7 @@
             clone.querySelectorAll('.bca-ticket-meta span')[0].textContent = moment(parseInt(item.fb_id)).fromNow();
             clone.querySelectorAll('.bca-ticket-meta span')[1].textContent = `${comment_count} ${comment_count > 1 ? `comments` : `comment`}`;
             fragment.appendChild(clone);
-        });
+        }
 
         parent.innerHTML = ``;
         parent.appendChild(fragment);
@@ -55,7 +55,7 @@
         let data = await supabase.from('bca-ticket-comment').select('*', {
             count: 'exact',
             head: true
-        }).eq('parent_id', fb_id).order('fb_id', {ascending: true});
+        }).eq('parent_id', fb_id).order('fb_id', { ascending: true });
 
         if (data.error)
             return;
