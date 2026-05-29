@@ -123,7 +123,7 @@
             await addUserXP(1);
 
 
-            window.open(`https://battlecatsarchive.blogspot.com/p/account-progress.html?ongoing=${getCodeParams('ongoing')}&verified=${getCodeParams('verified')}`, `_blank`);
+            window.location.href = `https://battlecatsarchive.blogspot.com/p/account-progress.html?ongoing=${getCodeParams('ongoing')}&verified=${getCodeParams('verified')}`, `_blank`;
         });
     }
 
@@ -187,7 +187,7 @@
                     );
                 }
 
-                window.open(`${decodeURIComponent(prog_data.targ)}`, `_blank`);
+                window.location.href = `${decodeURIComponent(prog_data.targ)}`, `_blank`;
             });
         } else {
             bypass_link.innerHTML = "✅Link Unlocked";
@@ -199,7 +199,7 @@
                 await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${prog_data.active}.json`, JSON.stringify({
                     prog: code_data.prog + 1
                 }));
-                window.open(`https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html?code=${code}&prog=${code_data.prog + 1}`, `_blank`);
+                window.location.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html?code=${code}&prog=${code_data.prog + 1}`, `_blank`;
             });
         }
     }
