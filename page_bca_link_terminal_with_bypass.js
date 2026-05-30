@@ -54,7 +54,7 @@
 
                     await processRequestBypass(actionCallback);
                 }
-            } else status_msg.textContent = `⚠️ Please scroll and focus on the page to resume...`;
+            } else status_msg.innerHTML = `⚠️ Please scroll and focus on the page to resume...`;
         }, 100);
     }
 
@@ -262,11 +262,10 @@
             .then(data => data.json())
             .then(async (data) => {
                 let keys = Object.keys(data);
-                for (const value of keys) {
+                for (const expiration of keys) {
                     let now = new Date().getTime();
-                    if (now - value >= 86400000) { // after 1 day
-                        await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${value}.json`, "null")
-                    }
+                    if (now - expiration >= 86400000)  // after 1 day
+                        await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${value}.json`, "null");                    
                 }
                 //await activeUsers();
             })
@@ -282,7 +281,8 @@
                 let keys = Object.keys(data);
                 for (const key of keys) {
                     let new_data = data[key];
-                    if (!await FirebaseModule.fetchJSON(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${new_data.active}.json`))
+                    let active_users_data = await FirebaseModule.fetchJSON(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${new_data.active}.json`);
+                    if (!active_users_data)
                         await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal/${key}.json`, 'null');
                 }
             })
@@ -442,6 +442,7 @@
         let isUnload = false;
         let isUnlocked = false;
         let isException = false;
+        let isUnfilled = false;
         let isMobileSite = new URL(window.location.href).searchParams.get('m') === 1;
 
         let blurTime, hiddenTime;
@@ -470,7 +471,7 @@
             checkAllAdsStatus.length === 0 &&
             missingStatusAds.length > 0
         ) || iframeHeightDetection.length > 0 || divDetection.length === 0) {
-            status.innerHTML = "⚠️ Ad-Blocker detected. Please use chrome. Thank you! <br/>Please head to <a href='https://battlecatsarchive.blogspot.com/p/contact-us.html'>Contact us page</a>.";
+            status.innerHTML = "⚠️ Ad-Blocker detected. Please use chrome. Thank you! <br/>Please head to <a href='https://battlecatsarchive.blogspot.com/p/ticket-support.html'>Ticket Page.</a>.";
             link.textContent = "AD-BLOCKER detected!";
             return;
         }
@@ -492,8 +493,10 @@
             bypass_msg.textContent = `Bypass available now. Start!`;
             link.textContent = "Bypass now";
         } else if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "unfilled") {
-            isException = true;
-            status.innerHTML = "Unlocking link for you for free, Enjoy!"
+            isUnfilled = true;
+            status.textContent = `You can now bypass!`;
+            bypass_msg.textContent = `Bypass available now. Start!`;
+            link.textContent = "Bypass now";
         } else {
             isException = true;
             status.innerHTML = "GG you can unlock the link now!";
@@ -525,7 +528,7 @@
         function onVisibilityChange() {
             window.focus();
             if (document.hidden) {
-                if (!isUnlocked && isBlur && !isUnload) {
+                if ((!isUnlocked && isBlur && !isUnload) || isUnfilled) {
                     console.log(`valid hidden`);
                     setLSTime();
                     isHidden = true;
@@ -533,7 +536,9 @@
                 }
             } else {
                 // check if the opening of link in new tab is legit by estimated less than 1,000 ms
-                if (isHidden && !isUnlocked) {
+                if(isUnfilled)
+                    checkIfBypassDone();
+                else if ((isHidden && !isUnlocked)) {
                     console.log(`visible from hidden`);
                     let time_register = isMobileSite ? 2500 : 1000;
                     if (hiddenTime - blurTime <= time_register)
@@ -594,6 +599,7 @@
             else {
                 bypass_msg.innerHTML = `⚠️ Sorry but you must stay there for 5 seconds. Try again!`;
                 status.textContent = `Try bypassing again.`;
+                bypass_link.textContent = `Try bypassing again.`;
                 localStorage.removeItem(atob(page_name));
                 isUnlocked = false;
             }
