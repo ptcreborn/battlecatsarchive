@@ -41,6 +41,6 @@
     message.innerText = "You are going to bypass link terminal as everything you did so far is good. Click the button to proceed now.";
 
     btn.style.display = 'block';
-    btn.innerHTML = `✔️Decoded! Proceed Now.`;
+    btn.innerHTML = `✅Decoded! Proceed Now.`;
 
 })();
