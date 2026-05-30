@@ -63,7 +63,7 @@
 
     btn.style.display = 'block';
     await incrementCount(btoa(param));
-    btn.innerHTML = "✔️Proceed Now";
+    btn.innerHTML = "✅Proceed Now";
     btn.href = `https://battlecatsarchive.blogspot.com/p/decode-page.html?id=${key}&decode=${param}`;
 
 
