@@ -1,10 +1,9 @@
-// MADE WITH LOVE FOR OOP by Lemuel Madridejos June 2, 2026
 
 appendJSFile('https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js');
 appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
 appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/d7993a862d000a8e671a69842638cfe14ac5960e/notification.css');
 
-Notifications = {
+var Notifications = {
     db: `https://ptc-notifications-default-rtdb.firebaseio.com/notifications`,
     db_contents: `https://ptc-notifications-default-rtdb.firebaseio.com/notif_contents`,
 
@@ -223,7 +222,7 @@ Notifications = {
     },
 }
 
-Users = {
+var Users = {
     async initialize() {
         await initFunctions(['supabase']);
     },
@@ -266,3 +265,9 @@ Users = {
         return data;
     }
 }
+
+document.getElementById('bca_user').addEventListener('click', async (e) => {
+    e.preventDefault();
+    document.getElementById('bca-notif-mother').style.display = 'flex';
+    await Notifications.initialize();
+});
