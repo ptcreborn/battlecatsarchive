@@ -22,7 +22,7 @@
 
   .card {
     width: 90%;
-    background: #1a1a1a;
+    background: transparent;
     padding: 20px;
     border-radius: 14px;
   }
