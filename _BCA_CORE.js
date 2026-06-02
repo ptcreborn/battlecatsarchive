@@ -37,7 +37,7 @@ var BCA_Notifications = {
     },
 
     async initialize() {
-        // check if the user is online or not..
+        // check if the user is online or not.
         let user_email = await BCA_Users.checkIfUserOnline();
         const parent_id = `bca-notif-mother`;
 
@@ -137,7 +137,7 @@ var BCA_Notifications = {
         let data;
 
         // load from cache
-        data = BCA_Cache.getItemWithExpiration(LOCALSTORAGE_USER);
+        data = BCA_Cache.getItemWithExpiration(this.LOCALSTORAGE_USER);
 
         if (!data) { // Means the Cached is expired and we need a fresh data.
             data = await BCA_Users.getUserInfo("email, username, prof_img, rank_id(rank_name)");
@@ -145,7 +145,7 @@ var BCA_Notifications = {
             if (data.length === 1)
                 data = data[0];
 
-            BCA_Cache.setItemWithExpiration(LOCALSTORAGE_USER, data, 600000);
+            BCA_Cache.setItemWithExpiration(this.LOCALSTORAGE_USER, data, 600000);
         }
 
         document.querySelector('.bca-notif-profile-username').href = `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${data.email}`;
