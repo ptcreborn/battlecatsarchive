@@ -315,6 +315,9 @@
             if (payload)
                 await Notifications.send(user, target_email, payload);
 
+            // ADDXP
+            await addUserXP(1);
+
             window.location.href = url;
         }
 
@@ -595,6 +598,30 @@
             let data = await FirebaseModule.fetchJSON(`https://storehaccounts-notifications-default-rtdb.firebaseio.com/bca-ticket-comments/${fb_id}.json`);
             return data;
         }
+    }
+
+    async function addUserXP(xp) {
+        // must be online
+        // must complete the following task
+        // must finish the assignment
+
+        let {
+            data,
+            error
+        } = await supabase.auth.getSession();
+
+        if (error)
+            return;
+
+        if (!data.session)
+            return;
+
+        let email = data.session.user.email;
+
+        await supabase.rpc('add_xp_to_user', {
+            user_email: email,
+            xp_to_add: xp
+        });
     }
 
     // MISCELLANEOUS FUNCTIONS
