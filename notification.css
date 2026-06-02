@@ -23,6 +23,7 @@
     cursor: pointer;
     padding: 10px;
     box-sizing: border-box;
+    position: absolute;
 }
 
 .bca-notif-profile {
