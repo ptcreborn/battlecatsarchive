@@ -217,7 +217,7 @@ var BCA_Notifications = {
         document.getElementById('bca-notif-content').addEventListener('click', async (e) => {
             const link = e.target.closest('.bca-notif-child');
 
-            if (link.dataset.status == "unread")
+            if (link?.dataset?.status == "unread")
                 await this.markRead(link.dataset.fbid, atob(encoded_email));
 
             window.location.href = link.dataset.href;
