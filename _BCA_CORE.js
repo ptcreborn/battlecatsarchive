@@ -86,6 +86,7 @@ var BCA_Notifications = {
     async showLoginHTML(parent_id) {
         this.setSkeleton(parent_id);
         document.getElementById(parent_id).innerHTML = `
+        <div onclick="this.parentNode.style.display = 'none'" class="bca-notif-minimize">X</div>
 <div id="bca-notif-profile" class="bca-notif-profile"><b>🔒 Welcome to Battle Cats Archive</b>
         <br><div style="
     padding: 0 20px;
