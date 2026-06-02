@@ -408,10 +408,6 @@ var BCA_Cache = {
     }
 }
 
-    (async () => {
-        await BCA_Notifications.loadProfileInfo();
-    })();
-
 document.getElementById('bca_user').addEventListener('click', async (e) => {
     e.preventDefault();
     // INITIALIZE NOTIFICATIONS
