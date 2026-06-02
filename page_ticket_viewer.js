@@ -639,7 +639,13 @@
                     behavior: 'smooth',
                     block: 'center'
                 });
+                el.style.border = "3px solid beige";
                 clearInterval(wait);
+
+                setTimeout(() => {
+                    el.style.border = "none";
+                }, 3000);
+
             }
         }, 300);
     }
