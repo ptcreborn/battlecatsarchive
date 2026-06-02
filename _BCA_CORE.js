@@ -220,7 +220,8 @@ var BCA_Notifications = {
             if (link?.dataset?.status == "unread")
                 await this.markRead(link.dataset.fbid, atob(encoded_email));
 
-            window.location.href = link.dataset.href;
+            if (link?.dataset?.href)
+                window.location.href = link.dataset.href;
         });
     },
 
