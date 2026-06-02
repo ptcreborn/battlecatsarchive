@@ -1,7 +1,7 @@
 
 appendJSFile('https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js');
 appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
-appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/c017276fccc7e4f680a7757a6184891ac94f426e/notification.css');
+appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/99dff01dc93fe7c3a64113292b23867394b4cab7/notification.css');
 
 var BCA_Notifications = {
     db: `https://ptc-notifications-default-rtdb.firebaseio.com/notifications`,
@@ -236,8 +236,8 @@ var BCA_Notifications = {
             return "";
 
         let html_str = '';
-        let keys = Object.keys(notif_data)
-        keys = keys.reverse();
+        let keys = Object.keys(notif_data);
+        keys.sort((a, b) => b - a);
 
         const notiflets = keys.map(async (item) => {
             let data = notif_data[item];
