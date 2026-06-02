@@ -331,8 +331,11 @@ var Users = {
     }
 }
 
-document.getElementById('bca_user').addEventListener('click', async (e) => {
-    e.preventDefault();
-    document.getElementById('bca-notif-mother').style.display = 'flex';
-    await Notifications.initialize();
-});
+document.getElementById('bca-notif-mother').style.display = 'flex';
+await Notifications.initialize();
+
+// document.getElementById('bca_user').addEventListener('click', async (e) => {
+//     e.preventDefault();
+//     document.getElementById('bca-notif-mother').style.display = 'flex';
+//     await Notifications.initialize();
+// });
