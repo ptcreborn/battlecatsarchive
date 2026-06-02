@@ -413,8 +413,8 @@ document.getElementById('bca_user').addEventListener('click', async (e) => {
     e.preventDefault();
     // INITIALIZE NOTIFICATIONS
     document.getElementById('bca-notif-mother').style.display = 'flex';
-    if (Notifications.isNotOpened) {
-        Notifications.isNotOpened = false;
-        await Notifications.initialize();
+    if (BCA_Notifications.isNotOpened) {
+        BCA_Notifications.isNotOpened = false;
+        await BCA_Notifications.initialize();
     }
 });     
