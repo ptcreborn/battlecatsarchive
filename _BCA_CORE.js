@@ -381,12 +381,12 @@ var BCA_Cache = {
         return localStorage.getItem(key);
     },
     getParseItem(key) {
-        JSON.parse(this.get(key));
+        return JSON.parse(this.get(key));
     },
     getItemWithExpiration(key) {
         let isExpired = this.checkExpiry(key);
         if (isExpired === false)
-            return this.getParseItem(key);
+            return this.getParseItem(key).data;
         else return;
     },
     setItemWithExpiration(key, val, expiry_ms) {
