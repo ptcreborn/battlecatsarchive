@@ -1,7 +1,7 @@
 
 appendJSFile('https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js');
 appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
-appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/d7993a862d000a8e671a69842638cfe14ac5960e/notification.css');
+appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/3887a51cc1c27b05ae85029b1c5ddf33e71fe4ac/notification.css');
 
 var Notifications = {
     db: `https://ptc-notifications-default-rtdb.firebaseio.com/notifications`,
