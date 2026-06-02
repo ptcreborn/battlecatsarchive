@@ -335,7 +335,7 @@ var Users = {
 document.getElementById('bca_user').addEventListener('click', async (e) => {
     e.preventDefault();
     if (Notifications.isNotOpened) {
-        Notifications.isNotifOpened = false;
+        Notifications.isNotOpened = false;
         document.getElementById('bca-notif-mother').style.display = 'flex';
         await Notifications.initialize();
     }
