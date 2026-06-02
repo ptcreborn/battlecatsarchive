@@ -1,7 +1,7 @@
 
 appendJSFile('https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js');
 appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
-appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/082c336467bbbab723544c339368ba0929391765/notification.css');
+appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/02502d435d4cd43ec7c12aebfe3b6d79bf6ac12f/notification.css');
 
 var Notifications = {
     db: `https://ptc-notifications-default-rtdb.firebaseio.com/notifications`,
@@ -206,7 +206,7 @@ var Notifications = {
 
                 clone.querySelector('.bca-notif-child-right-time').textContent = moment(parseInt(item)).fromNow();
                 clone.querySelector('.bca-notif-child-right-user').textContent = `@${user_data.username}`;
-                clone.querySelector('.bca-notif-child-right-user').href = `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${user_data.email}`;
+                clone.href = `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${user_data.email}`;
                 clone.querySelector('.bca-notif-child-right-action').textContent = data.action;
                 clone.querySelector('.bca-notif-child-right-target').textContent = data.title;
                 clone.querySelector('.bca-notif-child-right-target').href = data.url;
