@@ -118,6 +118,7 @@
     font-weight: bold;
     min-height: 50px;
     background: #272727;
+    line-height: 1;
 }
 
 .bca-notif-child-profimg {
