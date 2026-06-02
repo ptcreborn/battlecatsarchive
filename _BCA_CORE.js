@@ -37,7 +37,7 @@ var BCA_Notifications = {
     },
 
     async initialize() {
-        // check if the user is online or not.
+        // check if the user is online or not..
         let user_email = await BCA_Users.checkIfUserOnline();
         const parent_id = `bca-notif-mother`;
 
