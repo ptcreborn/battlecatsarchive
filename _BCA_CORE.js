@@ -1,7 +1,7 @@
 
 appendJSFile('https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js');
 appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
-appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/02502d435d4cd43ec7c12aebfe3b6d79bf6ac12f/notification.css');
+appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/bc8738c3e21e9a68b49d1e24163a7e7fb5dbc927/notification.css');
 
 var Notifications = {
     db: `https://ptc-notifications-default-rtdb.firebaseio.com/notifications`,
@@ -178,6 +178,7 @@ var Notifications = {
         //skeleton
         await this.initContent('bca-notif-content');
 
+        // NOT LOGGED IN
         if (!unread && !read) {
             ready_html = `<h2>Empty</h2>`;
             document.getElementById(parent_id).classList.add('bca-notif-content-empty');
@@ -185,28 +186,50 @@ var Notifications = {
             return;
         }
 
-        if (unread) {
-            await this.initFirebase();
-            await this.initMoment();
-            document.getElementById('bca-notif-content').classList.remove('bca-notif-content-empty');
-            let keys = Object.keys(unread);
-            let html_str = ``;
-            const notiflets = keys.map(async (item) => {
-                let data = unread[item];
-                // let clone = template.content.cloneNode(true).children[0];
-                // let notif_data = await FirebaseModule.fetchJSON(`${this.db_contents}/${item}.json`);
-                let user_data = await Users.getMemberInfo("prof_img, username, email", data.user);
-                user_data = user_data[0];
+        // INITIALIZE APIS...
+        await this.initFirebase();
+        await this.initMoment();
+        document.getElementById('bca-notif-content').classList.remove('bca-notif-content-empty');
 
-                if (!user_data)
-                    user_data = {
-                        prof_img: 'https://i.imgur.com/eac6XvU.png',
-                        username: 'Anonymous',
-                        email: ''
-                    }
+        ready_html = await this.buildChildHTML(unread, "unread");
+        ready_html += await this.buildChildHTML(read, "read");
 
-                html_str += `
-                <a href="${data.url}" class='bca-notif-child'>
+        this.buildStringHTML(parent_id, ready_html);
+
+        // ADD EVENT LISTENER MARKING READ when NOTIF IS CLICKED.
+        document.getElementById('bca-notif-content').addEventListener('click', async (e) => {
+            const link = e.target.closest('.bca-notif-child');
+
+            if (link.dataset.status == "unread")
+                await this.markRead(link.dataset.fbid, atob(encoded_email));
+
+            window.location.href = link.dataset.href;
+        });
+    },
+
+    async buildChildHTML(notif_data, status) {
+        if(!notif_data)
+            return;
+
+        let html_str = '';
+        let keys = Object.keys(notif_data);
+
+        const notiflets = keys.map(async (item) => {
+            let data = notif_data[item];
+            // let clone = template.content.cloneNode(true).children[0];
+            // let notif_data = await FirebaseModule.fetchJSON(`${this.db_contents}/${item}.json`);
+            let user_data = await Users.getMemberInfo("prof_img, username, email", data.user);
+            user_data = user_data[0];
+
+            if (!user_data)
+                user_data = {
+                    prof_img: 'https://i.imgur.com/eac6XvU.png',
+                    username: 'Anonymous',
+                    email: ''
+                }
+
+            html_str += `
+                <a data-status="${status}" data-fbid="${item}" data-href="${data.url}" class='bca-notif-child ${status === "read" ? `bca-notif-read`: `bca-notif-unread`}' style='cursor: pointer;'>
                         <img class='bca-notif-child-profimg'
                             src='${user_data.prof_img}' />
                         <p class='bca-notif-child-right'>
@@ -217,11 +240,10 @@ var Notifications = {
                         </p>
                 </a>
                 `;
-            });
+        });
 
-            await Promise.all(notiflets);
-            this.buildStringHTML(parent_id, html_str);
-        }
+        await Promise.all(notiflets);
+        return html_str;
     },
 
     async buildStringHTML(parent_id, ready_html) {
