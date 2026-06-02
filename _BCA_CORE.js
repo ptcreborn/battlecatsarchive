@@ -334,10 +334,12 @@ var Users = {
 
 document.getElementById('bca_user').addEventListener('click', async (e) => {
     e.preventDefault();
+    await initFunctions(['Notifications', 'Users']);
+
+    // INITIALIZE NOTIFICATIONS
     document.getElementById('bca-notif-mother').style.display = 'flex';
-    console.log(Notifications.isNotOpened);
     if (Notifications.isNotOpened) {
         Notifications.isNotOpened = false;
         await Notifications.initialize();
     }
-});
+});     
