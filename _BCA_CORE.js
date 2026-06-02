@@ -37,7 +37,7 @@ var BCA_Notifications = {
 
     async initialize() {
         // check if the user is online or not.
-        let user_email = await Users.checkIfUserOnline();
+        let user_email = await BCA_Users.checkIfUserOnline();
         const parent_id = `bca-notif-mother`;
 
         if (!user_email) {
@@ -140,7 +140,7 @@ var BCA_Notifications = {
 
         if (!data) { // Means the Cached is expired and we need a fresh data.
             console.log('no cache.');
-            data = await Users.getUserInfo("email, username, prof_img, rank_id(rank_name)");
+            data = await BCA_Users.getUserInfo("email, username, prof_img, rank_id(rank_name)");
 
             if (data.length === 1)
                 data = data[0];
@@ -223,7 +223,7 @@ var BCA_Notifications = {
             let data = notif_data[item];
             // let clone = template.content.cloneNode(true).children[0];
             // let notif_data = await FirebaseModule.fetchJSON(`${this.db_contents}/${item}.json`);
-            let user_data = await Users.getMemberInfo("prof_img, username, email", data.user);
+            let user_data = await BCA_Users.getMemberInfo("prof_img, username, email", data.user);
             user_data = user_data[0];
 
             if (!user_data)
@@ -271,7 +271,7 @@ var BCA_Notifications = {
     },
 
     async getNumberOfUnread() {
-        let user_email = await Users.checkIfUserOnline();
+        let user_email = await BCA_Users.checkIfUserOnline();
         let data = await FirebaseModule.fetchJSON(`${this.db}/${btoa(user_email)}/unread.json?shallow=true`);
 
         if (!data) return;
