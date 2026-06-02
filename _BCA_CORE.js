@@ -221,8 +221,10 @@ var BCA_Notifications = {
         document.getElementById('bca-notif-content').addEventListener('click', async (e) => {
             const link = e.target.closest('.bca-notif-child');
 
-            if (link?.dataset?.status == "unread")
+            if (link?.dataset?.status == "unread") {
                 await this.markRead(link.dataset.fbid, atob(encoded_email));
+                BCA_Cache.deleteItem(this.LOCALSTORAGE_NOTIF);
+            }
 
             if (link?.dataset?.href)
                 window.location.href = link.dataset.href;
@@ -423,5 +425,8 @@ var BCA_Cache = {
         let now = new Date().getTime();
 
         return now - parseInt(data.set) >= parseInt(data.expiry);
+    },
+    deleteItem(key) {
+        localStorage.removeItem(key);
     }
 }  
