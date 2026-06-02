@@ -267,7 +267,7 @@ var Notifications = {
 
     async getNumberOfUnread() {
         let user_email = Users.checkIfUserOnline();
-        let data = await FirebaseModule.fetchJSON(`${db}/${btoa(user_email)}/unread.json?shallow=true`);
+        let data = await FirebaseModule.fetchJSON(`${this.db}/${btoa(user_email)}/unread.json?shallow=true`);
 
         if (!data) return;
 
