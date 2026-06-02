@@ -313,7 +313,7 @@
 
             await initFunctions(['BCA_Notifications', 'BCA_Users']);
             if (payload)
-                await Notifications.send(user, target_email, payload);
+                await BCA_Notifications.send(user, target_email, payload);
 
             // ADDXP
             await addUserXP(1);
