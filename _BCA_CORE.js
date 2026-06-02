@@ -209,7 +209,7 @@ var Notifications = {
 
     async buildChildHTML(notif_data, status) {
         if(!notif_data)
-            return;
+            return "";
 
         let html_str = '';
         let keys = Object.keys(notif_data);
