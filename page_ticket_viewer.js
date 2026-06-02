@@ -58,6 +58,7 @@
         document.getElementById('bca_ticket_content').textContent = firebase.content;
         document.getElementById('bca_ticket_xp').textContent = `${users_data.xp} XP`;
         document.getElementById('bca_ticket_rankname').textContent = `${ranks_data.rank_name}`;
+        document.getElementById('bca_ticket_parent').dataset.email = users_data.email;
 
         const templateAttachment = document.querySelector('[template-attachment]');
         const templateLinks = document.querySelector('[template-links]');
@@ -269,6 +270,51 @@
 
             let url = new URL(window.location.href);
             url.searchParams.set('target', fb_id);
+
+            // Notifications
+            // Check first if the user is not the same to the poster..
+
+            let target_html, action, title, user, target_email;
+
+            let poster_email = document.getElementById('bca_ticket_parent').dataset.email;
+            let commentor_email = await Users.checkIfUserOnline();
+
+            if (payload.reply_to) {
+                target_html = document.getElementById(payload.reply_to);
+                if (document.getElementById(payload.reply_to).dataset.email !== commentor_email) {
+                    action = "replied on the ticket";
+                    title = document.getElementById('comment_content').value.substring(0, 50) + '...';
+                    user = await Users.getUserInfo('id');
+                    user = user[0].id;
+                    target_email = target_html.dataset.email;
+
+                    payload = {
+                        "action": action,
+                        "url": url,
+                        "title": title
+                    }
+                } else payload = null;
+            } else {
+                if (poster_email != commentor_email) {
+                    // Notify the poster.
+                    action = "commented on the ticket";
+                    title = document.getElementById('comment_content').value.substring(0, 50) + '...';
+                    user = await Users.getUserInfo('id');
+                    user = user[0].id;
+                    target_email = poster_email;
+
+                    payload = {
+                        "action": action,
+                        "url": url,
+                        "title": title
+                    }
+                } else payload = null;
+            }
+
+            await initFunctions(['Notifications', 'Users']);
+            if (payload)
+                await Notifications.send(user, target_email, payload);
+
             window.location.href = url;
         }
 
@@ -416,7 +462,8 @@
         async function getCommentMetadata() {
             let { data, error } = await supabase.from('bca-ticket-comment')
                 .select('id, fb_id, reply_to, user_id(username, country, prof_img, xp, email, rank_id(rank_name, rank_image))')
-                .eq('parent_id', ticket);
+                .eq('parent_id', ticket)
+                .order('fb_id', { ascending: true });
 
             if (error || data?.length === 0)
                 return;
@@ -460,6 +507,7 @@
                 clone.querySelector('#avatar').src = users_data.prof_img;
                 clone.querySelector('#rankimg').src = ranks_data.rank_image;
                 clone.querySelector('#country').src = users_data.country === "Anonymous" ? `https://i.imgur.com/4MofKJvs.png` : `https://flagsapi.com/${users_data.country}/shiny/64.png`;
+                clone.dataset.email = users_data.email;
 
                 // POST METADATA
                 clone.querySelector('#date').textContent = moment(parseInt(comment_id)).fromNow();
