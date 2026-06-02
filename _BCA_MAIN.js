@@ -6,7 +6,7 @@
         let url = new URL(window.location.href).pathname;
 
         // appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/2cc05b40e7231e7fe83e8696341ebc53ca271196/bca_pop_messsage.js');
-        appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/d946b1d8d11fed3a36f57512353c3e6826850e21/_BCA_CORE.js');
+        appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/e2c4d3bb9143d34287aceec5429cc92c4a37ee96/_BCA_CORE.js');
 
         if (url.includes('/p/') || url.split('/').length != 4) return;
 
