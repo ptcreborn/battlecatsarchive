@@ -236,7 +236,8 @@ var BCA_Notifications = {
             return "";
 
         let html_str = '';
-        let keys = Object.keys(notif_data);
+        let keys = Object.keys(notif_data)
+        keys = keys.reverse();
 
         const notiflets = keys.map(async (item) => {
             let data = notif_data[item];
