@@ -76,7 +76,7 @@
 
     async function addYoutube() {
         document.getElementById('btn_youtube').addEventListener('click', () => {
-            let yt_url = window.prompt("Please add youtube url.");
+            let yt_url = window.prompt("Please add link url. (Ex. Youtube, Reddit, Etc.)");
 
             if (!yt_url)
                 return;
