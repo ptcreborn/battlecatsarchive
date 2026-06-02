@@ -172,34 +172,46 @@ var BCA_Notifications = {
     },
 
     async createNotifChildren(encoded_email) {
-        // get all notifications from unread to read
-        let data = await this.fetch(encoded_email);
-        let unread = data[0];
-        let read = data[1];
         let ready_html = ``;
         let parent_id = 'bca-notif-content';
-        // const template = document.getElementById('bca-notif-child-template');
 
-        //skeleton
-        await this.setSkeleton('bca-notif-content');
+        // check if requires rendering for new notifications
+        let newNotifs = await this.getNumberOfUnread();
+        let cached_data = await BCA_Cache.get(this.LOCALSTORAGE_NOTIF);
 
-        // NOT LOGGED IN
-        if (!unread && !read) {
-            ready_html = `<h2>Empty</h2>`;
-            document.getElementById(parent_id).classList.add('bca-notif-content-empty');
+        if (!newNotifs && cached_data)
+            this.buildStringHTML(parent_id, cached_data);
+
+        else {
+            // get all notifications from unread to read
+            let data = await this.fetch(encoded_email);
+            let unread = data[0];
+            let read = data[1];
+            // const template = document.getElementById('bca-notif-child-template');
+
+            //skeleton
+            await this.setSkeleton('bca-notif-content');
+
+            // NOT LOGGED IN
+            if (!unread && !read) {
+                ready_html = `<h2>Empty</h2>`;
+                document.getElementById(parent_id).classList.add('bca-notif-content-empty');
+                this.buildStringHTML(parent_id, ready_html);
+                return;
+            }
+
+            // INITIALIZE APIS...
+            await this.initFirebase();
+            await this.initMoment();
+            document.getElementById('bca-notif-content').classList.remove('bca-notif-content-empty');
+
+            ready_html = await this.buildChildHTML(unread, "unread");
+            ready_html += await this.buildChildHTML(read, "read");
+
             this.buildStringHTML(parent_id, ready_html);
-            return;
+
+            BCA_Cache.set(this.LOCALSTORAGE_NOTIF, ready_html);
         }
-
-        // INITIALIZE APIS...
-        await this.initFirebase();
-        await this.initMoment();
-        document.getElementById('bca-notif-content').classList.remove('bca-notif-content-empty');
-
-        ready_html = await this.buildChildHTML(unread, "unread");
-        ready_html += await this.buildChildHTML(read, "read");
-
-        this.buildStringHTML(parent_id, ready_html);
 
         // ADD EVENT LISTENER MARKING READ when NOTIF IS CLICKED.
         document.getElementById('bca-notif-content').addEventListener('click', async (e) => {
