@@ -6,7 +6,8 @@ appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/629d8c8de8
 var BCA_Notifications = {
     db: `https://ptc-notifications-default-rtdb.firebaseio.com/notifications`,
     db_contents: `https://ptc-notifications-default-rtdb.firebaseio.com/notif_contents`,
-    isNotOpened: true,
+    LOCALSTORAGE_USER: "bca_user",
+    LOCALSTORAGE_NOTIF: "bca_notif",
 
     async initFirebase() {
         await initFunctions(['FirebaseModule']);
@@ -136,7 +137,7 @@ var BCA_Notifications = {
         let data;
 
         // load from cache
-        data = BCA_Cache.getItemWithExpiration('user');
+        data = BCA_Cache.getItemWithExpiration(LOCALSTORAGE_USER);
 
         if (!data) { // Means the Cached is expired and we need a fresh data.
             data = await BCA_Users.getUserInfo("email, username, prof_img, rank_id(rank_name)");
@@ -144,7 +145,7 @@ var BCA_Notifications = {
             if (data.length === 1)
                 data = data[0];
 
-            BCA_Cache.setItemWithExpiration("user", data, 600000);
+            BCA_Cache.setItemWithExpiration(LOCALSTORAGE_USER, data, 600000);
         }
 
         document.querySelector('.bca-notif-profile-username').href = `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${data.email}`;
@@ -406,14 +407,4 @@ var BCA_Cache = {
 
         return now - parseInt(data.set) >= parseInt(data.expiry);
     }
-}
-
-document.getElementById('bca_user').addEventListener('click', async (e) => {
-    e.preventDefault();
-    // INITIALIZE NOTIFICATIONS
-    document.getElementById('bca-notif-mother').style.display = 'flex';
-    if (BCA_Notifications.isNotOpened) {
-        BCA_Notifications.isNotOpened = false;
-        await BCA_Notifications.initialize();
-    }
-});     
+}  
