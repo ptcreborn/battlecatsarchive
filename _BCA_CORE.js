@@ -336,7 +336,6 @@ document.getElementById('bca_user').addEventListener('click', async (e) => {
     e.preventDefault();
     document.getElementById('bca-notif-mother').style.display = 'flex';
     if (Notifications.isNotOpened) {
-        console.log('opening...');
         Notifications.isNotOpened = false;
         await Notifications.initialize();
     }
