@@ -3,7 +3,7 @@ appendJSFile('https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js');
 appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
 appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/629d8c8de8c2b3266bc383585499c6b2ecce42c6/notification.css');
 
-var Notifications = {
+var BCA_Notifications = {
     db: `https://ptc-notifications-default-rtdb.firebaseio.com/notifications`,
     db_contents: `https://ptc-notifications-default-rtdb.firebaseio.com/notif_contents`,
     isNotOpened: true,
@@ -46,7 +46,7 @@ var Notifications = {
         }
 
         await this.loadProfileInfo();
-        await this.createNotifChild(btoa(user_email));
+        await this.createNotifChildren(btoa(user_email));
     },
 
     async send(user_id, recipent_email, payload) {
@@ -83,7 +83,7 @@ var Notifications = {
     },
 
     async showLoginHTML(parent_id) {
-        this.initContent(parent_id);
+        this.setSkeleton(parent_id);
         document.getElementById(parent_id).innerHTML = `    <div onclick="this.parentNode.style.display = 'none'" class="bca-notif-minimize">X</div>
 <div id='bca-notif-profile' class="bca-notif-profile"><b>🔒 Welcome to Battle Cats Archive</b>
         <br><div><img src="https://i.pinimg.com/736x/fc/9c/e8/fc9ce8648d0b39614092e9b06b750c0b.jpg" style="
@@ -133,16 +133,20 @@ var Notifications = {
 
     async loadProfileInfo() {
         // assume the user is logged in.
-        let data = await Users.getUserInfo("email, username, prof_img, rank_id(rank_name)");
+        let data;
 
-        if (!data) {
-            let email = await Users.checkIfUserOnline();
-            window.alert(`The email ${email} is not registered in the database`);
-            return;
+        // load from cache
+        data = BCA_Cache.getItemWithExpiration('user');
+
+        if (!data) { // Means the Cached is expired and we need a fresh data.
+            console.log('no cache.');
+            data = await Users.getUserInfo("email, username, prof_img, rank_id(rank_name)");
+
+            if (data.length === 1)
+                data = data[0];
+
+            BCA_Cache.setItemWithExpiration("user", data, 600000);
         }
-
-        if (data.length === 1)
-            data = data[0];
 
         document.querySelector('.bca-notif-profile-username').href = `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${data.email}`;
         document.querySelector('.bca-notif-profile-img').src = data.prof_img;
@@ -153,7 +157,7 @@ var Notifications = {
         document.querySelectorAll('.bca-notif-profile a')[1].textContent = `Profile`;
     },
 
-    async initContent(parent_id) {
+    async setSkeleton(parent_id) {
         appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/6a70c531b260975b772cfe55c73bf12dba1f1eee/skeleton.css');
 
         const skeleton_html = `<div class="card">
@@ -167,7 +171,7 @@ var Notifications = {
         document.getElementById(parent_id).innerHTML = skeleton_html;
     },
 
-    async createNotifChild(encoded_email) {
+    async createNotifChildren(encoded_email) {
         // get all notifications from unread to read
         let data = await this.fetch(encoded_email);
         let unread = data[0];
@@ -177,7 +181,7 @@ var Notifications = {
         // const template = document.getElementById('bca-notif-child-template');
 
         //skeleton
-        await this.initContent('bca-notif-content');
+        await this.setSkeleton('bca-notif-content');
 
         // NOT LOGGED IN
         if (!unread && !read) {
@@ -275,10 +279,23 @@ var Notifications = {
         let keys = Object.keys(data);
 
         return keys.length;
+    },
+
+    async checkNotifCount() {
+        // Check Notif Count
+        const notif_count = document.getElementById('notif_count_id');
+        let num_of_notifs = await this.getNumberOfUnread();
+
+        if (!num_of_notifs)
+            notif_count.remove();
+        else {
+            notif_count.style.display = 'flex';
+            notif_count.textContent = num_of_notifs;
+        }
     }
 }
 
-var Users = {
+var BCA_Users = {
     async initialize() {
         await initFunctions(['supabase']);
     },
@@ -329,6 +346,66 @@ var Users = {
             return;
 
         return data;
+    },
+    async checkIfUserCompleteRegistration() {
+        await this.initialize();
+
+        if (window.location.href == `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`)
+            return;
+
+        let email = await this.checkIfUserOnline();
+        if (!email)
+            return;
+
+        let { data, error } = await supabase.from('users').select('id').eq('email', email);
+
+        if (error || data?.length == 0) {
+            await supabase.auth.signOut();
+            window.alert("Please kindly finish setting up your account. Login again.");
+            window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
+            return;
+        }
+
+        return true;
+    }
+}
+
+var BCA_Cache = {
+    set(key, val) {
+        localStorage.setItem(key, val);
+    },
+    setJSON(key, jsonObject) {
+        localStorage.setItem(key, JSON.stringify(jsonObject));
+    },
+    get(key) {
+        return localStorage.getItem(key);
+    },
+    getParseItem(key) {
+        JSON.parse(this.get(key));
+    },
+    getItemWithExpiration(key) {
+        let isExpired = this.checkExpiry(key);
+        if (isExpired === false)
+            return this.getParseItem(key);
+        else return;
+    },
+    setItemWithExpiration(key, val, expiry_ms) {
+        let now = new Date().getTime();
+
+        localStorage.setItem(key, JSON.stringify({
+            data: val,
+            expiry: expiry_ms,
+            set: now
+        }));
+    },
+    checkExpiry(key) {
+        let data = JSON.parse(this.get(key));
+        if (!data)
+            return null;
+
+        let now = new Date().getTime();
+
+        return now - parseInt(data.set) >= parseInt(data.expiry);
     }
 }
 
