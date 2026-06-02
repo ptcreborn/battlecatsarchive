@@ -149,10 +149,12 @@
 
 .bca-notif-child-right-action {
     margin-right: 5px;
+    white-space: nowrap;
 }
 
 .bca-notif-child-right-target {
     text-decoration: underline;
+    white-space: nowrap;
 }
 
 .bca-notif-deactivate {
