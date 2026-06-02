@@ -85,21 +85,27 @@ var BCA_Notifications = {
 
     async showLoginHTML(parent_id) {
         this.setSkeleton(parent_id);
-        document.getElementById(parent_id).innerHTML = `    <div onclick="this.parentNode.style.display = 'none'" class="bca-notif-minimize">X</div>
-<div id='bca-notif-profile' class="bca-notif-profile"><b>🔒 Welcome to Battle Cats Archive</b>
-        <br><div><img src="https://i.pinimg.com/736x/fc/9c/e8/fc9ce8648d0b39614092e9b06b750c0b.jpg" style="
-            height: 50px;
-            width: 50px;
-            float: right;
-        "><p>Complete the joy and journey in playing battle cats through creating account in the server. You can store your progress, make friends with anyone and access limited resources like <i>mods and fan made bcu packs</i>.</p></div>
-        <br><a href="https://battlecatsarchive.blogspot.com/p/signin-to-bca.html" class="main-button button" style="
-            background: #0c3e6a;
-        ">Login with Google</a>
-        <div style="
-            align-self: center;
-        ">OR</div><a href="https://battlecatsarchive.blogspot.com/p/signin-to-bca.html" class="main-button button " style="
-            background: #3e5d84;
-        ">Login with Discord</a></div></div>`;
+        document.getElementById(parent_id).innerHTML = `
+    <div style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 20px;
+    "><b>🔒 Welcome to Battle Cats Archive</b>
+            <br><div><img src="https://i.pinimg.com/736x/fc/9c/e8/fc9ce8648d0b39614092e9b06b750c0b.jpg" style="
+                height: 50px;
+                width: 50px;
+                float: right;
+            "><p>Complete the joy and journey in playing battle cats through creating account in the server. You can store your progress, make friends with anyone and access limited resources like <i>mods and fan made bcu packs</i>.</p></div>
+            <br><a href="https://battlecatsarchive.blogspot.com/p/signin-to-bca.html" class="main-button button" style="
+                background: #0c3e6a;
+            ">Login with Google</a>
+            <div style="
+                align-self: center;
+            ">OR</div><a href="https://battlecatsarchive.blogspot.com/p/signin-to-bca.html" class="main-button button " style="
+                background: #3e5d84;
+            ">Login with Discord</a></div>
+        `;
     },
 
     async fetch(encoded_email) {
