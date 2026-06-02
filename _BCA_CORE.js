@@ -6,6 +6,7 @@ appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/bc8738c3e2
 var Notifications = {
     db: `https://ptc-notifications-default-rtdb.firebaseio.com/notifications`,
     db_contents: `https://ptc-notifications-default-rtdb.firebaseio.com/notif_contents`,
+    isNotOpened: true,
 
     async initFirebase() {
         await initFunctions(['FirebaseModule']);
@@ -331,11 +332,11 @@ var Users = {
     }
 }
 
-document.getElementById('bca-notif-mother').style.display = 'flex';
-await Notifications.initialize();
-
-// document.getElementById('bca_user').addEventListener('click', async (e) => {
-//     e.preventDefault();
-//     document.getElementById('bca-notif-mother').style.display = 'flex';
-//     await Notifications.initialize();
-// });
+document.getElementById('bca_user').addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (Notifications.isNotOpened) {
+        Notifications.isNotifOpened = false;
+        document.getElementById('bca-notif-mother').style.display = 'flex';
+        await Notifications.initialize();
+    }
+});
