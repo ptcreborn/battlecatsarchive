@@ -1,7 +1,7 @@
 
 appendJSFile('https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js');
 appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
-appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/0abea7c3838bbe0ce182cc470b38cc64b358d60a/notification.css');
+appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/1b1243e0833dc80abf9d4309d38f86f0ce6eaa2f/notification.css');
 
 var Notifications = {
     db: `https://ptc-notifications-default-rtdb.firebaseio.com/notifications`,
@@ -334,8 +334,6 @@ var Users = {
 
 document.getElementById('bca_user').addEventListener('click', async (e) => {
     e.preventDefault();
-    await initFunctions(['Notifications', 'Users']);
-
     // INITIALIZE NOTIFICATIONS
     document.getElementById('bca-notif-mother').style.display = 'flex';
     if (Notifications.isNotOpened) {
