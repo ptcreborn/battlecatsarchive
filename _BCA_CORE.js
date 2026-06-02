@@ -1,7 +1,7 @@
 
 appendJSFile('https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js');
 appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
-appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/3887a51cc1c27b05ae85029b1c5ddf33e71fe4ac/notification.css');
+appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/082c336467bbbab723544c339368ba0929391765/notification.css');
 
 var Notifications = {
     db: `https://ptc-notifications-default-rtdb.firebaseio.com/notifications`,
@@ -13,6 +13,25 @@ var Notifications = {
 
     async initMoment() {
         await initFunctions(['moment']);
+
+        moment.updateLocale('en', {
+            relativeTime: {
+                future: 'in %s',
+                past: '%s ago',
+                s: '1s',
+                ss: '%ss',
+                m: '1m',
+                mm: '%dm',
+                h: '1h',
+                hh: '%dh',
+                d: '1d',
+                dd: '%dd',
+                M: '1mo',
+                MM: '%dmo',
+                y: '1y',
+                yy: '%dy'
+            }
+        });
     },
 
     async initialize() {
@@ -35,27 +54,24 @@ var Notifications = {
         //     "action": "comment/reply/like",
         //     "url": "url to the path of the action",
         //     "title": "title of the webpage",
-        //     "thumbnail": "img src"
+        //     "thumb": "img src"
         // }
-
-        // adding signature to payload
-        payload.sign = "bca";
 
         let b64_email = btoa(recipent_email);
 
         // writing to the content first
         let key = new Date().getTime();
-        let result = await FirebaseModule.patch(`${this.db_contents}/${key}.json`, JSON.stringify(payload));
+        // let result = await FirebaseModule.patch(`${this.db_contents}/${key}.json`, JSON.stringify(payload));
 
-        if (!result) {
-            window.alert("Failed in writing notification contents.");
-            return;
-        }
+        // if (!result) {
+        //     window.alert("Failed in writing notification contents.");
+        //     return;
+        // }
+
+        payload.user = user_id;
 
         // write to the notification bucket of the user.
-        result = await FirebaseModule.patch(`${this.db}/${b64_email}/unread/${key}.json`, JSON.stringify({
-            "user": user_id
-        }));
+        let result = await FirebaseModule.patch(`${this.db}/${b64_email}/unread/${key}.json`, JSON.stringify(payload));
 
         if (!result) {
             // fallback, delete the notif contents
@@ -110,9 +126,7 @@ var Notifications = {
         FirebaseModule.patch(`${this.db}/${btoa(recipent_email)}/unread/${fbid}.json`, "null");
 
         await FirebaseModule.patch(`${this.db}/${btoa(recipent_email)}/read/${fbid}.json`,
-            JSON.stringify({
-                user: unread_data.user
-            })
+            JSON.stringify(unread_data)
         );
     },
 
@@ -174,12 +188,14 @@ var Notifications = {
         if (unread) {
             await this.initFirebase();
             await this.initMoment();
+            document.getElementById('bca-notif-content').classList.remove('bca-notif-content-empty');
             let keys = Object.keys(unread);
             const notiflets = keys.map(async (item) => {
-                let user_id = unread[item].user;
+                let data = unread[item];
                 let clone = template.content.cloneNode(true).children[0];
-                let notif_data = await FirebaseModule.fetchJSON(`${this.db_contents}/${item}.json`);
-                let user_data = await Users.getMemberInfo("prof_img, username, email", user_id);
+                // let notif_data = await FirebaseModule.fetchJSON(`${this.db_contents}/${item}.json`);
+                let user_data = await Users.getMemberInfo("prof_img, username, email", data.user);
+                user_data = user_data[0];
 
                 if (!user_data)
                     user_data = {
@@ -190,10 +206,11 @@ var Notifications = {
 
                 clone.querySelector('.bca-notif-child-right-time').textContent = moment(parseInt(item)).fromNow();
                 clone.querySelector('.bca-notif-child-right-user').textContent = `@${user_data.username}`;
-                clone.querySelector('.bca-notif-child-right-action').textContent = notif_data.action;
-                clone.querySelector('.bca-notif-child-right-target').textContent = notif_data.title;
-                clone.querySelector('.bca-notif-child-right-target').href = notif_data.url;
-                clone.querySelector('.bca-notif-child-profimg').img = user_data.prof_img;
+                clone.querySelector('.bca-notif-child-right-user').href = `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${user_data.email}`;
+                clone.querySelector('.bca-notif-child-right-action').textContent = data.action;
+                clone.querySelector('.bca-notif-child-right-target').textContent = data.title;
+                clone.querySelector('.bca-notif-child-right-target').href = data.url;
+                clone.querySelector('.bca-notif-child-profimg').src = user_data.prof_img;
                 return clone;
             });
 
@@ -258,6 +275,16 @@ var Users = {
         await this.initialize();
 
         let { data, error } = await supabase.from('users').select(select_parameters).eq('id', id);
+
+        if (data?.length === 0 || error)
+            return;
+
+        return data;
+    },
+    async getMemberInfoCustom(select_parameters, column, value) {
+        await this.initialize();
+
+        let { data, error } = await supabase.from('users').select(select_parameters).eq(column, value);
 
         if (data?.length === 0 || error)
             return;
