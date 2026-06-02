@@ -1,7 +1,7 @@
 
 appendJSFile('https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js');
 appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
-appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/84cea1fb1f25e784ddafd7fce453e4633f4db22e/notification.css');
+appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/bc8738c3e21e9a68b49d1e24163a7e7fb5dbc927/notification.css');
 
 var Notifications = {
     db: `https://ptc-notifications-default-rtdb.firebaseio.com/notifications`,
@@ -208,7 +208,7 @@ var Notifications = {
     },
 
     async buildChildHTML(notif_data, status) {
-        if(!notif_data)
+        if (!notif_data)
             return "";
 
         let html_str = '';
@@ -229,7 +229,7 @@ var Notifications = {
                 }
 
             html_str += `
-                <a data-status="${status}" data-fbid="${item}" data-href="${data.url}" class='bca-notif-child ${status === "read" ? `bca-notif-read`: `bca-notif-unread`}' style='cursor: pointer;'>
+                <a data-status="${status}" data-fbid="${item}" data-href="${data.url}" class='bca-notif-child ${status === "read" ? `bca-notif-read` : `bca-notif-unread`}' style='cursor: pointer;'>
                         <img class='bca-notif-child-profimg'
                             src='${user_data.prof_img}' />
                         <p class='bca-notif-child-right'>
@@ -264,6 +264,17 @@ var Notifications = {
         for (const clone of ready_clones)
             parent.appendChild(clone);
     },
+
+    async getNumberOfUnread() {
+        let user_email = Users.checkIfUserOnline();
+        let data = await FirebaseModule.fetchJSON(`${db}/${btoa(user_email)}/unread.json?shallow=true`);
+
+        if (!data) return;
+
+        let keys = Object.keys(data);
+
+        return keys.length;
+    }
 }
 
 var Users = {
