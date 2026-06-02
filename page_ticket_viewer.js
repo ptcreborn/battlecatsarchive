@@ -277,14 +277,14 @@
             let target_html, action, title, user, target_email;
 
             let poster_email = document.getElementById('bca_ticket_parent').dataset.email;
-            let commentor_email = await Users.checkIfUserOnline();
+            let commentor_email = await BCA_Users.checkIfUserOnline();
 
             if (payload.reply_to) {
                 target_html = document.getElementById(payload.reply_to);
                 if (document.getElementById(payload.reply_to).dataset.email !== commentor_email) {
                     action = "replied on the ticket";
                     title = document.getElementById('comment_content').value.substring(0, 50) + '...';
-                    user = await Users.getUserInfo('id');
+                    user = await BCA_Users.getUserInfo('id');
                     user = user[0].id;
                     target_email = target_html.dataset.email;
 
@@ -299,7 +299,7 @@
                     // Notify the poster.
                     action = "commented on the ticket";
                     title = document.getElementById('comment_content').value.substring(0, 50) + '...';
-                    user = await Users.getUserInfo('id');
+                    user = await BCA_Users.getUserInfo('id');
                     user = user[0].id;
                     target_email = poster_email;
 
@@ -311,7 +311,7 @@
                 } else payload = null;
             }
 
-            await initFunctions(['Notifications', 'Users']);
+            await initFunctions(['BCA_Notifications', 'BCA_Users']);
             if (payload)
                 await Notifications.send(user, target_email, payload);
 
