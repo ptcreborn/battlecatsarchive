@@ -139,7 +139,6 @@ var BCA_Notifications = {
         data = BCA_Cache.getItemWithExpiration('user');
 
         if (!data) { // Means the Cached is expired and we need a fresh data.
-            console.log('no cache.');
             data = await BCA_Users.getUserInfo("email, username, prof_img, rank_id(rank_name)");
 
             if (data.length === 1)
@@ -283,7 +282,7 @@ var BCA_Notifications = {
 
     async checkNotifCount() {
         // Check Notif Count
-        const notif_count = document.getElementById('notif_count_id');
+        const notif_count = document.getElementById('notif_count');
         let num_of_notifs = await this.getNumberOfUnread();
 
         if (!num_of_notifs)
@@ -408,6 +407,10 @@ var BCA_Cache = {
         return now - parseInt(data.set) >= parseInt(data.expiry);
     }
 }
+
+    (async () => {
+        await BCA_Notifications.loadProfileInfo();
+    })();
 
 document.getElementById('bca_user').addEventListener('click', async (e) => {
     e.preventDefault();
