@@ -173,7 +173,7 @@ var Notifications = {
         let read = data[1];
         let ready_html = ``;
         let parent_id = 'bca-notif-content';
-        const template = document.getElementById('bca-notif-child-template');
+        // const template = document.getElementById('bca-notif-child-template');
 
         //skeleton
         await this.initContent('bca-notif-content');
@@ -190,9 +190,10 @@ var Notifications = {
             await this.initMoment();
             document.getElementById('bca-notif-content').classList.remove('bca-notif-content-empty');
             let keys = Object.keys(unread);
+            let html_str = ``;
             const notiflets = keys.map(async (item) => {
                 let data = unread[item];
-                let clone = template.content.cloneNode(true).children[0];
+                // let clone = template.content.cloneNode(true).children[0];
                 // let notif_data = await FirebaseModule.fetchJSON(`${this.db_contents}/${item}.json`);
                 let user_data = await Users.getMemberInfo("prof_img, username, email", data.user);
                 user_data = user_data[0];
@@ -204,18 +205,22 @@ var Notifications = {
                         email: ''
                     }
 
-                clone.querySelector('.bca-notif-child-right-time').textContent = moment(parseInt(item)).fromNow();
-                clone.querySelector('.bca-notif-child-right-user').textContent = `@${user_data.username}`;
-                clone.href = `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${user_data.email}`;
-                clone.querySelector('.bca-notif-child-right-action').textContent = data.action;
-                clone.querySelector('.bca-notif-child-right-target').textContent = data.title;
-                clone.querySelector('.bca-notif-child-right-target').href = data.url;
-                clone.querySelector('.bca-notif-child-profimg').src = user_data.prof_img;
-                return clone;
+                html_str += `
+                <a href="${data.url}" class='bca-notif-child'>
+                        <img class='bca-notif-child-profimg'
+                            src='${user_data.prof_img}' />
+                        <p class='bca-notif-child-right'>
+                            <span class='bca-notif-child-right-time'>${moment(parseInt(item)).fromNow()}</span>
+                            <p href="https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${data.email}" class='bca-notif-child-right-user'>@${user_data.username}</p>
+                            <span class='bca-notif-child-right-action'>${data.action}</span>
+                            <p class='bca-notif-child-right-target'>${data.title}</p>
+                        </p>
+                </a>
+                `;
             });
 
-            const allNotifs = await Promise.all(notiflets);
-            this.buildHTMLClone(parent_id, allNotifs);
+            await Promise.all(notiflets);
+            this.buildStringHTML(parent_id, html_str);
         }
     },
 
