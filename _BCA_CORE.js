@@ -431,3 +431,114 @@ var BCA_Cache = {
         localStorage.removeItem(key);
     }
 }  
+
+var BCA_IMGBB = {
+  proxy: "https://bca-image-proxy.jasonbourne181997.workers.dev/",
+  host: "https://i.ibb.co/",
+  inputBtn: null,
+  uploadBtn: null,
+
+  initialize(inputID, buttonID) {
+    this.inputBtn = document.getElementById(inputID);
+    this.uploadBtn = document.getElementById(buttonID);
+  },
+  async uploadImage(file) {
+    // check if initialized
+    if (!this.inputBtn || !this.uploadBtn) {
+      window.alert(`
+          Please initialize BCA_IMGBB first using the function <BCA_IMGBB : initialize ()>
+        `);
+      return;
+    }
+
+    this.disableButton();
+    // disable html element while uploading...
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/bmp",
+      "image/webp"
+    ];
+
+    if (!file || !file.type.match(/image.*/)) {
+      window.alert("No image file has been selected.");
+      this.enableButton();
+      return;
+    }
+
+    if (!allowedTypes.includes(file.type)) {
+      alert("Only JPG, PNG, GIF, BMP, WEBP allowed!");
+      this.enableButton();
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const apiKey = "07f1351d4e674784012d92ae6e03b49d";
+
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+      method: "POST",
+      body: formData
+    });
+
+    if (!res.ok) {
+      window.alert(`
+          Failed in uploading image: ${file.name}
+          Please try again.
+      `);
+      this.enableButton();
+      return;
+    }
+
+    const data = await res.json();
+
+    if (data.success || data.status === 200) {
+      this.enableButton();
+      return data.data;
+    }
+
+    window.alert(`
+    Error in fetching the uploaded image: ${file.name}.
+    Please try re-uploading again.
+    `);
+    this.enableButton();
+  },
+
+  getThumbnail(image_data) {
+    if (!image_data) {
+      window.alert("Please upload image first.");
+      return;
+    }
+
+    let thumb = image_data.thumb;
+
+    if (thumb)
+      return thumb.url.includes(this.host) ? thumb.url.replace(this.host, this.proxy) : thumb.url;
+  },
+
+  getOriginal(image_data) {
+    if (!image_data) {
+      window.alert("Please upload image first.");
+      return;
+    }
+
+    let original = image_data.image;
+
+    if (original)
+      return original.url.includes(this.host) ? original.url.replace(this.host, this.proxy) : original.url;
+  },
+
+  disableButton() {
+    this.uploadBtn.textContent = `Uploading...`;
+    this.uploadBtn.style.opacity = `0.7`;
+    this.uploadBtn.style.pointerEvents = `none`;
+  },
+
+  enableButton() {
+    this.uploadBtn.textContent = `Upload`;
+    this.uploadBtn.style.opacity = `1`;
+    this.uploadBtn.style.pointerEvents = `auto`;
+  }
+}
