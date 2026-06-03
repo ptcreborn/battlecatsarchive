@@ -402,7 +402,7 @@
                 BCA_IMGBB.initialize(input, uploadImg);
                 let image_data = await BCA_IMGBB.uploadImage(file);
 
-                if(!image_data)
+                if (!image_data)
                     return;
 
                 // TODO after success upload
@@ -567,11 +567,14 @@
                         window.open(`https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(item)}`);
                     });
                     // minifying image size
-                    let temp = item.split('.');
-                    temp[2] += 't';
-                    temp = temp.join('.');
+                    if (item.includes('i.imgur.com')) {
+                        let temp = item.split('.');
+                        temp[2] += 't';
+                        temp = temp.join('.');
+                        img.src = temp;
+                    }
+                    else img.src = item;
 
-                    img.src = temp;
                     img.style.cursor = 'pointer';
                     clone.querySelector('#attachments').appendChild(img);
                 });
