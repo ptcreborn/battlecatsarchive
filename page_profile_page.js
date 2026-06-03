@@ -1,5 +1,5 @@
-(async() => {
-const user_info = document.getElementById('user_informations');
+(async () => {
+    const user_info = document.getElementById('user_informations');
     const controls = document.getElementById('panelControls');
     let num_of_requests = 0;
 
@@ -21,7 +21,7 @@ const user_info = document.getElementById('user_informations');
         //     <td style="width: 24%;">&nbsp;</td>
         //   </tr>
 
-        const user_id = await getUserID(userEmail[0]);        
+        const user_id = await getUserID(userEmail[0]);
         // calling user records.
         let data = await supabase.rpc('retrieve_user_account_requests', {
             userid: user_id
@@ -207,35 +207,66 @@ const user_info = document.getElementById('user_informations');
         window.location.href = `https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html`;
     }
 
-    document.querySelector('#btn_uploadProfile').addEventListener('click', () => {
-        document.querySelector('#file_attachments').click();
+    // document.querySelector('#btn_uploadProfile').addEventListener('click', () => {
+    //     document.querySelector('#file_attachments').click();
+    // });
+
+    // ImgurJS.uploadImgUr('file_attachments', 'prof_img', () => {
+    //     document.querySelector('#btn_uploadProfile').innerText = 'Uploading...';
+    //     document.querySelector('#btn_uploadProfile').style.pointerEvents = 'none';
+    //     document.querySelector('#btn_uploadProfile').classList.remove('main-button');
+    // }, async () => {
+    //     document.querySelector('#btn_uploadProfile').innerText = 'Change Profile Photo';
+    //     document.querySelector('#btn_uploadProfile').style.pointerEvents = 'auto';
+    //     document.querySelector('#btn_uploadProfile').classList.add('main-button');
+    //     const {
+    //         error
+    //     } = await supabase.from('users').update({
+    //         prof_img: document.querySelector('#prof_img').src
+    //     }).eq('email', userEmail[0]);
+
+    //     localStorage.setItem('user', btoa(JSON.stringify({
+    //         email: userEmail[0],
+    //         profile: document.querySelector('#prof_img').src
+    //     })));
+
+    //     document.querySelector('#bca_user img.home-profile').src = `${document.querySelector('#prof_img').src}`;
+
+    //     if (error) {
+    //         window.alert(`${error.message}, error has occured!'`);
+    //         return;
+    //     }
+    // });
+
+    // IMGBB as default image hosting...
+
+
+    const input_id = document.getElementById('file_attachments');
+    const buttonUpload = document.getElementById('btn_uploadProfile');
+
+    buttonUpload.addEventListener('click', () => {
+        input_id.click();
     });
 
-    ImgurJS.uploadImgUr('file_attachments', 'prof_img', () => {
-        document.querySelector('#btn_uploadProfile').innerText = 'Uploading...';
-        document.querySelector('#btn_uploadProfile').style.pointerEvents = 'none';
-        document.querySelector('#btn_uploadProfile').classList.remove('main-button');
-    }, async () => {
-        document.querySelector('#btn_uploadProfile').innerText = 'Change Profile Photo';
-        document.querySelector('#btn_uploadProfile').style.pointerEvents = 'auto';
-        document.querySelector('#btn_uploadProfile').classList.add('main-button');
-        const {
-            error
-        } = await supabase.from('users').update({
-            prof_img: document.querySelector('#prof_img').src
-        }).eq('email', userEmail[0]);
+    input_id.addEventListener('input', async (e) => {
+        const file = e.target.files[0];
+        BCA_IMGBB.initialize(input_id, buttonUpload);
+        let image_data = await BCA_IMGBB.uploadImage(file);
 
-        localStorage.setItem('user', btoa(JSON.stringify({
-            email: userEmail[0],
-            profile: document.querySelector('#prof_img').src
-        })));
-
-        document.querySelector('#bca_user img.home-profile').src = `${document.querySelector('#prof_img').src}`;
-
-        if (error) {
-            window.alert(`${error.message}, error has occured!'`);
+        if (!image_data)
             return;
-        }
+
+        // ON SUCCESS
+        await supabase.from('users')
+            .update({
+                prof_img: BCA_IMGBB.getOriginal(image_data)
+            })
+            .eq('email', userEmail[0]);
+
+        document.querySelector('#bca_user img.home-profile').src = BCA_IMGBB.getThumbnail(image_data);
+        document.getElementById('prof_img').src = BCA_IMGBB.getOriginal(image_data);
+
+        input_id.value = "";
     });
 
     async function rankUser() {
