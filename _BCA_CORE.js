@@ -229,11 +229,12 @@ var BCA_Notifications = {
             if (link?.dataset?.status == "unread") {
                 document.getElementById('bca-notif-content').style.pointerEvents = 'none';
                 await this.markRead(link.dataset.fbid, atob(encoded_email));
+                link.dataset.status = "read";
+                link.className = "bca-notif-child bca-notif-read";
 
                 // for READ only, once unread is clicked, just add the content to the cache of unreads.
-                let cached = BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF) || '';
-                cached = link.outerHTML + "" + cached;
-                BCA_Cache.set(this.LOCALSTORAGE_UNREAD_NOTIF, cached);
+                const parent = document.getElementById(parent_id);
+                BCA_Cache.set(this.LOCALSTORAGE_UNREAD_NOTIF, parent.innerHTML);
             }
 
             if (link?.dataset?.href)
