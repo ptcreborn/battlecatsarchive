@@ -239,7 +239,9 @@ var BCA_Notifications = {
 
                 // for READ only, once unread is clicked, just add the content to the cache of unreads.
                 const parent = document.getElementById(parent_id);
-                BCA_Cache.set(this.LOCALSTORAGE_UNREAD_NOTIF, parent.innerHTML);
+                let cached = BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF);
+                cached = link.outerHTML + '' + cached;
+                BCA_Cache.set(this.LOCALSTORAGE_UNREAD_NOTIF, cached);
             }
 
             if (link?.dataset?.href)
@@ -289,7 +291,10 @@ var BCA_Notifications = {
 
         await Promise.all(works);
 
-        const ready_html = document.getElementById(parent_id).innerHTML;
+        let ready_html = '';
+        let getUnread = document.querySelectorAll('#bca-notif-content a[data-status="read"]');
+        
+        Array.from(getUnread).forEach(item => ready_html += getUnread.outerHTML);
         BCA_Cache.set(this.LOCALSTORAGE_UNREAD_NOTIF, ready_html);
     },
 
