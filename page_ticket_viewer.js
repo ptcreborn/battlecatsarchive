@@ -116,10 +116,13 @@
             });
 
             // minifying image size
-            let temp = item.split('.');
-            temp[2] += 'm';
-            temp = temp.join('.');
-            img.src = temp;
+            if(item.includes('i.imgur.com')) {
+                let temp = item.split('.');
+                temp[2] += 'm';
+                temp = temp.join('.');
+                img.src = temp;
+            } else img.src = item;
+            
             img.style.cursor = 'pointer';
 
             document.getElementById('bca_ticket_attachment').appendChild(img);
