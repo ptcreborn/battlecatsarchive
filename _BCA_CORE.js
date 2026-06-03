@@ -7,6 +7,7 @@ var BCA_Notifications = {
     db_contents: `https://ptc-notifications-default-rtdb.firebaseio.com/notif_contents`,
     LOCALSTORAGE_USER: "bca_user",
     LOCALSTORAGE_UNREAD_NOTIF: "bca_notif_unread",
+    CACHE_CONTROL: "bca_cache_control",
 
     async initFirebase() {
         await initFunctions(['FirebaseModule']);
@@ -340,10 +341,16 @@ var BCA_Notifications = {
             notif_count.textContent = num_of_notifs;
         }
     },
-    clearNotificationsCache() {
+    clearNotificationsCache(triggerBtn) {
+        let cache_cleared = BCA_Cache.getItemWithExpiration(this.CACHE_CONTROL);
+        if (cache_cleared)
+            BCA_Display.disableElem(triggerBtn);
+
         BCA_Cache.deleteItem(this.LOCALSTORAGE_UNREAD_NOTIF);
         BCA_Cache.deleteItem(this.LOCALSTORAGE_USER);
+        BCA_Cache.setItemWithExpiration(this.CACHE_CONTROL, "set", 1000 * 60 * 2); // 2 minutes
         window.alert("Notifications cache was cleared. Only use this when notifications are behaving abnormal.");
+        window.location.reload();
     }
 }
 
@@ -581,7 +588,13 @@ var BCA_IMGBB = {
     }
 }
 
-
-
-
-
+var BCA_Display = {
+    disableElem(elem) {
+        elem.style.pointerEvents = 'none';
+        elem.style.opacity = '0.7';
+    },
+    enableElem(elem) {
+        elem.style.pointerEvents = 'auto';
+        elem.style.opacity = '1';
+    }
+}
