@@ -116,13 +116,13 @@
             });
 
             // minifying image size
-            if(item.includes('i.imgur.com')) {
+            if (item.includes('i.imgur.com')) {
                 let temp = item.split('.');
                 temp[2] += 'm';
                 temp = temp.join('.');
                 img.src = temp;
             } else img.src = item;
-            
+
             img.style.cursor = 'pointer';
 
             document.getElementById('bca_ticket_attachment').appendChild(img);
@@ -386,41 +386,56 @@
         }
 
         async function initImageAttachments() {
-            appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/ae9403b157ad59a490e8b4dd7f3e5c57a0980f88/ImgurJS.js');
+            // appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/ae9403b157ad59a490e8b4dd7f3e5c57a0980f88/ImgurJS.js');
 
             const uploadImg = document.getElementById('addimg');
             const input = document.getElementById('file_attachments');
 
-            await initFunctions(['ImgurJS']);
+            await initFunctions(['BCA_IMGBB']);
 
             uploadImg.addEventListener('click', () => {
                 input.click();
             });
 
-            ImgurJS.uploadMultipleImgs('file_attachments', 'dummy',
-                () => {
-                    uploadImg.textContent = `Uploading...`;
-                    uploadImg.style.opacity = `0.7`;
-                    uploadImg.style.pointerEvents = `none`;
-                },
-                (img_link) => {
-                    uploadImg.textContent = `Upload Image`;
-                    uploadImg.style.opacity = `1`;
-                    uploadImg.style.pointerEvents = `auto`;
+            input.addEventListener('input', async (e) => {
+                const file = e.target.files[0];
+                BCA_IMGBB.initialize(input, uploadImg);
+                let image_data = await BCA_IMGBB.uploadImage(file);
 
-                    const clone = template.content.cloneNode(true).children[0];
-                    clone.querySelector('b').textContent = "Image";
-                    clone.querySelector('p').textContent = img_link;
+                if(image_data)
+                    return;
 
-                    parent.appendChild(clone);
-                },
-                () => {
-                    console.log('Upload error.');
-                    uploadImg.textContent = `Upload Image`;
-                    uploadImg.style.opacity = `1`;
-                    uploadImg.style.pointerEvents = `auto`;
-                }
-            );
+                // TODO after success upload
+                const clone = template.content.cloneNode(true).children[0];
+                clone.querySelector('b').textContent = "Image";
+                clone.querySelector('p').textContent = BCA_IMGBB.getOriginal(image_data);
+                parent.append(clone);
+            });
+
+            // ImgurJS.uploadMultipleImgs('file_attachments', 'dummy',
+            //     () => {
+            //         uploadImg.textContent = `Uploading...`;
+            //         uploadImg.style.opacity = `0.7`;
+            //         uploadImg.style.pointerEvents = `none`;
+            //     },
+            //     (img_link) => {
+            //         uploadImg.textContent = `Upload Image`;
+            //         uploadImg.style.opacity = `1`;
+            //         uploadImg.style.pointerEvents = `auto`;
+
+            //         const clone = template.content.cloneNode(true).children[0];
+            //         clone.querySelector('b').textContent = "Image";
+            //         clone.querySelector('p').textContent = img_link;
+
+            //         parent.appendChild(clone);
+            //     },
+            //     () => {
+            //         console.log('Upload error.');
+            //         uploadImg.textContent = `Upload Image`;
+            //         uploadImg.style.opacity = `1`;
+            //         uploadImg.style.pointerEvents = `auto`;
+            //     }
+            // );
         }
 
         function finalizeLinks() {
