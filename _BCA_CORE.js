@@ -193,13 +193,14 @@ var BCA_Notifications = {
         let newNotifs = await this.getNumberOfUnread();
         let cached_data = BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF);
 
-        if (!newNotifs && cached_data)
+        if (false) //!newNotifs && cached_data
             this.buildStringHTML(parent_id, cached_data);
 
         else {
             // get all notifications from unread to read
             let unread = await this.fetch(encoded_email, 'unread');
-            let read = BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF) || await this.fetch(encoded_email, 'read');
+            // let read = BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF) || await this.fetch(encoded_email, 'read');
+            let read = await this.fetch(encoded_email, 'read');
 
             // const template = document.getElementById('bca-notif-child-template');
 
