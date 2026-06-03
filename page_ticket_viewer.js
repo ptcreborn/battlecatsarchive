@@ -402,7 +402,7 @@
                 BCA_IMGBB.initialize(input, uploadImg);
                 let image_data = await BCA_IMGBB.uploadImage(file);
 
-                if(image_data)
+                if(!image_data)
                     return;
 
                 // TODO after success upload
