@@ -343,6 +343,7 @@ var BCA_Notifications = {
     clearNotificationsCache() {
         BCA_Cache.deleteItem(this.LOCALSTORAGE_UNREAD_NOTIF);
         BCA_Cache.deleteItem(this.LOCALSTORAGE_USER);
+        window.alert("Notifications cache was cleared. Only use this when notifications are behaving abnormal.");
     }
 }
 
