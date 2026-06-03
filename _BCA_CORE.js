@@ -219,7 +219,11 @@ var BCA_Notifications = {
             document.getElementById('bca-notif-content').classList.remove('bca-notif-content-empty');
 
             await this.buildChildHTML(parent_id, unread, "unread");
-            await this.buildChildHTML(parent_id, read, "read");
+
+            if (typeof read === "string")
+                this.appendStringHTML(parent_id, read);
+            else
+                await this.buildChildHTML(parent_id, read, "read");
         }
 
         // ADD EVENT LISTENER MARKING READ when NOTIF IS CLICKED.
@@ -335,6 +339,10 @@ var BCA_Notifications = {
             notif_count.style.display = 'flex';
             notif_count.textContent = num_of_notifs;
         }
+    },
+    clearNotificationsCache() {
+        BCA_Cache.deleteItem(this.LOCALSTORAGE_UNREAD_NOTIF);
+        BCA_Cache.deleteItem(this.LOCALSTORAGE_USER);
     }
 }
 
