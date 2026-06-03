@@ -437,10 +437,12 @@ var BCA_IMGBB = {
   host: "https://i.ibb.co/",
   inputBtn: null,
   uploadBtn: null,
+  uploadBtnText: null,
 
   initialize(inputID, buttonID) {
     this.inputBtn = document.getElementById(inputID);
     this.uploadBtn = document.getElementById(buttonID);
+    this.uploadBtnText = this.uploadBtn.textContent;
   },
   async uploadImage(file) {
     // check if initialized
@@ -537,8 +539,9 @@ var BCA_IMGBB = {
   },
 
   enableButton() {
-    this.uploadBtn.textContent = `Upload`;
+    this.uploadBtn.textContent = this.uploadBtnText;
     this.uploadBtn.style.opacity = `1`;
     this.uploadBtn.style.pointerEvents = `auto`;
   }
 }
+
