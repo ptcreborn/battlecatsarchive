@@ -175,6 +175,7 @@ var BCA_Notifications = {
     },
 
     async createNotifChildren(encoded_email) {
+        let ready_html = ``;
         let parent_id = 'bca-notif-content';
 
         // check if requires rendering for new notifications
@@ -276,7 +277,7 @@ var BCA_Notifications = {
     async buildStringHTML(parent_id, ready_html) {
         const parent = document.getElementById(parent_id);
         // remove skeleton
-        parent.innerHTML = ``;
+        parent.querySelector('.card')?.remove();
 
         // fully build ready_html
         parent.innerHTML = ready_html;
@@ -285,7 +286,7 @@ var BCA_Notifications = {
     async appendStringHTML(parent_id, ready_html) {
         const parent = document.getElementById(parent_id);
         // remove skeleton
-        parent.innerHTML = ``;
+        parent.querySelector('.card')?.remove();
 
         // fully build ready_html
         parent.innerHTML += ready_html;
