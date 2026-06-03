@@ -175,7 +175,6 @@ var BCA_Notifications = {
     },
 
     async createNotifChildren(encoded_email) {
-        let ready_html = ``;
         let parent_id = 'bca-notif-content';
 
         // check if requires rendering for new notifications
@@ -208,10 +207,8 @@ var BCA_Notifications = {
             await this.initMoment();
             document.getElementById('bca-notif-content').classList.remove('bca-notif-content-empty');
 
-            ready_html = await this.buildChildHTML(unread, "unread");
-            ready_html += await this.buildChildHTML(read, "read");
-
-            this.buildStringHTML(parent_id, ready_html);
+            await this.buildChildHTML(unread, "unread");
+            await this.buildChildHTML(read, "read");
 
             BCA_Cache.set(this.LOCALSTORAGE_NOTIF, ready_html);
         }
@@ -231,7 +228,7 @@ var BCA_Notifications = {
         });
     },
 
-    async buildChildHTML(notif_data, status) {
+    async buildChildHTML(parent_id, notif_data, status) {
         if (!notif_data)
             return "";
 
@@ -239,36 +236,41 @@ var BCA_Notifications = {
         let keys = Object.keys(notif_data);
         keys.sort((a, b) => b - a);
 
-        const notiflets = keys.map(async (item) => {
+        keys.map(async (item) => {
             let data = notif_data[item];
             // let clone = template.content.cloneNode(true).children[0];
             // let notif_data = await FirebaseModule.fetchJSON(`${this.db_contents}/${item}.json`);
-            let user_data = await BCA_Users.getMemberInfo("prof_img, username, email", data.user);
-            user_data = user_data[0];
 
-            if (!user_data)
-                user_data = {
-                    prof_img: 'https://i.imgur.com/eac6XvU.png',
-                    username: 'Anonymous',
-                    email: ''
-                }
+            (async () => {
+                // This will run ASAP.
+                html_str = `
+                <a data-status="${status}" data-fbid="${item}" data-href="${data.url}" class='bca-notif-child ${status === "read" ? `bca-notif-read` : `bca-notif-unread`}' style='cursor: pointer;'></a>`;
 
-            html_str += `
-                <a data-status="${status}" data-fbid="${item}" data-href="${data.url}" class='bca-notif-child ${status === "read" ? `bca-notif-read` : `bca-notif-unread`}' style='cursor: pointer;'>
-                        <img class='bca-notif-child-profimg'
+                this.appendStringHTML(parent_id, html_str);
+
+                // This will asynchronously run.
+                let user_data = await BCA_Users.getMemberInfo("prof_img, username, email", data.user);
+                user_data = user_data[0];
+
+                if (!user_data)
+                    user_data = {
+                        prof_img: 'https://i.imgur.com/eac6XvU.png',
+                        username: 'Anonymous',
+                        email: ''
+                    }
+
+                document.querySelector(`[data-fbid="${item}"]`).innerHTML = `
+                    <img class='bca-notif-child-profimg'
                             src='${user_data.prof_img}' />
-                        <p class='bca-notif-child-right'>
-                            <span class='bca-notif-child-right-time'>${moment(parseInt(item)).fromNow()}</span>
-                            <p href="https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${data.email}" class='bca-notif-child-right-user'>@${user_data.username}</p>
-                            <span class='bca-notif-child-right-action'>${data.action}</span>
-                            <p class='bca-notif-child-right-target'>${data.title}</p>
-                        </p>
-                </a>
+                    <p class='bca-notif-child-right'>
+                        <span class='bca-notif-child-right-time'>${moment(parseInt(item)).fromNow()}</span>
+                        <p href="https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${data.email}" class='bca-notif-child-right-user'>@${user_data.username}</p>
+                        <span class='bca-notif-child-right-action'>${data.action}</span>
+                        <p class='bca-notif-child-right-target'>${data.title}</p>
+                    </p>
                 `;
+            })();
         });
-
-        await Promise.all(notiflets);
-        return html_str;
     },
 
     async buildStringHTML(parent_id, ready_html) {
@@ -278,6 +280,15 @@ var BCA_Notifications = {
 
         // fully build ready_html
         parent.innerHTML = ready_html;
+    },
+
+    async appendStringHTML(parent_id, ready_html) {
+        const parent = document.getElementById(parent_id);
+        // remove skeleton
+        parent.innerHTML = ``;
+
+        // fully build ready_html
+        parent.innerHTML += ready_html;
     },
 
     async buildHTMLClone(parent_id, ready_clones) {
@@ -430,123 +441,123 @@ var BCA_Cache = {
     deleteItem(key) {
         localStorage.removeItem(key);
     }
-}  
+}
 
 var BCA_IMGBB = {
-  proxy: "https://bca-image-proxy.jasonbourne181997.workers.dev/",
-  host: "https://i.ibb.co/",
-  inputBtn: null,
-  uploadBtn: null,
-  uploadBtnText: null,
+    proxy: "https://bca-image-proxy.jasonbourne181997.workers.dev/",
+    host: "https://i.ibb.co/",
+    inputBtn: null,
+    uploadBtn: null,
+    uploadBtnText: null,
 
-  initialize(inputElem, buttonElem) {
-    this.inputBtn = inputElem;
-    this.uploadBtn = buttonElem;
-    this.uploadBtnText = buttonElem.innerText;
-  },
-  async uploadImage(file) {
-    // check if initialized
-    if (!this.inputBtn || !this.uploadBtn) {
-      window.alert(`
+    initialize(inputElem, buttonElem) {
+        this.inputBtn = inputElem;
+        this.uploadBtn = buttonElem;
+        this.uploadBtnText = buttonElem.innerText;
+    },
+    async uploadImage(file) {
+        // check if initialized
+        if (!this.inputBtn || !this.uploadBtn) {
+            window.alert(`
           Please initialize BCA_IMGBB first using the function <BCA_IMGBB : initialize ()>
         `);
-      return;
-    }
+            return;
+        }
 
-    this.disableButton();
-    // disable html element while uploading...
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/gif",
-      "image/bmp",
-      "image/webp"
-    ];
+        this.disableButton();
+        // disable html element while uploading...
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/gif",
+            "image/bmp",
+            "image/webp"
+        ];
 
-    if (!file || !file.type.match(/image.*/)) {
-      window.alert("No image file has been selected.");
-      this.enableButton();
-      return;
-    }
+        if (!file || !file.type.match(/image.*/)) {
+            window.alert("No image file has been selected.");
+            this.enableButton();
+            return;
+        }
 
-    if (!allowedTypes.includes(file.type)) {
-      alert("Only JPG, PNG, GIF, BMP, WEBP allowed!");
-      this.enableButton();
-      return;
-    }
+        if (!allowedTypes.includes(file.type)) {
+            alert("Only JPG, PNG, GIF, BMP, WEBP allowed!");
+            this.enableButton();
+            return;
+        }
 
-    const formData = new FormData();
-    formData.append("image", file);
+        const formData = new FormData();
+        formData.append("image", file);
 
-    const apiKey = "07f1351d4e674784012d92ae6e03b49d";
+        const apiKey = "07f1351d4e674784012d92ae6e03b49d";
 
-    const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
-      method: "POST",
-      body: formData
-    });
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+            method: "POST",
+            body: formData
+        });
 
-    if (!res.ok) {
-      window.alert(`
+        if (!res.ok) {
+            window.alert(`
           Failed in uploading image: ${file.name}
           Please try again.
       `);
-      this.enableButton();
-      return;
-    }
+            this.enableButton();
+            return;
+        }
 
-    const data = await res.json();
+        const data = await res.json();
 
-    if (data.success || data.status === 200) {
-      this.enableButton();
-      return data.data;
-    }
+        if (data.success || data.status === 200) {
+            this.enableButton();
+            return data.data;
+        }
 
-    window.alert(`
+        window.alert(`
     Error in fetching the uploaded image: ${file.name}.
     Please try re-uploading again.
     `);
-    this.enableButton();
-  },
+        this.enableButton();
+    },
 
-  getThumbnail(image_data) {
-    if (!image_data) {
-      window.alert("Please upload image first.");
-      return;
+    getThumbnail(image_data) {
+        if (!image_data) {
+            window.alert("Please upload image first.");
+            return;
+        }
+
+        let thumb = image_data.thumb;
+
+        if (thumb)
+            return thumb.url.includes(this.host) ? thumb.url.replace(this.host, this.proxy) : thumb.url;
+    },
+
+    getOriginal(image_data) {
+        if (!image_data) {
+            window.alert("Please upload image first.");
+            return;
+        }
+
+        let original = image_data.image;
+
+        if (original)
+            return original.url.includes(this.host) ? original.url.replace(this.host, this.proxy) : original.url;
+    },
+
+    disableButton() {
+        if (this.uploadBtn === true) // means customized used
+            return;
+        this.uploadBtn.textContent = `Uploading...`;
+        this.uploadBtn.style.opacity = `0.7`;
+        this.uploadBtn.style.pointerEvents = `none`;
+    },
+
+    enableButton() {
+        if (this.uploadBtn === true) // means customized used
+            return;
+        this.uploadBtn.textContent = this.uploadBtnText;
+        this.uploadBtn.style.opacity = `1`;
+        this.uploadBtn.style.pointerEvents = `auto`;
     }
-
-    let thumb = image_data.thumb;
-
-    if (thumb)
-      return thumb.url.includes(this.host) ? thumb.url.replace(this.host, this.proxy) : thumb.url;
-  },
-
-  getOriginal(image_data) {
-    if (!image_data) {
-      window.alert("Please upload image first.");
-      return;
-    }
-
-    let original = image_data.image;
-
-    if (original)
-      return original.url.includes(this.host) ? original.url.replace(this.host, this.proxy) : original.url;
-  },
-
-  disableButton() {
-    if(this.uploadBtn === true) // means customized used
-      return;
-    this.uploadBtn.textContent = `Uploading...`;
-    this.uploadBtn.style.opacity = `0.7`;
-    this.uploadBtn.style.pointerEvents = `none`;
-  },
-
-  enableButton() {
-    if(this.uploadBtn === true) // means customized used
-      return;
-    this.uploadBtn.textContent = this.uploadBtnText;
-    this.uploadBtn.style.opacity = `1`;
-    this.uploadBtn.style.pointerEvents = `auto`;
-  }
 }
 
 
