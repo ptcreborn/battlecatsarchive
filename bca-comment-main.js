@@ -81,7 +81,7 @@
         comment_parent_container.addEventListener('click', (e) => {
             if (e.target.matches('#trigger_comment_editor')) {
                 if (!isTriggered) {
-                    appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/cca71cb399bdc8830ec8df67dda08337d1fd692d/bca-official-comment-editor.js');
+                    appendJSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/2b6225343668868dce320bf2d6134f9eee165318/bca-official-comment-editor.js');
                     isTriggered = true;
                     return;
                 }
