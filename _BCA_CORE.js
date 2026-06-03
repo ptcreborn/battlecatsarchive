@@ -281,6 +281,7 @@ var BCA_Notifications = {
     },
 
     async buildStringHTML(parent_id, ready_html) {
+        const parent = document.getElementById(parent_id);
         this.removeSkeleton(parent_id);
 
         // fully build ready_html
@@ -288,6 +289,7 @@ var BCA_Notifications = {
     },
 
     async appendStringHTML(parent_id, ready_html) {
+        const parent = document.getElementById(parent_id);
         this.removeSkeleton(parent_id);
 
         // fully build ready_html
@@ -295,6 +297,7 @@ var BCA_Notifications = {
     },
 
     async buildHTMLClone(parent_id, ready_clones) {
+        const parent = document.getElementById(parent_id);
         this.removeSkeleton(parent_id);
 
         // fully build ready_html
