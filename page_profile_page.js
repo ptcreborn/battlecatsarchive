@@ -278,7 +278,7 @@
 
         BCA_Cache.setItemWithExpiration(BCA_Notifications.LOCALSTORAGE_USER, data, 600000);
 
-        input_id.value = "";
+        uploadInput.value = "";
     });
 
     async function rankUser() {
