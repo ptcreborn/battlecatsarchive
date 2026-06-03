@@ -1,7 +1,7 @@
 
 // March 3, 2026
 
-(async() => {
+(async () => {
     let comment_html_old = `
  <div class="bca-comment-editor">
     <div class="bca-toolbar">
@@ -97,7 +97,7 @@
     </div>
 </div>`;
 
-let signin_html = `<div class="bca-login-prompt">
+    let signin_html = `<div class="bca-login-prompt">
   <div class="bca-prompt-content">
     <div class="bca-prompt-icon">!</div>
     <h3>Log in to BCA Archive</h3>
@@ -230,7 +230,7 @@ let signin_html = `<div class="bca-login-prompt">
         }
 
         // 5. Submit Function
-        window.submitComment = async() => {
+        window.submitComment = async () => {
             await processComment();
         }
 
@@ -267,7 +267,7 @@ let signin_html = `<div class="bca-login-prompt">
         }
 
         // 7. Image Upload Logic
-        window.handleFileUpload = async function(files) {
+        window.handleFileUpload = async function (files) {
             if (!files.length) return;
 
             restoreSelection();
@@ -279,29 +279,45 @@ let signin_html = `<div class="bca-login-prompt">
             const loadingId = "img-" + new Date().getTime();
             insertHTMLAtCursor(`<img class='bca-img-attachment' loading='lazy' alt='upload-img-${loadingId}' id="${loadingId}" src="https://i.imgur.com/vGKqN5O.gif" style="display: block; width: 90%; box-shadow: 1px 1px 5px 1px #909090;">`);
 
-            try {
-                const response = await fetch('https://api.imgur.com/3/image', {
-                    method: 'POST',
-                    headers: { Authorization: `Client-ID 33f63d5902f27e5` },
-                    body: formData
-                });
+            // IMPLEMENTING IMGBB
+            await initFunctions(['BCA_IMGBB']);
+            BCA_IMGBB.initialize(true, true); // this is for dummy, since the comment editor does not have upload button
+            let image_data = await BCA_IMGBB.uploadImage(file);
 
-                const result = await response.json();
-                if (result.success) {
-                    const imgElement = document.getElementById(loadingId);
-                    imgElement.src = result.data.link;
-                    imgElement.style.width = "auto";
-                    imgElement.addEventListener('click', () => window.location.href = `https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(result.data.link)}`);
-                }
-            } catch (err) {
-                console.error("Upload error:", err);
+            if (!image_data) {
                 const loader = document.getElementById(loadingId);
                 if (loader) loader.remove();
+                return;
             }
+
+            const imgElement = document.getElementById(loadingId);
+            imgElement.src = BCA_IMGBB.getOriginal(image_data);
+            imgElement.style.width = "auto";
+            imgElement.addEventListener('click', () => window.location.href = `https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(result.data.link)}`);
+
+            // try {
+            //     const response = await fetch('https://api.imgur.com/3/image', {
+            //         method: 'POST',
+            //         headers: { Authorization: `Client-ID 33f63d5902f27e5` },
+            //         body: formData
+            //     });
+
+            //     const result = await response.json();
+            //     if (result.success) {
+            //         const imgElement = document.getElementById(loadingId);
+            //         imgElement.src = result.data.link;
+            //         imgElement.style.width = "auto";
+            //         imgElement.addEventListener('click', () => window.location.href = `https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(result.data.link)}`);
+            //     }
+            // } catch (err) {
+            //     console.error("Upload error:", err);
+            //     const loader = document.getElementById(loadingId);
+            //     if (loader) loader.remove();
+            // }
         }
 
         // 8. HTML Insertion Helper
-        window.insertHTMLAtCursor = function(html) {
+        window.insertHTMLAtCursor = function (html) {
             const sel = window.getSelection();
             if (sel.getRangeAt && sel.rangeCount) {
                 const range = sel.getRangeAt(0);
@@ -328,7 +344,7 @@ let signin_html = `<div class="bca-login-prompt">
         }
 
         // 9. YouTube Embed Logic
-        window.addYoutubeVideo = function() {
+        window.addYoutubeVideo = function () {
             const url = prompt("Paste the YouTube URL (e.g., https://youtu.be/...):");
             if (!url) return;
 
@@ -735,9 +751,9 @@ let signin_html = `<div class="bca-login-prompt">
             // if it has parent_id, then append next to the parent_id
             // if it has no parent_id then append next to comment button
 
-            if(target_ids.parent)
+            if (target_ids.parent)
                 parent_editor = document.getElementById(target_ids.parent);
-            else 
+            else
                 parent_editor = document.getElementById('trigger_comment_editor');
 
             // get user info from localstorage
