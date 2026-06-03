@@ -533,17 +533,22 @@ var BCA_IMGBB = {
   },
 
   disableButton() {
+    if(!this.uploadBtn)
+      return;
     this.uploadBtn.textContent = `Uploading...`;
     this.uploadBtn.style.opacity = `0.7`;
     this.uploadBtn.style.pointerEvents = `none`;
   },
 
   enableButton() {
+    if(!this.uploadBtn)
+      return;
     this.uploadBtn.textContent = this.uploadBtnText;
     this.uploadBtn.style.opacity = `1`;
     this.uploadBtn.style.pointerEvents = `auto`;
   }
 }
+
 
 
 
