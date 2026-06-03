@@ -6,7 +6,7 @@ var BCA_Notifications = {
     db: `https://ptc-notifications-default-rtdb.firebaseio.com/notifications`,
     db_contents: `https://ptc-notifications-default-rtdb.firebaseio.com/notif_contents`,
     LOCALSTORAGE_USER: "bca_user",
-    LOCALSTORAGE_NOTIF: "bca_notif",
+    LOCALSTORAGE_UNREAD_NOTIF: "bca_notif_unread",
 
     async initFirebase() {
         await initFunctions(['FirebaseModule']);
@@ -105,7 +105,7 @@ var BCA_Notifications = {
         `;
     },
 
-    async fetch(encoded_email) {
+    async fetch(encoded_email, status) {
         await initFunctions(['FirebaseModule']);
 
         let db = `${this.db}/${encoded_email}`;
@@ -113,10 +113,14 @@ var BCA_Notifications = {
             orderBy: '"$key"'
         });
 
-        let unread = await FirebaseModule.fetchJSON(`${db}/unread.json?${params}`);
-        let read = await FirebaseModule.fetchJSON(`${db}/read.json?${params}`);
+        // let unread = await FirebaseModule.fetchJSON(`${db}/unread.json?${params}`);
+        // let read = await FirebaseModule.fetchJSON(`${db}/read.json?${params}`);
 
-        return [unread, read];
+        // return [unread, read];
+
+        let data = await FirebaseModule.fetchJSON(`${db}/${status}.json?${params}`);
+
+        return data;
     },
 
     async markRead(fbid, recipent_email) {
@@ -186,19 +190,16 @@ var BCA_Notifications = {
 
         // check if requires rendering for new notifications
         let newNotifs = await this.getNumberOfUnread();
-        let cached_data = await BCA_Cache.get(this.LOCALSTORAGE_NOTIF);
+        let cached_data = BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF);
 
         if (!newNotifs && cached_data)
             this.buildStringHTML(parent_id, cached_data);
 
         else {
-            // delete old cache
-            BCA_Cache.deleteItem(BCA_Notifications.LOCALSTORAGE_NOTIF);
-
             // get all notifications from unread to read
-            let data = await this.fetch(encoded_email);
-            let unread = data[0];
-            let read = data[1];
+            let unread = await this.fetch(encoded_email, 'unread');
+            let read = BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF) || await this.fetch(encoded_email, 'read');
+
             // const template = document.getElementById('bca-notif-child-template');
 
             //skeleton
@@ -228,7 +229,11 @@ var BCA_Notifications = {
             if (link?.dataset?.status == "unread") {
                 document.getElementById('bca-notif-content').style.pointerEvents = 'none';
                 await this.markRead(link.dataset.fbid, atob(encoded_email));
-                BCA_Cache.deleteItem(this.LOCALSTORAGE_NOTIF);
+
+                // for READ only, once unread is clicked, just add the content to the cache of unreads.
+                let cached = BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF) || '';
+                cached = link.outerHTML + "" + cached;
+                BCA_Cache.set(this.LOCALSTORAGE_UNREAD_NOTIF, cached);
             }
 
             if (link?.dataset?.href)
@@ -279,7 +284,7 @@ var BCA_Notifications = {
         await Promise.all(works);
 
         const ready_html = document.getElementById(parent_id).innerHTML;
-        BCA_Cache.set(this.LOCALSTORAGE_NOTIF, ready_html);
+        BCA_Cache.set(this.LOCALSTORAGE_UNREAD_NOTIF, ready_html);
     },
 
     async buildStringHTML(parent_id, ready_html) {
