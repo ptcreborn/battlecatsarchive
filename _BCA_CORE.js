@@ -281,21 +281,21 @@ var BCA_Notifications = {
     },
 
     async buildStringHTML(parent_id, ready_html) {
-        this.removeSkeleton();
+        this.removeSkeleton(parent_id);
 
         // fully build ready_html
         parent.innerHTML = ready_html;
     },
 
     async appendStringHTML(parent_id, ready_html) {
-        this.removeSkeleton();
+        this.removeSkeleton(parent_id);
 
         // fully build ready_html
         parent.innerHTML += ready_html;
     },
 
     async buildHTMLClone(parent_id, ready_clones) {
-        this.removeSkeleton();
+        this.removeSkeleton(parent_id);
 
         // fully build ready_html
         for (const clone of ready_clones)
