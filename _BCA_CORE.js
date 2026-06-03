@@ -343,8 +343,11 @@ var BCA_Notifications = {
     },
     clearNotificationsCache(triggerBtn) {
         let cache_cleared = BCA_Cache.getItemWithExpiration(this.CACHE_CONTROL);
-        if (cache_cleared)
+        if (cache_cleared) {
             BCA_Display.disableElem(triggerBtn);
+            window.alert("Try again after 2 minutes.");
+            return;
+        }
 
         BCA_Cache.deleteItem(this.LOCALSTORAGE_UNREAD_NOTIF);
         BCA_Cache.deleteItem(this.LOCALSTORAGE_USER);
