@@ -192,6 +192,9 @@ var BCA_Notifications = {
             this.buildStringHTML(parent_id, cached_data);
 
         else {
+            // delete old cache
+            BCA_Cache.deleteItem(BCA_Notifications.LOCALSTORAGE_NOTIF);
+
             // get all notifications from unread to read
             let data = await this.fetch(encoded_email);
             let unread = data[0];
