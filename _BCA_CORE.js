@@ -439,10 +439,10 @@ var BCA_IMGBB = {
   uploadBtn: null,
   uploadBtnText: null,
 
-  initialize(inputID, buttonID) {
-    this.inputBtn = document.getElementById(inputID);
-    this.uploadBtn = document.getElementById(buttonID);
-    this.uploadBtnText = this.uploadBtn.innerText;
+  initialize(inputElem, buttonElem) {
+    this.inputBtn = inputElem;
+    this.uploadBtn = buttonElem;
+    this.uploadBtnText = buttonElem.innerText;
   },
   async uploadImage(file) {
     // check if initialized
@@ -544,5 +544,6 @@ var BCA_IMGBB = {
     this.uploadBtn.style.pointerEvents = `auto`;
   }
 }
+
 
 
