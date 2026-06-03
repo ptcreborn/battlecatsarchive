@@ -247,25 +247,24 @@ var BCA_Notifications = {
                 // let clone = template.content.cloneNode(true).children[0];
                 // let notif_data = await FirebaseModule.fetchJSON(`${this.db_contents}/${item}.json`);
 
-                (async () => {
-                    // This will run ASAP.
-                    html_str = `
+                // This will run ASAP.
+                html_str = `
                 <a data-status="${status}" data-fbid="${item}" data-href="${data.url}" class='bca-notif-child ${status === "read" ? `bca-notif-read` : `bca-notif-unread`}' style='cursor: pointer;'></a>`;
 
-                    this.appendStringHTML(parent_id, html_str);
+                this.appendStringHTML(parent_id, html_str);
 
-                    // This will asynchronously run.
-                    let user_data = await BCA_Users.getMemberInfo("prof_img, username, email", data.user);
-                    user_data = user_data[0];
+                // This will asynchronously run.
+                let user_data = await BCA_Users.getMemberInfo("prof_img, username, email", data.user);
+                user_data = user_data[0];
 
-                    if (!user_data)
-                        user_data = {
-                            prof_img: 'https://i.imgur.com/eac6XvU.png',
-                            username: 'Anonymous',
-                            email: ''
-                        }
+                if (!user_data)
+                    user_data = {
+                        prof_img: 'https://i.imgur.com/eac6XvU.png',
+                        username: 'Anonymous',
+                        email: ''
+                    }
 
-                    document.querySelector(`[data-fbid="${item}"]`).innerHTML = `
+                document.querySelector(`[data-fbid="${item}"]`).innerHTML = `
                     <img class='bca-notif-child-profimg'
                             src='${user_data.prof_img}' />
                     <p class='bca-notif-child-right'>
@@ -275,7 +274,6 @@ var BCA_Notifications = {
                         <p class='bca-notif-child-right-target'>${data.title}</p>
                     </p>
                 `;
-                })();
             })
         );
 
