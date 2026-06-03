@@ -45,8 +45,8 @@ var BCA_Notifications = {
             return;
         }
 
-        await this.loadProfileInfo();
-        await this.createNotifChildren(btoa(user_email));
+        this.loadProfileInfo();
+        this.createNotifChildren(btoa(user_email));
     },
 
     async send(user_id, recipent_email, payload) {
@@ -244,30 +244,26 @@ var BCA_Notifications = {
         let keys = Object.keys(notif_data);
         keys.sort((a, b) => b - a);
 
-        await Promise.all(
-            keys.map(async (item) => {
-                let data = notif_data[item];
-                // let clone = template.content.cloneNode(true).children[0];
-                // let notif_data = await FirebaseModule.fetchJSON(`${this.db_contents}/${item}.json`);
+        const works = keys.map(async (item) => {
+            let data = notif_data[item];
+            // let clone = template.content.cloneNode(true).children[0];
+            // let notif_data = await FirebaseModule.fetchJSON(`${this.db_contents}/${item}.json`);
 
-                // This will run ASAP.
-                html_str = `
+            // Append all the child notif container first, this maintain chronological order.
+            html_str = `
                 <a data-status="${status}" data-fbid="${item}" data-href="${data.url}" class='bca-notif-child ${status === "read" ? `bca-notif-read` : `bca-notif-unread`}' style='cursor: pointer;'></a>`;
 
-                this.appendStringHTML(parent_id, html_str);
+            this.appendStringHTML(parent_id, html_str);
 
-                // This will asynchronously run.
-                let user_data = await BCA_Users.getMemberInfo("prof_img, username, email", data.user);
-                user_data = user_data[0];
+            // This will asynchronously run and will wait for their data later.
+            let user_data = await BCA_Users.getMemberInfo("prof_img, username, email", data.user);
+            user_data = user_data[0] || {
+                prof_img: 'https://i.imgur.com/eac6XvU.png',
+                username: 'Anonymous',
+                email: ''
+            };
 
-                if (!user_data)
-                    user_data = {
-                        prof_img: 'https://i.imgur.com/eac6XvU.png',
-                        username: 'Anonymous',
-                        email: ''
-                    }
-
-                document.querySelector(`[data-fbid="${item}"]`).innerHTML = `
+            document.querySelector(`[data-fbid="${item}"]`).innerHTML = `
                     <img class='bca-notif-child-profimg'
                             src='${user_data.prof_img}' />
                     <p class='bca-notif-child-right'>
@@ -277,8 +273,10 @@ var BCA_Notifications = {
                         <p class='bca-notif-child-right-target'>${data.title}</p>
                     </p>
                 `;
-            })
-        );
+
+        });
+
+        await Promise.all(works);
 
         const ready_html = document.getElementById(parent_id).innerHTML;
         BCA_Cache.set(this.LOCALSTORAGE_NOTIF, ready_html);
