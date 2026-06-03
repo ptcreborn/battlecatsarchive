@@ -241,16 +241,17 @@
     // IMGBB as default image hosting...
 
 
-    const input_id = document.getElementById('file_attachments');
-    const buttonUpload = document.getElementById('btn_uploadProfile');
+    const uploadInput = document.getElementById('file_attachments');
+    const uploadBtn = document.getElementById('btn_uploadProfile');
 
-    buttonUpload.addEventListener('click', () => {
-        input_id.click();
+    uploadBtn.addEventListener('click', () => {
+        uploadInput.click();
     });
 
-    input_id.addEventListener('input', async (e) => {
+    uploadInput.addEventListener('input', async (e) => {
+        await initFunctions(['BCA_IMGBB', 'BCA_Cache', 'BCA_Users', 'BCA_Notifications']);
         const file = e.target.files[0];
-        BCA_IMGBB.initialize(input_id, buttonUpload);
+        BCA_IMGBB.initialize(uploadInput, uploadBtn);
         let image_data = await BCA_IMGBB.uploadImage(file);
 
         if (!image_data)
@@ -265,6 +266,17 @@
 
         document.querySelector('#bca_user img.home-profile').src = BCA_IMGBB.getThumbnail(image_data);
         document.getElementById('prof_img').src = BCA_IMGBB.getOriginal(image_data);
+
+        // REFRESH LOCAL STORAGE COOKIES
+        let data = await BCA_Users.getUserInfo('email, username, prof_img, rank_id(rank_name)');
+
+        if(!data)
+            return;
+
+        if(data.length === 1)
+            data = data[0];
+
+        BCA_Cache.setItemWithExpiration(BCA_Notifications.LOCALSTORAGE_USER, data, 600000);
 
         input_id.value = "";
     });
