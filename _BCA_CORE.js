@@ -533,7 +533,7 @@ var BCA_IMGBB = {
   },
 
   disableButton() {
-    if(!this.uploadBtn)
+    if(this.uploadBtn === true) // means customized used
       return;
     this.uploadBtn.textContent = `Uploading...`;
     this.uploadBtn.style.opacity = `0.7`;
@@ -541,13 +541,14 @@ var BCA_IMGBB = {
   },
 
   enableButton() {
-    if(!this.uploadBtn)
+    if(this.uploadBtn === true) // means customized used
       return;
     this.uploadBtn.textContent = this.uploadBtnText;
     this.uploadBtn.style.opacity = `1`;
     this.uploadBtn.style.pointerEvents = `auto`;
   }
 }
+
 
 
 
