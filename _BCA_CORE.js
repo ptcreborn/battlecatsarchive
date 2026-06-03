@@ -174,6 +174,12 @@ var BCA_Notifications = {
         document.getElementById(parent_id).innerHTML = skeleton_html;
     },
 
+    async removeSkeleton(parent_id) {
+        const parent = document.getElementById(parent_id);
+        // remove skeleton
+        parent.querySelector('.card')?.remove();
+    },
+
     async createNotifChildren(encoded_email) {
         let ready_html = ``;
         let parent_id = 'bca-notif-content';
@@ -208,8 +214,8 @@ var BCA_Notifications = {
             await this.initMoment();
             document.getElementById('bca-notif-content').classList.remove('bca-notif-content-empty');
 
-            await this.buildChildHTML(unread, "unread");
-            await this.buildChildHTML(read, "read");
+            await this.buildChildHTML(parent_id, unread, "unread");
+            await this.buildChildHTML(parent_id, read, "read");
 
             BCA_Cache.set(this.LOCALSTORAGE_NOTIF, ready_html);
         }
@@ -275,27 +281,21 @@ var BCA_Notifications = {
     },
 
     async buildStringHTML(parent_id, ready_html) {
-        const parent = document.getElementById(parent_id);
-        // remove skeleton
-        parent.querySelector('.card')?.remove();
+        this.removeSkeleton();
 
         // fully build ready_html
         parent.innerHTML = ready_html;
     },
 
     async appendStringHTML(parent_id, ready_html) {
-        const parent = document.getElementById(parent_id);
-        // remove skeleton
-        parent.querySelector('.card')?.remove();
+        this.removeSkeleton();
 
         // fully build ready_html
         parent.innerHTML += ready_html;
     },
 
     async buildHTMLClone(parent_id, ready_clones) {
-        const parent = document.getElementById(parent_id);
-        // remove skeleton
-        parent.innerHTML = ``;
+        this.removeSkeleton();
 
         // fully build ready_html
         for (const clone of ready_clones)
