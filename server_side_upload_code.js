@@ -99,7 +99,6 @@
         const account_id = types.value;
         const account_name = types.options[types.selectedIndex].text;
 
-
         let links_arr = links.value.trim().split('\n');
 
         // Filter for IMGBB to host Cloudflare
