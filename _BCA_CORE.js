@@ -199,7 +199,8 @@ var BCA_Notifications = {
         else {
             // get all notifications from unread to read
             let unread = await this.fetch(encoded_email, 'unread');
-            let read = BCA_Display.isHTML(BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF)) ? BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF) : await this.fetch(encoded_email, 'read');
+            let cached_read = BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF);
+            let read = (BCA_Display.isHTML(cached_read) && BCA_Display.isValidNotifHTML(cached_read)) ? cached_read : await this.fetch(encoded_email, 'read');
 
             // const template = document.getElementById('bca-notif-child-template');
 
@@ -477,9 +478,9 @@ var BCA_Cache = {
     deleteItem(key) {
         localStorage.removeItem(key);
     },
-    appendStrToItem(val, key) {
+    appendStrToItem(key, val) {
         let previous_item = this.get(key);
-        let new_item = key + '' + previous_item;
+        let new_item = val + '' + previous_item;
         this.set(key, new_item);
     }
 }
@@ -613,5 +614,15 @@ var BCA_Display = {
     isHTML(str) {
         var doc = new DOMParser().parseFromString(str, "text/html");
         return Array.from(doc.body.childNodes).some(node => node.nodeType === 1);
+    },
+    isValidNotifHTML(str) {
+        // this will parse the string and check whether it complies the html pattern of child notifications.
+        let div = document.createElement('div');
+        div.innerHTML = str;
+
+        let count_nodes = div.childNodes.length;
+        let allLinkTags = div.querySelectorAll('a').length;
+
+        return count_nodes === allLinkTags;
     }
 }
