@@ -239,9 +239,7 @@ var BCA_Notifications = {
 
                 // for READ only, once unread is clicked, just add the content to the cache of unreads.
                 const parent = document.getElementById(parent_id);
-                let cached = BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF);
-                cached = link.outerHTML + '' + cached;
-                BCA_Cache.set(this.LOCALSTORAGE_UNREAD_NOTIF, cached);
+                BCA_Cache.appendStrToItem(link.outerHTML, this.LOCALSTORAGE_UNREAD_NOTIF);
             }
 
             if (link?.dataset?.href)
@@ -294,8 +292,6 @@ var BCA_Notifications = {
         if (status === "read") {
             let ready_html = '';
             let getUnread = document.querySelectorAll('#bca-notif-content a[data-status="read"]');
-
-            console.log(getUnread);
 
             Array.from(getUnread).forEach(item => { ready_html += item.outerHTML });
             BCA_Cache.set(this.LOCALSTORAGE_UNREAD_NOTIF, ready_html);
@@ -480,6 +476,11 @@ var BCA_Cache = {
     },
     deleteItem(key) {
         localStorage.removeItem(key);
+    },
+    appendStrToItem(val, key) {
+        let previous_item = this.get(key);
+        let new_item = key + '' + previous_item;
+        this.set(key, new_item);
     }
 }
 
