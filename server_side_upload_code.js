@@ -98,7 +98,12 @@
 
         const account_id = types.value;
         const account_name = types.options[types.selectedIndex].text;
+
+
         let links_arr = links.value.trim().split('\n');
+
+        // Filter for IMGBB to host Cloudflare
+        links_arr = links_arr.map(item => item.replace('https://i.ibb.co/', 'https://bca-image-proxy.jasonbourne181997.workers.dev/'));
 
         for (const item of links_arr) {
             try {
