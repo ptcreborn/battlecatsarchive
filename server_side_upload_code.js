@@ -275,9 +275,7 @@
         let keys = Object.keys(data);
         keys = keys.reverse();
 
-        keys.forEach(item => {
-            selector_version.innerHTML += `<option value="${item}">${item}</option>`;
-        });
+        keys.forEach(item => selector_version.innerHTML += `<option value="${item}">${item.split('-').length === 3 ? `EN-${item}`: item}</option>`);
         selectVersion();
     }
 
@@ -288,15 +286,15 @@
             document.querySelector('#table_of_accounts').setAttribute('disabled', '');
             document.querySelector('#table_of_accounts').innerHTML =
                 `<tbody>
-<tr>
-<td style="width: 398px;">&nbsp;<b>Account Type</b></td>
-<td style="width: 398px;">&nbsp;<b>Quantity</b></td>
-</tr>
-</tbody>`;
+                <tr>
+                <td style="width: 398px;">&nbsp;<b>Account Type</b></td>
+                <td style="width: 398px;">&nbsp;<b>Quantity</b></td>
+                </tr>
+                </tbody>`;
             selector_version.setAttribute('disabled', '');
 
-            await buildOptions();
-            await buildTable();
+            buildOptions();
+            buildTable();
 
             selector_version.removeAttribute('disabled');
         });
