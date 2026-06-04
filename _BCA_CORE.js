@@ -106,13 +106,10 @@ var BCA_Notifications = {
         `;
     },
 
-    async fetch(encoded_email, status) {
+    async fetch(encoded_email, status, params) {
         await initFunctions(['FirebaseModule']);
 
         let db = `${this.db}/${encoded_email}`;
-        let params = new URLSearchParams({
-            orderBy: '"$key"'
-        });
 
         // let unread = await FirebaseModule.fetchJSON(`${db}/unread.json?${params}`);
         // let read = await FirebaseModule.fetchJSON(`${db}/read.json?${params}`);
@@ -198,9 +195,14 @@ var BCA_Notifications = {
 
         else {
             // get all notifications from unread to read
-            let unread = await this.fetch(encoded_email, 'unread');
+            let unread = await this.fetch(encoded_email, 'unread', new URLSearchParams({
+                orderBy: '"$key"'
+            }));
             let cached_read = BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF);
-            let read = (BCA_Display.isHTML(cached_read) && BCA_Display.isValidNotifHTML(cached_read)) ? cached_read : await this.fetch(encoded_email, 'read');
+            let read = (BCA_Display.isHTML(cached_read) && BCA_Display.isValidNotifHTML(cached_read)) ? cached_read : await this.fetch(encoded_email, 'read', new URLSearchParams({
+                orderBy: '"$key"',
+                limitToFirst: 20
+            }));
 
             // const template = document.getElementById('bca-notif-child-template');
 
