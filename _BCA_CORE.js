@@ -199,8 +199,7 @@ var BCA_Notifications = {
         else {
             // get all notifications from unread to read
             let unread = await this.fetch(encoded_email, 'unread');
-            // let read = BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF) || await this.fetch(encoded_email, 'read');
-            let read = await this.fetch(encoded_email, 'read');
+            let read = BCA_Display.isHTML(BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF)) ? BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF) : await this.fetch(encoded_email, 'read');
 
             // const template = document.getElementById('bca-notif-child-template');
 
@@ -292,11 +291,15 @@ var BCA_Notifications = {
 
         await Promise.all(works);
 
-        let ready_html = '';
-        let getUnread = document.querySelectorAll('#bca-notif-content a[data-status="read"]');
-        
-        Array.from(getUnread).forEach(item => ready_html += getUnread.outerHTML);
-        BCA_Cache.set(this.LOCALSTORAGE_UNREAD_NOTIF, ready_html);
+        if (status === "read") {
+            let ready_html = '';
+            let getUnread = document.querySelectorAll('#bca-notif-content a[data-status="read"]');
+
+            console.log(getUnread);
+
+            Array.from(getUnread).forEach(item => { ready_html += item.outerHTML });
+            BCA_Cache.set(this.LOCALSTORAGE_UNREAD_NOTIF, ready_html);
+        }
     },
 
     async buildStringHTML(parent_id, ready_html) {
@@ -605,5 +608,9 @@ var BCA_Display = {
     enableElem(elem) {
         elem.style.pointerEvents = 'auto';
         elem.style.opacity = '1';
+    },
+    isHTML(str) {
+        var doc = new DOMParser().parseFromString(str, "text/html");
+        return Array.from(doc.body.childNodes).some(node => node.nodeType === 1);
     }
 }
