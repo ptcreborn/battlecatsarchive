@@ -607,7 +607,7 @@
                     img.src = user_item.prof_img ? user_item.prof_img : `https://i.ibb.co/cXNr777G/image.png`;
                     img.setAttribute('onerror', `this.src='https://i.ibb.co/cXNr777G/image.png'; this.onerror=null;`)
                     a.style = `height: 24px; width: 24px;`;
-                    img.style = `height: 24px; width: 24px;`;
+                    img.style = `height: 24px !important; width: 24px !important;`;
                     img.setAttribute('loading', 'lazy');
 
                     queryP(clone, 'store-account-users').appendChild(a);
