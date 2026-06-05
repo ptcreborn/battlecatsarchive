@@ -241,9 +241,7 @@ var BCA_Notifications = {
                 link.className = "bca-notif-child bca-notif-read";
 
                 // for READ only, once unread is clicked, just add the content to the cache of unreads.
-                console.log(link.outerHTML);
                 BCA_Cache.appendStrToItem(this.LOCALSTORAGE_UNREAD_NOTIF, link.outerHTML);
-                console.log(BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF));
             }
 
             if (link?.dataset?.href)
