@@ -183,9 +183,6 @@ var BCA_Notifications = {
     },
 
     async createNotifChildren(encoded_email) {
-        //skeleton
-        this.setSkeleton('bca-notif-content');
-
         let ready_html = ``;
         let parent_id = 'bca-notif-content';
 
@@ -208,6 +205,8 @@ var BCA_Notifications = {
             }));
 
             // const template = document.getElementById('bca-notif-child-template');
+            //skeleton
+            this.setSkeleton('bca-notif-content');
 
             // NOT LOGGED IN
             if (!unread && !read) {
