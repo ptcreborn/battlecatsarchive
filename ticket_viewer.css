@@ -216,7 +216,7 @@
   
 /* Comment Styles */
 .bca-ticket-comment-container {
-    background: #202020;
+    background: #15152b;
     margin: 20px 0;
 }
 
@@ -225,7 +225,7 @@
     border-bottom: 1px solid #3c3c3c;
     display: flex;
     align-items: center;
-    padding: 0 5px;
+    padding: 1px 10px;
     font-weight: bold;
 }
 
@@ -271,7 +271,7 @@
     align-items: center;
     opacity: 0.9;
     padding: 0 5px;
-    background: #202020;
+    background: #15152b;
 }
 
 .bca-ticket-comment-label {
