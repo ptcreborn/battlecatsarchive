@@ -326,6 +326,8 @@ var BCA_Notifications = {
     },
 
     async getNumberOfUnread() {
+        await this.initFirebase();
+
         let user_email = await BCA_Users.checkIfUserOnline();
         let data = await FirebaseModule.fetchJSON(`${this.db}/${btoa(user_email)}/unread.json?shallow=true`);
 
