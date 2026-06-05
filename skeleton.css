@@ -1,4 +1,4 @@
-.skeleton {
+.bca-skeleton {
     animation: shimmer 1.2s infinite linear;
     background: linear-gradient(
       90deg,
@@ -20,35 +20,35 @@
     }
   }
 
-  .card {
+  .bca-skeleton-card {
     width: 90%;
     background: transparent;
     padding: 20px;
     border-radius: 14px;
   }
 
-  .line {
+  .bca-skeleton-line {
     height: 14px;
     margin-bottom: 12px;
   }
 
-  .line:nth-child(1) {
+  .bca-skeleton-line:nth-child(1) {
     width: 100%;
   }
 
-  .line:nth-child(2) {
+  .bca-skeleton-line:nth-child(2) {
     width: 90%;
   }
 
-  .line:nth-child(3) {
+  .bca-skeleton-line:nth-child(3) {
     width: 75%;
   }
 
-  .line:nth-child(4) {
+  .bca-skeleton-line:nth-child(4) {
     width: 60%;
   }
 
-  .line:nth-child(5) {
+  .bca-skeleton-line:nth-child(5) {
     width: 100%;
     margin-bottom: 0;
   }
