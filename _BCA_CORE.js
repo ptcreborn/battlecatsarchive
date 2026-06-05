@@ -163,14 +163,14 @@ var BCA_Notifications = {
     },
 
     async setSkeleton(parent_id) {
-        appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/6a70c531b260975b772cfe55c73bf12dba1f1eee/skeleton.css');
+        appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/26f4b9da39d1b7bda64f3cf1c03da50f0534a7c9/skeleton.css');
 
-        const skeleton_html = `<div class="card">
-            <div class="skeleton line"></div>
-            <div class="skeleton line"></div>
-            <div class="skeleton line"></div>
-            <div class="skeleton line"></div>
-            <div class="skeleton line"></div>
+        const skeleton_html = `<div class="bca-skeleton-card">
+            <div class="bca-skeleton bca-skeleton-line"></div>
+            <div class="bca-skeleton bca-skeleton-line"></div>
+            <div class="bca-skeleton bca-skeleton-line"></div>
+            <div class="bca-skeleton bca-skeleton-line"></div>
+            <div class="bca-skeleton bca-skeleton-line"></div>
         </div>`;
 
         document.getElementById(parent_id).innerHTML = skeleton_html;
