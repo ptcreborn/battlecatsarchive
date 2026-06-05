@@ -179,13 +179,13 @@ var BCA_Notifications = {
     async removeSkeleton(parent_id) {
         const parent = document.getElementById(parent_id);
         // remove skeleton
-        parent.querySelector('.card')?.remove();
+        parent.querySelector('.bca-skeleton-card')?.remove();
     },
 
     async createNotifChildren(encoded_email) {
         //skeleton
         this.setSkeleton('bca-notif-content');
-        
+
         let ready_html = ``;
         let parent_id = 'bca-notif-content';
 
