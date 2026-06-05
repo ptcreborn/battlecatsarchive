@@ -576,7 +576,7 @@
 
                     queryP(clone, 'store-account-report-btn').addEventListener('click', async (event) => {
                         event.target.classList.add('disabled-elem');
-                        event.target.textContent = "Creating Ticket";
+                        event.target.textContent = "Creating Ticket...";
                         await notifyAdminReplenish(event.target, btoa(JSON.stringify({
                             acc_name: item.name,
                             acc_ver: acc_ver,
