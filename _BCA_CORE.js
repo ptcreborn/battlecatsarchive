@@ -242,7 +242,7 @@ var BCA_Notifications = {
 
                 // for READ only, once unread is clicked, just add the content to the cache of unreads.
                 console.log(link.outerHTML);
-                BCA_Cache.appendStrToItem(link.outerHTML, this.LOCALSTORAGE_UNREAD_NOTIF);
+                BCA_Cache.appendStrToItem(this.LOCALSTORAGE_UNREAD_NOTIF, link.outerHTML);
                 console.log(BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF));
             }
 
