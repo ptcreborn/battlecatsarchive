@@ -67,7 +67,8 @@
             }
 
             if (data.downloadUrl) {
-                dlBtn.textContent = `Your download started...`;
+                dlBtn.textContent = `Your download started... You can reload if it failed.`;
+                dlBtn.style.opacity = '0.7';
                 infoMessage("Link authorized! Starting download...");
                 download_item(data.downloadUrl, param, ext);
 
