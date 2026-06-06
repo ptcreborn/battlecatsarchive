@@ -95,12 +95,12 @@ var BCA_Notifications = {
             width: 50px;
             float: right;
         "><p>Complete the joy and journey in playing battle cats through creating account in the server. You can store your progress, make friends with anyone and access limited resources like <i>mods and fan made bcu packs</i>.</p></div>
-        <br><a href="https://battlecatsarchive.blogspot.com/p/signin-to-bca.html" class="main-button button" style="
+        <br><a href="https://battlecatsarchive.blogspot.com/p/signin-to-bca.html" class="button-15" style="
             background: #0c3e6a;
         ">Login with Google</a>
         <div style="
             align-self: center;
-        ">OR</div><a href="https://battlecatsarchive.blogspot.com/p/signin-to-bca.html" class="main-button button " style="
+        ">OR</div><a href="https://battlecatsarchive.blogspot.com/p/signin-to-bca.html" class="button-15" style="
             background: #3e5d84;
         ">Login with Discord</a></div>
         `;
