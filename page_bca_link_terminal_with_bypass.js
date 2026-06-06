@@ -265,7 +265,7 @@
                 for (const expiration of keys) {
                     let now = new Date().getTime();
                     if (now - expiration >= 86400000)  // after 1 day
-                        await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${value}.json`, "null");                    
+                        await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${value}.json`, "null");
                 }
                 //await activeUsers();
             })
@@ -466,12 +466,14 @@
         let divDetection = ads.filter(item => item.querySelector('div'));
         let iframeHeightDetection = ads.filter(item => item.querySelector('iframe')?.style.height === "1px" || item.querySelector('iframe')?.style.maxHeight === "1px");
 
-        if (isAdblockerThere || (
-            checkAllAdsIframeLength.length === 0 &&
-            checkAllAdsStatus.length === 0 &&
-            missingStatusAds.length > 0
-        ) || iframeHeightDetection.length > 0 || divDetection.length === 0) {
-            status.innerHTML = "⚠️ Ad-Blocker detected. Please use chrome. Thank you! <br/>Please head to <a href='https://battlecatsarchive.blogspot.com/p/ticket-support.html'>Ticket Page.</a>.";
+        if (!localStorage.getItem('lem') && (
+            isAdblockerThere || (
+                checkAllAdsIframeLength.length === 0 &&
+                checkAllAdsStatus.length === 0 &&
+                missingStatusAds.length > 0
+            ) || iframeHeightDetection.length > 0 || divDetection.length === 0
+        )) {
+            status.innerHTML = "⚠️ Ad-Blocker detected. Please use chrome. Thank you! <br/>Please head to <a href='https://battlecatsarchive.blogspot.com/p/ticket-support.html'>Ticket Page</a>. <a href='https://battlecatsarchive.blogspot.com/p/troubleshooting-adblocker-detected.html'>You can read about turning off adblocker or not using Brave browser.</a>.";
             link.textContent = "AD-BLOCKER detected!";
             return;
         }
@@ -536,7 +538,7 @@
                 }
             } else {
                 // check if the opening of link in new tab is legit by estimated less than 1,000 ms
-                if(isUnfilled)
+                if (isUnfilled)
                     checkIfBypassDone();
                 else if ((isHidden && !isUnlocked)) {
                     console.log(`visible from hidden`);
