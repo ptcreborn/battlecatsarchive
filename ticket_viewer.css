@@ -260,7 +260,7 @@
     width: 50px !important;
     float: left !important;
     object-fit: cover;
-    margin-right: 10px !important;
+    margin: 5px !important;
 }
 
 .bca-ticket-comment-footer {
