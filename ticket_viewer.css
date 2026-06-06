@@ -253,14 +253,13 @@
 
 .bca-ticket-comment-body {
     padding: 5px;
-    min-height: 60px;
 }
 
 .bca-ticket-comment-avatar {
     height: 50px !important;
     width: 50px !important;
     float: left !important;
-  	object-fit: cover;
+    object-fit: cover;
     margin-right: 10px !important;
 }
 
