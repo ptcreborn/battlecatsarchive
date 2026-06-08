@@ -602,8 +602,7 @@
                     }
 
                     link.href = `https://battlecatsarchive.blogspot.com/p/setup-link-terminal.html?request=${btoa(JSON.stringify(payload))}`;
-                    link.classList.add('main-button');
-                    link.classList.add('button');
+                    link.classList.add('button-15');
                     link.textContent = `🔒#${count++} ${new URL(item).hostname}`;
                     link.setAttribute('target', '_blank');
                     clone.querySelector('#attachments').appendChild(link);
