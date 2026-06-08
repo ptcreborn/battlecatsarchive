@@ -35,7 +35,7 @@
     // means 
     if (data.session) {
         loading_img.src = loading_src;
-        let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
+        let isUserRegistered = await BCA_Users.checkIfUserOnline();
         if (isUserRegistered) {
             // localStorage.setItem('user', btoa(JSON.stringify({
             //     email: data.session.user.user_metadata.email,
