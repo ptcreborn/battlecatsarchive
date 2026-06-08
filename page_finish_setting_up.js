@@ -14,7 +14,7 @@
     let country_code = '';
 
     await checkUserCountry();
-    await initFunctions(['supabase']);
+    await initFunctions(['supabase', 'BCA_Users']);
 
     // Process Form
     const username = document.getElementById('username');
@@ -35,12 +35,12 @@
     // means 
     if (data.session) {
         loading_img.src = loading_src;
-        let user_img = await checkIfUserExists(data.session.user.email);
-        if (user_img) {
-            localStorage.setItem('user', btoa(JSON.stringify({
-                email: data.session.user.user_metadata.email,
-                profile: user_img
-            })));
+        let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
+        if (isUserRegistered) {
+            // localStorage.setItem('user', btoa(JSON.stringify({
+            //     email: data.session.user.user_metadata.email,
+            //     profile: user_img
+            // })));
             window.location.href = `https://battlecatsarchive.blogspot.com/`;
             return;
         } else {
