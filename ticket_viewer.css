@@ -131,6 +131,7 @@
 .bca-ticket-comment-attachments {
     display: flex;
     gap: 10px;
+    justify-content: flex-start;
 }
 
 .bca-ticket-comment-attachments img {
@@ -314,6 +315,7 @@
 .bca-ticket-comment-attachments img, .bca-ticket-comment-attachments iframe {
     max-width: 30% !important;
     width: 30%;
+    margin-left: 0 !important;
 }
   
 .bca-ticket-comment-attachments a {
