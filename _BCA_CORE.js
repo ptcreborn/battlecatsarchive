@@ -420,7 +420,7 @@ var BCA_Users = {
     async checkIfUserCompleteRegistration() {
         await this.initialize();
 
-        if (window.location.href == `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`)
+        if (window.location.href == `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html` || window.location.href == `https://battlecatsarchive.blogspot.com/p/finish-setting-up.html`)
             return;
 
         let email = await this.checkIfUserOnline();
