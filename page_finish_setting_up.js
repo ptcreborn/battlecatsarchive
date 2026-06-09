@@ -138,7 +138,7 @@
     async function checkUserCountry() {
         let res = await fetch('https://ipapi.co/json/');
         if (res.ok) {
-            let country_data = await country_data.json();
+            let country_data = await res.json();
             if (!country_data.country_code) {
                 country_name = "Anonymous";
                 country_code = "Anonymous";
