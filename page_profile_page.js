@@ -198,7 +198,6 @@
                 // window.location.href = 'https://battlecatsarchive.blogspot.com/p/signin-to-bca.html';
                 // return;
             } else if (userSession.user.email == email) {
-                await initFunctions(['logout', 'request']);
                 isViewingOtherProfile = false;
                 controls.style.display = 'flex';
             }
