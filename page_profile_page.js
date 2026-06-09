@@ -10,6 +10,50 @@
     await renderAccountRequest();
     await rankUser();
 
+    // PUBLIC FUNCTIONS
+    window.logout = async () => {
+        await supabase.auth.signOut();
+        localStorage.removeItem('user');
+        window.location.href = `https://battlecatsarchive.blogspot.com/`;
+    }
+
+    window.request = async () => {
+        window.location.href = `https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html`;
+    }
+
+    // document.querySelector('#btn_uploadProfile').addEventListener('click', () => {
+    //     document.querySelector('#file_attachments').click();
+    // });
+
+    // ImgurJS.uploadImgUr('file_attachments', 'prof_img', () => {
+    //     document.querySelector('#btn_uploadProfile').innerText = 'Uploading...';
+    //     document.querySelector('#btn_uploadProfile').style.pointerEvents = 'none';
+    //     document.querySelector('#btn_uploadProfile').classList.remove('main-button');
+    // }, async () => {
+    //     document.querySelector('#btn_uploadProfile').innerText = 'Change Profile Photo';
+    //     document.querySelector('#btn_uploadProfile').style.pointerEvents = 'auto';
+    //     document.querySelector('#btn_uploadProfile').classList.add('main-button');
+    //     const {
+    //         error
+    //     } = await supabase.from('users').update({
+    //         prof_img: document.querySelector('#prof_img').src
+    //     }).eq('email', userEmail[0]);
+
+    //     localStorage.setItem('user', btoa(JSON.stringify({
+    //         email: userEmail[0],
+    //         profile: document.querySelector('#prof_img').src
+    //     })));
+
+    //     document.querySelector('#bca_user img.home-profile').src = `${document.querySelector('#prof_img').src}`;
+
+    //     if (error) {
+    //         window.alert(`${error.message}, error has occured!'`);
+    //         return;
+    //     }
+    // });
+
+    // IMGBB as default image hosting...
+
     // FUNCTIONS
     async function renderAccountRequest() {
         const table = document.getElementById('requested_account_table');
@@ -197,50 +241,6 @@
 
         return data[0].id;
     }
-
-    window.logout = async () => {
-        await supabase.auth.signOut();
-        localStorage.removeItem('user');
-        window.location.href = `https://battlecatsarchive.blogspot.com/`;
-    }
-
-    window.request = async () => {
-        window.location.href = `https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html`;
-    }
-
-    // document.querySelector('#btn_uploadProfile').addEventListener('click', () => {
-    //     document.querySelector('#file_attachments').click();
-    // });
-
-    // ImgurJS.uploadImgUr('file_attachments', 'prof_img', () => {
-    //     document.querySelector('#btn_uploadProfile').innerText = 'Uploading...';
-    //     document.querySelector('#btn_uploadProfile').style.pointerEvents = 'none';
-    //     document.querySelector('#btn_uploadProfile').classList.remove('main-button');
-    // }, async () => {
-    //     document.querySelector('#btn_uploadProfile').innerText = 'Change Profile Photo';
-    //     document.querySelector('#btn_uploadProfile').style.pointerEvents = 'auto';
-    //     document.querySelector('#btn_uploadProfile').classList.add('main-button');
-    //     const {
-    //         error
-    //     } = await supabase.from('users').update({
-    //         prof_img: document.querySelector('#prof_img').src
-    //     }).eq('email', userEmail[0]);
-
-    //     localStorage.setItem('user', btoa(JSON.stringify({
-    //         email: userEmail[0],
-    //         profile: document.querySelector('#prof_img').src
-    //     })));
-
-    //     document.querySelector('#bca_user img.home-profile').src = `${document.querySelector('#prof_img').src}`;
-
-    //     if (error) {
-    //         window.alert(`${error.message}, error has occured!'`);
-    //         return;
-    //     }
-    // });
-
-    // IMGBB as default image hosting...
-
 
     const uploadInput = document.getElementById('file_attachments');
     const uploadBtn = document.getElementById('btn_uploadProfile');
