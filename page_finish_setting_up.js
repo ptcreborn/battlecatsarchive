@@ -31,11 +31,6 @@
     if (isUserOnline) {
         let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
         if (isUserRegistered) {
-            // store some info to localstorage
-            localStorage.setItem('user', btoa(JSON.stringify({
-                email: data.session.user.user_metadata.email,
-                profile: user_img
-            })));
             window.location.href = `https://battlecatsarchive.blogspot.com/`;
             return;
         } else {
@@ -44,9 +39,9 @@
             form.style.display = 'block';
         }
     }
-    else {
+    else
         window.localtion.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
-    }
+
 
     // Functions
     window.submitForm = async () => {
