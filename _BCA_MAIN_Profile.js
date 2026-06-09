@@ -32,9 +32,14 @@
         user.href = `javascript:void(0)`;
 
         // get the count of cart
-        let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
-        if (!isUserRegistered)
-            return;
+
+        let current_url = new URL(window.location.href);
+
+        if (current_url.pathname !== `/p/signin-to-bca.html` && current_url.pathname !== `/p/finish-setting-up.html`) {
+            let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
+            if (!isUserRegistered)
+                return;
+        }
 
         // CART
         let data = await FirebaseModule.fetchJSON(`https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart/${btoa(user_data.email)}.json`);
