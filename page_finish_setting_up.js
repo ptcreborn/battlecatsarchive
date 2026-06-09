@@ -25,25 +25,21 @@
 
     country.innerHTML = `<img src="${country_flag}"/><span>${country_name}</span>`;
 
-    let { data, error } = await supabase.auth.getSession();
+    loading_img.src = loading_src;
 
-    if (error) {
-        window.alert(`Error detected: ${error.message}`);
-        return;
-    }
-
-    // means 
-    if (data.session) {
-        loading_img.src = loading_src;
-        let isUserRegistered = await BCA_Users.checkIfUserOnline();
+    let isUserOnline = await BCA_Users.checkIfUserOnline();
+    if (isUserOnline) {
+        let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
         if (isUserRegistered) {
-            // localStorage.setItem('user', btoa(JSON.stringify({
-            //     email: data.session.user.user_metadata.email,
-            //     profile: user_img
-            // })));
+            // store some info to localstorage
+            localStorage.setItem('user', btoa(JSON.stringify({
+                email: data.session.user.user_metadata.email,
+                profile: user_img
+            })));
             window.location.href = `https://battlecatsarchive.blogspot.com/`;
             return;
         } else {
+            // show the form to complete registration
             loading_img.src = 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExb3M0aG5yYTgxeG90cjZmNjdyOWIwcjZzdjRvdWduOWd4NnE5bXl5ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/r5eafWP6dcbxX8cLeN/giphy.gif';
             form.style.display = 'block';
         }
@@ -51,8 +47,6 @@
     else {
         window.localtion.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
     }
-
-
 
     // Functions
     window.submitForm = async () => {
@@ -142,22 +136,22 @@
     }
 
     async function checkUserCountry() {
-            let res = await fetch('https://ipapi.co/json/');
-            if (res.ok) {
-                country_data = await country_data.json();
-                if (!country_data.country_code) {
-                    country_name = "Anonymous";
-                    country_code = "Anonymous";
-                    country_flag = 'https://www.crwflags.com/fotw/images/q/qt%7Danon12.jpg';
-                } else {
-                    country_code = country_data.country_code.toUpperCase();
-                    country_flag = `https://flagcdn.com/w20/${country_code.toLowerCase()}.png`;
-                    country_name = country_data.country_name;
-                }
-            } else {
+        let res = await fetch('https://ipapi.co/json/');
+        if (res.ok) {
+            country_data = await country_data.json();
+            if (!country_data.country_code) {
                 country_name = "Anonymous";
                 country_code = "Anonymous";
                 country_flag = 'https://www.crwflags.com/fotw/images/q/qt%7Danon12.jpg';
+            } else {
+                country_code = country_data.country_code.toUpperCase();
+                country_flag = `https://flagcdn.com/w20/${country_code.toLowerCase()}.png`;
+                country_name = country_data.country_name;
             }
+        } else {
+            country_name = "Anonymous";
+            country_code = "Anonymous";
+            country_flag = 'https://www.crwflags.com/fotw/images/q/qt%7Danon12.jpg';
         }
-}) ();
+    }
+})();
