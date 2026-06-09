@@ -3,7 +3,7 @@
     const btn_version = document.getElementById('btn_version');
     let useremail = '';
 
-    await initFunctions(['supabase', 'FirebaseModule', 'DiscordAPI']);
+    await initFunctions(['supabase', 'FirebaseModule', 'DiscordAPI', 'BCA_Cache']);
     let acc_ver = '';
 
     const admin_uuid = [
@@ -52,7 +52,7 @@
 
         await DiscordAPI.post(
             useremail,
-            JSON.parse(atob(localStorage.getItem('user'))).profile,
+            BCA_Cache.getParseItem('bca_user').data.prof_img,
             `NEW ACCOUNT VERSION WAS ADDED! by Admin ${useremail}`,
             `@everyone ADMIN added another account version **${lang} ${version}**!`,
             '',
