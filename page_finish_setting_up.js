@@ -142,21 +142,22 @@
     }
 
     async function checkUserCountry() {
-        try {
-            let country_data = await fetch('https://ipapi.co/json/');
-            country_data = await country_data.json();
-
-            if (!country_data.country_code) {
+            let res = await fetch('https://ipapi.co/json/');
+            if (res.ok) {
+                country_data = await country_data.json();
+                if (!country_data.country_code) {
+                    country_name = "Anonymous";
+                    country_code = "Anonymous";
+                    country_flag = 'https://www.crwflags.com/fotw/images/q/qt%7Danon12.jpg';
+                } else {
+                    country_code = country_data.country_code.toUpperCase();
+                    country_flag = `https://flagcdn.com/w20/${country_code.toLowerCase()}.png`;
+                    country_name = country_data.country_name;
+                }
+            } else {
                 country_name = "Anonymous";
                 country_code = "Anonymous";
                 country_flag = 'https://www.crwflags.com/fotw/images/q/qt%7Danon12.jpg';
-            } else {
-                country_code = country_data.country_code.toUpperCase();
-                country_flag = `https://flagcdn.com/w20/${country_code.toLowerCase()}.png`;
-                country_name = country_data.country_name;
             }
-        } catch (error) {
-            window.alert(`Error in getting user country ${error}`);
         }
-    }
-})();
+}) ();
