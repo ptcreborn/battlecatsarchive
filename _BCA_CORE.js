@@ -419,12 +419,7 @@ var BCA_Users = {
     },
     async checkIfUserCompleteRegistration() {
         await this.initialize();
-
-        let current_url = new URL(window.location.href);
-
-        if (current_url.pathname == `/p/signin-to-bca.html` || current_url.pathname == `/p/finish-setting-up.html`)
-            return;
-
+        
         let email = await this.checkIfUserOnline();
         if (!email)
             return;
