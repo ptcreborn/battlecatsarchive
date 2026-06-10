@@ -9,19 +9,21 @@
     });
 
     // Check if the user is registered!
+    let isUserLoggedIn = await BCA_Users.checkIfUserOnline();
     let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
+    let inCompleteRegistration = isUserLoggedIn && !isUserRegistered;
     let current_url = new URL(window.location.href);
-    if (current_url.pathname !== `/p/signin-to-bca.html` && current_url.pathname !== `/p/finish-setting-up.html`) {
-        if (!isUserRegistered) {
+
+    if (inCompleteRegistration) {
+        if (current_url.pathname === `/p/signin-to-bca.html` || current_url.pathname === `/p/finish-setting-up.html`)
+            return;
+        else {
             window.alert("Your account has not yet setup. Please kindly login again and finish setting up your account. Thank you.");
             window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
             return;
         }
     }
     
-    if(!isUserRegistered)
-        return;
-
     // Get user profile from localstorage and load immediately.
     let default_prof = `https://bca-image-proxy.jasonbourne181997.workers.dev/jPHD0VZY/RPBMJIQ.png`;
     let user = document.getElementById('bca_user');
