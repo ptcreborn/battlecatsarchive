@@ -37,8 +37,11 @@
 
         if (current_url.pathname !== `/p/signin-to-bca.html` && current_url.pathname !== `/p/finish-setting-up.html`) {
             let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
-            if (!isUserRegistered)
+            if (!isUserRegistered) {
+                window.alert("Your account has not yet setup. Please kindly login again and finish setting up your account. Thank you.");
+                window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
                 return;
+            }
         }
 
         // CART
