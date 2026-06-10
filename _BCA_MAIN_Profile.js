@@ -11,8 +11,13 @@
         document.getElementById('bca-notif-mother').style.display = 'flex';
     });
 
-    if (!isUserRegistered) // do nothing else.
-        return;
+    if (current_url.pathname !== `/p/signin-to-bca.html` && current_url.pathname !== `/p/finish-setting-up.html`) {
+        if (!isUserRegistered) {
+            window.alert("Your account has not yet setup. Please kindly login again and finish setting up your account. Thank you.");
+            window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
+            return;
+        }
+    }
 
     // Get user profile from localstorage and load immediately.
     let default_prof = `https://bca-image-proxy.jasonbourne181997.workers.dev/jPHD0VZY/RPBMJIQ.png`;
@@ -39,14 +44,6 @@
         // get the count of cart
 
         let current_url = new URL(window.location.href);
-
-        if (current_url.pathname !== `/p/signin-to-bca.html` && current_url.pathname !== `/p/finish-setting-up.html`) {
-            if (!isUserRegistered) {
-                window.alert("Your account has not yet setup. Please kindly login again and finish setting up your account. Thank you.");
-                window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
-                return;
-            }
-        }
 
         // CART
         let data = await FirebaseModule.fetchJSON(`https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart/${btoa(user_data.email)}.json`);
