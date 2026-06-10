@@ -433,7 +433,6 @@ var BCA_Users = {
     },
     async signOut() {
         await supabase.auth.signOut();
-        window.location.href = `https://battlecatsarchive.blogspot.com/`;
     }
 }
 
