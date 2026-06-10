@@ -138,6 +138,10 @@ var BCA_Notifications = {
     },
 
     async loadProfileInfo() {
+        let isRegistered = await BCA_Users.checkIfUserCompleteRegistration();
+        if(!isRegistered)
+            return;
+
         // assume the user is logged in.
         let data;
 
