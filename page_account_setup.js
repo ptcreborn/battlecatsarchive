@@ -64,7 +64,7 @@
         await sleep(1500);
         container.innerHTML += `<div>Number of Ads: ${fb_data.ads}</div>`;
         await sleep(1500);
-        container.innerHTML += `<button class="main-button button" id="go-btn" style="display: none;">Proceed Now</button>`;
+        container.innerHTML += `<button class="button-15" id="go-btn" style="display: none;">Proceed Now</button>`;
         await sleep(1500);
 
         const btn = document.getElementById('go-btn');
