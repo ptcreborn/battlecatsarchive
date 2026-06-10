@@ -139,7 +139,7 @@ var BCA_Notifications = {
 
     async loadProfileInfo() {
         let isRegistered = await BCA_Users.checkIfUserCompleteRegistration();
-        if(!isRegistered)
+        if (!isRegistered)
             return;
 
         // assume the user is logged in.
@@ -187,6 +187,10 @@ var BCA_Notifications = {
     },
 
     async createNotifChildren(encoded_email) {
+        let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
+        if (!isUserRegistered)
+            return;
+
         let ready_html = ``;
         let parent_id = 'bca-notif-content';
 
