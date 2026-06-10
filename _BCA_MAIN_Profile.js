@@ -6,6 +6,10 @@
 
     // Initialize Notif and Profile Icon
     BCA_Notifications.initialize();
+    document.getElementById('bca_user').addEventListener('click', async (e) => {
+        e.preventDefault();
+        document.getElementById('bca-notif-mother').style.display = 'flex';
+    });
 
     if (!isUserRegistered) // do nothing else.
         return;
@@ -20,11 +24,6 @@
 
     // Load number of notification counts.
     BCA_Notifications.checkNotifCount();
-
-    document.getElementById('bca_user').addEventListener('click', async (e) => {
-        e.preventDefault();
-        document.getElementById('bca-notif-mother').style.display = 'flex';
-    });
 
     // for users login and cart
     let user_email = await BCA_Users.checkIfUserOnline();
