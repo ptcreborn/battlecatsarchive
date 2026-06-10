@@ -18,6 +18,9 @@
             return;
         }
     }
+    
+    if(!isUserRegistered)
+        return;
 
     // Get user profile from localstorage and load immediately.
     let default_prof = `https://bca-image-proxy.jasonbourne181997.workers.dev/jPHD0VZY/RPBMJIQ.png`;
