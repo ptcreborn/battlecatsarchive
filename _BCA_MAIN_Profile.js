@@ -1,6 +1,15 @@
 (async () => {
     await initFunctions(['BCA_Notifications', 'BCA_Users', 'BCA_Cache', 'FirebaseModule', 'supabase']);
 
+    // Check if the user is registered!
+    let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
+
+    // Initialize Notif and Profile Icon
+    BCA_Notifications.initialize();
+
+    if (!isUserRegistered) // do nothing else.
+        return;
+
     // Get user profile from localstorage and load immediately.
     let default_prof = `https://bca-image-proxy.jasonbourne181997.workers.dev/jPHD0VZY/RPBMJIQ.png`;
     let user = document.getElementById('bca_user');
@@ -8,9 +17,6 @@
     let user_data = BCA_Cache.getItemWithExpiration(BCA_Notifications.LOCALSTORAGE_USER);
     user_img.src = user_data?.prof_img || default_prof;
     user.href = `javascript:void(0)`;
-
-    // Initialize Notif and Profile Icon
-    BCA_Notifications.initialize();
 
     // Load number of notification counts.
     BCA_Notifications.checkNotifCount();
@@ -36,7 +42,6 @@
         let current_url = new URL(window.location.href);
 
         if (current_url.pathname !== `/p/signin-to-bca.html` && current_url.pathname !== `/p/finish-setting-up.html`) {
-            let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
             if (!isUserRegistered) {
                 window.alert("Your account has not yet setup. Please kindly login again and finish setting up your account. Thank you.");
                 window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
