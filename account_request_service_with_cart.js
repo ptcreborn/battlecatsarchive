@@ -275,7 +275,7 @@
             return;
         }
 
-        if (!data.session || !localStorage.getItem('user')) {
+        if (!data.session) {
             window.alert(`You need to login first.`);
             window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
             return;
