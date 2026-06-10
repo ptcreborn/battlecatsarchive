@@ -1,9 +1,6 @@
 (async () => {
     await initFunctions(['BCA_Notifications', 'BCA_Users', 'BCA_Cache', 'FirebaseModule', 'supabase']);
 
-    // Check if the user is registered!
-    let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
-
     // Initialize Notif and Profile Icon
     BCA_Notifications.initialize();
     document.getElementById('bca_user').addEventListener('click', async (e) => {
@@ -11,6 +8,9 @@
         document.getElementById('bca-notif-mother').style.display = 'flex';
     });
 
+    // Check if the user is registered!
+    let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
+    let current_url = new URL(window.location.href);
     if (current_url.pathname !== `/p/signin-to-bca.html` && current_url.pathname !== `/p/finish-setting-up.html`) {
         if (!isUserRegistered) {
             window.alert("Your account has not yet setup. Please kindly login again and finish setting up your account. Thank you.");
@@ -40,10 +40,6 @@
 
         user_img.src = user_data?.prof_img || default_prof;
         user.href = `javascript:void(0)`;
-
-        // get the count of cart
-
-        let current_url = new URL(window.location.href);
 
         // CART
         let data = await FirebaseModule.fetchJSON(`https://storehaccounts-talks-default-rtdb.firebaseio.com/bca_cart/${btoa(user_data.email)}.json`);
