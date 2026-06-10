@@ -419,21 +419,21 @@ var BCA_Users = {
     },
     async checkIfUserCompleteRegistration() {
         await this.initialize();
-        
+
         let email = await this.checkIfUserOnline();
         if (!email)
             return;
 
         let { data, error } = await supabase.from('users').select('id').eq('email', email);
 
-        if (error || data?.length == 0) {
-            await supabase.auth.signOut();
-            window.alert("Please kindly finish setting up your account. Login again.");
-            window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
+        if (error || data?.length == 0)
             return;
-        }
 
         return true;
+    },
+    async signOut() {
+        await supabase.auth.signOut();
+        window.location.href = `https://battlecatsarchive.blogspot.com/`;
     }
 }
 
