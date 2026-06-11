@@ -404,7 +404,7 @@ var BCA_Users = {
         if (data?.length === 0 || error)
             return;
 
-        return data.length === 1 ? data[0]: data;
+        return data;
     },
     async getMemberInfo(select_parameters, id) {
         await this.initialize();
@@ -414,7 +414,7 @@ var BCA_Users = {
         if (data?.length === 0 || error)
             return;
 
-        return data.length === 1 ? data[0] : data;
+        return data;
     },
     async getMemberInfoCustom(select_parameters, column, value) {
         await this.initialize();
@@ -424,7 +424,7 @@ var BCA_Users = {
         if (data?.length === 0 || error)
             return;
 
-        return data.length === 1 ? data[0] : data;
+        return data;
     },
     async checkIfUserCompleteRegistration() {
         await this.initialize();
@@ -692,7 +692,7 @@ var BCA_Comment = {
 
         if (!email)
             this.user_id = 7783; // guest
-        else  {
+        else {
             this.user_id = await BCA_Users.getMemberInfoCustom('id', 'email', email);
             this.user_id = this.user_id.id;
         }
