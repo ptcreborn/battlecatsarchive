@@ -1,4 +1,5 @@
 
+
 appendJSFile('https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js');
 appendJSFile('https://rawcdn.githack.com/ptcreborn/storehaccounts/93f717900b4c70ddfee58d8ff9a89d323493ed61/FirebaseModule.js');
 
@@ -403,7 +404,7 @@ var BCA_Users = {
         if (data?.length === 0 || error)
             return;
 
-        return data;
+        return data.length === 1 ? data[0]: data;
     },
     async getMemberInfo(select_parameters, id) {
         await this.initialize();
@@ -413,7 +414,7 @@ var BCA_Users = {
         if (data?.length === 0 || error)
             return;
 
-        return data;
+        return data.length === 1 ? data[0] : data;
     },
     async getMemberInfoCustom(select_parameters, column, value) {
         await this.initialize();
@@ -423,7 +424,7 @@ var BCA_Users = {
         if (data?.length === 0 || error)
             return;
 
-        return data;
+        return data.length === 1 ? data[0] : data;
     },
     async checkIfUserCompleteRegistration() {
         await this.initialize();
@@ -441,6 +442,9 @@ var BCA_Users = {
     },
     async signOut() {
         await supabase.auth.signOut();
+    },
+    getCountry() {
+        return Intl.DateTimeFormat().resolvedOptions().timeZone;
     }
 }
 
@@ -591,6 +595,17 @@ var BCA_IMGBB = {
             return original.url.includes(this.host) ? original.url.replace(this.host, this.proxy) : original.url;
     },
 
+    getRaw(image_data) {
+        if (!image_data) {
+            window.alert("Please upload image first.");
+            return;
+        }
+
+        let original = image_data.image;
+
+        return original.url;
+    },
+
     disableButton() {
         if (this.uploadBtn === true) // means customized used
             return;
@@ -630,5 +645,231 @@ var BCA_Display = {
         let allLinkTags = div.querySelectorAll('a').length;
 
         return count_nodes === allLinkTags;
+    }
+}
+
+var BCA_Url = {
+    getUrl() {
+        return window.location.href;
+    },
+    getPathname() {
+        return new URL(this.getUrl()).pathname;
+    },
+    getSearhParams() {
+        return new URL(this.getUrl()).searchParams;
+    },
+    getParamValue(key) {
+        return new URL(this.getUrl()).searchParams.get(key);
+    },
+    addParam(url, param) {
+        return `${url}?${param}`;
+    },
+    isValidURL(url) {
+        try {
+            new URL(url);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+}
+
+var BCA_Comment = {
+    comment_form: document.getElementById('bca_universal_comment'),
+    user_id: '',
+    fb_users: 'https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_users',
+    fb_comments: 'https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_comments',
+    url_bucket: [],
+    async initialize() {
+        // if the form cant be seen, dont initialize!
+        if (!this.comment_form)
+            return;
+
+        await initFunctions(['supabase', 'FirebaseModule']);
+
+        // check if the user is logged in...
+        let email = await BCA_Users.checkIfUserOnline();
+
+        if (!email)
+            this.user_id = 7783; // guest
+        else  {
+            this.user_id = await BCA_Users.getMemberInfoCustom('id', 'email', email);
+            this.user_id = this.user_id.id;
+        }
+
+        // initializing apis
+        BCA_Comment.initUploadAPI();
+        BCA_Comment.initLinkAPI();
+
+        // event listener for comment
+        this.comment_form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await this.postComment();
+        });
+    },
+    getContents() {
+        const content = this.comment_form.querySelector('textarea').value;
+
+        return content;
+    },
+    getAttachments() {
+        let attachments = this.comment_form.querySelector('#attachments').querySelectorAll(`p span[url]`);
+
+        if (!attachments)
+            return;
+
+        let arr_data = Array.from(attachments).map(item => item.innerText);
+        return arr_data;
+    },
+    async postComment() {
+        // disable the form
+        BCA_Display.disableElem(this.comment_form);
+
+        // post to firebase
+        await this.authenticFirebase();
+        let post_id = await this.getPathnameID();
+        let fb_id = await this.postToFirebase();
+
+        // post to supabase       
+        let res = await this.postToSupabase(fb_id, post_id, this.user_id);
+
+        if (!res) {
+            window.alert("Error posting comment to supabase!");
+            return;
+        }
+
+        // Render comment
+
+
+        // Enable comment form
+    },
+    renderComment() {
+
+    },
+    async getPathnameID() {
+        let pathname = BCA_Url.getPathname();
+
+        // check the path if exists
+        let { data, error } = await supabase.from('bca-website-posts').select('id').eq('url', pathname);
+
+        if (data?.length === 1)
+            return data[0].id;
+
+        let upsert_data = await supabase.from('bca-website-posts').upsert({
+            date: 'now()',
+            url: pathname
+        }).select('id').single();
+
+        console.log(`Pathname ID: ${data?.length === 1 ? data[0].id : upsert_data.data.id}`);
+        return upsert_data.data.id;
+    },
+    async authenticFirebase() {
+        // post auth to firebase
+        console.log(this.user_id);
+
+        await FirebaseModule.patch(`${this.fb_users}.json`, JSON.stringify({
+            [this.user_id]: new Date().getTime()
+        }));
+
+        console.log(`Authenticated User with ID ${this.user_id}`);
+    },
+    async postToFirebase() {
+        const fb_id = new Date().getTime();
+        // post content to firebase
+        await FirebaseModule.patch(`${this.fb_comments}/${fb_id}.json`, JSON.stringify({
+            auth: this.user_id.toString(),
+            content: this.getContents(),
+            attach: this.getAttachments()
+        }));
+
+        console.log(`Posted to firebase ${fb_id}`);
+        return fb_id;
+    },
+    async postToSupabase(fb_id, post_id, user_id) {
+        let { data, error } = await supabase.from('bca-comments').insert({
+            date: 'now()',
+            fb_id: fb_id,
+            bca_posts: post_id,
+            user_id: user_id,
+            parent_id: null,
+            root_id: null
+        });
+
+        if (error)
+            return;
+
+        console.log(`Posted to supabase`);
+
+        return true;
+    },
+    async initUploadAPI() {
+        if (!this.comment_form)
+            return;
+
+        const uploadBtn = this.comment_form.querySelector('button[btn-upload]');
+        const uploadInput = this.comment_form.querySelector('#bca_universal_comment_image');
+        const attach_parent = this.comment_form.querySelector('#attachments');
+
+        BCA_IMGBB.initialize(uploadInput, uploadBtn);
+
+        uploadBtn.addEventListener('click', () => uploadInput.click());
+
+        uploadInput.addEventListener('input', async (e) => {
+            const file = e.target.files[0];
+            let image_data = await BCA_IMGBB.uploadImage(file);
+            let url = BCA_IMGBB.getRaw(image_data);
+
+            // build attachment child
+            attach_parent.appendChild(this.buildAttachHTML("IMG", url));
+        }, false);
+    },
+    initLinkAPI() {
+        if (!this.comment_form)
+            return;
+
+        const uploadBtn = this.comment_form.querySelector('button[btn-link]');
+        const attach_parent = this.comment_form.querySelector('#attachments');
+
+        uploadBtn.addEventListener('click', () => {
+            let url = window.prompt("Add some url (Youtube, Reddit, etc.)");
+
+            if (!BCA_Url.isValidURL(url)) {
+                window.alert("Invalid URL. Please paste some valid url.");
+                return;
+            }
+
+            if (this.url_bucket.includes(url)) {
+                window.alert("Already added!");
+                return;
+            }
+
+            this.url_bucket.push(url);
+            attach_parent.appendChild(this.buildAttachHTML("URL", url));
+        });
+    },
+    buildAttachHTML(type, url) {
+        let div = document.createElement('div');
+        div.classList = 'bca-univ-comment-attachment-child';
+        let snippet = `<p class="bca-univ-comment-attachment-child-info">
+        <span>${type}: </span>
+        <span url="">${url}</span>
+      </p>
+      <span onclick="javascript:BCA_Comment.removeChildAttachment(this);" class="bca-univ-comment-attachment-child-delete">
+        X
+      </span>`;
+
+        div.innerHTML = snippet;
+        return div;
+    },
+    resetAttachments() {
+        this.url_bucket = [];
+        const attach_parent = this.comment_form.querySelector('#attachments');
+        attach_parent.innerHTML = ``;
+    },
+    removeChildAttachment(e) {
+        let elem = e.parentNode;
+        let filtered = this.url_bucket.filter(item => elem.querySelector('span[url]').innerText !== item);
+        this.url_bucket = filtered;
+        elem.remove();
     }
 }
