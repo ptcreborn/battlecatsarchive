@@ -465,20 +465,20 @@
         let missingStatusAds = ads.filter(item => !item.getAttribute('data-ad-status'));
         let divDetection = ads.filter(item => item.querySelector('div'));
         let iframeHeightDetection = ads.filter(item => item.querySelector('iframe')?.style.height === "1px" || item.querySelector('iframe')?.style.maxHeight === "1px");
+        let allADSHeightZERO = checkAllAdsIframeLength.length === 0 && checkAllAdsStatus.length === 0 && missingStatusAds.length > 0;
 
         if (!localStorage.getItem('lem') && (
-            isAdblockerThere || (
-                checkAllAdsIframeLength.length === 0 &&
-                checkAllAdsStatus.length === 0 &&
-                missingStatusAds.length > 0
-            ) || iframeHeightDetection.length > 0 || divDetection.length === 0
+            isAdblockerThere || allADSHeightZERO || iframeHeightDetection.length > 0 || divDetection.length === 0
         )) {
             status.innerHTML = "⚠️ Ad-Blocker detected. Please use chrome. Thank you! <br/>Please head to <a href='https://battlecatsarchive.blogspot.com/p/ticket-support.html'>Ticket Page</a>. <a href='https://battlecatsarchive.blogspot.com/p/troubleshooting-adblocker-detected.html'>You can read about turning off adblocker or not using Brave browser.</a>.";
             link.textContent = "AD-BLOCKER detected!";
             return;
         }
 
-        if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled" && auction_Iframe?.getAttribute('data-load-complete') === "true") {
+        if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled" ||
+            auction_Iframe?.getAttribute('data-load-complete') === "true" ||
+            bca_link_ads.querySelector('ins')?.getAttribute('data-adsbygoogle-status') === "done") {
+
             // filled
             bca_link_ads.style.display = 'block';
             bca_link_ads.style.visibility = 'visible';
@@ -487,7 +487,7 @@
             // bca_link_ads.style.transform = 'translate(-50%, -150px)';
             // bca_link_ads.style.left = '50%';
             bca_link_ads.style.margin = "0 auto";
-            bca_link_ads.style.top = "-150px";
+            bca_link_ads.style.top = "-45px";
             bca_link_ads.style.position = "relative";
             bca_link_ads.style.width = '';
 
@@ -498,10 +498,12 @@
             isUnfilled = true;
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
+            console.log(`Bypass available now. Start!`);
             link.textContent = "Bypass now";
         } else {
             isException = true;
             status.innerHTML = "GG you can unlock the link now!";
+            console.log(`GG you can unlock the link now!`);
         }
 
         checkIfBypassDone();
