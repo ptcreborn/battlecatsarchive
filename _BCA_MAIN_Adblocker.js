@@ -41,7 +41,7 @@
                             if (videoid[1].includes("@") || videoid[1].includes("shorts"))
                                 return;
 
-                            temp_div.innerHTML = `<iframe width="100%" height="500" src="https://www.youtube.com/embed/${videoid[1]}" title="BCA YouTube Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+                            temp_div.innerHTML = `<iframe style='width: 100%; aspect-ratio: 16/9' src="https://www.youtube.com/embed/${videoid[1]}" title="BCA YouTube Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
 
                             item.after(temp_div);
                             item.remove();
