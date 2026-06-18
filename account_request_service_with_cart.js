@@ -627,7 +627,7 @@
             let {
                 data,
                 error
-            } = await supabase.from('accounts').select('id, name, ads, description, request_count, link').order('ads', {ascending: false});
+            } = await supabase.from('accounts').select('id, name, ads, description, request_count, link').order('ads', { ascending: false });
 
             if (error) {
                 window.alert(error.message);
@@ -751,5 +751,37 @@
         event.target.innerText = "Add to Cart";
         event.target.style.opacity = "1";
         event.target.style.pointerEvents = "auto";
+    }
+
+    const method_bca = document.getElementById('method_bca');
+    const method_form = document.getElementById('method_form');
+    const form_trigger = document.getElementById('form_trigger');
+    const bca_trigger = document.getElementById('bca_trigger');
+
+    bca_trigger.addEventListener('click', () => {
+        hideAllMethods();
+        method_bca.style.display = 'block';
+        scrollToElem(method_bca);
+    }, false);
+
+    form_trigger.addEventListener('click', () => {
+        hideAllMethods();
+        method_form.style.display = 'block';
+        scrollToElem(method_form);
+    }, false);
+
+    function hideAllMethods() {
+        method_bca.style.display = 'none';
+        method_form.style.display = 'none';
+    }
+
+    function scrollToElem(element) {
+
+        // Scroll to it smoothly
+        element.scrollIntoView({
+            behavior: "smooth", // 'auto' (instant) or 'smooth' (animated)
+            block: "center",     // 'start', 'center', 'end', or 'nearest'
+            inline: "center"   // 'start', 'center', 'end', or 'nearest'
+        });
     }
 })();
