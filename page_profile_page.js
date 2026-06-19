@@ -58,44 +58,61 @@
     async function renderAccountRequest() {
         const table = document.getElementById('requested_account_table');
         const table_body = table.querySelector('tbody');
-        //   <tr>
-        //     <td style="width: 22.2896%;">&nbsp;</td>
-        //     <td style="width: 20.7104%;">&nbsp;</td>
-        //     <td style="width: 23%;">&nbsp;</td>
-        //     <td style="width: 24%;">&nbsp;</td>
-        //   </tr>
 
         const user_id = await getUserID(userEmail[0]);
         // calling user records.
-        let data = await supabase.rpc('retrieve_user_account_requests', {
-            userid: user_id
-        });
-
-        // if (!isViewingOtherProfile) document.getElementById('user_accreq_activity').innerText = `Your Account Requests History`;
-        // else document.getElementById('user_accreq_activity').innerText = `${userEmail[1]}'s Account Requests History`;
-
-        if (data.data.length == 0) {
-            table.remove();
+        let data = await getUserRequestHistory(user_id);
+        if (!data) {
+            window.alert("No account history was seen from the user's record.");
             return;
         }
 
         if (isViewingOtherProfile) document.querySelector(`#othersProfile`).innerHTML = `⚠️You are viewing other's Profile⚠️`;
         else document.querySelector('#othersProfile').remove();
 
-        data.data.forEach(element => {
-            let JSON_data = JSON.parse(atob(element.code));
-            table_body.innerHTML += `<tr>
+        data.forEach(element => {
+            // NEW METHOD
+            if (!element.code && element.bucket_id) {
+                let bucket = element.bucket_id
+                let version = bucket.ver.version;
+                let lang = bucket.lang.lang;
+                let name = bucket.acc_id.name;
+                let ads = bucket.acc_id.ads;
+                let raw = `https://bca-image-proxy.jasonbourne181997.workers.dev${bucket.raw}`;
+                let link = bucket.acc_id.link;
+
+                table_body.innerHTML += `<tr>
 				<td style="width: 20.7104%;">
 				${!isViewingOtherProfile ?
-                    `${!element.use ?
-                        `<button class='tab' id="${element.id}" onclick="markUse(${element.use}, ${element.id});">Unused</button>` :
-                        `<button class='tab disabled' id="${element.id}">Code Transferred</button>`}`
-                    : `<button class='tab disabled'>Unavailable</button>`}</td>
+                        `${!element.use ?
+                            `<button class='tab' id="${element.id}" onclick="markUse(${element.use}, ${element.id});">Unused</button>` :
+                            `<button class='tab disabled' id="${element.id}">Code Transferred</button>`}`
+                        : `<button class='tab disabled'>Unavailable</button>`}</td>
+				<td style="width: 22.2896%;"><a target='_blank' href='${link}'>${lang}-${version} (${name})</a></td>
+				<td style="width: 20.7104%;">${moment(element.date).fromNow()}</td>
+				<td style="width: 23%;">${ads}</td>
+				${!isViewingOtherProfile ? `<td style="width: 24%;"><a target='_blank' href='https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${raw}'><img src='${raw}'/></a></td>` : `<td style="width: 23%;">PRIVATE</td>`}
+				</tr>`;
+                return;
+            }
+
+            // OLD METHOD
+            if (element.code) {
+                let JSON_data = JSON.parse(atob(element.code));
+                table_body.innerHTML += `<tr>
+				<td style="width: 20.7104%;">
+				${!isViewingOtherProfile ?
+                        `${!element.use ?
+                            `<button class='tab' id="${element.id}" onclick="markUse(${element.use}, ${element.id});">Unused</button>` :
+                            `<button class='tab disabled' id="${element.id}">Code Transferred</button>`}`
+                        : `<button class='tab disabled'>Unavailable</button>`}</td>
 				<td style="width: 22.2896%;"><a href='https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html'>${JSON_data.name}</a></td>
 				<td style="width: 20.7104%;">${moment(JSON_data.date).fromNow()}</td>
 				<td style="width: 23%;">${JSON_data.progress}</td>
 				${!isViewingOtherProfile ? `<td style="width: 24%;"><a target='_blank' href='https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(JSON_data.link)}'><img src='${JSON_data.link}'/></a></td>` : `<td style="width: 23%;">PRIVATE</td>`}
 				</tr>`;
+                return;
+            }
         });
 
         table.style.display = 'block';
@@ -270,10 +287,10 @@
         // REFRESH LOCAL STORAGE COOKIES
         let data = await BCA_Users.getUserInfo('email, username, prof_img, rank_id(rank_name)');
 
-        if(!data)
+        if (!data)
             return;
 
-        if(data.length === 1)
+        if (data.length === 1)
             data = data[0];
 
         BCA_Cache.setItemWithExpiration(BCA_Notifications.LOCALSTORAGE_USER, data, 600000);
@@ -300,5 +317,21 @@
         await supabase.from('users').update({
             rank_id: data.id
         }).eq('email', userEmail[0]);
+    }
+    async function getRaw(bucket_id) {
+        let { data, error } = await supabase.from('account_buckets').select('raw').eq('id', bucket_id);
+
+        if (data?.length === 0 || error)
+            return;
+
+        return data.length === 1 ? data[0].raw : data;
+    }
+    async function getUserRequestHistory(user_id) {
+        let { data, error } = await supabase.from('account-requests').select('id, date, code, use, bucket_id(raw, acc_id(name, ads, link), lang(lang), ver(version))').eq('user_id', user_id).order('date', {ascending: false});
+
+        if (data?.length === 0 || error)
+            return;
+
+        return data;
     }
 })();
