@@ -6,6 +6,7 @@
     const btn_version = document.getElementById('btn_version');
     const btn_send = document.getElementById('submit_btn');
     const links = document.getElementById('links');
+    const form = document.getElementById('form');
     let useremail = '';
 
     await initFunctions(['supabase', 'FirebaseModule', 'DiscordAPI', 'BCA_Users']);
@@ -174,6 +175,8 @@
         }
     }
     window.triggerSend = async () => {
+        form.style.opacity = '0.7';
+        form.style.pointerEvents = 'none';
         let data_arr = createBatchLinks();
         await sendAccountsToBucket(data_arr);
     }
