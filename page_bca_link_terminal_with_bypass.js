@@ -14,7 +14,7 @@
 
     let time_in_sec = Math.floor(Math.random() * (5000 - 3000) + 3000);
 
-    await initFunctions(['FirebaseModule', 'moment']);
+    await initFunctions(['FirebaseModule', 'moment', 'BCA_Cache']);
 
     activeUsers();
     dispatchExpiredRequest();
@@ -444,6 +444,7 @@
         let isException = false;
         let isUnfilled = false;
         let isMobileSite = new URL(window.location.href).searchParams.get('m') === 1;
+        let exhaust = false;
 
         let blurTime, hiddenTime;
 
@@ -475,7 +476,9 @@
             return;
         }
 
-        if (false &&
+        exhaust = BCA_Cache.getItemWithExpiration('bca_link_exhaust');
+
+        if (!exhaust &&
             (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled" ||
                 auction_Iframe?.getAttribute('data-load-complete') === "true" ||
                 bca_link_ads.querySelector('ins')?.getAttribute('data-adsbygoogle-status') === "done")
@@ -489,13 +492,14 @@
             // bca_link_ads.style.transform = 'translate(-50%, -150px)';
             // bca_link_ads.style.left = '50%';
             bca_link_ads.style.margin = "0 auto";
-            bca_link_ads.style.top = "-150px";
+            bca_link_ads.style.top = "-60px";
             bca_link_ads.style.position = "relative";
             bca_link_ads.style.width = '';
 
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
             link.textContent = "Bypass now";
+
         } else if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "unfilled") {
             isUnfilled = true;
             status.textContent = `You can now bypass!`;
@@ -584,6 +588,7 @@
 
         async function checkIfBypassDone() {
             if ((checkTime() || isException) && !isUnlocked) {
+                BCA_Cache.setItemWithExpiration('bca_link_exhaust', true, 120000);
                 isException = false;
                 isUnlocked = true;
                 link.textContent = `Loading...`;
