@@ -359,6 +359,9 @@
     }
 
     async function getAccount(key, btn) {
+        // restore accounts that has lapsed!
+        await supabase.rpc('restore_lapse_accounts');
+
         // change the status first from the firebase to processing
         // execute bypass account
         let status = getID(key).querySelector('[cart-status]');
