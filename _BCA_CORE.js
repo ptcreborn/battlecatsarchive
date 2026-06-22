@@ -671,6 +671,58 @@ var BCA_Url = {
         } catch (e) {
             return false;
         }
+    },
+    isYoutubeVideo(url) {
+        try {
+            // Ensure it's a valid URL format first
+            const parsedUrl = new URL(url);
+
+            // Check hostname
+            const host = parsedUrl.hostname.replace('www.', '');
+            if (host !== 'youtube.com' && host !== 'youtu.be' && host !== 'm.youtube.com') {
+                return false;
+            }
+
+            // Handle youtu.be/VIDEO_ID
+            if (host === 'youtu.be') {
+                // The pathname includes the leading slash, so it must be exactly '/' + 11 character ID
+                return /^\/[a-zA-Z0-9_-]{11}$/.test(parsedUrl.pathname);
+            }
+
+            // Handle youtube.com/watch?v=VIDEO_ID
+            if (parsedUrl.pathname === '/watch') {
+                const videoId = parsedUrl.searchParams.get('v');
+                return videoId ? /^[a-zA-Z0-9_-]{11}$/.test(videoId) : false;
+            }
+
+            // Handle youtube.com/embed/VIDEO_ID or youtube.com/v/VIDEO_ID
+            if (parsedUrl.pathname.startsWith('/embed/') || parsedUrl.pathname.startsWith('/v/')) {
+                const segments = parsedUrl.pathname.split('/');
+                const videoId = segments[2]; // Index 2 because path starts with a slash
+                return videoId ? /^[a-zA-Z0-9_-]{11}$/.test(videoId) : false;
+            }
+
+            // Handle youtube.com/shorts/VIDEO_ID
+            if (parsedUrl.pathname.startsWith('/shorts/')) {
+                const segments = parsedUrl.pathname.split('/');
+                const videoId = segments[2];
+                return videoId ? /^[a-zA-Z0-9_-]{11}$/.test(videoId) : false;
+            }
+
+            return false;
+        } catch (e) {
+            // Invalid URL format
+            return false;
+        }
+    },
+    isImgBB(url) {
+        // return the pathname
+        try {
+            let origin = new URL(url).origin;
+            return origin === 'https://i.ibb.co';
+        } catch (error) {
+            return null;
+        }
     }
 }
 
@@ -691,10 +743,10 @@ var BCA_Comment = {
         let email = await BCA_Users.checkIfUserOnline();
 
         if (!email)
-            this.user_id = 7783; // guest
+            this.user_id = 7783; // reserved id for guests
         else {
             this.user_id = await BCA_Users.getMemberInfoCustom('id', 'email', email);
-            this.user_id = this.user_id.id;
+            this.user_id = this.user_id[0].id;
         }
 
         // initializing apis
@@ -706,6 +758,9 @@ var BCA_Comment = {
             e.preventDefault();
             await this.postComment();
         });
+
+        // render the comment
+        await renderCommentChild();
     },
     getContents() {
         const content = this.comment_form.querySelector('textarea').value;
@@ -871,5 +926,31 @@ var BCA_Comment = {
         let filtered = this.url_bucket.filter(item => elem.querySelector('span[url]').innerText !== item);
         this.url_bucket = filtered;
         elem.remove();
+    },
+
+    // this functions loads the comments from the url
+    async getCommentsData() {
+        let id = await this.getPathnameID();
+        let { data, error } = await supabase.from('bca-comments').select('*').eq('bca_posts', id);
+
+        if (data?.length === 0 || error)
+            return;
+
+        return data;
+    },
+    async getFBCommentData(id) {
+        let data = await FirebaseModule.fetchJSON(`${fb_comments}/${id}.json`);
+
+        return data;
+    },
+    async renderCommentChild() {
+        // Descending
+        let comments_data = await this.getCommentsData();
+        comments_data.forEach(item => console.log(item));
+    },
+    pQuery(str) {
+        return document.querySelector(`[${str}]`);
     }
 }
+
+BCA_Comment.initialize();
