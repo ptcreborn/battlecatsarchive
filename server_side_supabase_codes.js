@@ -76,6 +76,18 @@
             `There are **${batch_arr.length}** accounts added to **${payload_info.name}** version **${payload_info.ver}** lang **${payload_info.lang}**!`
         );
 
+        await FirebaseModule.patch(`https://storehaccounts-website-default-rtdb.firebaseio.com/highkeep.json`,
+            JSON.stringify({
+                [new Date().getTime()]: {
+                    email: useremail,
+                    profile: JSON.parse(atob(localStorage.getItem('user'))).profile,
+                    acc: account_name,
+                    ver: acc_ver,
+                    qty: links_arr.length
+                }
+            })
+        );
+
         window.location.reload();
     }
     async function renderAccountChoices(data) {
