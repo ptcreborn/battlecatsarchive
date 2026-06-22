@@ -492,7 +492,7 @@
             // bca_link_ads.style.transform = 'translate(-50%, -150px)';
             // bca_link_ads.style.left = '50%';
             bca_link_ads.style.margin = "0 auto";
-            bca_link_ads.style.top = "-60px";
+            bca_link_ads.style.top = "-160px";
             bca_link_ads.style.position = "relative";
             bca_link_ads.style.width = '';
 
