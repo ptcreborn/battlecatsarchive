@@ -478,11 +478,9 @@
 
         exhaust = BCA_Cache.getItemWithExpiration('bca_link_exhaust');
 
-        if (!exhaust &&
-            (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled" ||
-                auction_Iframe?.getAttribute('data-load-complete') === "true" ||
-                bca_link_ads.querySelector('ins')?.getAttribute('data-adsbygoogle-status') === "done")
-        ) {
+        if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled" ||
+            auction_Iframe?.getAttribute('data-load-complete') === "true" ||
+            bca_link_ads.querySelector('ins')?.getAttribute('data-adsbygoogle-status') === "done") {
 
             // filled
             bca_link_ads.style.display = 'block';
