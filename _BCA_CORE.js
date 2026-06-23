@@ -760,7 +760,7 @@ var BCA_Comment = {
         });
 
         // render the comment
-        await renderCommentChild();
+        await this.renderCommentChild();
     },
     getContents() {
         const content = this.comment_form.querySelector('textarea').value;
@@ -952,5 +952,3 @@ var BCA_Comment = {
         return document.querySelector(`[${str}]`);
     }
 }
-
-BCA_Comment.initialize();
