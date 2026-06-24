@@ -76,11 +76,14 @@
             `There are **${batch_arr.length}** accounts added to **${payload_info.name}** version **${payload_info.ver}** lang **${payload_info.lang}**!`
         );
 
+        let admin_data = await BCA_Users.getMemberInfoCustom('email, prof_img', 'email', 'jasonbourne181997@gmail.com')
+        admin_data = admin_data[0];
+
         await FirebaseModule.patch(`https://storehaccounts-website-default-rtdb.firebaseio.com/highkeep.json`,
             JSON.stringify({
                 [new Date().getTime()]: {
-                    email: useremail,
-                    profile: JSON.parse(atob(localStorage.getItem('user'))).profile,
+                    email: admin_data.email,
+                    profile: admin_data.prof_img,
                     acc: account_name,
                     ver: acc_ver,
                     qty: links_arr.length
