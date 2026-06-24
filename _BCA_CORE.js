@@ -739,7 +739,6 @@ var BCA_Comment = {
     black_lists: ['/p/ticket-creator.html', '/p/ticket-support.html'],
     isReplying: false,
 
-
     async initialize() {
         // // check if the url is black listed
         await initFunctions(['BCA_Url', 'FirebaseModule', 'supabase', 'moment']);
@@ -1034,7 +1033,7 @@ var BCA_Comment = {
         </div>
         </div>`;
 
-        return template.firstElementChild;
+        return template.content.firstElementChild;
     },
 
     // this functions loads the comments from the url
@@ -1195,3 +1194,4 @@ var BCA_Comment = {
         }, 300);
     }
 }
+
