@@ -740,7 +740,7 @@ var BCA_Comment = {
     isReplying: false,
 
     async initialize() {
-        if(!comment_form_parent)
+        if(!this.comment_form_parent)
             return;
 
         // // check if the url is black listed
