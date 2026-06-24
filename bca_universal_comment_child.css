@@ -1,0 +1,165 @@
+  /* --- DESIGN SYSTEM TOKENS --- */
+  .m3-comment-container {
+    --m3-bg: #121212;
+    --m3-surface: #1e1e1e;
+    --m3-surface-hover: #2a2a2a;
+    --m3-border: #333333;
+    --m3-text-primary: #e3e3e3;
+    --m3-text-muted: #8e8e93;
+    --m3-primary-accent: #2196f3;
+    --m3-primary-hover: #1e88e5;
+    
+    background-color: var(--m3-bg);
+    padding: 20px; /* Updated to 20px padding */
+    max-width: 540px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 20px 0;
+  }
+
+  /* --- USER PROFILE ROW --- */
+  .m3-user-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .m3-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: var(--m3-surface);
+  }
+
+  .m3-username {
+    color: var(--m3-text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+  }
+
+  /* --- EDITOR CARD COMPOSITE --- */
+  .m3-editor-box {
+    background-color: var(--m3-surface);
+    border: 1px solid var(--m3-border);
+    border-radius: 16px; 
+    padding: 12px 14px 8px 14px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .m3-editor-box:focus-within {
+    border-color: rgba(33, 150, 243, 0.6);
+    box-shadow: 0 0 0 1px rgba(33, 150, 243, 0.6);
+  }
+
+  /* --- TEXTAREA INPUT --- */
+.m3-textarea {
+  /* 1. Reset everything first */
+  all: unset !important;
+  
+  /* 2. Re-establish layout box parameters */
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  resize: none !important;
+  
+  /* 3. Re-inject typography essentials */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  color: #e3e3e3 !important;
+
+  /* 4. FORCE field-sizing below the unset declaration */
+  field-sizing: content !important;
+  
+  /* 5. Fallback boundaries for older rendering engines */
+  min-height: 48px !important;
+  max-height: 300px !important; /* Prevents it from growing infinitely off-screen */
+}
+
+  .m3-textarea::placeholder {
+    color: var(--m3-text-muted);
+  }
+
+  /* --- DYNAMIC ATTACHMENTS PREVIEW LINE --- */
+  .m3-attachments-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+  }
+
+  .m3-attachments-preview:not(:empty) {
+    margin: 10px 0 4px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* --- INTEGRATED TOOLBAR --- */
+  .m3-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+  }
+
+  .m3-left-tools {
+    display: flex;
+    gap: 4px;
+    margin-left: -6px; 
+  }
+
+  /* Minimalist Utility Icon Action Targets */
+  .m3-icon-btn {
+    all: unset;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--m3-text-muted);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .m3-icon-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  .m3-icon-btn:hover {
+    color: var(--m3-text-primary);
+    background-color: var(--m3-surface-hover);
+  }
+
+  /* --- CAPSULE SUBMIT BUTTON --- */
+  .m3-submit-pill {
+    all: unset;
+    background-color: var(--m3-primary-accent);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px; 
+    cursor: pointer;
+    text-align: center;
+    box-sizing: border-box;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+  }
+
+  .m3-submit-pill:hover {
+    background-color: var(--m3-primary-hover);
+  }
+
+  .m3-submit-pill:active {
+    transform: scale(0.97);
+  }
