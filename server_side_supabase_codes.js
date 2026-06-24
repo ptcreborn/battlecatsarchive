@@ -84,9 +84,9 @@
                 [new Date().getTime()]: {
                     email: admin_data.email,
                     profile: admin_data.prof_img,
-                    acc: account_name,
-                    ver: acc_ver,
-                    qty: links_arr.length
+                    acc: payload_info.name,
+                    ver: `${payload_info.lang}-${payload_info.ver}`,
+                    qty: batch_arr.length
                 }
             })
         );
