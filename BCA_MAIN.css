@@ -227,6 +227,7 @@ a.button:not(.ln) {
 }
 b {
     font-weight: 800 !important;
+    color: wheat;
 }
 u {
     -webkit-text-underline-position: under;
