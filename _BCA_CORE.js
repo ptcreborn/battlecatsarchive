@@ -985,6 +985,7 @@ var BCA_Comment = {
     renderCommentEditor() {
         let template = document.createElement('template');
         template.innerHTML = `<h3 comment_count>Loading comments...</h3>
+        <div id='comments-parent-holder'></div>
         <form class='bca-univ-comment-form admPs' id='bca_universal_comment'>
         <div class='bca-univ-comment-header'>
             <span comment_username></span>
@@ -1000,8 +1001,7 @@ var BCA_Comment = {
             <button btn-link type='button' role='button' class='button-15'>Links</button>
             <button btn-comment type='submit' role='button' class='button-15' style='margin-left: auto;'>Comment</button>
         </div>
-        </form>
-        <div id='comments-parent-holder'></div>`;
+        </form>`;
         return template.content.children;
     },
     renderChildTemplate() {
