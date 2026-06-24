@@ -740,6 +740,9 @@ var BCA_Comment = {
     isReplying: false,
 
     async initialize() {
+        if(!comment_form_parent)
+            return;
+
         // // check if the url is black listed
         await initFunctions(['BCA_Url', 'FirebaseModule', 'supabase', 'moment']);
         if (!this.black_lists.includes(BCA_Url.getPathname())) {
