@@ -1,0 +1,67 @@
+  form.bca-univ-comment-form > textarea.bca-univ-comment-content {
+    all: unset;
+    color: white;
+    border: 1px solid #7b7b7b;
+    border-radius: 5px;
+    padding: 5px 10px;
+    min-height: 200px;
+    margin: 0 15px;
+    field-sizing: content;
+    display: block;
+    width: calc(100% - 30px);
+    box-sizing: border-box;
+  }
+  .bca-univ-comment-form {
+    border: 1px solid beige;
+    padding: 5px 0 10px 0;
+    display: block;
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 600px;
+  }
+  
+  .bca-univ-comment-attachment {
+    margin: 5px 0;
+  }
+  .bca-univ-comment-attachment-child {
+    padding: 0 20px;
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid;
+    box-sizing: border-box;
+  }
+  .bca-univ-comment-attachment-child-info {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .bca-univ-comment-attachment-child-delete {
+    margin-left: auto;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    padding-left: 20px;
+  }
+  .bca-univ-comment-footer {
+    display: flex;
+    justify-content: flex-start;
+    padding: 10px 10px 0 10px;
+  }
+  .bca-univ-comment-header {
+    display: flex;
+    align-items: center;
+    padding: 0 15px 5px;   
+  }
+  
+  .bca-univ-comment-header img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    margin-left: auto;
+    border-radius: 50%;
+  }
+  
+  .bca-univ-comment-header span {
+    font-size: 12px;
+  }  
