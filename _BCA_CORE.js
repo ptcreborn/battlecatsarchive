@@ -738,11 +738,15 @@ var BCA_Comment = {
     url_bucket: [],
     black_lists: ['/p/ticket-creator.html', '/p/ticket-support.html'],
     isReplying: false,
+
+
     async initialize() {
         // // check if the url is black listed
         await initFunctions(['BCA_Url', 'FirebaseModule', 'supabase', 'moment']);
-        if (!this.black_lists.includes(BCA_Url.getPathname()))
+        if (!this.black_lists.includes(BCA_Url.getPathname())) {
             Array.from(this.renderCommentEditor()).forEach(child => this.comment_form_parent.appendChild(child));
+            document.body.appendChild(this.renderChildTemplate());
+        }
 
         this.comment_form = document.getElementById('bca_universal_comment');
 
@@ -986,6 +990,52 @@ var BCA_Comment = {
         <div id='comments-parent-holder'></div>`;
         return template.content.children;
     },
+    renderChildTemplate() {
+        let template = document.createElement('template');
+        template.innerHTML = `<div class="bc-message-box">
+        <div class="bc-content">
+            
+            <!-- Header row -->
+            <div class="bc-header">
+            <div class="bc-profile-wrapper">
+                <img bca-profile src="" alt="Profile" class="bc-profile-img">
+            </div>
+            <a bca-username class="bc-title"></a>
+            <div bca-timestamp class="bc-timestamp"></div>
+            </div>
+            
+            <!-- Comment Body Container -->
+            <div class="bc-text-container">
+            <!-- Embedded Target Replied Content -->
+            <div class="bc-reply-preview">
+            </div>
+            
+            <!-- Comment Text -->
+            <p bca-message></p>
+            </div>
+
+            <!-- ATTACHMENT PREVIEW AREA (SQUARE SIDES-BY-SIDE) -->
+            <div bca-attachments class="bc-attachments-area">
+
+            </div>
+
+            <!-- Footer row -->
+            <div class="bc-footer">
+            <!-- <button class="bc-btn bc-btn-heart" aria-label="Heart">
+                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.5 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                <span>Like</span>
+            </button> -->
+            <button class="bc-btn bc-btn-reply" aria-label="Reply">
+                <svg viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>
+                <span bca-reply-trigger>Reply</span>
+            </button>
+            </div>
+
+        </div>
+        </div>`;
+
+        return template.firstElementChild;
+    },
 
     // this functions loads the comments from the url
     async getCommentsData() {
@@ -1013,6 +1063,7 @@ var BCA_Comment = {
 
         if (!template || !parent || !comments_data)
             return;
+
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
         await Promise.all(comments_data.map(item => this.buildCommentContents(parent, item)));
         comments_data.map(item => this.buildReplyEmbed(item));
