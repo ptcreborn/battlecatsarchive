@@ -1007,7 +1007,7 @@ var BCA_Comment = {
         const template = this.pQuery('comment-child-template');
         const parent = this.query('comments-parent-holder');
 
-        this.wQuery(this.query('bca_univ_parent_container'), 'comment_count').textContent = `${comments_data.length || !comments_data === 0 ?
+        this.wQuery(this.query('bca_univ_parent_container'), 'comment_count').textContent = `${!comments_data || comments_data.length === 0 ?
             'Start the comment!' : `${comments_data.length <= 1 ?
                 `${comments_data.length} Comment` : `${comments_data.length} Comments`}`}`;
 
