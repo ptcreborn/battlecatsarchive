@@ -757,14 +757,9 @@ var BCA_Comment = {
         let email = await BCA_Users.checkIfUserOnline();
 
         if (!email)
-            this.user_id = 7783; // reserved id for guests
-        else {
-            let users_data = await BCA_Users.getMemberInfoCustom('id, email, prof_img, username', 'email', email);
-            this.user_id = users_data[0].id;
-            this.user_email = users_data[0].email;
-            this.user_prof_img = users_data[0].prof_img;
-            this.username = users_data[0].username;
-        }
+            await this.initUsersData({ id: 7783 });
+        else
+            await this.initUsersData({ email: email });
 
         // initializing apis
         this.initUploadAPI();
@@ -827,13 +822,10 @@ var BCA_Comment = {
                 prof_img: this.user_prof_img
             }
         }];
+
         await this.renderCommentChild(comments_data);
         this.scrollWhenExists(`bca-comments-${sp_id.id}`);
-
-        // reset comment form
-        BCA_Display.enableElem(this.comment_form);
-        this.comment_form.reset();
-        this.cancelReply();
+        this.resetCommentForm();
     },
     async getPathnameID() {
         let pathname = BCA_Url.getPathname();
@@ -939,8 +931,27 @@ var BCA_Comment = {
     },
     async initCommentEditor(user_id) {
         let users_data = await BCA_Users.getMemberInfo('prof_img, username', user_id);
-        this.wQuery(this.comment_form, 'comment_username').textContent = users_data[0].username;
-        this.wQuery(this.comment_form, 'comment_prof_img').src = users_data[0].prof_img;
+        this.wQuery(this.comment_form, 'comment_username').textContent = this.username = users_data[0].username;
+        this.wQuery(this.comment_form, 'comment_prof_img').src = this.user_prof_img = users_data[0].prof_img;
+    },
+    async initUsersData(user_data) {
+        if (user_data.id) {
+            let users_data = await BCA_Users.getMemberInfoCustom('id, email, prof_img, username', 'id', user_data.id);
+            this.user_id = users_data[0].id;
+            this.user_email = users_data[0].email;
+            this.user_prof_img = users_data[0].prof_img;
+            this.username = users_data[0].username;
+            return;
+        }
+
+        if (user_data.email) {
+            let users_data = await BCA_Users.getMemberInfoCustom('id, email, prof_img, username', 'email', user_data.email);
+            this.user_id = users_data[0].id;
+            this.user_email = users_data[0].email;
+            this.user_prof_img = users_data[0].prof_img;
+            this.username = users_data[0].username;
+            return;
+        }
     },
     buildAttachHTML(type, url) {
         let div = document.createElement('div');
@@ -991,7 +1002,8 @@ var BCA_Comment = {
     },
     renderChildTemplate() {
         let template = document.createElement('template');
-        template.innerHTML = `<div class="bc-message-box">
+        template.innerHTML = `<template comment-child-template>
+        <div class="bc-message-box">
         <div class="bc-content">
             
             <!-- Header row -->
@@ -1031,9 +1043,23 @@ var BCA_Comment = {
             </div>
 
         </div>
-        </div>`;
+        </div>
+        </template>`;
 
         return template.content.firstElementChild;
+    },
+    updateCommentCount() {
+        let comment_count = this.query('comments-parent-holder').children?.length;
+
+        this.wQuery(this.comment_form_parent, 'comment_count').textContent = `${!comment_count || comment_count === 0 ? `Start your comment!` :
+            `${comment_count} ${comment_count < 2 ? `Comment` : `Comments`}`}`;
+    },
+    resetCommentForm() {
+        // reset comment form
+        BCA_Display.enableElem(this.comment_form);
+        this.comment_form.reset();
+        this.cancelReply();
+        this.query('attachments').innerHTML = ``;
     },
 
     // this functions loads the comments from the url
@@ -1056,16 +1082,14 @@ var BCA_Comment = {
         const template = this.pQuery('comment-child-template');
         const parent = this.query('comments-parent-holder');
 
-        this.wQuery(this.query('bca_univ_parent_container'), 'comment_count').textContent = `${!comments_data || comments_data.length === 0 ?
-            'Start the comment!' : `${comments_data.length <= 1 ?
-                `${comments_data.length} Comment` : `${comments_data.length} Comments`}`}`;
-
         if (!template || !parent || !comments_data)
             return;
 
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
         await Promise.all(comments_data.map(item => this.buildCommentContents(parent, item)));
         comments_data.map(item => this.buildReplyEmbed(item));
+
+        this.updateCommentCount();
     },
     async buildCommentChildUserData(template, parent, data) {
         let users_data = data.user_id;
@@ -1194,4 +1218,3 @@ var BCA_Comment = {
         }, 300);
     }
 }
-
