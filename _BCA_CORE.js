@@ -885,8 +885,6 @@ var BCA_Comment = {
         if (!this.comment_form)
             return;
 
-        console.log(this.comment_form);
-
         const uploadBtn = this.comment_form.querySelector('button[btn-upload]');
         const uploadInput = this.comment_form.querySelector('#bca_universal_comment_image');
         const attach_parent = this.comment_form.querySelector('#attachments');
@@ -1009,12 +1007,12 @@ var BCA_Comment = {
         const template = this.pQuery('comment-child-template');
         const parent = this.query('comments-parent-holder');
 
-        if (!template || !parent || !comments_data)
-            return;
-
-        this.wQuery(this.query('bca_univ_parent_container'), 'comment_count').textContent = `${comments_data.length === 0 ?
+        this.wQuery(this.query('bca_univ_parent_container'), 'comment_count').textContent = `${comments_data.length || !comments_data === 0 ?
             'Start the comment!' : `${comments_data.length <= 1 ?
                 `${comments_data.length} Comment` : `${comments_data.length} Comments`}`}`;
+
+        if (!template || !parent || !comments_data)
+            return;
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
         await Promise.all(comments_data.map(item => this.buildCommentContents(parent, item)));
         comments_data.map(item => this.buildReplyEmbed(item));
