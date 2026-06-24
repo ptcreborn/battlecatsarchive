@@ -1,165 +1,231 @@
-  /* --- DESIGN SYSTEM TOKENS --- */
-  .m3-comment-container {
-    --m3-bg: #121212;
-    --m3-surface: #1e1e1e;
-    --m3-surface-hover: #2a2a2a;
-    --m3-border: #333333;
-    --m3-text-primary: #e3e3e3;
-    --m3-text-muted: #8e8e93;
-    --m3-primary-accent: #2196f3;
-    --m3-primary-hover: #1e88e5;
-    
-    background-color: var(--m3-bg);
-    padding: 20px; /* Updated to 20px padding */
-    max-width: 540px;
+  .bc-message-box {
+    background: linear-gradient(to bottom, #2b211a 0%, #120c08 100%);
+    border: 4px solid #57575;
+    outline: 2px solid #000000;
+    padding: 3px;
+    display: inline-block;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    max-width: 600px;
     width: 100%;
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin: 20px 0;
   }
 
-  /* --- USER PROFILE ROW --- */
-  .m3-user-row {
+  .bc-content {
+    border: 1px solid #ffffff;
+    padding: 12px 20px;
+    color: #ffffff;
+    box-sizing: border-box;
+  }
+
+  .bc-header {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
-  .m3-avatar {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
+  .bc-profile-wrapper {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background-color: #000000;
+    overflow: hidden;
+  }
+
+  .bc-profile-img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    background-color: var(--m3-surface);
+    display: block;
   }
 
-  .m3-username {
-    color: var(--m3-text-primary);
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: -0.1px;
+  .bc-title {
+    font-size: 19px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    line-height: 1;
+    color: wheat !important;
   }
 
-  /* --- EDITOR CARD COMPOSITE --- */
-  .m3-editor-box {
-    background-color: var(--m3-surface);
-    border: 1px solid var(--m3-border);
-    border-radius: 16px; 
-    padding: 12px 14px 8px 14px;
+  .bc-timestamp {
+    margin-left: auto;
+    font-size: 13px;
+    color: #a39382;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+  }
+
+  .bc-text-container {
     display: flex;
     flex-direction: column;
-    box-sizing: border-box;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 8px;
   }
 
-  .m3-editor-box:focus-within {
-    border-color: rgba(33, 150, 243, 0.6);
-    box-shadow: 0 0 0 1px rgba(33, 150, 243, 0.6);
-  }
-
-  /* --- TEXTAREA INPUT --- */
-.m3-textarea {
-  /* 1. Reset everything first */
-  all: unset !important;
-  
-  /* 2. Re-establish layout box parameters */
-  display: block !important;
-  box-sizing: border-box !important;
-  width: 100% !important;
-  resize: none !important;
-  
-  /* 3. Re-inject typography essentials */
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-  font-size: 15px !important;
-  line-height: 1.5 !important;
-  color: #e3e3e3 !important;
-
-  /* 4. FORCE field-sizing below the unset declaration */
-  field-sizing: content !important;
-  
-  /* 5. Fallback boundaries for older rendering engines */
-  min-height: 48px !important;
-  max-height: 300px !important; /* Prevents it from growing infinitely off-screen */
-}
-
-  .m3-textarea::placeholder {
-    color: var(--m3-text-muted);
-  }
-
-  /* --- DYNAMIC ATTACHMENTS PREVIEW LINE --- */
-  .m3-attachments-preview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 0;
-  }
-
-  .m3-attachments-preview:not(:empty) {
-    margin: 10px 0 4px 0;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
-  /* --- INTEGRATED TOOLBAR --- */
-  .m3-toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 4px;
-  }
-
-  .m3-left-tools {
-    display: flex;
-    gap: 4px;
-    margin-left: -6px; 
-  }
-
-  /* Minimalist Utility Icon Action Targets */
-  .m3-icon-btn {
-    all: unset;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--m3-text-muted);
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    box-sizing: border-box;
-  }
-
-  .m3-icon-btn svg {
-    width: 18px;
-    height: 18px;
-    fill: currentColor;
-  }
-
-  .m3-icon-btn:hover {
-    color: var(--m3-text-primary);
-    background-color: var(--m3-surface-hover);
-  }
-
-  /* --- CAPSULE SUBMIT BUTTON --- */
-  .m3-submit-pill {
-    all: unset;
-    background-color: var(--m3-primary-accent);
-    color: #ffffff;
+  .bc-reply-preview {
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 3px solid #ebd7c0;
+    padding: 6px 10px;
+    margin: 4px 0 8px 0;
     font-size: 13px;
-    font-weight: 600;
-    padding: 6px 16px;
-    border-radius: 20px; 
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+    border-radius: 2px;
     cursor: pointer;
-    text-align: center;
+  }
+
+  .bc-preview-author {
+    color: #ebd7c0;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  .bc-preview-text {
+    color: #bfaea2;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .bc-content p {
+    margin: 3px 0;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1.35;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    color: #b2b2b2;
+  }
+
+  /* --- GRID FOR SIDE-BY-SIDE SQUARE ATTACHMENTS --- */
+  .bc-attachments-area {
+    display: grid;
+    /* Automatically creates columns that are max 120px wide */
+    grid-template-columns: repeat(auto-fill, minmax(100px, 120px));
+    gap: 12px;
+    margin: 14px 0;
+  }
+
+  .bc-attach-item {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Forces the box to be a strict square */
     box-sizing: border-box;
-    transition: background-color 0.15s ease, transform 0.1s ease;
   }
 
-  .m3-submit-pill:hover {
-    background-color: var(--m3-primary-hover);
+  /* Square Image Formatting */
+  .bc-attach-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Crops image cleanly into the square shape */
+    display: block;
+    cursor: pointer;
   }
 
-  .m3-submit-pill:active {
-    transform: scale(0.97);
+  /* Square Video Embed */
+  .bc-attach-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Square Link Card Layout */
+  .bc-attach-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 8px;
+    text-decoration: none;
+    color: #ffffff;
+    gap: 6px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .bc-attach-link:hover {
+    background: rgba(235, 215, 192, 0.1);
+    border-color: #ebd7c0;
+  }
+
+  .bc-link-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: #ebd7c0;
+  }
+
+  .bc-link-details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .bc-link-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .bc-link-url {
+    font-size: 10px;
+    color: #ebd7c0;
+    font-family: sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* --- FOOTER ACTION BAR --- */
+  .bc-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.2);
+    padding-top: 10px;
+    margin-top: 6px;
+  }
+
+  .bc-btn {
+    background: none;
+    border: none;
+    color: #ebd7c0;
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 8px;
+    transition: color 0.1s ease, transform 0.1s ease;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.9);
+  }
+
+  .bc-btn svg {
+    width: 15px;
+    height: 15px;
+    fill: currentColor;
+    filter: drop-shadow(1px 1px 0px rgba(0, 0, 0, 0.9));
+  }
+
+  .bc-btn:hover {
+    color: #ffffff;
+    transform: scale(1.05);
+  }
+
+  .bc-btn:active {
+    transform: scale(0.95);
   }
