@@ -1192,7 +1192,7 @@ var BCA_Comment = {
     },
     cancelReply() {
         this.isReplying = false;
-        this.query('comments-parent-holder').before(this.comment_form);
+        this.query('comments-parent-holder').after(this.comment_form);
         this.wQuery(this.comment_form, 'btn-comment').textContent = 'Comment';
         this.wQuery(this.comment_form, 'btn-cancel').style.display = 'none';
     },
