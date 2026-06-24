@@ -727,17 +727,28 @@ var BCA_Url = {
 }
 
 var BCA_Comment = {
-    comment_form: document.getElementById('bca_universal_comment'),
+    comment_form: document.getElementById('bca_universal_comment'), // this can be null before initialize
+    comment_form_parent: document.getElementById('bca_univ_parent_container'),
     user_id: '',
+    user_email: '',
+    user_prof_img: '',
+    username: '',
     fb_users: 'https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_users',
     fb_comments: 'https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_comments',
     url_bucket: [],
+    black_lists: ['/p/ticket-creator.html', '/p/ticket-support.html'],
+    isReplying: false,
     async initialize() {
+        // // check if the url is black listed
+        await initFunctions(['BCA_Url', 'FirebaseModule', 'supabase', 'moment']);
+        if (!this.black_lists.includes(BCA_Url.getPathname()))
+            Array.from(this.renderCommentEditor()).forEach(child => this.comment_form_parent.appendChild(child));
+
+        this.comment_form = document.getElementById('bca_universal_comment');
+
         // if the form cant be seen, dont initialize!
         if (!this.comment_form)
             return;
-
-        await initFunctions(['supabase', 'FirebaseModule']);
 
         // check if the user is logged in...
         let email = await BCA_Users.checkIfUserOnline();
@@ -745,13 +756,18 @@ var BCA_Comment = {
         if (!email)
             this.user_id = 7783; // reserved id for guests
         else {
-            this.user_id = await BCA_Users.getMemberInfoCustom('id', 'email', email);
-            this.user_id = this.user_id[0].id;
+            let users_data = await BCA_Users.getMemberInfoCustom('id, email, prof_img, username', 'email', email);
+            this.user_id = users_data[0].id;
+            this.user_email = users_data[0].email;
+            this.user_prof_img = users_data[0].prof_img;
+            this.username = users_data[0].username;
         }
 
         // initializing apis
-        BCA_Comment.initUploadAPI();
-        BCA_Comment.initLinkAPI();
+        this.initUploadAPI();
+        this.initLinkAPI();
+        this.initCancelReplyAPI();
+        this.initCommentEditor(this.user_id);
 
         // event listener for comment
         this.comment_form.addEventListener('submit', async (e) => {
@@ -760,7 +776,8 @@ var BCA_Comment = {
         });
 
         // render the comment
-        await this.renderCommentChild();
+        let comments_data = await this.getCommentsData();
+        await this.renderCommentChild(comments_data);
     },
     getContents() {
         const content = this.comment_form.querySelector('textarea').value;
@@ -786,20 +803,34 @@ var BCA_Comment = {
         let fb_id = await this.postToFirebase();
 
         // post to supabase       
-        let res = await this.postToSupabase(fb_id, post_id, this.user_id);
+        let sp_id = await this.postToSupabase(fb_id, post_id, this.user_id);
 
-        if (!res) {
+        if (!sp_id) {
             window.alert("Error posting comment to supabase!");
             return;
         }
 
         // Render comment
+        let comments_data = [{
+            bca_posts: post_id,
+            date: new Date().toISOString(),
+            fb_id: fb_id,
+            id: sp_id.id,
+            parent_id: this.replyToTarget(),
+            root_id: this.replyToTarget(),
+            user_id: {
+                email: this.user_email,
+                username: this.username,
+                prof_img: this.user_prof_img
+            }
+        }];
+        await this.renderCommentChild(comments_data);
+        this.scrollWhenExists(`bca-comments-${sp_id.id}`);
 
-
-        // Enable comment form
-    },
-    renderComment() {
-
+        // reset comment form
+        BCA_Display.enableElem(this.comment_form);
+        this.comment_form.reset();
+        this.cancelReply();
     },
     async getPathnameID() {
         let pathname = BCA_Url.getPathname();
@@ -815,18 +846,14 @@ var BCA_Comment = {
             url: pathname
         }).select('id').single();
 
-        console.log(`Pathname ID: ${data?.length === 1 ? data[0].id : upsert_data.data.id}`);
         return upsert_data.data.id;
     },
     async authenticFirebase() {
         // post auth to firebase
-        console.log(this.user_id);
 
         await FirebaseModule.patch(`${this.fb_users}.json`, JSON.stringify({
             [this.user_id]: new Date().getTime()
         }));
-
-        console.log(`Authenticated User with ID ${this.user_id}`);
     },
     async postToFirebase() {
         const fb_id = new Date().getTime();
@@ -837,7 +864,6 @@ var BCA_Comment = {
             attach: this.getAttachments()
         }));
 
-        console.log(`Posted to firebase ${fb_id}`);
         return fb_id;
     },
     async postToSupabase(fb_id, post_id, user_id) {
@@ -846,20 +872,20 @@ var BCA_Comment = {
             fb_id: fb_id,
             bca_posts: post_id,
             user_id: user_id,
-            parent_id: null,
-            root_id: null
-        });
+            parent_id: this.replyToTarget(),
+            root_id: this.replyToTarget()
+        }).select('id').single();
 
         if (error)
             return;
 
-        console.log(`Posted to supabase`);
-
-        return true;
+        return data;
     },
     async initUploadAPI() {
         if (!this.comment_form)
             return;
+
+        console.log(this.comment_form);
 
         const uploadBtn = this.comment_form.querySelector('button[btn-upload]');
         const uploadInput = this.comment_form.querySelector('#bca_universal_comment_image');
@@ -888,6 +914,9 @@ var BCA_Comment = {
         uploadBtn.addEventListener('click', () => {
             let url = window.prompt("Add some url (Youtube, Reddit, etc.)");
 
+            if (!url)
+                return;
+
             if (!BCA_Url.isValidURL(url)) {
                 window.alert("Invalid URL. Please paste some valid url.");
                 return;
@@ -901,6 +930,16 @@ var BCA_Comment = {
             this.url_bucket.push(url);
             attach_parent.appendChild(this.buildAttachHTML("URL", url));
         });
+    },
+    initCancelReplyAPI() {
+        this.wQuery(this.comment_form, 'btn-cancel').addEventListener('click', (e) => {
+            this.cancelReply();
+        });
+    },
+    async initCommentEditor(user_id) {
+        let users_data = await BCA_Users.getMemberInfo('prof_img, username', user_id);
+        this.wQuery(this.comment_form, 'comment_username').textContent = users_data[0].username;
+        this.wQuery(this.comment_form, 'comment_prof_img').src = users_data[0].prof_img;
     },
     buildAttachHTML(type, url) {
         let div = document.createElement('div');
@@ -927,28 +966,183 @@ var BCA_Comment = {
         this.url_bucket = filtered;
         elem.remove();
     },
+    renderCommentEditor() {
+        let template = document.createElement('template');
+        template.innerHTML = `<h3 comment_count>Loading comments...</h3>
+        <form class='bca-univ-comment-form admPs' id='bca_universal_comment'>
+        <div class='bca-univ-comment-header'>
+            <span comment_username></span>
+            <img comment_prof_img src='https://cdn-icons-png.flaticon.com/512/5486/5486152.png' />
+            <button btn-cancel style='display: none;' type='button' role='button' class='button-15'>X</button>
+        </div>
+        <textarea required type='text' class='bca-univ-comment-content' contenteditable="plaintext-only" placeholder="Enter your comment!"></textarea>
+        <div class='bca-univ-comment-attachment' id='attachments'>
+        </div>
+        <div class='bca-univ-comment-footer' id='comment-footer'>
+            <input id='bca_universal_comment_image' style='display: none;' type="file" accept="image/jpeg, image/png, image/gif, image/bmp"/>
+            <button btn-upload type='button' role='button' class='button-15'>Upload</button>
+            <button btn-link type='button' role='button' class='button-15'>Links</button>
+            <button btn-comment type='submit' role='button' class='button-15' style='margin-left: auto;'>Comment</button>
+        </div>
+        </form>
+        <div id='comments-parent-holder'></div>`;
+        return template.content.children;
+    },
 
     // this functions loads the comments from the url
     async getCommentsData() {
         let id = await this.getPathnameID();
-        let { data, error } = await supabase.from('bca-comments').select('*').eq('bca_posts', id);
+        let { data, error } = await supabase.from('bca-comments').select('*, user_id(prof_img, username, email)').eq('bca_posts', id).order('id', { ascending: true });
 
         if (data?.length === 0 || error)
             return;
 
         return data;
     },
-    async getFBCommentData(id) {
-        let data = await FirebaseModule.fetchJSON(`${fb_comments}/${id}.json`);
+    async getFBCommentData(id, root) {
+        let data = await FirebaseModule.fetchJSON(`${this.fb_comments}/${id}/${root}.json`);
 
         return data;
     },
-    async renderCommentChild() {
+    async renderCommentChild(comments_data) {
         // Descending
-        let comments_data = await this.getCommentsData();
-        comments_data.forEach(item => console.log(item));
+        const template = this.pQuery('comment-child-template');
+        const parent = this.query('comments-parent-holder');
+
+        if (!template || !parent || !comments_data)
+            return;
+
+        this.wQuery(this.query('bca_univ_parent_container'), 'comment_count').textContent = `${comments_data.length === 0 ?
+            'Start the comment!' : `${comments_data.length <= 1 ?
+                `${comments_data.length} Comment` : `${comments_data.length} Comments`}`}`;
+        await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
+        await Promise.all(comments_data.map(item => this.buildCommentContents(parent, item)));
+        comments_data.map(item => this.buildReplyEmbed(item));
+    },
+    async buildCommentChildUserData(template, parent, data) {
+        let users_data = data.user_id;
+        let clone = template.content.cloneNode(true).children[0];
+
+        clone.id = `bca-comments-${data.id}`;
+        this.wQuery(clone, 'bca-username').textContent = `${users_data.username}`;
+        this.wQuery(clone, 'bca-profile').src = `${users_data.prof_img}`;
+        this.wQuery(clone, 'bca-username').href = `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${users_data.email}`;
+        this.wQuery(clone, 'bca-reply-trigger').addEventListener('click', (e) => {
+            this.appendCommentEditor(e.target);
+        });
+
+        parent.appendChild(clone);
+    },
+    async buildCommentContents(parent, data) {
+        let comment = await this.getFBCommentData(data.fb_id, 'content');
+        let attach = await this.getFBCommentData(data.fb_id, 'attach');
+        this.wQuery(this.query(`bca-comments-${data.id}`), 'bca-message').textContent = `${comment}`;
+        this.wQuery(this.query(`bca-comments-${data.id}`), 'bca-timestamp').textContent = `${moment(data.date).fromNow()}`;
+
+        if (attach)
+            this.buildCommentAttachments(parent, attach, data.id);
+    },
+    async buildCommentAttachments(parent, attachments, id) {
+        let parent_attachments = this.wQuery(this.query(`bca-comments-${id}`), 'bca-attachments');
+        // filter if the attachment has i.bb.co origin means this is a picture attachment
+
+        // else if the attachment is a youtube video create an iframe
+
+        // else treat everything as links
+
+        attachments.forEach(item => {
+            if (BCA_Url.isYoutubeVideo(item)) {
+                parent_attachments.innerHTML += `<div class="bc-attach-item bc-attach-video">
+        <iframe src="${item}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>`;
+                return;
+            }
+            if (BCA_Url.isImgBB(item)) {
+                parent_attachments.innerHTML += `<div class="bc-attach-item bc-attach-image">
+        <img onclick='window.location.href = "https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(`https://bca-image-proxy.jasonbourne181997.workers.dev${new URL(item).pathname}`)}"' src="https://bca-image-proxy.jasonbourne181997.workers.dev${new URL(item).pathname}" alt="User Attachment">
+      </div>`;
+                return;
+            }
+
+            // Build URL Item
+            parent_attachments.innerHTML += `<a href="${item}" target="_blank" class="bc-attach-item bc-attach-link">
+        <div class="bc-link-icon">
+          <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+        </div>
+        <div class="bc-link-details">
+          <div class="bc-link-title">${new URL(item).host}</div>
+          <div class="bc-link-url">Open Link</div>
+        </div>
+      </a>`;
+        });
+    },
+    buildReplyEmbed(item) {
+        let comment = document.getElementById(`bca-comments-${item.id}`);
+        let attachment_parent = comment.querySelector('.bc-reply-preview');
+        if (!attachment_parent)
+            return;
+
+        // getting the target
+        let target_id = `bca-comments-${item.parent_id}`
+        if (!this.query(target_id)) {
+            attachment_parent.remove();
+            return;
+        }
+
+        let target = document.getElementById(target_id);
+        let username = target.querySelector('[bca-username]').innerText;
+        let content = target.querySelector('[bca-message]').innerText;
+        attachment_parent.addEventListener('click', () => {
+            this.scrollWhenExists(target_id);
+        });
+        attachment_parent.innerHTML += `<span bca-reply-to-username="" class="bc-preview-author">@${username}:</span>`;
+        attachment_parent.innerHTML += `<span bca-reply-to-message="" class="bc-preview-text">${content}</span>`;
+    },
+    wQuery(elem, str) {
+        return elem.querySelector(`[${str}]`);
     },
     pQuery(str) {
         return document.querySelector(`[${str}]`);
+    },
+    query(id) {
+        return document.getElementById(id);
+    },
+    appendCommentEditor(replyNode) {
+        this.isReplying = true;
+        this.comment_form.querySelector('[btn-cancel]').style.display = 'block';
+        this.wQuery(this.comment_form, 'btn-comment').textContent = 'Reply';
+        let parent = replyNode.parentNode.parentNode;
+        parent.after(this.comment_form);
+    },
+    cancelReply() {
+        this.isReplying = false;
+        this.query('comments-parent-holder').before(this.comment_form);
+        this.wQuery(this.comment_form, 'btn-comment').textContent = 'Comment';
+        this.wQuery(this.comment_form, 'btn-cancel').style.display = 'none';
+    },
+    replyToTarget() {
+        let target_parent = this.comment_form.parentNode.parentNode.id;
+        if (this.isReplying && target_parent.includes('bca-comments-'))
+            return parseInt(target_parent.replace('bca-comments-', ''));
+        else return;
+    },
+    scrollWhenExists(id) {
+        const wait = setInterval(() => {
+            const el = document.getElementById(id);
+
+            if (el) {
+                el.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                el.style.border = "3px solid beige";
+                clearInterval(wait);
+
+                setTimeout(() => {
+                    el.style.border = "none";
+                }, 3000);
+
+            }
+        }, 300);
     }
 }
