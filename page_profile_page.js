@@ -78,7 +78,7 @@
                 let lang = bucket.lang.lang;
                 let name = bucket.acc_id.name;
                 let ads = bucket.acc_id.ads;
-                let raw = `https://bca-image-proxy.jasonbourne181997.workers.dev${bucket.raw}`;
+                let raw = `https://bca-image-proxy.jasonbourne181997.workers.dev${btoa(bucket.raw)}`;
                 let link = bucket.acc_id.link;
 
                 table_body.innerHTML += `<tr>
