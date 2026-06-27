@@ -460,17 +460,16 @@
         }
 
         const ads = Array.from(document.querySelectorAll("ins.adsbygoogle"));
-        let checkAllAdsIframeLength = ads.filter(item => item?.querySelector('iframe'));
-        let checkAllAdsStatus = ads.filter(item => item?.getAttribute('data-ad-status'));
-        let isAdblockerThere = await detectAdBlock();
-        let missingStatusAds = ads.filter(item => !item.getAttribute('data-ad-status'));
-        let divDetection = ads.filter(item => item.querySelector('div'));
-        let iframeHeightDetection = ads.filter(item => item.querySelector('iframe')?.style.height === "1px" || item.querySelector('iframe')?.style.maxHeight === "1px");
-        let allADSHeightZERO = checkAllAdsIframeLength.length === 0 && checkAllAdsStatus.length === 0 && missingStatusAds.length > 0;
+        // let checkAllAdsIframeLength = ads.filter(item => item?.querySelector('iframe'));
+        // let checkAllAdsStatus = ads.filter(item => item?.getAttribute('data-ad-status'));
+        // let isAdblockerThere = await detectAdBlock();
+        // let missingStatusAds = ads.filter(item => !item.getAttribute('data-ad-status'));
+        // let divDetection = ads.filter(item => item.querySelector('div'));
+        // let iframeHeightDetection = ads.filter(item => item.querySelector('iframe')?.style.height === "1px" || item.querySelector('iframe')?.style.maxHeight === "1px");
+        // let allADSHeightZERO = checkAllAdsIframeLength.length === 0 && checkAllAdsStatus.length === 0 && missingStatusAds.length > 0;
+        let checkMaxSecurityAdblock = await strictAdBlockCheck();
 
-        if (!localStorage.getItem('lem') && (
-            isAdblockerThere || allADSHeightZERO || iframeHeightDetection.length > 0 || divDetection.length === 0
-        )) {
+        if (!localStorage.getItem('lem') && checkMaxSecurityAdblock) {
             status.innerHTML = "⚠️ Ad-Blocker detected. Please use chrome. Thank you! <br/>Please head to <a href='https://battlecatsarchive.blogspot.com/p/ticket-support.html'>Ticket Page</a>. <a href='https://battlecatsarchive.blogspot.com/p/troubleshooting-adblocker-detected.html'>You can read about turning off adblocker or not using Brave browser.</a>.";
             link.textContent = "AD-BLOCKER detected!";
             return;
@@ -479,8 +478,7 @@
         exhaust = BCA_Cache.getItemWithExpiration('bca_link_exhaust');
 
         if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled" ||
-            auction_Iframe?.getAttribute('data-load-complete') === "true" ||
-            bca_link_ads.querySelector('ins')?.getAttribute('data-adsbygoogle-status') === "done") {
+            auction_Iframe?.getAttribute('data-load-complete') === "true") {
 
             // filled
             bca_link_ads.style.display = 'block';
@@ -499,6 +497,12 @@
             link.textContent = "Bypass now";
 
         } else if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "unfilled") {
+            isUnfilled = true;
+            status.textContent = `You can now bypass!`;
+            bypass_msg.textContent = `Bypass available now. Start!`;
+            console.log(`Bypass available now. Start!`);
+            link.textContent = "Bypass now";
+        } else if (bca_link_ads.querySelector('ins')?.getAttribute('ablated-ad-slot') !== null) {
             isUnfilled = true;
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
@@ -612,6 +616,77 @@
                 localStorage.removeItem(atob(page_name));
                 isUnlocked = false;
             }
+        }
+        /*
+        * Function 1: Audits the physical DOM layout elements 
+        * Checks if ad spaces are being visually crushed or stripped by an extension.
+        */
+        function verifyAdSenseDOMElements() {
+            // If the global object doesn't exist at all, it's a hard block
+            if (typeof window.adsbygoogle === 'undefined') {
+                return true;
+            }
+
+            const adUnits = document.querySelectorAll('ins.adsbygoogle');
+
+            // If there are no ad units on the current page, nothing is being blocked
+            if (adUnits.length === 0) {
+                return false;
+            }
+
+            let blockedCounter = 0;
+
+            adUnits.forEach(el => {
+                // A. Cosmetic Check: Did a blocker hide the element completely?
+                const style = window.getComputedStyle(el);
+                if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+                    blockedCounter++;
+                    return;
+                }
+
+                // B. Layout Check: Did a blocker empty or squash the element to 0px?
+                const hasIframe = el.querySelector('iframe') !== null;
+                const rect = el.getBoundingClientRect();
+
+                if (!hasIframe || rect.height === 0 || el.classList.contains('adsbygoogle-ablated-ad-slot')) {
+                    blockedCounter++;
+                }
+            });
+
+            // Returns true only if every single ad unit on the page is broken/collapsed
+            return blockedCounter === adUnits.length;
+        }
+
+        /**
+         * Function 2: The Master Coordinator Check
+         * Combines DOM metrics with native browser fingerprints to eliminate mobile false positives.
+         */
+        async function strictAdBlockCheck() {
+            // 1. Run the layout audit
+            const isLayoutCollapsed = verifyAdSenseDOMElements();
+
+            if (!isLayoutCollapsed) {
+                return false; // Ads are sizing/rendering perfectly. No blocker.
+            }
+
+            // 2. Catch Brave Shields 
+            // Uses the native browser fingerprinting check
+            const isBraveBrowser = (navigator.brave && typeof navigator.brave.isBrave === 'function');
+            if (isLayoutCollapsed && isBraveBrowser) {
+                return true;
+            }
+
+            // 3. Catch Standard Chrome Extensions (AdBlock, Adblock Plus, Ghostery, etc.)
+            // If the elements are collapsed, but the engine never mutated the array 
+            // to set the "loaded" flag, the script file was definitively blocked.
+            if (isLayoutCollapsed && (!window.adsbygoogle || window.adsbygoogle.loaded !== true)) {
+                return true;
+            }
+
+            // 4. Safe Fallback
+            // If layout is 0px but the script successfully finished running (loaded === true),
+            // it's just regular Chrome collapsing an unfilled slot or a 0-width container.
+            return false;
         }
     }
 })();
