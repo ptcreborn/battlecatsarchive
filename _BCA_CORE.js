@@ -649,16 +649,16 @@ var BCA_Display = {
 
         return count_nodes === allLinkTags;
     },
-    async scrollWhenExists(id, dummy_element) {
+    async scrollWhenExists(id) {
         const wait = setInterval(async () => {
             const el = document.getElementById(id);
+            const dummy_element = document.querySelector('footer');
 
             if (el) {
-                if (dummy_element)
-                    dummy_element.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
+                dummy_element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
 
                 await sleep(1000);
 
