@@ -652,16 +652,8 @@ var BCA_Display = {
     async scrollWhenExists(id) {
         const wait = setInterval(async () => {
             const el = document.getElementById(id);
-            const dummy_element = document.querySelector('footer');
 
             if (el) {
-                dummy_element.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
-
-                await sleep(1000);
-
                 el.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center'
@@ -674,7 +666,7 @@ var BCA_Display = {
                     block: 'center'
                 });
 
-                el.style.border = "3px solid beige";
+                el.style.border = "3px solid #c52020";
                 clearInterval(wait);
 
                 setTimeout(() => {
@@ -1164,12 +1156,13 @@ var BCA_Comment = {
             return;
 
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
-        await Promise.all(comments_data.map(item => this.buildCommentContents(parent, item)));
-        comments_data.map(item => this.buildReplyEmbed(item));
 
         // after building children, focus to target comment if exists
         if (BCA_Url.getParamValue('target_comment'))
             BCA_Display.scrollWhenExists(`${BCA_Url.getParamValue('target_comment')}`);
+
+        await Promise.all(comments_data.map(item => this.buildCommentContents(parent, item)));
+        comments_data.map(item => this.buildReplyEmbed(item));
 
         this.updateCommentCount();
     },
