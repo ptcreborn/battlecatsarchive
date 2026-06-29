@@ -648,6 +648,25 @@ var BCA_Display = {
         let allLinkTags = div.querySelectorAll('a').length;
 
         return count_nodes === allLinkTags;
+    },
+    async scrollWhenExists(id) {
+        const wait = setInterval(() => {
+            const el = document.getElementById(id);
+
+            if (el) {
+                el.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                el.style.border = "3px solid beige";
+                clearInterval(wait);
+
+                setTimeout(() => {
+                    el.style.border = "none";
+                }, 3000);
+
+            }
+        }, 300);
     }
 }
 
@@ -757,7 +776,7 @@ var BCA_Comment = {
         if (!this.comment_form_parent)
             return;
 
-        // // check if the url is black listed
+        // check if the url is black listed
         await initFunctions(['BCA_Url', 'FirebaseModule', 'supabase', 'moment']);
         if (!this.black_lists.includes(BCA_Url.getPathname())) {
             Array.from(this.renderCommentEditor()).forEach(child => this.comment_form_parent.appendChild(child));
@@ -793,6 +812,9 @@ var BCA_Comment = {
         // render the comment
         let comments_data = await this.getCommentsData();
         await this.renderCommentChild(comments_data);
+
+        if(BCA_Url.getParamValue('target_comment'))
+            BCA_Display.scrollWhenExists(`${BCA_Url.getParamValue('target_comment')}`);
         this.updateCommentCount();
     },
     getContents() {
