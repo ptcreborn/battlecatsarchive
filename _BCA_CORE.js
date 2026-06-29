@@ -903,7 +903,11 @@ var BCA_Comment = {
         if (!reply_target)
             return;
 
+        console.log(reply_target);
+        console.log(target_id);
+
         let user_profile = document.getElementById(reply_target)?.querySelector('a').href;
+        console.log(user_profile);
         let target_email = new URL(user_profile).searchParams.get('view');
         let current_href = window.location.href;
         let payload = {
