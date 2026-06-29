@@ -843,7 +843,7 @@ var BCA_Comment = {
         }];
 
         // Process Notifications
-        await this.notifyRepliedUser(this.replyToTarget(), sp_id);
+        await this.notifyRepliedUser(this.replyToTarget(), sp_id.id);
 
         // RENDERS AFTERWARDS
         await this.renderCommentChild(comments_data);
@@ -907,7 +907,7 @@ var BCA_Comment = {
         let target_email = new URL(user_profile).searchParams.get('view');
         let current_href = window.location.href;
         let payload = {
-            "action": "replied",
+            "action": "replied on the post",
             "url": `${BCA_Url.addURLParam(current_href, "target_comment", `${this.id_tag}${target_id}`)}`,
             "title": document.title,
             "thumb": this.user_prof_img
