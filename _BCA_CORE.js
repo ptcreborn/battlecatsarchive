@@ -60,6 +60,9 @@ var BCA_Notifications = {
         //     "thumb": "img src"
         // }
 
+        if (!user_id || !recipent_email || !payload)
+            return;
+
         let b64_email = btoa(recipent_email);
 
         // writing to the content first
@@ -664,6 +667,16 @@ var BCA_Url = {
     addParam(url, param) {
         return `${url}?${param}`;
     },
+    addURLParam(url, key, val) {
+        try {
+            let new_url = new URL(url);
+            new_url.searchParams.set(key, val);
+            return new_url.toString();
+        } catch (error) {
+            console.log("Invalid url. ", error)
+            return;
+        }
+    },
     isValidURL(url) {
         try {
             new URL(url);
@@ -733,6 +746,7 @@ var BCA_Comment = {
     user_email: '',
     user_prof_img: '',
     username: '',
+    id_tag: 'bca-comments-',
     fb_users: 'https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_users',
     fb_comments: 'https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_comments',
     url_bucket: [],
@@ -740,7 +754,7 @@ var BCA_Comment = {
     isReplying: false,
 
     async initialize() {
-        if(!this.comment_form_parent)
+        if (!this.comment_form_parent)
             return;
 
         // // check if the url is black listed
@@ -812,14 +826,15 @@ var BCA_Comment = {
             return;
         }
 
-        // Render comment
+        // Process comment data
+        let reply_target = this.replyToTarget();
         let comments_data = [{
             bca_posts: post_id,
             date: new Date().toISOString(),
             fb_id: fb_id,
             id: sp_id.id,
-            parent_id: this.replyToTarget(),
-            root_id: this.replyToTarget(),
+            parent_id: reply_target,
+            root_id: reply_target,
             user_id: {
                 email: this.user_email,
                 username: this.username,
@@ -827,8 +842,12 @@ var BCA_Comment = {
             }
         }];
 
+        // Process Notifications
+        await this.notifyRepliedUser(this.replyToTarget, sp_id);
+
+        // RENDERS AFTERWARDS
         await this.renderCommentChild(comments_data);
-        this.scrollWhenExists(`bca-comments-${sp_id.id}`);
+        this.scrollWhenExists(`${this.id_tag}${sp_id.id}`);
         this.resetCommentForm();
     },
     async getPathnameID() {
@@ -879,6 +898,22 @@ var BCA_Comment = {
             return;
 
         return data;
+    },
+    async notifyRepliedUser(reply_target, target_id) {
+        if (!reply_target)
+            return;
+
+        let user_profile = document.getElementById(reply_target)?.querySelector('a').href;
+        let target_email = new URL(user_profile).searchParams.get('view');
+        let current_href = window.location.href;
+        let payload = {
+            "action": "replied",
+            "url": `${BCA_Url.addURLParam(current_href, "target_comment", `${this.id_tag}${target_id}`)}`,
+            "title": document.title,
+            "thumb": user_prof_img
+        }
+
+        await BCA_Notifications.send(this.user_id, target_email, payload);
     },
     async initUploadAPI() {
         if (!this.comment_form)
@@ -1099,7 +1134,7 @@ var BCA_Comment = {
         let users_data = data.user_id;
         let clone = template.content.cloneNode(true).children[0];
 
-        clone.id = `bca-comments-${data.id}`;
+        clone.id = `${this.id_tag}${data.id}`;
         this.wQuery(clone, 'bca-username').textContent = `${users_data.username}`;
         this.wQuery(clone, 'bca-profile').src = `${users_data.prof_img}`;
         this.wQuery(clone, 'bca-username').href = `https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${users_data.email}`;
@@ -1112,14 +1147,14 @@ var BCA_Comment = {
     async buildCommentContents(parent, data) {
         let comment = await this.getFBCommentData(data.fb_id, 'content');
         let attach = await this.getFBCommentData(data.fb_id, 'attach');
-        this.wQuery(this.query(`bca-comments-${data.id}`), 'bca-message').textContent = `${comment?.val ? comment.val : comment}`;
-        this.wQuery(this.query(`bca-comments-${data.id}`), 'bca-timestamp').textContent = `${moment(data.date).fromNow()}`;
+        this.wQuery(this.query(`${this.id_tag}${data.id}`), 'bca-message').textContent = `${comment?.val ? comment.val : comment}`;
+        this.wQuery(this.query(`${this.id_tag}${data.id}`), 'bca-timestamp').textContent = `${moment(data.date).fromNow()}`;
 
         if (attach)
             this.buildCommentAttachments(parent, attach, data.id);
     },
     async buildCommentAttachments(parent, attachments, id) {
-        let parent_attachments = this.wQuery(this.query(`bca-comments-${id}`), 'bca-attachments');
+        let parent_attachments = this.wQuery(this.query(`${this.id_tag}${id}`), 'bca-attachments');
         // filter if the attachment has i.bb.co origin means this is a picture attachment
 
         // else if the attachment is a youtube video create an iframe
@@ -1153,13 +1188,13 @@ var BCA_Comment = {
         });
     },
     buildReplyEmbed(item) {
-        let comment = document.getElementById(`bca-comments-${item.id}`);
+        let comment = document.getElementById(`${this.id_tag}${item.id}`);
         let attachment_parent = comment.querySelector('.bc-reply-preview');
         if (!attachment_parent)
             return;
 
         // getting the target
-        let target_id = `bca-comments-${item.parent_id}`
+        let target_id = `${this.id_tag}${item.parent_id}`
         if (!this.query(target_id)) {
             attachment_parent.remove();
             return;
@@ -1198,8 +1233,8 @@ var BCA_Comment = {
     },
     replyToTarget() {
         let target_parent = this.comment_form.parentNode.parentNode.id;
-        if (this.isReplying && target_parent.includes('bca-comments-'))
-            return parseInt(target_parent.replace('bca-comments-', ''));
+        if (this.isReplying && target_parent.includes(`${this.id_tag}`))
+            return parseInt(target_parent.replace(`${this.id_tag}`, ''));
         else return;
     },
     scrollWhenExists(id) {
