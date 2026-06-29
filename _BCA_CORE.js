@@ -663,7 +663,7 @@ var BCA_Display = {
 
                 setTimeout(() => {
                     el.style.border = "none";
-                }, 3000);
+                }, 5000);
 
             }
         }, 300);
@@ -812,9 +812,6 @@ var BCA_Comment = {
         // render the comment
         let comments_data = await this.getCommentsData();
         await this.renderCommentChild(comments_data);
-
-        if(BCA_Url.getParamValue('target_comment'))
-            BCA_Display.scrollWhenExists(`${BCA_Url.getParamValue('target_comment')}`);
         this.updateCommentCount();
     },
     getContents() {
@@ -1149,6 +1146,10 @@ var BCA_Comment = {
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
         await Promise.all(comments_data.map(item => this.buildCommentContents(parent, item)));
         comments_data.map(item => this.buildReplyEmbed(item));
+
+        // after building children, focus to target comment if exists
+        if(BCA_Url.getParamValue('target_comment'))
+            BCA_Display.scrollWhenExists(`${BCA_Url.getParamValue('target_comment')}`);
 
         this.updateCommentCount();
     },
