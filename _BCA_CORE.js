@@ -843,7 +843,7 @@ var BCA_Comment = {
         }];
 
         // Process Notifications
-        await this.notifyRepliedUser(this.replyToTarget, sp_id);
+        await this.notifyRepliedUser(this.replyToTarget(), sp_id);
 
         // RENDERS AFTERWARDS
         await this.renderCommentChild(comments_data);
