@@ -905,6 +905,7 @@ var BCA_Comment = {
 
         console.log(reply_target);
         console.log(target_id);
+        console.log(document.getElementById(`${this.id_tag}${this.replyToTarget}`));
 
         let user_profile = document.getElementById(`${this.id_tag}${this.replyToTarget}`)?.querySelector('a').href;
         console.log(user_profile);
