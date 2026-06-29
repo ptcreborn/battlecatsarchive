@@ -763,6 +763,10 @@ var BCA_Url = {
         } catch (error) {
             return null;
         }
+    },
+    changeState(url, key, val) {
+        url.searchParams.set("comment", "1234");
+        window.history.replaceState({}, "", url);
     }
 }
 
@@ -870,11 +874,12 @@ var BCA_Comment = {
         }];
 
         // Process Notifications
-        await this.notifyRepliedUser(this.replyToTarget(), sp_id.id);
+        this.notifyRepliedUser(this.replyToTarget(), sp_id.id);
 
         // RENDERS AFTERWARDS
         await this.renderCommentChild(comments_data);
-        this.scrollWhenExists(`${this.id_tag}${sp_id.id}`, this.comment_form);
+        BCA_Url.changeState(window.location.href, 'target_comment', `${this.id_tag}${sp_id.id}`);
+        // this.scrollWhenExists(`${this.id_tag}${sp_id.id}`, this.comment_form);
         this.resetCommentForm();
     },
     async getPathnameID() {
