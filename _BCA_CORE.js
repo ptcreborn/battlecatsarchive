@@ -652,20 +652,20 @@ var BCA_Display = {
     async scrollWhenExists(id) {
         const wait = setInterval(async () => {
             const el = document.getElementById(id);
-            const container = document.getElementById('postBody');
 
             if (el) {
-                container.scrollTop({
-                    top: container.scrollHeight,
-                    behavior: 'smooth'
-                });
-
-                await sleep(500);
-
                 el.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center'
                 });
+
+                await sleep(500);
+                
+                el.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+
                 el.style.border = "3px solid beige";
                 clearInterval(wait);
 
