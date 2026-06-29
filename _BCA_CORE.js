@@ -765,8 +765,9 @@ var BCA_Url = {
         }
     },
     changeState(url, key, val) {
-        url.searchParams.set("comment", "1234");
-        window.history.replaceState({}, "", url);
+        let cur_url = new URL(url);
+        cur_url.searchParams.set(key, val);
+        window.history.replaceState({}, "", cur_url);
     }
 }
 
