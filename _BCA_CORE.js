@@ -910,7 +910,7 @@ var BCA_Comment = {
             "action": "replied",
             "url": `${BCA_Url.addURLParam(current_href, "target_comment", `${this.id_tag}${target_id}`)}`,
             "title": document.title,
-            "thumb": user_prof_img
+            "thumb": this.user_prof_img
         }
 
         await BCA_Notifications.send(this.user_id, target_email, payload);
