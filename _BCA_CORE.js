@@ -649,18 +649,26 @@ var BCA_Display = {
 
         return count_nodes === allLinkTags;
     },
-    async scrollWhenExists(id) {
+    async scrollWhenExists(id, dummy_element) {
         const wait = setInterval(async () => {
             const el = document.getElementById(id);
 
             if (el) {
+                if (dummy_element)
+                    dummy_element.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+
+                await sleep(1000);
+
                 el.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center'
                 });
 
                 await sleep(500);
-                
+
                 el.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center'
@@ -874,7 +882,7 @@ var BCA_Comment = {
 
         // RENDERS AFTERWARDS
         await this.renderCommentChild(comments_data);
-        this.scrollWhenExists(`${this.id_tag}${sp_id.id}`);
+        this.scrollWhenExists(`${this.id_tag}${sp_id.id}`, this.comment_form);
         this.resetCommentForm();
     },
     async getPathnameID() {
@@ -933,7 +941,7 @@ var BCA_Comment = {
         let user_profile = document.getElementById(`${this.id_tag}${reply_target_id}`)?.querySelector('a').href;
         let target_email = new URL(user_profile).searchParams.get('view');
 
-        if(target_email === this.user_email)
+        if (target_email === this.user_email)
             return;
 
         let current_href = window.location.href;
@@ -1160,7 +1168,7 @@ var BCA_Comment = {
         comments_data.map(item => this.buildReplyEmbed(item));
 
         // after building children, focus to target comment if exists
-        if(BCA_Url.getParamValue('target_comment'))
+        if (BCA_Url.getParamValue('target_comment'))
             BCA_Display.scrollWhenExists(`${BCA_Url.getParamValue('target_comment')}`);
 
         this.updateCommentCount();
