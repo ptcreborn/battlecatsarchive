@@ -652,8 +652,16 @@ var BCA_Display = {
     async scrollWhenExists(id) {
         const wait = setInterval(() => {
             const el = document.getElementById(id);
+            const container = document.getElementById('postBody');
 
             if (el) {
+                container.scrollTop({
+                    top: container.scrollHeight,
+                    behavior: 'smooth'
+                });
+
+                await sleep(500);
+
                 el.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center'
@@ -924,6 +932,10 @@ var BCA_Comment = {
 
         let user_profile = document.getElementById(`${this.id_tag}${reply_target_id}`)?.querySelector('a').href;
         let target_email = new URL(user_profile).searchParams.get('view');
+
+        if(target_email === this.user_email)
+            return;
+
         let current_href = window.location.href;
         let payload = {
             "action": "replied on the post",
