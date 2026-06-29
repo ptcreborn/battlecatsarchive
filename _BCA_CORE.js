@@ -650,7 +650,7 @@ var BCA_Display = {
         return count_nodes === allLinkTags;
     },
     async scrollWhenExists(id) {
-        const wait = setInterval(() => {
+        const wait = setInterval(async () => {
             const el = document.getElementById(id);
             const container = document.getElementById('postBody');
 
