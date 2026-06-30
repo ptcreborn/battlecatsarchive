@@ -1168,14 +1168,14 @@ var BCA_Comment = {
 
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
 
-        // after building children, focus to target comment if exists
-        if (BCA_Url.getParamValue('target_comment'))
-            BCA_Display.scrollWhenExists(`${BCA_Url.getParamValue('target_comment')}`);
-
         await Promise.all(comments_data.map(item => this.buildCommentContents(parent, item)));
         comments_data.map(item => this.buildReplyEmbed(item));
 
         this.updateCommentCount();
+
+        // after building children, focus to target comment if exists
+        if (BCA_Url.getParamValue('target_comment'))
+            BCA_Display.scrollWhenExists(`${BCA_Url.getParamValue('target_comment')}`);
     },
     async buildCommentChildUserData(template, parent, data) {
         let users_data = data.user_id;
