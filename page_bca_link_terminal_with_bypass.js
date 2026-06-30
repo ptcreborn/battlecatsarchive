@@ -552,13 +552,14 @@
                     checkIfBypassDone();
                 else if ((isHidden && !isUnlocked)) {
                     console.log(`visible from hidden`);
-                    let time_register = isMobileSite ? 2500 : 1000;
-                    if (hiddenTime - blurTime <= time_register)
-                        checkIfBypassDone();
-                    else {
-                        bypass_msg.innerHTML = `⚠️ Sorry but the view does not register, please click again.`;
-                        status.textContent = `Try bypassing again.`;
-                    }
+                    checkIfBypassDone();
+                    // let time_register = isMobileSite ? 2500 : 1000;
+                    // if (hiddenTime - blurTime <= time_register)
+                    //     checkIfBypassDone();
+                    // else {
+                    //     bypass_msg.innerHTML = `⚠️ Sorry but the view does not register, please click again.`;
+                    //     status.textContent = `Try bypassing again.`;
+                    // }
                 }
                 else {
                     if (!isUnlocked)
@@ -585,7 +586,7 @@
 
             let now = new Date().getTime();
 
-            return now - click_time >= 7000;
+            return now - click_time >= 3000;
         }
 
         async function checkIfBypassDone() {
