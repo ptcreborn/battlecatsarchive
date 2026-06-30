@@ -211,9 +211,14 @@ var BCA_Notifications = {
                 orderBy: '"$key"'
             }));
             let cached_read = BCA_Cache.get(this.LOCALSTORAGE_UNREAD_NOTIF);
-            let read = (BCA_Display.isHTML(cached_read) && BCA_Display.isValidNotifHTML(cached_read)) ? cached_read : await this.fetch(encoded_email, 'read', new URLSearchParams({
+            // let read = (BCA_Display.isHTML(cached_read) && BCA_Display.isValidNotifHTML(cached_read)) ? cached_read : await this.fetch(encoded_email, 'read', new URLSearchParams({
+            //     orderBy: '"$key"',
+            //     limitToFirst: 20
+            // }));
+
+            let read = await this.fetch(encoded_email, 'read', new URLSearchParams({
                 orderBy: '"$key"',
-                limitToFirst: 20
+                limitToFirst: 10
             }));
 
             // const template = document.getElementById('bca-notif-child-template');
