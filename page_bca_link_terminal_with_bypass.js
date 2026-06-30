@@ -494,20 +494,20 @@
 
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
-            link.textContent = "Bypass now";
+            link.textContent = "Proceed Now";
 
         } else if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "unfilled") {
             isUnfilled = true;
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
             console.log(`Bypass available now. Start!`);
-            link.textContent = "Bypass now";
+            link.textContent = "Proceed Now";
         } else if (bca_link_ads.querySelector('ins')?.getAttribute('ablated-ad-slot') !== null) {
             isUnfilled = true;
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
             console.log(`Bypass available now. Start!`);
-            link.textContent = "Bypass now";
+            link.textContent = "Proceed Now";
         } else {
             isException = true;
             status.innerHTML = "GG you can unlock the link now!";
