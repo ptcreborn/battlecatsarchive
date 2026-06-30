@@ -218,7 +218,7 @@ var BCA_Notifications = {
 
             let read = await this.fetch(encoded_email, 'read', new URLSearchParams({
                 orderBy: '"$key"',
-                limitToFirst: 10
+                limitToLast: 10
             }));
 
             // const template = document.getElementById('bca-notif-child-template');
