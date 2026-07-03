@@ -61,11 +61,13 @@
 
         const user_id = await getUserID(userEmail[0]);
         // calling user records.
-        let data = await getUserRequestHistory(user_id);
-        if (!data) {
+        let data = await supabase.rpc('get_user_account_requests', {target_user_id: user_id});
+        if (!data?.data) {
             window.alert("No account history was seen from the user's record.");
             return;
         }
+
+        data = data.data;
 
         if (isViewingOtherProfile) document.querySelector(`#othersProfile`).innerHTML = `⚠️You are viewing other's Profile⚠️`;
         else document.querySelector('#othersProfile').remove();
@@ -73,11 +75,11 @@
         data.forEach(element => {
             // NEW METHOD
             if (!element.code && element.bucket_id) {
-                let bucket = element.bucket_id
-                let version = bucket.ver.version;
-                let lang = bucket.lang.lang;
-                let name = bucket.acc_id.name;
-                let ads = bucket.acc_id.ads;
+                let bucket = element.bucket_id;
+                let version = bucket.ver?.version;
+                let lang = bucket.lang?.lang;
+                let name = bucket.acc_id?.name;
+                let ads = bucket.acc_id?.ads;
                 let raw = `https://bca-image-proxy.jasonbourne181997.workers.dev${bucket.raw}`;
                 let link = bucket.acc_id.link;
 
@@ -327,10 +329,13 @@
         return data.length === 1 ? data[0].raw : data;
     }
     async function getUserRequestHistory(user_id) {
-        let { data, error } = await supabase.from('account-requests').select('id, date, code, use, bucket_id(raw, acc_id(name, ads, link), lang(lang), ver(version))').eq('user_id', user_id).order('date', {ascending: false});
+        console.log(user_id);
+        let { data, error } = await supabase.from('account-requests').select('id, date, code, use, bucket_id(raw, acc_id(name, ads, link), lang(lang), ver(version))').eq('user_id', user_id).order('date', { ascending: false });
 
         if (data?.length === 0 || error)
             return;
+
+        console.log(data);
 
         return data;
     }
