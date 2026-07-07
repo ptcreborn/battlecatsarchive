@@ -45,8 +45,6 @@
     font-weight: bold;
 ">${raw.split('-')[1]}</span></p></div>`;
 
-        console.log(`${raw} and result ${code_html}`);
-
         info.innerHTML = `<table style="height: 127px;" width="100%">
 <tbody>
 <tr style="height: 35px;">
