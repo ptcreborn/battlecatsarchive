@@ -203,7 +203,7 @@
             `${message}`,
             '',
             'https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html',
-            'https://discord.com/api/webhooks/1477986793990127707/6IFzsFPkC4hQ7RwY91ZbgXrnrVKCtEQI-G74x0ngV-JxNHXBWWYF--X32Wnb84ATr2ep'
+            'https://discord.com/api/webhooks/1524060727936291069/tBnS9j3yWwgtzQgLUnb2xLnnSIN8NiAE9ZzZV-zputHntrmiQc7v_QmaBFzW67AtwAhy'
         );
     }
     function triggerAddVersion() {
