@@ -73,14 +73,35 @@
         else document.querySelector('#othersProfile').remove();
 
         data.forEach(element => {
-            // NEW METHOD
+            // NEW METHOD SUPABASE
             if (!element.code && element.bucket_id) {
                 let bucket = element.bucket_id;
                 let version = bucket.ver?.version;
                 let lang = bucket.lang?.lang;
                 let name = bucket.acc_id?.name;
                 let ads = bucket.acc_id?.ads;
-                let raw = `https://bca-image-proxy.jasonbourne181997.workers.dev${bucket.raw}`;
+                let raw = bucket.raw.includes('.jpg') ? `<a target='_blank' href='https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(bucket.raw)}'><img src='https://bca-image-proxy.jasonbourne181997.workers.dev${bucket.raw}'/></a>`: 
+                `<div style="
+    display: flex;
+    border: 1px solid white;
+    max-width: 300px;
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #ffffbb;
+    color: black;
+    margin: 0 auto;
+">
+  <p>Transfer Code: <span style="
+    font-weight: bold;
+">${bucket.raw.split('-')[0]}</span></p>
+  
+<p>Confirmation Code: <span style="
+    font-weight: bold;
+">${bucket.raw.split('-')[1]}</span></p></div>`;
+
+
                 let link = bucket.acc_id.link;
 
                 table_body.innerHTML += `<tr>
@@ -93,7 +114,7 @@
 				<td style="width: 22.2896%;"><a target='_blank' href='${link}'>${lang}-${version} (${name})</a></td>
 				<td style="width: 20.7104%;">${moment(element.date).fromNow()}</td>
 				<td style="width: 23%;">${ads}</td>
-				${!isViewingOtherProfile ? `<td style="width: 24%;"><a target='_blank' href='https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(raw)}'><img src='${raw}'/></a></td>` : `<td style="width: 23%;">PRIVATE</td>`}
+				${!isViewingOtherProfile ? `<td style="width: 24%;">${raw}</td>` : `<td style="width: 23%;">PRIVATE</td>`}
 				</tr>`;
                 return;
             }
