@@ -56,15 +56,22 @@
     );
 
     insertLS(param, key);
-
     await sleep(3000);
 
     message.innerText = "Checkpoint created. You can now proceed.";
 
     btn.style.display = 'block';
     await incrementCount(btoa(param));
+
+    let data = {
+        a: 3,
+        t: encodeURIComponent(`https://battlecatsarchive.blogspot.com/p/bca-cloud-storage.html?checkpoint=${param.get('id')}&api=${new URL(window.location.href).searchParams.get('decode')}`)
+    }
+
     btn.innerHTML = "✅Proceed Now";
-    btn.href = `https://battlecatsarchive.blogspot.com/p/decode-page.html?id=${key}&decode=${param}`;
+    btn.href = `https://battlecatsarchive.blogspot.com/p/setup-link-terminal.html?request=${btoa(JSON.stringify(data))}`;
+
+    // btn.href = `https://battlecatsarchive.blogspot.com/p/decode-page.html?id=${key}&decode=${param}`;
 
 
     async function getEncryptionKey(password, salt) {
