@@ -65,7 +65,7 @@
 
     let data = {
         a: 3,
-        t: encodeURIComponent(`https://battlecatsarchive.blogspot.com/p/bca-cloud-storage.html?checkpoint=${param.get('id')}&api=${new URL(window.location.href).searchParams.get('decode')}`)
+        t: encodeURIComponent(`https://battlecatsarchive.blogspot.com/p/bca-cloud-storage.html?checkpoint=${key}&api=${param}`)
     }
 
     btn.innerHTML = "✅Proceed Now";
