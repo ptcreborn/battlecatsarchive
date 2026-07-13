@@ -12,7 +12,7 @@
         localStorage.removeItem(atob(page_name));
     }
 
-    let time_in_sec = Math.floor(Math.random() * (5000 - 3000) + 3000);
+    let time_in_sec = Math.floor(Math.random() * (10000 - 7000) + 7000);
 
     await initFunctions(['FirebaseModule', 'moment', 'BCA_Cache']);
 
@@ -477,8 +477,8 @@
 
         exhaust = BCA_Cache.getItemWithExpiration('bca_link_exhaust');
 
-        if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled" ||
-            auction_Iframe?.getAttribute('data-load-complete') === "true") {
+        if (false && (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled" ||
+            auction_Iframe?.getAttribute('data-load-complete') === "true")) {
 
             // filled
             bca_link_ads.style.display = 'block';
