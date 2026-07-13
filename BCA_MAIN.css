@@ -879,6 +879,7 @@ ul.header-menu li a {
     font-size: 24px;
 }
 .bca-footer-ads {
+    max-height: 90px;
     height: 90px;
     width: 100%;
     margin: 0 auto;
