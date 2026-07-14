@@ -12,7 +12,7 @@
         localStorage.removeItem(atob(page_name));
     }
 
-    let time_in_sec = Math.floor(Math.random() * (10000 - 7000) + 7000);
+    let time_in_sec = Math.floor(Math.random() * (7000 - 5000) + 5000);
 
     await initFunctions(['FirebaseModule', 'moment', 'BCA_Cache']);
 
