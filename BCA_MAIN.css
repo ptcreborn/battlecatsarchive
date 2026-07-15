@@ -879,7 +879,7 @@ ul.header-menu li a {
     font-size: 24px;
 }
 .bca-footer-ads {
-    height: 250px;
+    max-height: 120px;
     width: 100%;
     margin: 0 auto;
     display: flex;
@@ -890,6 +890,7 @@ ul.header-menu li a {
     align-items: flex-end;
     justify-content: center;
     visibility: hidden;
+    overflow: hidden;
 }
 .bca-ads-center {
     display: block;
