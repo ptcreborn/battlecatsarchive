@@ -1141,6 +1141,7 @@ var BCA_Comment = {
         this.comment_form.reset();
         this.cancelReply();
         this.query('attachments').innerHTML = ``;
+        this.url_bucket.length = 0;
     },
 
     // this functions loads the comments from the url
