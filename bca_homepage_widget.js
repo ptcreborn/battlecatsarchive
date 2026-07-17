@@ -6,6 +6,7 @@
 
 (async() => {
     // CORE
+    await initFunctions(['BCA_Url']);
     if(BCA_Url.getPathname() !== '/' || !document.querySelector('.bca_widgets_home-container'))
         return;
 
