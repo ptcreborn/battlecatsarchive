@@ -1305,3 +1305,38 @@ var BCA_Comment = {
         }, 300);
     }
 }
+
+var BCA_Blogger = {
+    url: 'https://battlecatsarchive.blogspot.com/',
+    async getData(label, num_results) {
+        let data = await fetch(`${this.url}feeds/posts/default/-/${label}?alt=json&max-results=${num_results}`);
+
+        if (data.ok) {
+            data = await data.json();
+            return data;
+        }
+
+        return;
+    },
+
+    filterData(data) {
+        let filtered_data = data?.feed?.entry;
+        if (!filtered_data)
+            return;
+
+        let lists = [];
+
+        filtered_data.forEach(item => {
+            let payload = {};
+            payload.thumb = item.media$thumbnail.url;
+            payload.date = item.published.$t;
+            payload.title = item.title.$t;
+
+            payload.url = item.link.map(link => link.rel === 'alternate' ? link.href : null).filter(_ => _)[0];
+
+            lists.push(payload);
+        });
+
+        return lists;
+    }
+}
