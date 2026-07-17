@@ -15,12 +15,12 @@
 }
 
 .bca_widgets_home-tab-btn {
-  background: #445364;
-  color: #ffffff;
-  border: 1px solid #a7a7a7;
-  flex-basis: 25%;
-  cursor: pointer;
-  height: 100%;
+    background: #445364;
+    color: #ffffff;
+    flex-basis: 25%;
+    cursor: pointer;
+    height: 100%;
+    border: 1px solid #202932;
 }
   
 .bca_widgets_home-tab-btn--active {
