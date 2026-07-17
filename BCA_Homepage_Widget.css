@@ -298,11 +298,11 @@
 
 /* Middle message body styling */
 .bca_widgets_home-tickets-body {
-  margin-left: 10px;
-  line-height: 1.15rem;
-  font-size: 13px;
-  min-width: 0; /* Protects layout from overflowing flex container */
-  word-break: break-word;
+    margin-left: 10px;
+    line-height: 1;
+    font-size: 12px;
+    min-width: 0;
+    word-break: break-word;
 }
 
 .bca_widgets_home-tickets-author {
