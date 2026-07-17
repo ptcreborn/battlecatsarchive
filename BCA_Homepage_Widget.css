@@ -1,0 +1,331 @@
+.bca_widgets_home-container {
+  display: block;
+  height: 300px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.bca_widgets_home-tabs {
+    height: 40px;
+    align-items: center;
+    overflow: hidden;
+    background: #242e38;
+    border-bottom: 1px solid #445364;
+    padding: 5px 3px;
+}
+
+.bca_widgets_home-tab-btn {
+  background: #445364;
+  color: #ffffff;
+  border: 1px solid #a7a7a7;
+  flex-basis: 25%;
+  cursor: pointer;
+  height: 100%;
+}
+  
+.bca_widgets_home-tab-btn--active {
+  background: #242e38;
+}
+
+.bca_widgets_home-content-list {
+    display: block;
+    max-height: 400px;
+    width: 100%;
+    height: 300px;
+    overflow: auto;
+    background: #242e38;
+}
+
+.bca_widgets_home-item-link {
+  display: flex;
+  max-height: 100px;
+  align-items: center;
+  border-bottom: 1px solid #445364;
+  padding: 5px;
+  text-decoration: none;
+}
+
+.bca_widgets_home-thumb-wrapper {
+    flex: 0 0 50px;
+    height: 35px;
+    display: flex;
+    box-sizing: border-box;
+}
+
+.bca_widgets_home-thumb-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.bca_widgets_home-item-details {
+  line-height: 1;
+  margin-left: 5px;
+}
+
+.bca_widgets_home-item-title {
+  font-weight: bold;
+  line-height: 1rem;
+  color: #dbdbdb;
+  display: inline-block;
+  font-size: 12px;
+  align-self: flex-start;
+  margin: 0 0 4px 0;
+}
+
+.bca_widgets_home-item-time {
+  line-height: 1rem;
+  font-size: 11px;
+  min-width: fit-content;
+  align-self: flex-end;
+  font-weight: bold;
+  color: #8e8e8e;
+}
+
+.bca_widgets_home-item-action {
+  flex: 0 0 auto;
+  line-height: 1;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+  
+.bca_widgets_home-time-class {
+    line-height: 1rem;
+    font-size: 11px;
+    min-width: fit-content;
+    align-self: flex-end;
+    font-weight: bold;
+    color: #8e8e8e;
+    border: 1px solid;
+    color: #00ff0f;
+    padding: 0 5px;
+    opacity: 0.7;
+}
+
+.bca_widgets_home-action-icon {
+  width: 20px;
+}
+  
+.bca_widgets_home-comments-list {
+  display: flex;
+  flex-direction: column; /* Fixed: standard layout direction for lists */
+  max-height: 300px;
+  overflow: auto;
+  width: 100%;
+  height: 300px;
+}
+
+.bca_widgets_home-comment-item {
+    align-items: center;
+    border-bottom: 1px solid rgb(60, 60, 60);
+    color: white;
+    display: flex;
+    line-height: 1.5;
+    padding: 0 5px;
+}
+
+.bca_widgets_home-comment-avatar-wrapper {
+  flex: 0 0 24px; 
+  height: 24px; 
+  margin-right: 5px; 
+  width: 24px;
+}
+
+.bca_widgets_home-comment-avatar {
+  height: 100%; 
+  object-fit: cover; 
+  width: 100%;
+}
+
+.bca_widgets_home-comment-body {
+    line-height: 1;
+}
+
+.bca_widgets_home-comment-author {
+  color: #93a7cb;
+  font-weight: bold;
+}
+
+.bca_widgets_home-comment-divider {
+  color: #ffffff;
+}
+
+.bca_widgets_home-comment-text, .bca_widgets_home-comment-path {
+    color: #b4b4b4;
+    font-weight: bold;
+    font-size: 12px;
+    max-width: 20px;
+    word-break: break-all;
+}
+
+.bca_widgets_home-comment-meta {
+  flex: 0 0 auto; 
+  font-size: 10px; 
+  margin-left: auto; 
+  opacity: 0.6; 
+  padding-left: 3px; 
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Keeps timestamp and flag nicely aligned on the right edge */
+}
+
+.bca_widgets_home-comment-time {
+    display: block;
+    margin-bottom: 2px;
+    color: rgb(0, 255, 0);
+    font-weight: bold;
+}
+
+.bca_widgets_home-comment-flag {
+  height: 20px;
+  width: auto;
+}
+  
+  /* Scrollable outer wrapper box */
+.bca_widgets_home-members-container {
+  display: block;
+  width: 100%;
+  height: 300px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Individual list item row layout rules */
+.bca_widgets_home-members-item {
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+    box-sizing: border-box;
+    border: 1px solid #323b44;
+}
+
+/* Avatar layout properties */
+.bca_widgets_home-members-avatar-wrapper {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.bca_widgets_home-members-avatar {
+  width: 30px;
+  max-width: 30px;
+  height: auto;
+  border-radius: 4px; /* Optional: minor polish to make avatars match common UI styles */
+}
+
+/* Central text container alignment */
+.bca_widgets_home-members-body {
+    margin-left: 8px;
+    line-height: 1.2rem;
+    font-size: 13px;
+    min-width: 0;
+    word-break: break-word;
+    font-size: 11px;
+    color: #cecece;
+}
+
+.bca_widgets_home-members-author {
+  font-weight: bold;
+}
+
+.bca_widgets_home-members-divider {
+  color: #888;
+}
+
+/* Meta flag segment pushed all the way to the right side */
+.bca_widgets_home-members-meta {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding-left: 5px;
+}
+
+.bca_widgets_home-members-flag {
+  width: 30px;
+  max-width: 30px;
+  height: auto;
+}
+  
+/* Outer container setup */
+.bca_widgets_home-tickets-container {
+  display: none; /* Kept hidden as in your original setup */
+  width: 100%;
+  height: 300px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Individual ticket row layout wrapper */
+.bca_widgets_home-tickets-item {
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    border: 1px solid #3f3f3f;
+    margin-bottom: -1px;
+    box-sizing: border-box;
+    min-height: 35px;
+}
+
+/* Badge stack for clean avatar + flag badge placement */
+.bca_widgets_home-tickets-badge-group {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Main user avatar */
+.bca_widgets_home-tickets-avatar {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* Tiny flag badged cleanly over the bottom-right corner of the avatar */
+.bca_widgets_home-tickets-flag {
+  position: absolute;
+  width: 16px; /* Scaled down slightly to look like a true badge */
+  height: auto;
+  bottom: -4px;
+  right: -4px;
+}
+
+/* Middle message body styling */
+.bca_widgets_home-tickets-body {
+  margin-left: 10px;
+  line-height: 1.15rem;
+  font-size: 13px;
+  min-width: 0; /* Protects layout from overflowing flex container */
+  word-break: break-word;
+}
+
+.bca_widgets_home-tickets-author {
+  font-weight: bold;
+}
+
+.bca_widgets_home-tickets-action {
+  color: #ccc;
+}
+
+/* Ticket subject highlighting rules */
+.bca_widgets_home-tickets-subject {
+  color: darkorange;
+  font-weight: bold;
+}
+
+/* Time display layout adjustments */
+.bca_widgets_home-tickets-time {
+  margin-left: auto;
+  padding-left: 8px;
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 1;
+  min-width: fit-content;
+  color: #888;
+}
