@@ -1,8 +1,9 @@
 .bca_widgets_home-container {
   display: block;
-  height: 300px;
+  min-height: 300px;
+  height: auto;
+  max-height: 500px;
   width: 100%;
-  min-width: 300px;
 }
 
 .bca_widgets_home-tabs {
