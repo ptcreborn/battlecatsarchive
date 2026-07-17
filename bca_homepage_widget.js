@@ -5,7 +5,6 @@
 
 
 (async() => {
-    appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/7207d3f27a4c85282c47d69baf42879741518752/BCA_Homepage_Widget.css');
     // CORE
     function power_up_tabs() {
         const tab_btns = document.querySelectorAll('.bca_widgets_home-tabs button');
