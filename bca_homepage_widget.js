@@ -6,6 +6,9 @@
 
 (async() => {
     // CORE
+    if(BCA_Url.getPathname() !== '/' || !document.querySelector('.bca_widgets_home-container'))
+        return;
+
     function power_up_tabs() {
         const tab_btns = document.querySelectorAll('.bca_widgets_home-tabs button');
         let isLoaded = [false, false, false, false];
@@ -187,7 +190,7 @@
     async function loadLatestComments() {
         await initFunctions(['supabase', 'FirebaseModule']);
         let cur_user = await BCA_Users.getUserInfo('username');
-        cur_user = cur_user.length === 1 ? cur_user[0].username : '';
+        cur_user = cur_user?.length === 1 ? cur_user[0].username : '';
 
         let { data, error } = await supabase.from('bca-comments').select('id, date, fb_id, bca-website-posts(url), user_id!inner(username, prof_img, country)').not('user_id.username', 'eq', cur_user).order('date', { ascending: false }).limit(100);
 
