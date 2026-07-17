@@ -93,7 +93,7 @@
         load_more.innerHTML = `<a href='${url}' class="button-15" style="
             width: 98%;
             box-sizing: border-box;
-        ">Load More Mods</button>`;
+        ">Load More</button>`;
         load_more.style.display = 'flex';
         load_more.style.alignItems = 'center';
         return load_more;
