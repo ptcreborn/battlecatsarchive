@@ -20,8 +20,11 @@
 
     let isAdmin = await supabase.auth.getSession();
 
-    if (!admin_uuid.includes(isAdmin.data?.session?.user?.id))
+    if (!admin_uuid.includes(isAdmin.data?.session?.user?.id)) {
+        window.alert("Sorry but only admin is allowed to use this page.");
+        window.location.href = 'https://battlecatsarchive.blogspot.com/p/you-are-requesting-out-of-bounds.html';
         return;
+    }
 
     await main_execute();
 
