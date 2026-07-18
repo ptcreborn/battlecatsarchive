@@ -257,7 +257,6 @@
 
 
         // Fresh Landing Point
-
         bypass_msg.textContent = "Initializing requests...";
         status_msg.textContent = "First user landing page...";
 
@@ -670,7 +669,6 @@
 
         if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled" ||
             auction_Iframe?.getAttribute('data-load-complete') === "true") {
-
             // filled
             bca_link_ads.style.display = 'block';
             bca_link_ads.style.visibility = 'visible';
@@ -686,17 +684,19 @@
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
             link.textContent = "Proceed Now";
-        } else if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "unfilled") {
+        } else if (localStorage.getItem('lem') || bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "unfilled") {
             isUnfilled = true;
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
-            console.log(`Bypass available now. Start!`);
             link.textContent = "Proceed Now";
+            link.addEventListener('click', setLSTime);
+            console.log(`Unfilled ads: ${isUnfilled}`);
         } else if (bca_link_ads.querySelector('ins')?.getAttribute('ablated-ad-slot') !== null) {
             isUnfilled = true;
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
-            console.log(`Bypass available now. Start!`);
+            link.addEventListener('click', setLSTime);
+            console.log(`Unfilled ads: ${isUnfilled}`);
             link.textContent = "Proceed Now";
         } else {
             isException = true;
@@ -730,11 +730,13 @@
         function onVisibilityChange() {
             window.focus();
             if (document.hidden) {
-                if ((!isUnlocked && isBlur && !isUnload) || isUnfilled) {
+                // For Unfilled ads adding new eventlistener when link is clicked, setLSTime();
+                if (isUnfilled)
+                    isHidden = true;
+                else if ((!isUnlocked && isBlur && !isUnload)) {
                     console.log(`valid hidden`);
                     setLSTime();
                     isHidden = true;
-                    hiddenTime = new Date().getTime();
                 }
             } else {
                 // check if the opening of link in new tab is legit by estimated less than 1,000 ms
@@ -780,7 +782,10 @@
         }
 
         async function checkIfBypassDone() {
+            bypass_msg.innerHTML = "⏳Checking Status...";
+            await sleep(1000);
             if ((checkTime() || isException) && !isUnlocked) {
+                link.removeEventListener('click', setLSTime);
                 BCA_Cache.setItemWithExpiration('bca_link_exhaust', true, 120000);
                 isException = false;
                 isUnlocked = true;
@@ -793,11 +798,11 @@
                 bca_link_ads.style.opacity = '1';
                 bca_link_ads.style.position = 'static';
 
-                link.addEventListener('click', (e) => {
+                link.addEventListener('click', async (e) => {
                     e.preventDefault();
                     localStorage.removeItem(atob(page_name));
+                    await actionCallback();
                 }, false);
-                await actionCallback();
             } else if (checkTime() == null && !isUnlocked)
                 return;
             else {
