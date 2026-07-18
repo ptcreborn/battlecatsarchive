@@ -1,4 +1,4 @@
-(async() => {
+(async () => {
     let decoded_data = decodeURL();
     let parsed_data = parseData(decoded_data);
     const go_btn = document.getElementById('go-btn');
@@ -23,6 +23,7 @@
 
     setTimeout(async () => {
         await initFunctions(['BCA_Users']);
+        const user_country_code = 'BCA_USER_COUNTRY'
         let user_data = await BCA_Users.getUserInfo('email, prof_img');
         user_data = user_data?.length === 1 ? user_data[0] : null;
         let active_users_id = new Date().getTime();
