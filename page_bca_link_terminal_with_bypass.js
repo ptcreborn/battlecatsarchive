@@ -12,7 +12,7 @@
         localStorage.removeItem(atob(page_name));
     }
 
-    let time_in_sec = Math.floor(Math.random() * (7000 - 5000) + 5000);
+    let time_in_sec = Math.floor(Math.random() * (5000 - 3000) + 3000);
 
     await initFunctions(['FirebaseModule', 'moment', 'BCA_Cache']);
 
@@ -157,13 +157,12 @@
         let code = data[2];
 
         // check if the progress hits the goal
-        if (code_data.prog == code_data.goal) {
+        if (code_data.prog >= code_data.goal) {
             bypass_msg.innerHTML = "🫡You have made it comrade! Bypass Finish!🫡";
             bypass_link.innerHTML = "✅Link Unlocked";
             bypass_link.addEventListener('click', async (e) => {
                 bypass_link.style.pointerEvents = 'none';
                 bypass_link.style.opacity = '0.7';
-                e.preventDefault();
                 e.preventDefault();
                 // remove record from active users
                 await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${prog_data.active}.json`, 'null');
@@ -196,9 +195,14 @@
                 bypass_link.style.opacity = '0.7';
                 e.preventDefault();
                 // increment the progress on the active users widget in link terminal
-                await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${prog_data.active}.json`, JSON.stringify({
-                    prog: code_data.prog + 1
-                }));
+                let new_prog = code_data.prog + 1;
+                await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${prog_data.active}.json`,
+                    JSON.stringify({
+                        prog: new_prog
+                    })
+                );
+                addUserXP(1);
+                console.log("added progress.");
                 window.location.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html?code=${code}&prog=${code_data.prog + 1}`, `_blank`;
             });
         }
@@ -336,15 +340,11 @@
         // must complete the following task
         // must finish the assignment
 
-        let { data, error } = await supabase.auth.getSession();
+        await initFunctions(['BCA_Users']);
+        let email = await BCA_Users.checkIfUserOnline();
 
-        if (error)
+        if (!email)
             return;
-
-        if (!data.session)
-            return;
-
-        let email = data.session.user.email;
 
         await supabase.rpc('add_xp_to_user', {
             user_email: email,
@@ -477,8 +477,8 @@
 
         exhaust = BCA_Cache.getItemWithExpiration('bca_link_exhaust');
 
-        if (false && (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled" ||
-            auction_Iframe?.getAttribute('data-load-complete') === "true")) {
+        if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled" ||
+            auction_Iframe?.getAttribute('data-load-complete') === "true") {
 
             // filled
             bca_link_ads.style.display = 'block';
@@ -495,7 +495,6 @@
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
             link.textContent = "Proceed Now";
-
         } else if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "unfilled") {
             isUnfilled = true;
             status.textContent = `You can now bypass!`;
@@ -513,8 +512,6 @@
             status.innerHTML = "GG you can unlock the link now!";
             console.log(`GG you can unlock the link now!`);
         }
-
-        checkIfBypassDone();
 
         window.addEventListener('blur', onBlur, false);
         window.addEventListener('beforeunload', onUnload, false);
@@ -586,7 +583,7 @@
 
             let now = new Date().getTime();
 
-            return now - click_time >= 3000;
+            return now - click_time >= 5000;
         }
 
         async function checkIfBypassDone() {
