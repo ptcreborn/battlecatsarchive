@@ -211,7 +211,7 @@
 .bca_widgets_home-members-avatar {
   width: 30px;
   max-width: 30px;
-  height: auto;
+  height: 30px;
   border-radius: 4px; /* Optional: minor polish to make avatars match common UI styles */
 }
 
