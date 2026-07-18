@@ -22,7 +22,6 @@
         allURLs.forEach(item => {
             try {
                 let origin = new URL(item).origin;
-                console.log(`Origin: ${origin} ${origin.includes('youtube.com')}`);
                 if (origin != 'null' && !blacklist_url.includes(origin)) {
                     let params = {
                         a: num_ads,
@@ -82,4 +81,98 @@
             return adBlockEnabled;
         }
     }
+
+
+    // ADSENSE
+    const ADSENSE_SRC = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6102173297126028";
+
+    let scriptPromise;
+
+    function loadAdsense() {
+        if (scriptPromise) return scriptPromise;
+
+        scriptPromise = new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = ADSENSE_SRC;
+            script.async = true;
+            script.crossOrigin = "anonymous";
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+
+        return scriptPromise;
+    }
+
+    const observer = new IntersectionObserver(async (entries) => {
+        for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+
+            const ad = entry.target;
+
+            if (ad.dataset.loaded) {
+                observer.unobserve(ad);
+                continue;
+            }
+
+            ad.dataset.loaded = "true";
+
+            try {
+                await loadAdsense();
+                (window.adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (err) {
+                console.error("Failed to load AdSense:", err);
+            }
+
+            observer.unobserve(ad);
+        }
+    }, {
+        rootMargin: "300px"
+    });
+
+    document.querySelectorAll(".adsbygoogle").forEach(ad => {
+        observer.observe(ad);
+    });
+
+
+
+
+    // UI CONTROL
+    // MAIN CORE
+    // for comment editor function.
+
+    const loader = document.querySelector('.se-pre-con');
+    if (loader) {
+        // Set up a smooth CSS transition
+        loader.style.transition = 'opacity 0.6s ease';
+        loader.style.opacity = '0';
+
+        // Completely remove it from the layout once the fade finishes
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 1000); // Matches the 0.6s transition duration
+    }
+
+    // 1. Disable Right-Click (Desktop & Mouse)
+    document.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+    });
+
+    // 2. Disable Long-Press / Hold (Mobile & Touch Devices)
+    let touchTimeout;
+
+    document.addEventListener('touchstart', (e) => {
+        // Set a timer that triggers just before the default mobile context menu would appear
+        touchTimeout = setTimeout(() => {
+            e.preventDefault();
+        }, 500); // 500ms is standard for a long-press
+    }, { passive: true });
+
+    document.addEventListener('touchend', () => {
+        clearTimeout(touchTimeout);
+    });
+
+    document.addEventListener('touchmove', () => {
+        clearTimeout(touchTimeout);
+    });
 })();
