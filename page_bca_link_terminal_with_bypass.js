@@ -511,6 +511,7 @@
             isException = true;
             status.innerHTML = "GG you can unlock the link now!";
             console.log(`GG you can unlock the link now!`);
+            checkIfBypassDone();
         }
 
         window.addEventListener('blur', onBlur, false);
