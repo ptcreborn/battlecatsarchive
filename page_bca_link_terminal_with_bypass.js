@@ -255,7 +255,6 @@
             return;
         }
 
-
         // Fresh Landing Point
         bypass_msg.textContent = "Initializing requests...";
         status_msg.textContent = "First user landing page...";
@@ -801,8 +800,8 @@
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
                     localStorage.removeItem(atob(page_name));
-                    await actionCallback();
                 }, false);
+                await actionCallback();
             } else if (checkTime() == null && !isUnlocked)
                 return;
             else {
