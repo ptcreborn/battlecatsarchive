@@ -1,8 +1,11 @@
 (async () => {
+    const _signature_ = '\x62\x61\x74\x74\x6c\x65\x63\x61\x74\x73\x61\x72\x63\x68\x69\x76\x65';
     const bypass_link = document.getElementById('bypass_link');
     const status_msg = document.getElementById('status_msg');
     const bypass_msg = document.getElementById('bypass_msg');
     const page_name = btoa('BCA_Link_Terminal');
+    const user_country_code = 'BCA_USER_COUNTRY'
+    const fallback_url = `https://battlecatsarchive.blogspot.com/p/you-are-requesting-out-of-bounds.html`;
 
     let emo = ['🤔', '😎', '🤩'];
 
@@ -27,23 +30,33 @@
     async function loadData() {
         // This is for download bypass including automatically generated url from website and intentionally shorten url
         if (checkCodeParam('code')) {
-            initDownloadBypass(getCodeParams('code'));
-            finalizeAction(downloadBypass);
+            await initDownloadBypass(getCodeParams('code'));
+            await finalizeAction(downloadBypass);
+            return;
         }
+
         // This is specifically for account bypass which is used for bypassing accounts. This not to show any progress in the screen
-        else if (checkCodeParam('acc_code')) {
-            initAccountBypass();
-            finalizeAction(accountBypass);
+        if (checkCodeParam('acc_code')) {
+            await initAccountBypass();
+            await finalizeAction(accountBypass);
+            return;
         }
+
+        // This is the new method of bypass which is new and will not use as much resources as there is.
+        if (window.location.hash) {
+            await initDownloadHashBypass();
+            return;
+        }
+
     }
 
-    function finalizeAction(actionCallback) {
+    async function finalizeAction(actionCallback) {
         window.blur();
         if (localStorage.getItem(atob(page_name)))
             time_in_sec = 100;
         let timeout = setInterval(async () => {
             if (elementInViewport('status_msg') && document.hasFocus()) {
-                time_in_sec = time_in_sec - 40;
+                time_in_sec -= 40;
                 // status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait ${Math.ceil(time_in_sec / 1000)} ${Math.ceil(time_in_sec / 1000) > 1 ? `seconds` : `second`}...`;
                 status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait while decoding link...`;
                 if (time_in_sec <= -1) {
@@ -128,14 +141,24 @@
     }
 
     async function initDownloadBypass(param) {
+        if (!param) {
+            notifyMessage("Invalid url parameter detected.");
+            fallbackRedirect();
+            return;
+        }
         let code_data, prog_data, code;
         code = decodeURIComponent(param);
-        if (!code) return;
+        if (!code) {
+            notifyMessage("Decoding code returns invalid result.");
+            fallbackRedirect();
+            return;
+        }
 
         prog_data = await FirebaseModule.fetchJSON(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal/${code}.json`);
 
         if (prog_data == "null" || !prog_data) {
-            window.alert("The code you're requesting has already expired, please start all over again. Thank you!");
+            notifyMessage("The code you're requesting has already expired, please start all over again. Thank you!");
+            fallbackRedirect();
             return;
         }
 
@@ -208,6 +231,165 @@
         }
     }
 
+    async function initDownloadHashBypass() {
+        const db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users`;
+
+        let key_payload = await testKeyIntegrity();
+        if (!key_payload) {
+            notifyMessage(`The hash key {${window.location.hash}} is invalid and not reliable. No action will proceed.`);
+            fallbackRedirect();
+            return;
+        }
+
+        // This means the url has been initialized.
+        if (key_payload.raw_target_key) {
+            let prog_data = await FirebaseModule.fetchJSON(`${db}/${atob(key_payload.raw_target_key)}.json`);
+            if (!prog_data) {
+                notifyMessage("Can't read the progress. The target key is invalid.");
+                fallbackRedirect();
+            }
+
+            let { prog, goal } = prog_data;
+            bypass_msg.innerText = prog > goal ? `Bypassing: Final Step` : `Bypassing: ${prog}/${goal}`;
+            await finalizeAction(downloadHashBypass);
+            return;
+        }
+
+
+        // Fresh Landing Point
+
+        bypass_msg.textContent = "Initializing requests...";
+        status_msg.textContent = "First user landing page...";
+
+        if (!key_payload?.raw_hash_key || !key_payload?.params) {
+            notifyMessage("Missing parameters from the Key. No action will proceed.");
+            fallbackRedirect();
+            return;
+        }
+
+        let raw_hash_key = key_payload.raw_hash_key;
+        let params = key_payload.params;
+        let seed = new Date().getTime();
+        let country_code = BCA_Cache.getItemWithExpiration(user_country_code);
+
+        if (!country_code) {
+            country_code = await getCountryCode();
+            BCA_Cache.setItemWithExpiration(user_country_code, country_code, 1000 * 60 * 60);
+        }
+
+        const flag_url = country_code == "ANONYMOUS" ? `https://bca-image-proxy.jasonbourne181997.workers.dev/zVdfRRz7/Qtvn-Qcw-Sgucy7cub-LRm-BAV.jpg` : `https://flagsapi.com/${country_code.toUpperCase()}/shiny/64.png`;
+
+        let fb_payload = {
+            prog: 0,
+            goal: params.a,
+            user: 'bananamous',
+            img: flag_url
+        }
+
+        await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${seed}.json`, JSON.stringify(fb_payload));
+
+        await sleep(4000);
+        bypass_msg.innerHTML = "All Setup! You can now start bypassing...";
+        bypass_link.innerHTML = "✅Start Bypassing";
+        bypass_link.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html#${encodeURIComponent(key_payload.raw_hash_key)}|${encodeURIComponent(btoa(seed))}`;
+    }
+
+    async function downloadHashBypass() {
+        const db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users`;
+        let key_payload = await testKeyIntegrity();
+        let seed = key_payload?.raw_target_key;
+
+        if (!key_payload || !seed) {
+            notifyMessage(`Key payload can't be loaded properly. Please kindly start from the beginning.`);
+            fallbackRedirect();
+            return;
+        }
+
+        let key = atob(seed);
+        let data = await FirebaseModule.fetchJSON(`${db}/${key}.json`);
+
+        if (data == null || data?.prog == null || data?.goal == null) {
+            notifyMessage("Fetching the key is not existent in this request.");
+            fallbackRedirect();
+            return;
+        }
+
+        let { prog, goal } = data;
+
+        // check if the progress hits the goal
+        if (prog > goal) {
+            bypass_msg.innerHTML = "🫡You have made it comrade! Bypass Finish!🫡";
+            bypass_link.innerHTML = "✅Link Unlocked";
+            bypass_link.addEventListener('click', async (e) => {
+                bypass_link.style.pointerEvents = 'none';
+                bypass_link.style.opacity = '0.7';
+                e.preventDefault();
+                await FirebaseModule.patch(`${db}/${key}.json`, 'null');
+                window.location.href = decodeURIComponent(key_payload.params.t);
+            });
+        } else {
+            bypass_link.innerHTML = "✅Link Unlocked";
+            bypass_link.addEventListener('click', async (e) => {
+                bypass_link.style.pointerEvents = 'none';
+                bypass_link.style.opacity = '0.7';
+                e.preventDefault();
+                // increment the progress on the active users widget in link terminal
+                let new_prog = prog + 1;
+                await FirebaseModule.patch(`${db}/${key}.json`,
+                    JSON.stringify({
+                        prog: new_prog
+                    })
+                );
+                await addUserXP(1);
+                console.log("added progress.");
+                window.location.reload();
+            });
+        }
+    }
+
+    async function testKeyIntegrity() {
+        let window_hash = decodeURIComponent(window.location.hash);
+        let hash_key = window_hash.substring(1).includes('|') ? window_hash.substring(1).split('|')[0] : window_hash.substring(1);
+        let target_key = window_hash.substring(1).includes('|') ? window_hash.substring(1).split('|')[1] : null;
+        let raw_hash_key = decodeURIComponent(hash_key);
+        let raw_target_key = target_key ? decodeURIComponent(target_key) : null;
+        try {
+            let payload = await BCA_Encryptor.decrypt(raw_hash_key, _signature_);
+            let params = JSON.parse(payload);
+            return {
+                params: params,
+                raw_hash_key: raw_hash_key,
+                raw_target_key: raw_target_key
+            }
+        } catch (e) {
+            notifyMessage('Invalid hash key...');
+            fallbackRedirect();
+            return;
+        }
+    }
+
+    async function getCountryCode() {
+        try {
+            // 1. Fetch the geolocation data based on the visitor's current IP
+            const response = await fetch('https://ipwho.is/');
+
+            if (!response.ok) throw new Error('Network response failed');
+
+            const data = await response.json();
+
+            // 2. Check if the API successfully found the location
+            if (data && data.success) {
+                return data.country_code;
+            } else {
+                throw new Error(data.message || 'API failed to resolve IP');
+            }
+
+        } catch (error) {
+            console.warn("API failed, falling back to browser locale:", error.message);
+            return "ANONYMOUS";
+        }
+    }
+
     async function activeUsers() {
         // this function displays people bypassing link terminal
         const db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users.json?orderBy="$key"&limitToLast=50`;
@@ -243,7 +425,7 @@
                 <div class="snippet">
                 <a href="https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${user_data.user}">${user_data.user}</a>
                 <span class="action">bypassing...</span>
-                <span>${user_data.prog}/${user_data.goal}</span>
+                <span>${user_data.prog > user_data.goal ? `last!` : `${user_data.prog}/${user_data.goal}`}</span>
                 <span class="time-ago">${moment(parseInt(item_key)).fromNow()}</span>
                 </div>
             </div>`;
@@ -294,6 +476,11 @@
 
     }
 
+    function notifyMessage(msg) {
+        bypass_msg.textContent = msg;
+        window.alert(msg);
+    }
+
     function getCodeParams(param) {
         let url = window.location.href;
         let params = new URL(url).searchParams;
@@ -332,6 +519,10 @@
             (top + height) <= (window.pageYOffset + window.innerHeight) &&
             (left + width) <= (window.pageXOffset + window.innerWidth)
         );
+    }
+
+    function fallbackRedirect() {
+        window.location.href = fallback_url;
     }
 
     // This function will rank the users for each bypass of ads, or request of accounts.
