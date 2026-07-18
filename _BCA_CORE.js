@@ -691,6 +691,9 @@ var BCA_Url = {
         return new URL(this.getUrl()).pathname;
     },
     getSearhParams() {
+        this.getSearchParams();
+    },    
+    getSearchParams() {
         return new URL(this.getUrl()).searchParams;
     },
     getParamValue(key) {
