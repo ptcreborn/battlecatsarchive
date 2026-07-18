@@ -28,6 +28,12 @@
     await loadData();
 
     async function loadData() {
+        if (BCA_Url.getSearchParams().size === 0 || (BCA_Url.getSearchParams.size === 1 && BCA_Url.getParamValue('m') === 1)) {
+            notifyMessage("Sorry but you have no request key or hash key. Donald Trump will handle you.");
+            fallbackRedirect();
+            return;
+        }
+
         // This is for download bypass including automatically generated url from website and intentionally shorten url
         if (checkCodeParam('code')) {
             await initDownloadBypass(getCodeParams('code'));
