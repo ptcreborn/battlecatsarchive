@@ -692,7 +692,7 @@ var BCA_Url = {
     },
     getSearhParams() {
         this.getSearchParams();
-    },    
+    },
     getSearchParams() {
         return new URL(this.getUrl()).searchParams;
     },
@@ -838,7 +838,7 @@ var BCA_Comment = {
     getContents() {
         const content = this.comment_form.querySelector('textarea').value;
 
-        return content;
+        return this.trimToTwoNewlines(content);
     },
     getAttachments() {
         let attachments = this.comment_form.querySelector('#attachments').querySelectorAll(`p span[url]`);
@@ -917,6 +917,7 @@ var BCA_Comment = {
     async postToFirebase() {
         const fb_id = new Date().getTime();
         // post content to firebase
+        console.log(this.getContents());
         await FirebaseModule.patch(`${this.fb_comments}/${fb_id}.json`, JSON.stringify({
             auth: this.user_id.toString(),
             content: this.getContents(),
@@ -1145,6 +1146,9 @@ var BCA_Comment = {
         this.cancelReply();
         this.query('attachments').innerHTML = ``;
         this.url_bucket.length = 0;
+    },
+    trimToTwoNewlines(text) {
+        return text.replace(/\n{3,}/g, '\n\n');
     },
 
     // this functions loads the comments from the url
