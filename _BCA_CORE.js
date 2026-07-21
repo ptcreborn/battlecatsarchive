@@ -1073,7 +1073,7 @@ var BCA_Comment = {
             <img comment_prof_img src='https://cdn-icons-png.flaticon.com/512/5486/5486152.png' />
             <button btn-cancel style='display: none;' type='button' role='button' class='button-15'>X</button>
         </div>
-        <textarea required type='text' class='bca-univ-comment-content' contenteditable="plaintext-only" placeholder="Enter your comment!"></textarea>
+        <textarea required type='text' class='bca-univ-comment-content' contenteditable="true" placeholder="Enter your comment!"></textarea>
         <div class='bca-univ-comment-attachment' id='attachments'>
         </div>
         <div class='bca-univ-comment-footer' id='comment-footer'>
