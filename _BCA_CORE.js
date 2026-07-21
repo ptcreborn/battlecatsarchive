@@ -1202,8 +1202,8 @@ var BCA_Comment = {
     async buildCommentContents(parent, data) {
         let comment = await this.getFBCommentData(data.fb_id, 'content');
         let attach = await this.getFBCommentData(data.fb_id, 'attach');
-        this.wQuery(this.query(`${this.id_tag}${data.id}`), 'bca-message').textContent = `${comment?.val ? comment.val : comment}`;
-        this.wQuery(this.query(`${this.id_tag}${data.id}`), 'bca-timestamp').textContent = `${moment(data.date).fromNow()}`;
+        this.wQuery(this.query(`${this.id_tag}${data.id}`), 'bca-message').innerText = `${comment?.val ? comment.val : comment}`;
+        this.wQuery(this.query(`${this.id_tag}${data.id}`), 'bca-timestamp').innerText = `${moment(data.date).fromNow()}`;
 
         if (attach)
             this.buildCommentAttachments(parent, attach, data.id);
