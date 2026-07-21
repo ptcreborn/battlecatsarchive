@@ -782,6 +782,7 @@ ul.header-menu li a {
     padding: 5px;
     color: #fff !important;
     margin: 3px;
+    box-shadow: 1px 1px 10px 0px #1a1a1a;
 }
 .header-user-profile {
     position: static;
