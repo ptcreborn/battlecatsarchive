@@ -650,7 +650,7 @@ p.update {
     margin-top: 20px !important;
 }
 header {
-    position: sticky;
+    position: fixed;
     border-bottom: 0;
 }
 div,
