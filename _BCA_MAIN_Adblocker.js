@@ -140,6 +140,17 @@
     // UI CONTROL
     // MAIN CORE
     // for comment editor function.
+    const loader = document.querySelector('.se-pre-con');
+    if (loader) {
+        // Set up a smooth CSS transition
+        loader.style.transition = 'opacity 0.6s ease';
+        loader.style.opacity = '0';
+
+        // Completely remove it from the layout once the fade finishes
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 1000); // Matches the 0.6s transition duration
+    }
 
     // Disable right-click
     document.addEventListener("contextmenu", function (e) {
