@@ -141,38 +141,74 @@
     // MAIN CORE
     // for comment editor function.
 
-    const loader = document.querySelector('.se-pre-con');
-    if (loader) {
-        // Set up a smooth CSS transition
-        loader.style.transition = 'opacity 0.6s ease';
-        loader.style.opacity = '0';
-
-        // Completely remove it from the layout once the fade finishes
-        setTimeout(() => {
-            loader.style.display = 'none';
-        }, 1000); // Matches the 0.6s transition duration
-    }
-
-    // 1. Disable Right-Click (Desktop & Mouse)
-    document.addEventListener('contextmenu', (e) => {
+    // Disable right-click
+    document.addEventListener("contextmenu", function (e) {
         e.preventDefault();
     });
 
-    // 2. Disable Long-Press / Hold (Mobile & Touch Devices)
-    let touchTimeout;
-
-    document.addEventListener('touchstart', (e) => {
-        // Set a timer that triggers just before the default mobile context menu would appear
-        touchTimeout = setTimeout(() => {
-            e.preventDefault();
-        }, 500); // 500ms is standard for a long-press
-    }, { passive: true });
-
-    document.addEventListener('touchend', () => {
-        clearTimeout(touchTimeout);
+    // Disable text selection
+    document.addEventListener("selectstart", function (e) {
+        e.preventDefault();
     });
 
-    document.addEventListener('touchmove', () => {
-        clearTimeout(touchTimeout);
+    // Disable dragging
+    document.addEventListener("dragstart", function (e) {
+        e.preventDefault();
+    });
+
+    // Disable common developer shortcuts
+    document.addEventListener("keydown", function (e) {
+
+        // F12
+        if (e.key === "F12") {
+            e.preventDefault();
+        }
+
+        // Ctrl+Shift+I/J/C
+        if (e.ctrlKey && e.shiftKey &&
+            ["I", "J", "C"].includes(e.key.toUpperCase())) {
+            e.preventDefault();
+        }
+
+        // Ctrl+U
+        if (e.ctrlKey && e.key.toUpperCase() === "U") {
+            e.preventDefault();
+        }
+
+        // Ctrl+S
+        if (e.ctrlKey && e.key.toUpperCase() === "S") {
+            e.preventDefault();
+        }
+
+        // Ctrl+A
+        if (e.ctrlKey && e.key.toUpperCase() === "A") {
+            e.preventDefault();
+        }
+
+        // Ctrl+C
+        if (e.ctrlKey && e.key.toUpperCase() === "C") {
+            e.preventDefault();
+        }
+
+    });
+
+    // Prevent image dragging
+    document.querySelectorAll("img").forEach(function (img) {
+        img.setAttribute("draggable", "false");
+    });
+
+    // Prevent copy
+    document.addEventListener("copy", function (e) {
+        e.preventDefault();
+    });
+
+    // Prevent cut
+    document.addEventListener("cut", function (e) {
+        e.preventDefault();
+    });
+
+    // Prevent paste
+    document.addEventListener("paste", function (e) {
+        e.preventDefault();
     });
 })();
