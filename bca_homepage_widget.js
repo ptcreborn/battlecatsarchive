@@ -10,7 +10,7 @@
     if (BCA_Url.getPathname() !== '/' || !document.querySelector('.bca_widgets_home-container'))
         return;
 
-    function power_up_tabs() {
+    async function power_up_tabs() {
         const tab_btns = document.querySelectorAll('.bca_widgets_home-tabs button');
         let isLoaded = [false, false, false, false];
         Array.from(tab_btns).forEach(item => {
