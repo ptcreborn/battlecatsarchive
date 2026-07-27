@@ -79,8 +79,8 @@
         const timeDiff = Math.abs(now - postTime);
 
         // Define time constants in milliseconds
-        const ONE_DAY_MS = 24 * 60 * 60 * 1000;
-        const ONE_WEEK_MS = 7 * ONE_DAY_MS;
+        const ONE_DAY_MS = 24 * 60 * 60 * 1000 * 7;
+        const ONE_WEEK_MS = 4 * ONE_DAY_MS;
 
         return {
             isLessThanADay: timeDiff < ONE_DAY_MS,
