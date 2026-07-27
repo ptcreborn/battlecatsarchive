@@ -231,7 +231,8 @@
 
             parent.appendChild(clone);
 
-            clone.querySelector('.bca_widgets_home-comment-text').textContent = await FirebaseModule.fetchJSON(`https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_comments/${item.fb_id}/content.json`);
+            const comment_content = await FirebaseModule.fetchJSON(`https://storehaccounts-comments-default-rtdb.firebaseio.com/bca_comments/${item.fb_id}/content.json`);
+            clone.querySelector('.bca_widgets_home-comment-text').textContent = comment_content.replaceAll('\n', '').substring(0, 100) + ' ...';
         });
 
         removeSkeleton(parent);
