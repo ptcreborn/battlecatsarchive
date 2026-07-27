@@ -26,11 +26,6 @@
                 document.getElementById(target).style.display = 'block';
 
                 // Backend
-                if (target.includes('mods') && !isLoaded[0]) {
-                    await latestModsWidget();
-                    isLoaded[0] = true;
-                    return;
-                }
                 if (target.includes('comments') && !isLoaded[1]) {
                     await loadLatestComments();
                     isLoaded[1] = true;
@@ -50,7 +45,8 @@
         });
 
         // by default initialize the first tab
-        tab_btns[0].click();
+        await latestModsWidget();
+        isLoaded[0] = true;
     }
 
     // MISC Functions
