@@ -82,6 +82,10 @@
         const ONE_DAY_MS = 24 * 60 * 60 * 1000 * 7;
         const ONE_WEEK_MS = 2 * ONE_DAY_MS;
 
+        console.log(timeDiff);
+        console.log(timeDiff < ONE_DAY_MS);
+        console.log(timeDiff > ONE_DAY_MS);
+
         return {
             isLessThanADay: timeDiff < ONE_DAY_MS,
             isGreaterThanAWeek: timeDiff > ONE_WEEK_MS,
