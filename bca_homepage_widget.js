@@ -75,16 +75,15 @@
         const timeDiff = Math.abs(now - postTime);
 
         // Define time constants in milliseconds
-        const ONE_DAY_MS = 24 * 60 * 60 * 1000 * 7;
-        const ONE_WEEK_MS = 2 * ONE_DAY_MS;
-
-        console.log(timeDiff);
-        console.log(timeDiff < ONE_DAY_MS);
-        console.log(timeDiff > ONE_DAY_MS);
+        const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+        const ONE_WEEK_MS = 7 * ONE_DAY_MS;
+        const ONE_MONTH_MS = 4 * ONE_WEEK_MS;
 
         return {
             isLessThanADay: timeDiff < ONE_DAY_MS,
-            isGreaterThanAWeek: timeDiff > ONE_WEEK_MS,
+            isLessThanAWeek: timeDiff < ONE_WEEK_MS,
+            isGreaterThanAWeek: ONE_WEEK_MS >= timeDiff && timeDiff < ONE_MONTH_MS,
+            isGreaterThanAMonth: timeDiff >= ONE_MONTH_MS,
             timeDiffMs: timeDiff
         };
     }
@@ -136,10 +135,10 @@
 
                 let publish_latency = checkDateThresholds(item.date);
 
-                if (publish_latency.isLessThanADay)
+                if (publish_latency.isLessThanAWeek)
                     clone.querySelector('.bca_widgets_home-time-class').textContent = `LATEST`;
 
-                else if (!publish_latency.isLessThanADay && !publish_latency.isGreaterThanAWeek) {
+                else if (publish_latency.isGreaterThanAWeek) {
                     clone.querySelector('.bca_widgets_home-time-class').style.border = `1px solid yellow`;
                     clone.querySelector('.bca_widgets_home-time-class').style.color = `yellow`;
                     clone.querySelector('.bca_widgets_home-time-class').textContent = `RECENT`;
@@ -166,24 +165,6 @@
         function removeSkeleton(parent_div) {
             parent_div.querySelector('#skeleton') ? parent_div.querySelector('#skeleton').remove() : '';
             return;
-        }
-
-        function checkDateThresholds(postDate) {
-            const postTime = new Date(postDate).getTime();
-            const now = Date.now();
-
-            // Calculate absolute time difference in milliseconds
-            const timeDiff = Math.abs(now - postTime);
-
-            // Define time constants in milliseconds
-            const ONE_DAY_MS = 24 * 60 * 60 * 1000;
-            const ONE_WEEK_MS = 7 * ONE_DAY_MS;
-
-            return {
-                isLessThanADay: timeDiff < ONE_DAY_MS,
-                isGreaterThanAWeek: timeDiff > ONE_WEEK_MS,
-                timeDiffMs: timeDiff
-            };
         }
 
         await loadTab('bca_recent_mods');
@@ -223,7 +204,7 @@
             if (time_latency.isLessThanADay)
                 clone.querySelector('.bca_widgets_home-comment-time').style.color = `#00ff00`;
 
-            else if (!time_latency.isLessThanADay && !time_latency.isGreaterThanAWeek)
+            else if (time_latency.isLessThanAWeek)
                 clone.querySelector('.bca_widgets_home-comment-time').style.color = `#ffe000`;
 
             else
