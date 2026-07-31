@@ -82,6 +82,7 @@
         return {
             isLessThanADay: timeDiff < ONE_DAY_MS,
             isLessThanAWeek: timeDiff < ONE_WEEK_MS,
+            isLessThanAMonth: timeDiff < ONE_MONTH_MS && !isLessThanADay && !isLessThanADay,
             isGreaterThanAWeek: ONE_WEEK_MS >= timeDiff && timeDiff < ONE_MONTH_MS,
             isGreaterThanAMonth: timeDiff >= ONE_MONTH_MS,
             timeDiffMs: timeDiff
@@ -144,7 +145,7 @@
                     clone.querySelector('.bca_widgets_home-time-class').textContent = `RECENT`;
                 }
 
-                else {
+                else if (publish_latency.isLessThanAMonth) {
                     clone.querySelector('.bca_widgets_home-time-class').style.border = `1px solid darkorange`;
                     clone.querySelector('.bca_widgets_home-time-class').style.color = `darkorange`;
                     clone.querySelector('.bca_widgets_home-time-class').textContent = `RIPED`;
