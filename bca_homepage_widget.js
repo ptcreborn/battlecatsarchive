@@ -82,7 +82,7 @@
         return {
             isLessThanADay: timeDiff < ONE_DAY_MS,
             isLessThanAWeek: timeDiff < ONE_WEEK_MS,
-            isLessThanAMonth: timeDiff < ONE_MONTH_MS && !isLessThanADay && !isLessThanADay,
+            isLessThanAMonth: timeDiff < ONE_MONTH_MS && timeDiff > ONE_WEEK_MS,
             isGreaterThanAWeek: ONE_WEEK_MS >= timeDiff && timeDiff < ONE_MONTH_MS,
             isGreaterThanAMonth: timeDiff >= ONE_MONTH_MS,
             timeDiffMs: timeDiff
