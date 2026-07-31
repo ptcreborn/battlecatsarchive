@@ -139,13 +139,13 @@
                 if (publish_latency.isLessThanAWeek)
                     clone.querySelector('.bca_widgets_home-time-class').textContent = `LATEST`;
 
-                else if (publish_latency.isGreaterThanAWeek) {
+                else if (publish_latency.isLessThanAMonth) {
                     clone.querySelector('.bca_widgets_home-time-class').style.border = `1px solid yellow`;
                     clone.querySelector('.bca_widgets_home-time-class').style.color = `yellow`;
                     clone.querySelector('.bca_widgets_home-time-class').textContent = `RECENT`;
                 }
 
-                else if (publish_latency.isLessThanAMonth) {
+                else {
                     clone.querySelector('.bca_widgets_home-time-class').style.border = `1px solid darkorange`;
                     clone.querySelector('.bca_widgets_home-time-class').style.color = `darkorange`;
                     clone.querySelector('.bca_widgets_home-time-class').textContent = `RIPED`;
