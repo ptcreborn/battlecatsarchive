@@ -1184,7 +1184,7 @@ var BCA_Comment = {
         let id = BCA_Url.getParamValue('target_comment')?.replace('bca-comments-', '');
         let target_comment_data = await this.getSingleCommentData(id);
 
-        console.log("First: " + target_comment_data);
+        console.log(target_comment_data);
 
         if (!target_comment_data)
             return;
