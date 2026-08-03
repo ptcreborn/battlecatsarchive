@@ -1188,6 +1188,10 @@ var BCA_Comment = {
             return;
 
         await this.renderCommentChild(target_comment_data);
+
+        // after building children, focus to target comment if exists
+        if (BCA_Url.getParamValue('target_comment'))
+            BCA_Display.scrollWhenExists(`${BCA_Url.getParamValue('target_comment')}`);
     },
     async renderCommentChild(comments_data) {
         // Descending
@@ -1203,10 +1207,6 @@ var BCA_Comment = {
         comments_data.map(item => this.buildReplyEmbed(item));
 
         this.updateCommentCount();
-
-        // after building children, focus to target comment if exists
-        if (BCA_Url.getParamValue('target_comment'))
-            BCA_Display.scrollWhenExists(`${BCA_Url.getParamValue('target_comment')}`);
     },
     async buildCommentChildUserData(template, parent, data) {
         let users_data = data.user_id;
