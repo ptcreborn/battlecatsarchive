@@ -1161,13 +1161,32 @@ var BCA_Comment = {
 
         return data;
     },
+    async getSingleCommentData(target_id) {
+        if (!target_id)
+            return;
+
+        let { data, error } = await supabase.from('bca-comments').select('*').eq('id', target_id);
+
+        if (data?.length === 0 || error)
+            return;
+
+        return data;
+    },
     async getFBCommentData(id, root) {
         let data = await FirebaseModule.fetchJSON(`${this.fb_comments}/${id}/${root}.json`);
 
         return data;
     },
     async renderTargetComment() {
+        if (!BCA_Url.getParamValue('target_comment'))
+            return;
 
+        let id = BCA_Url.getParamValue('target_comment')?.replace('bca-comments-', '');
+        let target_comment_data = await this.getSingleCommentData(id);
+        if (!target_comment_data)
+            return;
+
+        await this.renderCommentChild(target_comment_data);
     },
     async renderCommentChild(comments_data) {
         // Descending
@@ -1179,14 +1198,14 @@ var BCA_Comment = {
 
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
 
-        // after building children, focus to target comment if exists
-        if (BCA_Url.getParamValue('target_comment'))
-            BCA_Display.scrollWhenExists(`${BCA_Url.getParamValue('target_comment')}`);
-
         await Promise.all(comments_data.map(item => this.buildCommentContents(parent, item)));
         comments_data.map(item => this.buildReplyEmbed(item));
 
         this.updateCommentCount();
+
+        // after building children, focus to target comment if exists
+        if (BCA_Url.getParamValue('target_comment'))
+            BCA_Display.scrollWhenExists(`${BCA_Url.getParamValue('target_comment')}`);
     },
     async buildCommentChildUserData(template, parent, data) {
         let users_data = data.user_id;
