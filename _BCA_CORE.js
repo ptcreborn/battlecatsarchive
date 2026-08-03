@@ -1207,6 +1207,8 @@ var BCA_Comment = {
         let isTargetComment = comments_data[0]?.val;
         if (isTargetComment) comments_data.shift();
 
+        console.log(comments_data);
+
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
 
         await Promise.all(comments_data.map(item => this.buildCommentContents(parent, item, isTargetComment)));
