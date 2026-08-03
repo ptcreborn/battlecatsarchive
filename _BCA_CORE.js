@@ -1170,8 +1170,6 @@ var BCA_Comment = {
         if (data?.length === 0 || error)
             return;
 
-        console.log(data);
-
         return data;
     },
     async getFBCommentData(id, root) {
@@ -1186,14 +1184,14 @@ var BCA_Comment = {
         let id = BCA_Url.getParamValue('target_comment')?.replace('bca-comments-', '');
         let target_comment_data = await this.getSingleCommentData(id);
 
-        console.log(target_comment_data);
-
         // // this is just identifier so that when rendering comment it knows its a target comment.
         let temp_arr = Array.from(target_comment_data);
         if (target_comment_data.length === 1)
             temp_arr.unshift({
                 val: target_comment_data[0]?.parent_id
             });
+
+        console.log(temp_arr);
 
         // rendering the comment
         await this.renderCommentChild(temp_arr);
