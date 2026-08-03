@@ -918,7 +918,6 @@ var BCA_Comment = {
     async postToFirebase() {
         const fb_id = new Date().getTime();
         // post content to firebase
-        console.log(this.getContents());
         await FirebaseModule.patch(`${this.fb_comments}/${fb_id}.json`, JSON.stringify({
             auth: this.user_id.toString(),
             content: this.getContents(),
@@ -1193,10 +1192,6 @@ var BCA_Comment = {
 
         // rendering the comment
         await this.renderCommentChild(target_comment_data);
-
-        // after building children, focus to target comment if exists
-        if (BCA_Url.getParamValue('target_comment'))
-            BCA_Display.scrollWhenExists(`${BCA_Url.getParamValue('target_comment')}`);
     },
     async renderCommentChild(comments_data) {
         // Descending
@@ -1208,7 +1203,7 @@ var BCA_Comment = {
 
         // checking if the render is requested by target comment
         let isTargetComment = comments_data[0]?.val;
-        if(isTargetComment) comments_data.shift();
+        if (isTargetComment) comments_data.shift();
 
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
 
@@ -1216,6 +1211,10 @@ var BCA_Comment = {
         comments_data.map(item => this.buildReplyEmbed(item));
 
         this.updateCommentCount();
+
+        // after building children, focus to target comment if exists
+        if (BCA_Url.getParamValue('target_comment'))
+            BCA_Display.scrollWhenExists(`${BCA_Url.getParamValue('target_comment')}`);
     },
     async buildCommentChildUserData(template, parent, data) {
         let users_data = data.user_id;
