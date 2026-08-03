@@ -1296,7 +1296,7 @@ var BCA_Comment = {
         p.style.background = 'black';
         p.style.padding = '10px';
 
-        p.textContent = fb_data;
+        p.textContent = `You said: ${fb_data}`;
 
         return p;
     },
