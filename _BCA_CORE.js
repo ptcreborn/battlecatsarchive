@@ -831,6 +831,7 @@ var BCA_Comment = {
         });
 
         // render the comment
+        await this.renderTargetComment();
         let comments_data = await this.getCommentsData();
         await this.renderCommentChild(comments_data);
         this.updateCommentCount();
