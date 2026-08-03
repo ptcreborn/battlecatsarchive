@@ -1191,8 +1191,6 @@ var BCA_Comment = {
                 val: target_comment_data[0]?.parent_id
             });
 
-        console.log(temp_arr);
-
         // rendering the comment
         await this.renderCommentChild(temp_arr);
     },
@@ -1206,8 +1204,7 @@ var BCA_Comment = {
 
         // checking if the render is requested by target comment
         let isTargetComment = comments_data[0]?.val;
-        console.log(isTargetComment);
-        if (isTargetComment) comments_data.shift();
+        if (comments_data[0]?.hasOwnProperty('val')) comments_data.shift();
 
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
 
