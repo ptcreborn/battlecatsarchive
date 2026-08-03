@@ -1188,11 +1188,11 @@ var BCA_Comment = {
 
         console.log(target_comment_data);
 
-        // this is just identifier so that when rendering comment it knows its a target comment.
-        if (target_comment_data.length === 1)
-            target_comment_data.unshift({
-                val: target_comment_data[0]?.parent_id
-            });
+        // // this is just identifier so that when rendering comment it knows its a target comment.
+        // if (target_comment_data.length === 1)
+        //     target_comment_data.unshift({
+        //         val: target_comment_data[0]?.parent_id
+        //     });
 
         // rendering the comment
         await this.renderCommentChild(target_comment_data);
