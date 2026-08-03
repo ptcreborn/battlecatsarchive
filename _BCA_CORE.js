@@ -1184,6 +1184,8 @@ var BCA_Comment = {
         let id = BCA_Url.getParamValue('target_comment')?.replace('bca-comments-', '');
         let target_comment_data = await this.getSingleCommentData(id);
 
+        console.log(target_comment_data);
+
         // this is just identifier so that when rendering comment it knows its a target comment.
         if (target_comment_data.length === 1)
             target_comment_data.unshift({
@@ -1203,6 +1205,7 @@ var BCA_Comment = {
 
         // checking if the render is requested by target comment
         let isTargetComment = comments_data[0]?.val;
+        console.log(isTargetComment);
         if (isTargetComment) comments_data.shift();
 
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
