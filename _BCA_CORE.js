@@ -1186,6 +1186,7 @@ var BCA_Comment = {
         if (!target_comment_data)
             return;
 
+        // this is just identifier so that when rendering comment it knows its a target comment.
         target_comment_data.unshift({
             val: target_comment_data[0]?.parent_id
         });
@@ -1219,6 +1220,9 @@ var BCA_Comment = {
     async buildCommentChildUserData(template, parent, data) {
         let users_data = data.user_id;
         let clone = template.content.cloneNode(true).children[0];
+
+        if(document.getElementById(`${this.id_tag}${data.id}`))
+            return;
 
         clone.id = `${this.id_tag}${data.id}`;
         this.wQuery(clone, 'bca-username').textContent = `${users_data.username}`;
