@@ -1187,7 +1187,9 @@ var BCA_Comment = {
         if (!target_comment_data)
             return;
 
-        target_comment_data.unshift(target_comment_data[0]?.parent_id);
+        target_comment_data.unshift({
+            val: target_comment_data[0]?.parent_id
+        });
 
         // rendering the comment
         await this.renderCommentChild(target_comment_data);
@@ -1205,8 +1207,8 @@ var BCA_Comment = {
             return;
 
         // checking if the render is requested by target comment
-        let isTargetComment = comments_data[0];
-        comments_data.shift();
+        let isTargetComment = comments_data[0]?.val;
+        if(isTargetComment) comments_data.shift();
 
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
 
@@ -1243,7 +1245,6 @@ var BCA_Comment = {
             return;
 
         let reply_data = await this.buildHTMLReply(isReplyTarget);
-
         if (reply_data)
             this.query(`${this.id_tag}${data.id}`).querySelector('.bc-text-container').appendChild(reply_data);
     },
