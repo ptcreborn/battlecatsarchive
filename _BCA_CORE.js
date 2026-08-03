@@ -1184,8 +1184,6 @@ var BCA_Comment = {
         let id = BCA_Url.getParamValue('target_comment')?.replace('bca-comments-', '');
         let target_comment_data = await this.getSingleCommentData(id);
 
-        console.log(target_comment_data);
-
         if (!target_comment_data)
             return;
 
@@ -1195,7 +1193,6 @@ var BCA_Comment = {
         });
 
         // rendering the comment
-        console.log(target_comment_data);
         await this.renderCommentChild(target_comment_data);
     },
     async renderCommentChild(comments_data) {
@@ -1208,9 +1205,7 @@ var BCA_Comment = {
 
         // checking if the render is requested by target comment
         let isTargetComment = comments_data[0]?.val;
-        if (isTargetComment) comments_data.shift();
-
-        console.log(comments_data);
+        comments_data.shift();
 
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
 
