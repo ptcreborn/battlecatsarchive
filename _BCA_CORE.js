@@ -1166,7 +1166,7 @@ var BCA_Comment = {
         if (!target_id)
             return;
 
-        let { data, error } = await supabase.from('bca-comments').select('*').eq('id', target_id);
+        let { data, error } = await supabase.from('bca-comments').select('*, user_id(prof_img, username, email)').eq('id', target_id);
 
         if (data?.length === 0 || error)
             return;
