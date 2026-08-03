@@ -1187,6 +1187,9 @@ var BCA_Comment = {
         if (!target_comment_data)
             return;
 
+        target_comment_data.unshift(target_comment_data[0]?.parent_id);
+
+        // rendering the comment
         await this.renderCommentChild(target_comment_data);
 
         // after building children, focus to target comment if exists
@@ -1201,9 +1204,13 @@ var BCA_Comment = {
         if (!template || !parent || !comments_data)
             return;
 
+        // checking if the render is requested by target comment
+        let isTargetComment = comments_data[0];
+        comments_data.shift();
+
         await Promise.all(comments_data.map(item => this.buildCommentChildUserData(template, parent, item)));
 
-        await Promise.all(comments_data.map(item => this.buildCommentContents(parent, item)));
+        await Promise.all(comments_data.map(item => this.buildCommentContents(parent, item, isTargetComment)));
         comments_data.map(item => this.buildReplyEmbed(item));
 
         this.updateCommentCount();
@@ -1211,9 +1218,6 @@ var BCA_Comment = {
     async buildCommentChildUserData(template, parent, data) {
         let users_data = data.user_id;
         let clone = template.content.cloneNode(true).children[0];
-
-        if (this.query(`${this.id_tag}${data.id}`))
-            return;
 
         clone.id = `${this.id_tag}${data.id}`;
         this.wQuery(clone, 'bca-username').textContent = `${users_data.username}`;
@@ -1225,9 +1229,14 @@ var BCA_Comment = {
 
         parent.appendChild(clone);
     },
-    async buildCommentContents(parent, data) {
+    async buildCommentContents(parent, data, isReplyTarget) {
         let comment = await this.getFBCommentData(data.fb_id, 'content');
         let attach = await this.getFBCommentData(data.fb_id, 'attach');
+        let reply_data = await this.buildHTMLReply(isReplyTarget);
+
+        if(reply_data)
+            this.query(`${this.id_tag}${data.id}`).querySelector('.bc-text-container').appendChild(reply_data);
+
         this.wQuery(this.query(`${this.id_tag}${data.id}`), 'bca-message').innerText = `${comment?.val ? comment.val : comment}`;
         this.wQuery(this.query(`${this.id_tag}${data.id}`), 'bca-timestamp').innerText = `${moment(data.date).fromNow()}`;
 
@@ -1267,6 +1276,21 @@ var BCA_Comment = {
         </div>
       </a>`;
         });
+    },
+    async buildHTMLReply(targetReply) {
+        let reply_data = await this.getSingleCommentData(targetReply);
+        let fb_data = await this.getFBCommentData(reply_data[0]?.fb_id, 'content');
+
+        if(!fb_data)
+            return;
+
+        let p = document.createElement('p');
+        p.style.background = 'black';
+        p.style.padding = '10px';
+
+        p.textContent = fb_data;
+
+        return p;
     },
     buildReplyEmbed(item) {
         let comment = document.getElementById(`${this.id_tag}${item.id}`);
