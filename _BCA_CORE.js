@@ -1241,12 +1241,15 @@ var BCA_Comment = {
         if (attach)
             this.buildCommentAttachments(parent, attach, data.id);
 
+        // This will execute if its loading a target comment.
         if (!isReplyTarget)
             return;
 
         let reply_data = await this.buildHTMLReply(isReplyTarget);
-        if (reply_data)
-            this.query(`${this.id_tag}${data.id}`).querySelector('.bc-text-container').appendChild(reply_data);
+        if (reply_data) {
+            this.query(`${this.id_tag}${data.id}`).querySelector('.bc-text-container').before(reply_data);
+            this.wQuery(this.query(`${this.id_tag}${data.id}`), 'bca-username').textContent += " replied to you.";
+        }
     },
     async buildCommentAttachments(parent, attachments, id) {
         let parent_attachments = this.wQuery(this.query(`${this.id_tag}${id}`), 'bca-attachments');
