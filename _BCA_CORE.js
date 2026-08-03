@@ -1183,6 +1183,9 @@ var BCA_Comment = {
 
         let id = BCA_Url.getParamValue('target_comment')?.replace('bca-comments-', '');
         let target_comment_data = await this.getSingleCommentData(id);
+
+        console.log(target_comment_data);
+        
         if (!target_comment_data)
             return;
 
@@ -1224,7 +1227,7 @@ var BCA_Comment = {
         let users_data = data.user_id;
         let clone = template.content.cloneNode(true).children[0];
 
-        if(document.getElementById(`${this.id_tag}${data.id}`))
+        if (document.getElementById(`${this.id_tag}${data.id}`))
             return;
 
         clone.id = `${this.id_tag}${data.id}`;
