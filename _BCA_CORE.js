@@ -1232,16 +1232,20 @@ var BCA_Comment = {
     async buildCommentContents(parent, data, isReplyTarget) {
         let comment = await this.getFBCommentData(data.fb_id, 'content');
         let attach = await this.getFBCommentData(data.fb_id, 'attach');
-        let reply_data = await this.buildHTMLReply(isReplyTarget);
-
-        if(reply_data)
-            this.query(`${this.id_tag}${data.id}`).querySelector('.bc-text-container').appendChild(reply_data);
 
         this.wQuery(this.query(`${this.id_tag}${data.id}`), 'bca-message').innerText = `${comment?.val ? comment.val : comment}`;
         this.wQuery(this.query(`${this.id_tag}${data.id}`), 'bca-timestamp').innerText = `${moment(data.date).fromNow()}`;
 
         if (attach)
             this.buildCommentAttachments(parent, attach, data.id);
+
+        if (!isReplyTarget)
+            return;
+
+        let reply_data = await this.buildHTMLReply(isReplyTarget);
+
+        if (reply_data)
+            this.query(`${this.id_tag}${data.id}`).querySelector('.bc-text-container').appendChild(reply_data);
     },
     async buildCommentAttachments(parent, attachments, id) {
         let parent_attachments = this.wQuery(this.query(`${this.id_tag}${id}`), 'bca-attachments');
@@ -1281,7 +1285,7 @@ var BCA_Comment = {
         let reply_data = await this.getSingleCommentData(targetReply);
         let fb_data = await this.getFBCommentData(reply_data[0]?.fb_id, 'content');
 
-        if(!fb_data)
+        if (!fb_data)
             return;
 
         let p = document.createElement('p');
