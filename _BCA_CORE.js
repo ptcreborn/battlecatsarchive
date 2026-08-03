@@ -1294,6 +1294,10 @@ var BCA_Comment = {
         let p = document.createElement('p');
         p.style.background = 'black';
         p.style.padding = '10px';
+        p.style.cursor = 'pointer';
+        p.addEventListener('click', () => {
+            this.scrollWhenExists(`${this.id_tag}${targetReply}`);
+        });
 
         p.textContent = `You said: ${fb_data}`;
 
