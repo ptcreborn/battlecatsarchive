@@ -1212,6 +1212,9 @@ var BCA_Comment = {
         let users_data = data.user_id;
         let clone = template.content.cloneNode(true).children[0];
 
+        if (this.query(`${this.id_tag}${data.id}`))
+            return;
+
         clone.id = `${this.id_tag}${data.id}`;
         this.wQuery(clone, 'bca-username').textContent = `${users_data.username}`;
         this.wQuery(clone, 'bca-profile').src = `${users_data.prof_img}`;
