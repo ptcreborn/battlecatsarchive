@@ -1170,6 +1170,8 @@ var BCA_Comment = {
         if (data?.length === 0 || error)
             return;
 
+        console.log(data);
+
         return data;
     },
     async getFBCommentData(id, root) {
