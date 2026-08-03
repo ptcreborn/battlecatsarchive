@@ -1192,6 +1192,7 @@ var BCA_Comment = {
         });
 
         // rendering the comment
+        console.log(target_comment_data);
         await this.renderCommentChild(target_comment_data);
     },
     async renderCommentChild(comments_data) {
