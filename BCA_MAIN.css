@@ -777,11 +777,10 @@ ul.header-menu li a {
 }
 .button-href {
     font-weight: 700;
-    background: #3e1554;
+    background: #153954;
     padding: 5px;
     color: #fff !important;
     margin: 3px;
-    box-shadow: 1px 1px 10px 0px #151609;
 }
 .header-user-profile {
     position: static;
