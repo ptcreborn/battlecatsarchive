@@ -61,7 +61,7 @@
             time_in_sec = 100;
         let timeout = setInterval(async () => {
             if (elementInViewport('status_msg') && document.hasFocus()) {
-                time_in_sec -= 40;
+                time_in_sec -= 15;
                 // status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait ${Math.ceil(time_in_sec / 1000)} ${Math.ceil(time_in_sec / 1000) > 1 ? `seconds` : `second`}...`;
                 status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait while decoding link...`;
                 if (time_in_sec <= -1) {
@@ -631,7 +631,7 @@
         const status = document.getElementById('status_msg');
         const bypass_msg = document.getElementById('bypass_msg');
         const link = document.getElementById('bypass_link');
-        const page_name = btoa(BCA_Url?.getParamValue('code')) || btoa('BCA_Link_Terminal');
+        const page_name = btoa(BCA_Url?.getUrl().split('.html')[1]) || btoa('BCA_Link_Terminal');
 
         let isBlur = false;
         let isHidden = false;
