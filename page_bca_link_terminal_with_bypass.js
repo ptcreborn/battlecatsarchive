@@ -70,6 +70,8 @@
                     status_msg.innerText = `${emo[1]} Done decoding link...`;
                     // activate button and its function          
 
+                    bypass_msg.innerHTML = "Processing...";
+                    await sleep(1000);
                     await processRequestBypass(actionCallback);
                 }
             } else status_msg.innerHTML = `⚠️ Please scroll and focus on the page to resume...`;
@@ -629,7 +631,7 @@
         const status = document.getElementById('status_msg');
         const bypass_msg = document.getElementById('bypass_msg');
         const link = document.getElementById('bypass_link');
-        const page_name = btoa('BCA_Link_Terminal');
+        const page_name = btoa(BCA_Url?.getParamValue('code')) || btoa('BCA_Link_Terminal');
 
         let isBlur = false;
         let isHidden = false;
@@ -639,6 +641,7 @@
         let isUnfilled = false;
         let isMobileSite = new URL(window.location.href).searchParams.get('m') === 1;
         let exhaust = false;
+        let isLinkOpen = false;
 
         let blurTime, hiddenTime;
 
@@ -646,6 +649,8 @@
 
         // Checking if the page is reloaded
         // Modern way
+        resetLSTime();
+
         const nav = performance.getEntriesByType("navigation")[0];
         if (nav && nav.type === "reload") {
             localStorage.removeItem(atob(page_name));
@@ -693,7 +698,7 @@
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
             link.textContent = "Proceed Now";
-            link.addEventListener('click', setLSTime);
+            link.addEventListener('click', () => setLSTime());
             console.log(`Unfilled ads: ${isUnfilled}`);
         } else if (bca_link_ads.querySelector('ins')?.getAttribute('ablated-ad-slot') !== null) {
             isUnfilled = true;
@@ -715,6 +720,9 @@
         document.addEventListener('visibilitychange', onVisibilityChange, false);
 
         function onBlur() {
+            if (isUnfilled)
+                isBlur = true;
+
             setTimeout(() => {
                 if (document.activeElement == auction_Iframe && !isUnlocked) {
                     isBlur = true;
@@ -725,7 +733,6 @@
 
         function onUnload() {
             if (isBlur && !isUnlocked) {
-                console.log(`unloading now...`);
                 isUnload = true;
                 setLSTime();
             }
@@ -735,19 +742,16 @@
             window.focus();
             if (document.hidden) {
                 // For Unfilled ads adding new eventlistener when link is clicked, setLSTime();
-                if (isUnfilled)
+                if (isBlur && isUnfilled && !isUnlocked) {
                     isHidden = true;
+                }
                 else if ((!isUnlocked && isBlur && !isUnload)) {
-                    console.log(`valid hidden`);
                     setLSTime();
                     isHidden = true;
                 }
             } else {
                 // check if the opening of link in new tab is legit by estimated less than 1,000 ms
-                if (isUnfilled)
-                    checkIfBypassDone();
-                else if ((isHidden && !isUnlocked)) {
-                    console.log(`visible from hidden`);
+                if ((isHidden && !isUnlocked)) {
                     checkIfBypassDone();
                     // let time_register = isMobileSite ? 2500 : 1000;
                     // if (hiddenTime - blurTime <= time_register)
@@ -767,8 +771,11 @@
         function setLSTime() {
             const label = atob(page_name);
             const now = new Date().getTime();
-
             localStorage.setItem(label, now);
+        }
+
+        function resetLSTime() {
+            localStorage.removeItem(atob(page_name));
         }
 
         function getTime() {
@@ -777,23 +784,30 @@
 
         function checkTime() {
             let click_time = localStorage.getItem(atob(page_name));
+
             if (!click_time)
-                return;
+                return null;
 
             let now = new Date().getTime();
-
-            return now - click_time >= 5000;
+            return now - click_time >= 7000;
         }
 
         async function checkIfBypassDone() {
+            const time_state = checkTime();
+
+            if (time_state === null)
+                return;
+
             bypass_msg.innerHTML = "⏳Checking Status...";
             await sleep(1000);
+
             if ((checkTime() || isException) && !isUnlocked) {
                 link.removeEventListener('click', setLSTime);
                 BCA_Cache.setItemWithExpiration('bca_link_exhaust', true, 120000);
                 isException = false;
                 isUnlocked = true;
                 link.textContent = `Loading...`;
+                await sleep(1000);
                 bypass_msg.textContent = `You have unlocked the link!`;
                 status.textContent = `Proceed now by clicking the Link Unlock. Thank you!`;
 
@@ -807,8 +821,9 @@
                     localStorage.removeItem(atob(page_name));
                 }, false);
                 await actionCallback();
-            } else if (checkTime() == null && !isUnlocked)
+            } else if (checkTime() == null && !isUnlocked) {
                 return;
+            }
             else {
                 bypass_msg.innerHTML = `⚠️ Sorry but you must stay there for 5 seconds. Try again!`;
                 status.textContent = `Try bypassing again.`;
@@ -817,11 +832,12 @@
                 isUnlocked = false;
             }
         }
-        /*
-        * Function 1: Audits the physical DOM layout elements 
-        * Checks if ad spaces are being visually crushed or stripped by an extension.
-        */
+
         function verifyAdSenseDOMElements() {
+            /*
+            * Function 1: Audits the physical DOM layout elements 
+            * Checks if ad spaces are being visually crushed or stripped by an extension.
+            */
             // If the global object doesn't exist at all, it's a hard block
             if (typeof window.adsbygoogle === 'undefined') {
                 return true;
@@ -857,11 +873,12 @@
             return blockedCounter === adUnits.length;
         }
 
-        /**
-         * Function 2: The Master Coordinator Check
-         * Combines DOM metrics with native browser fingerprints to eliminate mobile false positives.
-         */
         async function strictAdBlockCheck() {
+            /**
+             * Function 2: The Master Coordinator Check
+             * Combines DOM metrics with native browser fingerprints to eliminate mobile false positives.
+             */
+
             // 1. Run the layout audit
             const isLayoutCollapsed = verifyAdSenseDOMElements();
 
