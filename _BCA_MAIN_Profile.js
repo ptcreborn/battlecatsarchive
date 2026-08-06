@@ -25,7 +25,7 @@
     }
     
     // Get user profile from localstorage and load immediately.
-    let default_prof = `https://bca-image-proxy.jasonbourne181997.workers.dev/jPHD0VZY/RPBMJIQ.png`;
+    let default_prof = `https://i.redd.it/p0u2suithend1.gif`;
     let user = document.getElementById('bca_user');
     let user_img = user.querySelector('img');
     let user_data = BCA_Cache.getItemWithExpiration(BCA_Notifications.LOCALSTORAGE_USER);
