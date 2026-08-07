@@ -212,7 +212,7 @@
             i_account_id: parseInt(acc_id)
         });
 
-        if (!success || error)
+        if (error)
             return;
 
         return true;
