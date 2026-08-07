@@ -7,7 +7,7 @@
     const user_country_code = 'BCA_USER_COUNTRY'
     const fallback_url = `https://battlecatsarchive.blogspot.com/p/you-are-requesting-out-of-bounds.html`;
 
-    let emo = ['🤔', '😎', '🤩'];
+    let emo = ["🖥️","🐥","😵","💸","🍫"];
 
     // Reload Detect
     const nav = performance.getEntriesByType("navigation")[0];
@@ -57,13 +57,15 @@
 
     async function finalizeAction(actionCallback) {
         window.blur();
-        if (localStorage.getItem(atob(page_name)))
-            time_in_sec = 100;
+        // if (localStorage.getItem(atob(page_name)))
+        //     time_in_sec = 100;
         let timeout = setInterval(async () => {
             if (elementInViewport('status_msg') && document.hasFocus()) {
                 time_in_sec -= 15;
+                let random_index = getRandomIntInclusive(0, emo.length - 1);
                 // status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait ${Math.ceil(time_in_sec / 1000)} ${Math.ceil(time_in_sec / 1000) > 1 ? `seconds` : `second`}...`;
-                status_msg.innerText = `${emo[Math.abs(time_in_sec) % emo.length]} Please wait while decoding link...`;
+                status_msg.innerHTML = `${emo[random_index]} Please wait while decoding link...`;
+                status_msg.innerHTML += emo[random_index];
                 if (time_in_sec <= -1) {
                     clearInterval(timeout);
 
@@ -75,7 +77,7 @@
                     await processRequestBypass(actionCallback);
                 }
             } else status_msg.innerHTML = `⚠️ Please scroll and focus on the page to resume...`;
-        }, 100);
+        }, 70);
     }
 
     async function initAccountBypass() {
@@ -529,6 +531,12 @@
     function fallbackRedirect() {
         window.location.href = fallback_url;
     }
+
+    function getRandomIntInclusive(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+}   
 
     // This function will rank the users for each bypass of ads, or request of accounts.
     async function addUserXP(xp) {
