@@ -324,7 +324,7 @@
         let { prog, goal } = data;
 
         // check if the progress hits the goal
-        if (prog > goal) {
+        if (prog >= goal) {
             bypass_msg.innerHTML = "🫡You have made it comrade! Bypass Finish!🫡";
             bypass_link.innerHTML = "✅Link Unlocked";
             bypass_link.addEventListener('click', async (e) => {
