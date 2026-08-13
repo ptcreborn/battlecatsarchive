@@ -64,7 +64,7 @@
 
         go_btn.style.display = 'block';
         go_btn.addEventListener('click', () => {
-            window.location.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html?code=${encodeURIComponent(new_params)}`;
+            window.location.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html#${encodeURIComponent(new_params)}`;
         }, false);
     }, 3000);
 
