@@ -1,6 +1,8 @@
 (async () => {
     let decoded_data = decodeURL();
     let parsed_data = parseData(decoded_data);
+    const _signature_ = '\x62\x61\x74\x74\x6c\x65\x63\x61\x74\x73\x61\x72\x63\x68\x69\x76\x65';
+
     const go_btn = document.getElementById('go-btn');
 
     if (!decoded_data || !parsed_data)
@@ -20,12 +22,12 @@
     //      t: [target url]
     //  }
 
-
     setTimeout(async () => {
         await initFunctions(['BCA_Users']);
         const user_country_code = 'BCA_USER_COUNTRY'
         let user_data = await BCA_Users.getUserInfo('email, prof_img');
         user_data = user_data?.length === 1 ? user_data[0] : null;
+
         let active_users_id = new Date().getTime();
 
         let fb_data = await FirebaseModule.post(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/link-terminal.json`, JSON.stringify({
@@ -55,9 +57,14 @@
             }
         }));
 
+        let new_params = await BCA_Encryptor.encrypt(
+            JSON.stringify(parsed_data),
+            _signature_
+        );
+
         go_btn.style.display = 'block';
         go_btn.addEventListener('click', () => {
-            window.location.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html?code=${code}`;
+            window.location.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html?code=${encodeURIComponent(new_params)}`;
         }, false);
     }, 3000);
 
@@ -97,6 +104,7 @@
     function getFBDBPostCode(str) {
         return JSON.parse(str).name;
     }
+
     async function getCountryCode() {
         try {
             // 1. Fetch the geolocation data based on the visitor's current IP
@@ -116,27 +124,6 @@
         } catch (error) {
             console.warn("API failed, falling back to browser locale:", error.message);
             return "ANONYMOUS";
-        }
-    }
-    async function initFunctions(dependencies) {
-        for (let i = 0; i < dependencies.length; i++)
-            await waitFunctionsGetDefined(dependencies[i]);
-        async function waitFunctionsGetDefined(funcName) {
-            return new Promise(async (resolve) => {
-                while (true) {
-                    try {
-                        funcName = eval(funcName);
-                        resolve(funcName);
-                        break;
-                    } catch (e) {
-                        await sleep(1000);
-                    }
-                }
-            });
-        }
-
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
         }
     }
 })();
