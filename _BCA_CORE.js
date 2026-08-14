@@ -1467,3 +1467,94 @@ var BCA_Encryptor = {
         return new TextDecoder().decode(plainBuf);
     }
 }
+
+var BCA_Cloudflare = {
+    db_url: '',
+    async select_all_from_table(table) {
+        let key = `select-all-table-${btoa(table)}`;
+        if (this.get_cached_data(key))
+            return this.get_cached_data(key);
+
+        this.db_url = this.get_cloudflare_url();
+        this.db_url.pathname = '/select-all';
+        this.db_url.searchParams.set('table', table);
+        let data = await this.return_json(`${this.db_url}`);
+
+        if (!data)
+            return;
+
+        this.cache_data(key, data);
+        return data;
+    },
+    async select_sort(table, column, order) {
+        let key = `select-sort-${btoa(`${table}-${column}-${order}`)}`;
+        if (this.get_cached_data(key))
+            return this.get_cached_data(key);
+
+        this.db_url = this.get_cloudflare_url();
+        this.db_url.pathname = '/sort';
+        this.db_url.searchParams.set('table', table);
+        this.db_url.searchParams.set('column', column);
+        this.db_url.searchParams.set('order', order);
+        let data = await this.return_json(this.db_url);
+
+        if (!data)
+            return;
+
+        this.cache_data(key, data);
+        return data;
+    },
+    async select_where(table, column, value) {
+        let key = `select-where-${btoa(`${table}-${column}-${value}`)}`;
+        if (this.get_cached_data(key))
+            return this.get_cached_data(key);
+
+        this.db_url = this.get_cloudflare_url();
+        this.db_url.pathname = '/select';
+        this.db_url.searchParams.set('table', table);
+        this.db_url.searchParams.set('column', column);
+        this.db_url.searchParams.set('value', value);
+        let data = await this.return_json(`${this.db_url}`);
+
+        if (!data)
+            return;
+
+        this.cache_data(key, data);
+        return data;
+    },
+    async increment(table, column, value, amount, increment_column) {
+        let key = `select-where-${btoa(`${table}-${column}-${value}-${increment_column}-${amount}`)}`;
+
+        this.db_url = this.get_cloudflare_url();
+        this.db_url.pathname = '/increment';
+        this.db_url.searchParams.set('table', table);
+        this.db_url.searchParams.set('incrementColumn', increment_column);
+        this.db_url.searchParams.set('whereColumn', column);
+        this.db_url.searchParams.set('whereValue', value);
+        this.db_url.searchParams.set('amount', amount);
+        let data = await this.return_json(`${this.db_url}`);
+
+        if (!data)
+            return;
+
+        return data;
+    },
+    async return_json(url) {
+        let data = await fetch(url.toString());
+
+        if (!data.ok)
+            return;
+
+        data = await data.json();
+        return data?.length === 1 ? data[0] : data;
+    },
+    cache_data(key, data) {
+        BCA_Cache.setItemWithExpiration(key, data, 1000 * 60 * 10); // for 10 minutes
+    },
+    get_cached_data(key) {
+        return BCA_Cache.getItemWithExpiration(key);
+    },
+    get_cloudflare_url() {
+        return new URL('https://cold-water-0630.jasonbourne181997.workers.dev');
+    }
+}
