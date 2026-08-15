@@ -149,6 +149,6 @@
         // Completely remove it from the layout once the fade finishes
         setTimeout(() => {
             loader.style.display = 'none';
-        }, 1000); // Matches the 0.6s transition duration
+        }, 2000); // Matches the 0.6s transition duration
     }
 })();
