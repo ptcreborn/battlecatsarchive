@@ -30,7 +30,6 @@
     async function loadData() {
         // This is for download bypass including automatically generated url from website and intentionally shorten url
         if (checkCodeParam('code')) {
-            console.log('in');
             await initDownloadBypass(getCodeParams('code'));
             await finalizeAction(downloadBypass);
             return;
