@@ -1,8 +1,8 @@
-(async() => {
-        // wait for 5 seconds before executing any functions
+(async () => {
+    // wait for 5 seconds before executing any functions
     await sleep(1000);
     let email_ver = await recordUserRequesting();
-    if(!email_ver)
+    if (!email_ver)
         return;
 
     // if the user has been recorded to a table for all users currently bypassing now
@@ -11,20 +11,19 @@
     const btn = document.querySelector('#go-btn');
 
     btn.style.display = 'block';
-    btn.addEventListener('click', async() => {
-        window.location.href = `https://battlecatsarchive.blogspot.com/p/account-setup.html?reserved=${getURLParameters('request')}&verified=${encodeURIComponent(email_ver)}`;
+    btn.addEventListener('click', async () => {
+        window.location.href = `https://battlecatsarchive.blogspot.com/p/account-setup.html#reserved=${getURLParameters('request')}&verified=${encodeURIComponent(email_ver)}`;
     }, false);
-    
+
 
     function getURLParameters(key) {
         let url = new URL(window.location.href);
         let param = url.searchParams;
-        param = param.get(key);
+        let is_using_hash = checkHashCodeParam(key) || url.hash;
+        param = is_using_hash ? getHashCodeParam(key) : param.get(key);
 
-        if (!param) {
-            window.alert("No request parameter in the url.");
+        if (!param)
             return;
-        }
 
         return param;
     }
@@ -34,9 +33,9 @@
         // the lists will be shown at the Account Progress Page.
         const db = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-account-requests`;
         const param = getURLParameters('request');
-        if(!param)
+        if (!param)
             return;
-        
+
         let data = decodeURIComponent(param);
 
         try {
@@ -56,27 +55,27 @@
         //     }
 
         data = JSON.parse(data);
-        if(!data) 
+        if (!data)
             return;
 
         let email_encoded = btoa(data.account.email);
         let acc_name = await FirebaseModule.fetchJSON(`https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_heap/${data.account.code}.json`);
 
-        if(!acc_name) {
+        if (!acc_name) {
             window.alert("Can't find the code from the database. Please try again");
             return;
-        }          
+        }
 
         await initFunctions(['FirebaseModule', 'supabase']);
 
         let sp_db = await supabase.from('users').select('prof_img').eq('email', data.account.email);
 
-        if(sp_db.error) {
+        if (sp_db.error) {
             window.alert(`Error encountered: ${sp_db.error.message}`);
             return;
         }
 
-        if(sp_db.data.length == 0) {
+        if (sp_db.data.length == 0) {
             window.alert("No result was returned");
             return;
         }
@@ -90,5 +89,33 @@
         }));
 
         return email_encoded;
-    }    
+    }
+
+    function checkHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('=');
+
+        return hash_parts.includes(`${param}`) || null;
+    }
+
+    function getHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('&');
+
+        let value = hash_parts.map(item => {
+            let item_parts = item.split(/=(.*)/s).filter(_ => _);
+            if (param === item_parts[0])
+                return item_parts[1];
+        }).filter(_ => _);
+
+        return value ? decodeURIComponent(value) : null;
+    }
 })();
