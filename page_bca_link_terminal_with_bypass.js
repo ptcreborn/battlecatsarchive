@@ -7,7 +7,7 @@
     const user_country_code = 'BCA_USER_COUNTRY'
     const fallback_url = `https://battlecatsarchive.blogspot.com/p/you-are-requesting-out-of-bounds.html`;
 
-    let emo = ["🖥️","🐥","😵","💸","🍫"];
+    let emo = ["🖥️", "🐥", "😵", "💸", "🍫"];
 
     // Reload Detect
     const nav = performance.getEntriesByType("navigation")[0];
@@ -508,23 +508,16 @@
     }
 
     function elementInViewport(id) {
-        let el = document.getElementById(id);
-        var top = el.offsetTop;
-        var left = el.offsetLeft;
-        var width = el.offsetWidth;
-        var height = el.offsetHeight;
+        const el = document.getElementById(id);
+        if (!el) return false;
 
-        while (el.offsetParent) {
-            el = el.offsetParent;
-            top += el.offsetTop;
-            left += el.offsetLeft;
-        }
+        const rect = el.getBoundingClientRect();
 
         return (
-            top >= window.pageYOffset &&
-            left >= window.pageXOffset &&
-            (top + height) <= (window.pageYOffset + window.innerHeight) &&
-            (left + width) <= (window.pageXOffset + window.innerWidth)
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= window.innerHeight &&
+            rect.right <= window.innerWidth
         );
     }
 
@@ -536,7 +529,7 @@
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
-}   
+    }
 
     // This function will rank the users for each bypass of ads, or request of accounts.
     async function addUserXP(xp) {
