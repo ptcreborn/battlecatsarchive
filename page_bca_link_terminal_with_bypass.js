@@ -146,7 +146,7 @@
 
             await addUserXP(1);
 
-            window.location.href = `https://battlecatsarchive.blogspot.com/p/account-progress.html?ongoing=${getHashCodeParam('ongoing')}&verified=${getHashCodeParam('verified')}`;
+            window.location.href = `https://battlecatsarchive.blogspot.com/p/account-progress.html#ongoing=${getHashCodeParam('ongoing')}&verified=${getHashCodeParam('verified')}`;
         });
     }
 
