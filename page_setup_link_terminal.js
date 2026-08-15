@@ -93,12 +93,12 @@
         let url = window.location.href;
         let params = getHashCodeParam('request') || new URL(url).searchParams.get('request');
 
-        if (!params.get('request')) {
+        if (!params) {
             window.alert("The url that has been requested has no parameters. Process will not continue");
             return;
         }
 
-        return params.get('request');
+        return params;
     }
 
     function getFBDBPostCode(str) {
