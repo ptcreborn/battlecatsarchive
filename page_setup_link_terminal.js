@@ -91,7 +91,7 @@
 
     function decodeURL() {
         let url = window.location.href;
-        let params = new URL(url).searchParams;
+        let params = getHashCodeParam('request') || new URL(url).searchParams.get('request');
 
         if (!params.get('request')) {
             window.alert("The url that has been requested has no parameters. Process will not continue");
@@ -125,5 +125,33 @@
             console.warn("API failed, falling back to browser locale:", error.message);
             return "ANONYMOUS";
         }
+    }
+
+    function checkHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('=');
+
+        return hash_parts.includes(`${param}`) || null;
+    }
+
+    function getHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('&');
+
+        let value = hash_parts.map(item => {
+            let item_parts = item.split(/=(.*)/s).filter(_ => _);
+            if (param === item_parts[0])
+                return item_parts[1];
+        }).filter(_ => _);
+
+        return value ? decodeURIComponent(value) : null;
     }
 })();
