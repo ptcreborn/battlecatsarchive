@@ -30,13 +30,14 @@
     async function loadData() {
         // This is for download bypass including automatically generated url from website and intentionally shorten url
         if (checkCodeParam('code')) {
+            console.log('in');
             await initDownloadBypass(getCodeParams('code'));
             await finalizeAction(downloadBypass);
             return;
         }
 
         // This is specifically for account bypass which is used for bypassing accounts. This not to show any progress in the screen
-        if (checkCodeParam('acc_code')) {
+        if (checkCodeParam('acc_code') || checkHashCodeParam('acc_code')) {
             await initAccountBypass();
             await finalizeAction(accountBypass);
             return;
@@ -99,9 +100,12 @@
             // bypass_link.style = 'pointer-events: none; opacity: 0.7';
             // bypass_link.innerText = "Redirecting...";
 
-            let code = decodeURIComponent(getCodeParams('acc_code'));
-            let acc_name = decodeURIComponent(getCodeParams('verified'));
-            let identity_param = decodeURIComponent(getCodeParams('ongoing'));
+            // Check if the request is using hashcode
+            let is_using_hash = checkHashCodeParam('acc_code');
+
+            let code = !is_using_hash ? getCodeParams('acc_code') : getHashCodeParam('acc_code');
+            let acc_name = !is_using_hash ? getCodeParams('verified') : getHashCodeParam('verified');
+            let identity_param = !is_using_hash ? getCodeParams('ongoing') : getHashCodeParam('ongoing');
 
             if (!code || !acc_name || !identity_param) {
                 window.alert("The url parameter has missing datas.");
@@ -492,19 +496,45 @@
         let url = window.location.href;
         let params = new URL(url).searchParams;
 
-        if (!params.get(param)) {
-            window.alert(`Requested ${param} is invalid, code not found`);
+        if (!params.get(param))
             return;
-        }
 
-        return params.get(param);
+        return params.get(param) ? decodeURIComponent(params.get(param)) : null;
     }
 
     function checkCodeParam(param) {
         let url = window.location.href;
         let params = new URL(url).searchParams;
 
-        return params.get(param);
+        return params.get(param) ? decodeURIComponent(params.get(param)) : null;
+    }
+
+    function checkHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('=');
+
+        return hash_parts.includes(`${param}`) || null;
+    }
+
+    function getHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('&');
+
+        let value = hash_parts.map(item => {
+            let item_parts = item.split(/=(.*)/s).filter(_ => _);
+            if (param === item_parts[0])
+                return item_parts[1];
+        }).filter(_ => _);
+
+        return value ? decodeURIComponent(value) : null;
     }
 
     function elementInViewport(id) {
