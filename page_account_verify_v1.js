@@ -19,8 +19,9 @@
     if (!email)
         return;
 
-    code = params.get('code');
-    ver = params.get('ver');
+    let is_using_hash = checkHashCodeParam('code') || url.hash;
+    code = is_using_hash ? getHashCodeParam('code') : params.get('code');
+    ver = is_using_hash ? getHashCodeParam('ver') : params.get('ver');
 
     if (!code || !ver) {
         status.innerText = 'Sorry but you have redirected here without any provision from the server. The request is failed to load. Thank you.';
@@ -128,7 +129,7 @@
                 updated: true
             }));
 
-            window.location.href = `https://battlecatsarchive.blogspot.com/p/account-generator.html?resource=${acc_encoded_info}`;
+            window.location.href = `https://battlecatsarchive.blogspot.com/p/account-generator.html#resource=${acc_encoded_info}`;
             return;
         }
 
@@ -229,5 +230,32 @@
     }
     function sleep(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+    function checkHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('=');
+
+        return hash_parts.includes(`${param}`) || null;
+    }
+
+    function getHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('&');
+
+        let value = hash_parts.map(item => {
+            let item_parts = item.split(/=(.*)/s).filter(_ => _);
+            if (param === item_parts[0])
+                return item_parts[1];
+        }).filter(_ => _);
+
+        return value ? decodeURIComponent(value) : null;
     }
 })();
