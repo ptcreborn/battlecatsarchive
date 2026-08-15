@@ -36,19 +36,19 @@
         }
 
         // This is specifically for account bypass which is used for bypassing accounts. This not to show any progress in the screen
-        if (checkCodeParam('acc_code') || checkHashCodeParam('acc_code')) {
+        else if (checkCodeParam('acc_code') || checkHashCodeParam('acc_code')) {
             await initAccountBypass();
             await finalizeAction(accountBypass);
             return;
         }
 
         // This is the new method of bypass which is new and will not use as much resources as there is.
-        if (window.location.hash) {
+        else if (window.location.hash) {
             await initDownloadHashBypass();
             return;
         }
 
-        if (BCA_Url.getSearchParams().size === 0 || (BCA_Url.getSearchParams().size === 1 && BCA_Url.getParamValue('m') == 1)) {
+        else if (BCA_Url.getSearchParams().size === 0 || (BCA_Url.getSearchParams().size === 1 && BCA_Url.getParamValue('m') == 1)) {
             notifyMessage("Sorry but you have no request key or hash key. Donald Trump will handle you.");
             fallbackRedirect();
             return;
