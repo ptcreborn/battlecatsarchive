@@ -310,7 +310,7 @@
         version_selector.addEventListener('change', async () => {
             acc_ver = version_selector.value;
             document.getElementById('h2_title').innerText = `Request Battle Cats Accounts Version ${acc_ver} for FREE!`;
-            document.getElementById('form_parent').classList.add('ui', 'segment', 'loading');
+            // document.getElementById('form_parent').classList.add('ui', 'segment', 'loading');
             cards_parent.innerHTML = '';
             version_selector.setAttribute('disabled', '');
 
