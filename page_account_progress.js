@@ -1,4 +1,4 @@
-(async() => {
+(async () => {
     // Account Progress
     await verifyRequest();
 
@@ -8,22 +8,52 @@
         let param = url.searchParams;
         param = param.get(key);
 
-        if (!param) {
-            window.alert("No request parameter in the url.");
+        if (!param) 
             return;
-        }
-
+        
         return param;
+    }
+
+    function checkHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('=');
+
+        return hash_parts.includes(`${param}`) || null;
+    }
+
+    function getHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('&');
+
+        let value = hash_parts.map(item => {
+            let item_parts = item.split(/=(.*)/s).filter(_ => _);
+            if (param === item_parts[0])
+                return item_parts[1];
+        }).filter(_ => _);
+
+        return value ? decodeURIComponent(value) : null;
     }
 
     async function verifyRequest() {
         // the parameters ongoing and the verified must be the same
         // first get the data, by getting from db heap
 
-        let param_data = getURLParameters('ongoing');
-        let verification = getURLParameters('verified');
+        let is_hash_code = checkHashCodeParam('ongoing');
 
-        if(!param_data)
+        let ongoing = is_hash_code ? getHashCodeParam('ongoing') : getURLParameters('ongoing');
+        let verified = is_hash_code ? getHashCodeParam('verified') : getURLParameters('verified');
+        let param_data = ongoing;
+        let verification = verified;
+
+        if (!param_data)
             return;
 
         try {
@@ -33,19 +63,19 @@
             verification = atob(verification);
         } catch (error) {
             window.alert("There has been error in decoding the information from the url parameters. MAke sure you're not altering anything in the url. Thank you!");
-            return;  
-        }  
+            return;
+        }
 
         await initFunctions(['FirebaseModule']);
 
         let data = await FirebaseModule.fetchJSON(`https://storehaccounts-website-default-rtdb.firebaseio.com/accounts_heap/${param_data.account.code}.json`);
 
-        if(!data) {
+        if (!data) {
             window.alert("No data has been returned.");
             return;
-        }          
-        
-        if(data.name == verification) 
+        }
+
+        if (data.name == verification)
             showWidget();
 
         await sleep(3000);
@@ -65,17 +95,17 @@
         bypass_btn.addEventListener('click', () => {
             bypass_btn.style.pointerEvents = 'none';
             bypass_btn.style.opacity = '0.5';
-            if(data.progress >= data.ads) 
+            if (data.progress >= data.ads)
                 // redirect to the account verify page
                 window.location.href = `${param_data.targ}`;
-            else 
+            else
                 // redirect to link terminal with parameter
-                window.location.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html#acc_code=${param_data.account.code}&verified=${getURLParameters('verified')}&ongoing=${getURLParameters('ongoing')}&prog=${data.progress}`;
+                window.location.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html#acc_code=${param_data.account.code}&verified=${verified}&ongoing=${ongoing}&prog=${data.progress}`;
         });
     }
 
     async function showWidget() {
-    // update the data from account requests widget, give the latest progress
+        // update the data from account requests widget, give the latest progress
         // get all the data from account requests widget and build some widget.
 
         const db_widget = `https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-account-requests.json`;
@@ -85,22 +115,22 @@
         let widget_data = await FirebaseModule.fetchJSON(`${db_widget}?orderBy="ads"&limitToLast=50`);
         let widget_keys = Object.keys(widget_data);
 
-        if(!widget_data) {
+        if (!widget_data) {
             window.alert("Can't access the widget data from database");
             return;
-        }          
-        
-        for(const user of widget_keys) {
+        }
+
+        for (const user of widget_keys) {
             let users_data = widget_data[user];
             let widget_child = document.createElement('div');
             widget_child.setAttribute('class', 'widget-child');
-            widget_child.innerHTML = `<img onerror="this.src='https://i.imgur.com/wpQrEpL.gif'; this.onerror=null;" src='${users_data.img ? `${users_data.img}`: `https://i.imgur.com/wpQrEpL.gif`}'/>
+            widget_child.innerHTML = `<img onerror="this.src='https://i.imgur.com/wpQrEpL.gif'; this.onerror=null;" src='${users_data.img ? `${users_data.img}` : `https://i.imgur.com/wpQrEpL.gif`}'/>
                 <div class='flex-middle-section'>
                     <a target='_blank' href='https://battlecatsarchive.blogspot.com/p/profile-page.html?view=${atob(user)}' class="flex-items">${users_data.username}</a>
                     <span class='flex-items'>requesting</span>
                     <a target='_blank' href="https://battlecatsarchive.blogspot.com/p/official-battle-cats-account-request.html"><span class='flex-items'>${users_data.acc} account</span></a>
                 </div>
-                <div class='flex-progress flex-items'>${users_data.prog >= users_data.ads ? `Completed`: `${users_data.prog}/${users_data.ads}`}</div>`;
+                <div class='flex-progress flex-items'>${users_data.prog >= users_data.ads ? `Completed` : `${users_data.prog}/${users_data.ads}`}</div>`;
 
             fragment.appendChild(widget_child);
         }
