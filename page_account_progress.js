@@ -70,7 +70,7 @@
                 window.location.href = `${param_data.targ}`;
             else 
                 // redirect to link terminal with parameter
-                window.location.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html?acc_code=${param_data.account.code}&verified=${getURLParameters('verified')}&ongoing=${getURLParameters('ongoing')}&prog=${data.progress}`;
+                window.location.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html#acc_code=${param_data.account.code}&verified=${getURLParameters('verified')}&ongoing=${getURLParameters('ongoing')}&prog=${data.progress}`;
         });
     }
 
