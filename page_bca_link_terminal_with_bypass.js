@@ -134,7 +134,6 @@
                 return;
             }
 
-
             data.progress += 1;
 
             // patch the progress to the heap code
@@ -148,8 +147,7 @@
 
             await addUserXP(1);
 
-
-            window.location.href = `https://battlecatsarchive.blogspot.com/p/account-progress.html?ongoing=${getCodeParams('ongoing')}&verified=${getCodeParams('verified')}`, `_blank`;
+            window.location.href = `https://battlecatsarchive.blogspot.com/p/account-progress.html?ongoing=${getHashCodeParam('ongoing')}&verified=${getHashCodeParam('verified')}`;
         });
     }
 
