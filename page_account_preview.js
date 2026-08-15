@@ -1,3 +1,4 @@
+(async() => {
 const db = `https://storehaccounts-threads-default-rtdb.firebaseio.com/email_accounts`;
     const container = document.getElementById('container');
 
@@ -71,3 +72,5 @@ const db = `https://storehaccounts-threads-default-rtdb.firebaseio.com/email_acc
 
         return value ? decodeURIComponent(value) : null;
     }
+
+})();
