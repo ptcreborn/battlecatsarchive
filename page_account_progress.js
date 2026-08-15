@@ -65,7 +65,7 @@
         bypass_btn.addEventListener('click', () => {
             bypass_btn.style.pointerEvents = 'none';
             bypass_btn.style.opacity = '0.5';
-            if(data.progress == data.ads) 
+            if(data.progress >= data.ads) 
                 // redirect to the account verify page
                 window.location.href = `${param_data.targ}`;
             else 
