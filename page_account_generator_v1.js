@@ -5,9 +5,38 @@
 
     const info = document.getElementById('info');
     let url = window.location.href;
+    let is_using_hash = checkHashCodeParam('resource') || url.hash;
     let params = new URL(url).searchParams;
 
-    let decoded_link = params.get('resource');
+    let decoded_link = is_using_hash ? getHashCodeParam('resource') : params.get('resource');
+
+    function checkHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('=');
+
+        return hash_parts.includes(`${param}`) || null;
+    }
+
+    function getHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('&');
+
+        let value = hash_parts.map(item => {
+            let item_parts = item.split(/=(.*)/s).filter(_ => _);
+            if (param === item_parts[0])
+                return item_parts[1];
+        }).filter(_ => _);
+
+        return value ? decodeURIComponent(value) : null;
+    }
 
     try {
         decoded_link = JSON.parse(atob(decoded_link));
