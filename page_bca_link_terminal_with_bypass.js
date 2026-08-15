@@ -102,9 +102,13 @@
             // Check if the request is using hashcode
             let is_using_hash = checkHashCodeParam('acc_code');
 
-            let code = !is_using_hash ? getCodeParams('acc_code') : getHashCodeParam('acc_code');
-            let acc_name = !is_using_hash ? getCodeParams('verified') : getHashCodeParam('verified');
-            let identity_param = !is_using_hash ? getCodeParams('ongoing') : getHashCodeParam('ongoing');
+            let acc_code = !is_using_hash ? getCodeParams('acc_code') : getHashCodeParam('acc_code');
+            let verified = !is_using_hash ? getCodeParams('verified') : getHashCodeParam('verified');
+            let ongoing = !is_using_hash ? getCodeParams('ongoing') : getHashCodeParam('ongoing');
+
+            let code = acc_code;
+            let acc_name = verified;
+            let identity_param = ongoing;
 
             if (!code || !acc_name || !identity_param) {
                 window.alert("The url parameter has missing datas.");
@@ -146,7 +150,7 @@
 
             await addUserXP(1);
 
-            window.location.href = `https://battlecatsarchive.blogspot.com/p/account-progress.html#ongoing=${getHashCodeParam('ongoing')}&verified=${getHashCodeParam('verified')}`;
+            window.location.href = `https://battlecatsarchive.blogspot.com/p/account-progress.html#ongoing=${ongoing}&verified=${verified}`;
         });
     }
 
