@@ -111,7 +111,14 @@
             let identity_param = ongoing;
 
             if (!code || !acc_name || !identity_param) {
-                window.alert("The url parameter has missing datas.");
+                window.alert(`"The url parameter has missing datas."
+                    
+                    Please screenshot this and upload to Ticket.
+                    URL: ${window.location.href}
+
+                    Referrer: ${document.referrer}
+
+                    `);
                 return;
             }
 
@@ -374,7 +381,14 @@
                 raw_target_key: raw_target_key
             }
         } catch (e) {
-            notifyMessage('Invalid hash key...');
+            notifyMessage(`"Invalid hash key."
+                    
+                    Please screenshot this and upload to Ticket.
+                    URL: ${window.location.href}
+
+                    Referrer: ${document.referrer}
+
+                    `);
             fallbackRedirect();
             return;
         }
