@@ -69,7 +69,7 @@
     }
 
     btn.innerHTML = "✅Proceed Now";
-    btn.href = `https://battlecatsarchive.blogspot.com/p/setup-link-terminal.html?request=${btoa(JSON.stringify(data))}`;
+    btn.href = `https://battlecatsarchive.blogspot.com/p/setup-link-terminal.html#request=${btoa(JSON.stringify(data))}`;
 
     // btn.href = `https://battlecatsarchive.blogspot.com/p/decode-page.html?id=${key}&decode=${param}`;
 
