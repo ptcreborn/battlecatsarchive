@@ -266,7 +266,7 @@
         let data, error;
 
         if (BCA_Cache.getItemWithExpiration('home_widget_tickets'))
-            return BCA_Cache.getItemWithExpiration('home_widget_tickets');
+            data = BCA_Cache.getItemWithExpiration('home_widget_tickets');
         else {
             data = await supabase.from('bca-ticket').select('fb_id, date, title, user_id(username, email, prof_img, country)').order('date', { ascending: false }).limit(50);
             data = data.data;
