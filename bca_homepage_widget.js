@@ -174,13 +174,22 @@
         await initFunctions(['supabase', 'FirebaseModule']);
         let cur_user = await BCA_Users.getUserInfo('username');
         cur_user = cur_user?.length === 1 ? cur_user[0].username : '';
+        let data, error;
 
-        let { data, error } = await supabase.from('bca-comments').select('id, date, fb_id, bca-website-posts(url), user_id!inner(username, prof_img, country)').not('user_id.username', 'eq', cur_user).order('date', { ascending: false }).limit(100);
+        if (BCA_Cache.getItemWithExpiration('home_page_widget_comments'))
+            data = BCA_Cache.getItemWithExpiration('home_page_widget_comments');
+        else {
+            data = await supabase.from('bca-comments').select('id, date, fb_id, bca-website-posts(url), user_id!inner(username, prof_img, country)').not('user_id.username', 'eq', cur_user).order('date', { ascending: false }).limit(100);
+            data = data.data;
+            error = data.error;
+        }
 
         if (data.length === 0 || error) {
             console.log(error);
             return;
         }
+
+        BCA_Cache.setItemWithExpiration('home_page_widget_comments', data, 1000 * 60);
 
         const template = document.getElementById('recent_comments_widget_template');
         const parent = document.getElementById('bca_recent_comments');
@@ -222,13 +231,22 @@
     async function loadLatestMembers() {
         let parent = document.getElementById('bca_recent_members');
         let template = document.getElementById('recent_members_widget_template');
+        let data, error;
 
-        let { data, error } = await supabase.from('users').select('username, created_at, prof_img, email, country').limit(100).order('created_at', { ascending: false });
+        if (BCA_Cache.getItemWithExpiration('home_widget_members'))
+            data = BCA_Cache.getItemWithExpiration('home_widget_members');
+        else {
+            data = await supabase.from('users').select('username, created_at, prof_img, email, country').limit(100).order('created_at', { ascending: false });
+            data = data.data;
+            error = data.error;
+        }
 
         if (data.length === 0 || error) {
             console.log(error);
             return;
         }
+
+        BCA_Cache.setItemWithExpiration('home_widget_members', data, 1000 * 60);
 
         data.forEach(item => {
             let clone = clone_template(template);
@@ -245,12 +263,22 @@
         removeSkeleton(parent);
     }
     async function loadLatestTickets() {
-        let { data, error } = await supabase.from('bca-ticket').select('fb_id, date, title, user_id(username, email, prof_img, country)').order('date', { ascending: false }).limit(50);
+        let data, error;
+
+        if (BCA_Cache.getItemWithExpiration('home_widget_tickets'))
+            return BCA_Cache.getItemWithExpiration('home_widget_tickets');
+        else {
+            data = await supabase.from('bca-ticket').select('fb_id, date, title, user_id(username, email, prof_img, country)').order('date', { ascending: false }).limit(50);
+            data = data.data;
+            data = data.error;
+        }
 
         if (data.length === 0 || error) {
             console.log(error);
             return;
         }
+
+        BCA_Cache.setItemWithExpiration('home_widget_tickets', data, 1000 * 60);
 
         const parent = document.getElementById('bca_recent_tickets');
         const template = document.getElementById('recent_tickets_widget_template');
