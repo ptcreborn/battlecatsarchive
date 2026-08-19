@@ -7,7 +7,7 @@
 
     let user_id = await BCA_Users.getUserInfo('id');
     if (!user_id) {
-        form.innerHTML = `<h2 style="padding: 0 10px;">You need to login before submitting</h2>`;
+        form.innerHTML = `<h2 style="padding: 0 10px;">You need to <a href='https://battlecatsarchive.blogspot.com/p/signin-to-bca.html'>login</a> before submitting your idea.</h2>`;
         return;
     }
 
