@@ -53,5 +53,7 @@
             window.alert(`Problem in submitting post. ${json}`);
             return;
         }
+
+        window.location.href = `https://battlecatsarchive.blogspot.com/p/the-battle-cats-all-account-types-and.html`;
     }
 })();
