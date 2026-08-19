@@ -1154,10 +1154,16 @@ var BCA_Comment = {
     // this functions loads the comments from the url
     async getCommentsData() {
         let id = await this.getPathnameID();
+
+        if(BCA_Cache.getItemWithExpiration(id))
+            return BCA_Cache.getItemWithExpiration(id);
+
         let { data, error } = await supabase.from('bca-comments').select('*, user_id(prof_img, username, email)').eq('bca_posts', id).order('id', { ascending: true });
 
         if (data?.length === 0 || error)
             return;
+
+        BCA_Cache.setItemWithExpiration(id, data, 1000 * 60);
 
         return data;
     },
@@ -1165,10 +1171,15 @@ var BCA_Comment = {
         if (!target_id)
             return;
 
+        if(BCA_Cache.getItemWithExpiration(target_id))
+            return BCA_Cache.getItemWithExpiration(target_id);
+
         let { data, error } = await supabase.from('bca-comments').select('*, user_id(prof_img, username, email)').eq('id', target_id);
 
         if (data?.length === 0 || error)
             return;
+
+        BCA_Cache.setItemWithExpiration(target_id, data, 1000 * 60);
 
         return data;
     },
