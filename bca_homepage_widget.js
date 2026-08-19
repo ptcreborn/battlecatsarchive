@@ -273,6 +273,8 @@
             data = data.error;
         }
 
+        console.log(data);
+
         if (data.length === 0 || error) {
             console.log(error);
             return;
