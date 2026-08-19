@@ -1184,7 +1184,13 @@ var BCA_Comment = {
         return data;
     },
     async getFBCommentData(id, root) {
+        let cache_key = `${id}-${root}`;
+        if(BCA_Cache.getItemWithExpiration(cache_key))
+            return BCA_Cache.getItemWithExpiration(cache_key);
+
         let data = await FirebaseModule.fetchJSON(`${this.fb_comments}/${id}/${root}.json`);
+
+        BCA_Cache.setItemWithExpiration(cache_key, data, 1000 * 60 * 10);
 
         return data;
     },
