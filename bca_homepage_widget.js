@@ -270,10 +270,8 @@
         else {
             data = await supabase.from('bca-ticket').select('fb_id, date, title, user_id(username, email, prof_img, country)').order('date', { ascending: false }).limit(50);
             data = data.data;
-            data = data.error;
+            error = data.error;
         }
-
-        console.log(data);
 
         if (data.length === 0 || error) {
             console.log(error);
