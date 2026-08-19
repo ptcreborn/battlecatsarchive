@@ -7,8 +7,7 @@
 
     let user_id = await BCA_Users.getUserInfo('id');
     if (!user_id) {
-        window.alert(`You need to signin first before creating your account idea.`);
-        window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
+        form.innerHTML = `<h2 style="padding: 0 10px;">You need to login before submitting</h2>`;
         return;
     }
 
@@ -23,7 +22,7 @@
         let title = document.querySelector('[account-type-title]').value;
         let desc = document.querySelector('[account-type-description]').value;
 
-        if (!(title && desc)) {
+        if (!(title && desc && user_id)) {
             window.alert("Error, please fill up the title and description.");
             return;
         }
@@ -32,7 +31,7 @@
             action: 'insert_account_type',
             title: title,
             description: desc,
-            user_id: parseInt(user_id[0].id)
+            user_id: parseInt(user_id?.[0]?.id)
         }
 
         const url = `https://cold-water-0630.jasonbourne181997.workers.dev/insert_account_type`;
