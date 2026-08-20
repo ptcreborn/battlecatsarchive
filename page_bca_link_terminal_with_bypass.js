@@ -725,18 +725,6 @@
 
         if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled") {
             // // filled
-            // bca_link_ads.style.display = 'block';
-            // bca_link_ads.style.visibility = 'visible';
-            // bca_link_ads.style.opacity = '0.001';
-            // bca_link_ads.style.margin = "0 auto";
-            // bca_link_ads.style.top = "-160px";
-            // bca_link_ads.style.position = "relative";
-            // bca_link_ads.style.width = '';
-            
-            // bca_link_ads.style.position = 'absolute';
-            // bca_link_ads.style.transform = 'translate(-50%, -150px)';
-            // bca_link_ads.style.left = '50%';
-
             status.textContent = `You can now bypass!`;
             bypass_msg.textContent = `Bypass available now. Start!`;
             link.textContent = "Proceed Now";
