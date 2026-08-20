@@ -3,7 +3,7 @@
     const controls = document.getElementById('panelControls');
     let num_of_requests = 0;
 
-    await initFunctions(['supabase']);
+    await initFunctions(['supabase', 'BCA_Users']);
     let isViewingOtherProfile = true;
     let userSession = await getUserSession();
     let userEmail = await renderUserInfo(userSession); // [email, username]
@@ -61,13 +61,20 @@
 
         const user_id = await getUserID(userEmail[0]);
         // calling user records.
-        let data = await supabase.rpc('get_user_account_requests', {target_user_id: user_id});
-        if (!data?.data) {
-            window.alert("No account history was seen from the user's record.");
-            return;
+        let data;
+
+        if (BCA_Cache.getItemWithExpiration(`profile_page_${user_id}`))
+            data = BCA_Cache.getItemWithExpiration(`profile_page_${user_id}`);
+        else {
+            data = await supabase.rpc('get_user_account_requests', { target_user_id: user_id });
+            if (!data?.data || data.error) {
+                window.alert("No account history was seen from the user's record.");
+                return;
+            }
+            data = data.data;
         }
 
-        data = data.data;
+        BCA_Cache.setItemWithExpiration(`profile_page_${user_id}`, data, 1000 * 60 * 2);
 
         if (isViewingOtherProfile) document.querySelector(`#othersProfile`).innerHTML = `⚠️You are viewing other's Profile⚠️`;
         else document.querySelector('#othersProfile').remove();
@@ -80,8 +87,8 @@
                 let lang = bucket.lang?.lang;
                 let name = bucket.acc_id?.name;
                 let ads = bucket.acc_id?.ads;
-                let raw = bucket.raw.includes('.jpg') ? `<a target='_blank' href='https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(bucket.raw)}'><img src='https://bca-image-proxy.jasonbourne181997.workers.dev${bucket.raw}'/></a>`: 
-                `<div style="
+                let raw = bucket.raw.includes('.jpg') ? `<a target='_blank' href='https://battlecatsarchive.blogspot.com/p/image-viewer.html?view=${btoa(bucket.raw)}'><img src='https://bca-image-proxy.jasonbourne181997.workers.dev${bucket.raw}'/></a>` :
+                    `<div style="
     display: flex;
     border: 1px solid white;
     max-width: 300px;
