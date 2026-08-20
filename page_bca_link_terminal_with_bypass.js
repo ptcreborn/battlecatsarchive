@@ -721,9 +721,9 @@
         }
 
         exhaust = BCA_Cache.getItemWithExpiration('bca_link_exhaust');
+        console.log('started');
 
-        if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled" ||
-            auction_Iframe?.getAttribute('data-load-complete') === "true") {
+        if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled") {
             // filled
             bca_link_ads.style.display = 'block';
             bca_link_ads.style.visibility = 'visible';
@@ -797,6 +797,7 @@
                 }
             } else {
                 // check if the opening of link in new tab is legit by estimated less than 1,000 ms
+                console.log('im back!');
                 if ((isHidden && !isUnlocked)) {
                     checkIfBypassDone();
                     // let time_register = isMobileSite ? 2500 : 1000;
