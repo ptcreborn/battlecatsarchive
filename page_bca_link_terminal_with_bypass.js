@@ -843,7 +843,7 @@
         async function checkIfBypassDone() {
             const time_state = checkTime();
 
-            if (time_state === null)
+            if (time_state === null && !isException)
                 return;
 
             bypass_msg.innerHTML = "⏳Checking Status...";
