@@ -30,7 +30,7 @@
     // Collect Garbage
     garbageCollect();
 
-    let param = new URL(window.location.href).searchParams.get('id');
+    let param = getHashCodeParam('id') || new URL(window.location.href).searchParams.get('id');
     param = decodeURIComponent(param);
 
     await getDLInfo(btoa(param));
@@ -96,6 +96,24 @@
             ["encrypt", "decrypt"]
         );
     }
+
+    function getHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('&');
+
+        let value = hash_parts.map(item => {
+            let item_parts = item.split(/=(.*)/s).filter(_ => _);
+            if (param === item_parts[0])
+                return item_parts[1];
+        }).filter(_ => _);
+
+        return value ? decodeURIComponent(value) : null;
+    }
+
     async function encryptData(text, password) {
         const enc = new TextEncoder();
         const salt = crypto.getRandomValues(new Uint8Array(16));
