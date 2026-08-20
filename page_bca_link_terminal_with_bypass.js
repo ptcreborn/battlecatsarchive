@@ -758,7 +758,7 @@
             isException = true;
             status.innerHTML = "GG you can unlock the link now!";
             console.log(`GG you can unlock the link now!`);
-            link.textContent = "Proceed Now";
+            link.textContent = "Loading...";
             checkIfBypassDone();
         }
 
