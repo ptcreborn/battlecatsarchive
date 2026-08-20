@@ -711,9 +711,6 @@ ul.header-menu li {
     display: inline-block;
     border-radius: 10px;
 }
-ins.adsbygoogle[data-ad-status="unfilled"] {
-    display: none !important;
-}
 a.nav-href-shortcut {
     display: flex;
     align-items: center;
