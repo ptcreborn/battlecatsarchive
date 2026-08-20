@@ -340,18 +340,18 @@
             bypass_msg.innerHTML = "🫡You have made it comrade! Bypass Finish!🫡";
             bypass_link.innerHTML = "✅Link Unlocked";
             bypass_link.addEventListener('click', async (e) => {
+                e.preventDefault();
                 bypass_link.style.pointerEvents = 'none';
                 bypass_link.style.opacity = '0.7';
-                e.preventDefault();
                 await FirebaseModule.patch(`${db}/${key}.json`, 'null');
                 window.location.href = decodeURIComponent(key_payload.params.t);
             });
         } else {
             bypass_link.innerHTML = "✅Link Unlocked";
             bypass_link.addEventListener('click', async (e) => {
+                e.preventDefault();
                 bypass_link.style.pointerEvents = 'none';
                 bypass_link.style.opacity = '0.7';
-                e.preventDefault();
                 // increment the progress on the active users widget in link terminal
                 let new_prog = prog + 1;
                 await FirebaseModule.patch(`${db}/${key}.json`,
@@ -723,86 +723,89 @@
         exhaust = BCA_Cache.getItemWithExpiration('bca_link_exhaust');
         console.log('started');
 
-        if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled") {
-            // // filled
-            status.textContent = `You can now bypass!`;
-            bypass_msg.textContent = `Bypass available now. Start!`;
-            link.textContent = "Proceed Now";
-        } else if (localStorage.getItem('lem') || bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "unfilled") {
-            isUnfilled = true;
-            status.textContent = `You can now bypass!`;
-            bypass_msg.textContent = `Bypass available now. Start!`;
-            link.textContent = "Proceed Now";
-            link.addEventListener('click', () => setLSTime());
-            console.log(`Unfilled ads: ${isUnfilled}`);
-        } else if (bca_link_ads.querySelector('ins')?.getAttribute('ablated-ad-slot') !== null) {
-            isUnfilled = true;
-            status.textContent = `You can now bypass!`;
-            bypass_msg.textContent = `Bypass available now. Start!`;
-            link.addEventListener('click', setLSTime);
-            console.log(`Unfilled ads: ${isUnfilled}`);
-            link.textContent = "Proceed Now";
-        } else {
-            isException = true;
-            status.innerHTML = "GG you can unlock the link now!";
-            console.log(`GG you can unlock the link now!`);
-            link.textContent = "Loading...";
-            checkIfBypassDone();
-        }
+        isException = true;
+        await checkIfBypassDone();
 
-        window.addEventListener('blur', onBlur, false);
-        window.addEventListener('beforeunload', onUnload, false);
-        document.addEventListener('visibilitychange', onVisibilityChange, false);
+        // if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled") {
+        //     // // filled
+        //     status.textContent = `You can now bypass!`;
+        //     bypass_msg.textContent = `Bypass available now. Start!`;
+        //     link.textContent = "Proceed Now";
+        // } else if (localStorage.getItem('lem') || bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "unfilled") {
+        //     isUnfilled = true;
+        //     status.textContent = `You can now bypass!`;
+        //     bypass_msg.textContent = `Bypass available now. Start!`;
+        //     link.textContent = "Proceed Now";
+        //     link.addEventListener('click', () => setLSTime());
+        //     console.log(`Unfilled ads: ${isUnfilled}`);
+        // } else if (bca_link_ads.querySelector('ins')?.getAttribute('ablated-ad-slot') !== null) {
+        //     isUnfilled = true;
+        //     status.textContent = `You can now bypass!`;
+        //     bypass_msg.textContent = `Bypass available now. Start!`;
+        //     link.addEventListener('click', setLSTime);
+        //     console.log(`Unfilled ads: ${isUnfilled}`);
+        //     link.textContent = "Proceed Now";
+        // } else {
+        //     isException = true;
+        //     status.innerHTML = "GG you can unlock the link now!";
+        //     console.log(`GG you can unlock the link now!`);
+        //     link.textContent = "Loading...";
+        //     checkIfBypassDone();
+        // }
 
-        function onBlur() {
-            if (isUnfilled)
-                isBlur = true;
+        // window.addEventListener('blur', onBlur, false);
+        // window.addEventListener('beforeunload', onUnload, false);
+        // document.addEventListener('visibilitychange', onVisibilityChange, false);
 
-            setTimeout(() => {
-                if (document.activeElement == auction_Iframe && !isUnlocked) {
-                    isBlur = true;
-                    blurTime = new Date().getTime();
-                }
-            }, 0);
-        }
+        // function onBlur() {
+        //     if (isUnfilled)
+        //         isBlur = true;
 
-        function onUnload() {
-            if (isBlur && !isUnlocked) {
-                isUnload = true;
-                setLSTime();
-            }
-        }
+        //     setTimeout(() => {
+        //         if (document.activeElement == auction_Iframe && !isUnlocked) {
+        //             isBlur = true;
+        //             blurTime = new Date().getTime();
+        //         }
+        //     }, 0);
+        // }
 
-        function onVisibilityChange() {
-            window.focus();
-            if (document.hidden) {
-                // For Unfilled ads adding new eventlistener when link is clicked, setLSTime();
-                if (isBlur && isUnfilled && !isUnlocked) {
-                    isHidden = true;
-                }
-                else if ((!isUnlocked && isBlur && !isUnload)) {
-                    setLSTime();
-                    isHidden = true;
-                }
-            } else {
-                // check if the opening of link in new tab is legit by estimated less than 1,000 ms
-                console.log('im back!');
-                if ((isHidden && !isUnlocked)) {
-                    checkIfBypassDone();
-                    // let time_register = isMobileSite ? 2500 : 1000;
-                    // if (hiddenTime - blurTime <= time_register)
-                    //     checkIfBypassDone();
-                    // else {
-                    //     bypass_msg.innerHTML = `⚠️ Sorry but the view does not register, please click again.`;
-                    //     status.textContent = `Try bypassing again.`;
-                    // }
-                }
-                else {
-                    if (!isUnlocked)
-                        checkIfBypassDone();
-                }
-            }
-        }
+        // function onUnload() {
+        //     if (isBlur && !isUnlocked) {
+        //         isUnload = true;
+        //         setLSTime();
+        //     }
+        // }
+
+        // function onVisibilityChange() {
+        //     window.focus();
+        //     if (document.hidden) {
+        //         // For Unfilled ads adding new eventlistener when link is clicked, setLSTime();
+        //         if (isBlur && isUnfilled && !isUnlocked) {
+        //             isHidden = true;
+        //         }
+        //         else if ((!isUnlocked && isBlur && !isUnload)) {
+        //             setLSTime();
+        //             isHidden = true;
+        //         }
+        //     } else {
+        //         // check if the opening of link in new tab is legit by estimated less than 1,000 ms
+        //         console.log('im back!');
+        //         if ((isHidden && !isUnlocked)) {
+        //             checkIfBypassDone();
+        //             // let time_register = isMobileSite ? 2500 : 1000;
+        //             // if (hiddenTime - blurTime <= time_register)
+        //             //     checkIfBypassDone();
+        //             // else {
+        //             //     bypass_msg.innerHTML = `⚠️ Sorry but the view does not register, please click again.`;
+        //             //     status.textContent = `Try bypassing again.`;
+        //             // }
+        //         }
+        //         else {
+        //             if (!isUnlocked)
+        //                 checkIfBypassDone();
+        //         }
+        //     }
+        // }
 
         function setLSTime() {
             const label = atob(page_name);
@@ -855,6 +858,7 @@
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
                     localStorage.removeItem(atob(page_name));
+                    link.style.pointerEvents = 'none';
                 }, false);
                 await actionCallback();
             } else if (checkTime() == null && !isUnlocked) {
