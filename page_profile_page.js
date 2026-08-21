@@ -14,6 +14,7 @@
     window.logout = async () => {
         await supabase.auth.signOut();
         localStorage.removeItem('user');
+        localStorage.removeItem('active_email');
         window.location.href = `https://battlecatsarchive.blogspot.com/`;
     }
 
