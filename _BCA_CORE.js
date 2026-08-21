@@ -680,6 +680,28 @@ var BCA_Display = {
 
             }
         }, 300);
+    },
+    cloneTemplate(template_id) {
+        return document.getElementById(template_id).content.cloneNode(true).children[0];
+    },
+    async setSkeleton(parent_id) {
+        appendCSSFile('https://rawcdn.githack.com/ptcreborn/battlecatsarchive/26f4b9da39d1b7bda64f3cf1c03da50f0534a7c9/skeleton.css');
+
+        const skeleton_html = `<div class="bca-skeleton-card">
+            <div class="bca-skeleton bca-skeleton-line"></div>
+            <div class="bca-skeleton bca-skeleton-line"></div>
+            <div class="bca-skeleton bca-skeleton-line"></div>
+            <div class="bca-skeleton bca-skeleton-line"></div>
+            <div class="bca-skeleton bca-skeleton-line"></div>
+        </div>`;
+
+        document.getElementById(parent_id).innerHTML = skeleton_html;
+    },
+
+    async removeSkeleton(parent_id) {
+        const parent = document.getElementById(parent_id);
+        // remove skeleton
+        parent.querySelector('.bca-skeleton-card')?.remove();
     }
 }
 
