@@ -697,11 +697,16 @@ var BCA_Display = {
 
         document.getElementById(parent_id).innerHTML = skeleton_html;
     },
-
     async removeSkeleton(parent_id) {
         const parent = document.getElementById(parent_id);
         // remove skeleton
         parent.querySelector('.bca-skeleton-card')?.remove();
+    },
+    query(id) {
+        return document.querySelector(id);
+    },
+    wQuery(id) {
+        return document.querySelector(`[${id}]`);
     }
 }
 
