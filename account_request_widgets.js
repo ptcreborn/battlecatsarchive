@@ -1,4 +1,4 @@
-(async() => {
+(async () => {
 
     // this JS file builds the widgets file in account request page.
     // widgets such as the top 10 account requester and recent account requests
@@ -7,10 +7,21 @@
     await cookieLoadFast();
 
     async function buildRecentRequest() {
-        let { data, error } = await supabase.from('account-requests').select('date, type(name), user_id(username, email, prof_img)').order('date', { ascending: false }).limit(60);
-        if (error) {
-            window.alert(error.message);
-            return;
+        let data;
+        const cache_key = `buildRecentRequest-widget`;
+
+        if (BCA_Cache.getItemWithExpiration(cache_key))
+            data = BCA_Cache.getItemWithExpiration(cache_key);
+        else {
+            data = await supabase.from('account-requests').select('date, type(name), user_id(username, email, prof_img)').order('date', { ascending: false }).limit(60);
+
+            if (!data?.length === 0 || data.error) {
+                window.alert(error.message);
+                return;
+            }
+
+            data = data.data;
+            BCA_Cache.setItemWithExpiration(cache_key, data, 1000 * 60 * 30);
         }
 
         // let users_email = data.map(item => item.user_id.email);
@@ -94,20 +105,37 @@
     await getTopAccountRequester();
 
     async function getTopAccountRequester() {
-        let data = await supabase.rpc('refresh_weekly_account_requesters');
-        if (data.error) {
-            window.alert(`${data.error.message}`);
-            return;
+        let data;
+        let cache_key = `refresh_weekly_account_requesters`;
+
+        if (BCA_Cache.getItemWithExpiration(cache_key))
+            data = BCA_Cache.getItemWithExpiration(cache_key);
+        else {
+            data = await supabase.rpc('refresh_weekly_account_requesters');
+            if (!data?.length === 0 || data.error) {
+                window.alert(`${data.error.message}`);
+                return;
+            }
+            BCA_Cache.setItemWithExpiration(cache_key, data, 1000 * 60 * 30);
         }
 
         if (data.status == 204) {
             // means successful requests
 
-            let accs_data = await supabase.from('refresh_weekly_account_requesters_data').select('*');
+            let accs_data;
+            cache_key = `refresh_weekly_account_requesters_data`;
 
-            if (accs_data.error) {
-                window.alert(`${accs_data.error.message}`);
-                return;
+            if (BCA_Cache.getItemWithExpiration(cache_key))
+                accs_data = BCA_Cache.getItemWithExpiration(cache_key);
+            else {
+                accs_data = await supabase.from('refresh_weekly_account_requesters_data').select('*');
+
+                if (accs_data.error) {
+                    window.alert(`${accs_data.error.message}`);
+                    return;
+                }
+
+                BCA_Cache.setItemWithExpiration(cache_key, accs_data, 1000 * 60 * 30);
             }
 
             if (accs_data.data.length > 0) {
