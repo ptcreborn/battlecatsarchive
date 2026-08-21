@@ -806,8 +806,12 @@ var BCA_Comment = {
 
         this.comment_form = document.getElementById('bca_universal_comment');
 
+        // build all the comments
+        let comments_data = await this.getCommentsData();
+        await this.renderCommentChild(comments_data);
+
         // if the form cant be seen, dont initialize!
-        if (!this.comment_form)
+        if (!this.comment_form || this.comment_form_parent.dataset.flag !== "disabled")
             return;
 
         // check if the user is logged in...
@@ -823,8 +827,7 @@ var BCA_Comment = {
         this.initLinkAPI();
         this.initCancelReplyAPI();
 
-        if (this.comment_form.dataset.flag !== "disabled")
-            this.initCommentEditor(this.user_id);
+        this.initCommentEditor(this.user_id);
 
         // event listener for comment
         this.comment_form.addEventListener('submit', async (e) => {
@@ -834,8 +837,6 @@ var BCA_Comment = {
 
         // render the comment
         await this.renderTargetComment();
-        let comments_data = await this.getCommentsData();
-        await this.renderCommentChild(comments_data);
         this.updateCommentCount();
     },
     getContents() {
