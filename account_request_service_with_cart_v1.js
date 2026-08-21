@@ -554,7 +554,7 @@
                 alert("Sorry but there are no data from the version you are looking for. Maybe the admin has not uploaded accounts yet. Thank you!");
                 return;
             }
-            BCA_Cache.setItemWithExpiration(cached_key, data, 1000 * 60);
+            BCA_Cache.setItemWithExpiration(cached_key, supabase_data, 1000 * 60);
         }
 
         for (const item of supabase_data) {
