@@ -12,14 +12,11 @@
         document.getElementById('bca-notif-mother').style.display = 'flex';
     });
 
-    let user_online = BCA_Cache.get('active_email') || await BCA_Users.checkIfUserOnline();
-    BCA_Cache.set('active_email', user_online);
-
-    const isUserRegisteredcached_key = `${user_online}-isUserRegistered`;
-    const isUserLoggedIncached_key = `${user_online}-isUserLoggedIn`;
+    const isUserRegisteredcached_key = `active_user-isUserRegistered`;
+    const isUserLoggedIncached_key = `active_user-isUserLoggedIn`;
 
     // Check if the user is registered!
-    let isUserLoggedIn = BCA_Cache.getItemWithExpiration(isUserLoggedIncached_key) || user_online;
+    let isUserLoggedIn = BCA_Cache.getItemWithExpiration(isUserLoggedIncached_key) || await BCA_Users.checkIfUserOnline();
     let isUserRegistered = BCA_Cache.getItemWithExpiration(isUserRegisteredcached_key) || await BCA_Users.checkIfUserCompleteRegistration();
     let inCompleteRegistration = isUserLoggedIn && !isUserRegistered;
 
@@ -27,6 +24,8 @@
     BCA_Cache.setItemWithExpiration(isUserRegisteredcached_key, isUserRegistered, 1000 * 60 * 10);
 
     if (inCompleteRegistration) {
+        console.log(isUserLoggedIn);
+        console.log(isUserRegistered);
         window.alert("Your account has not yet setup. Please kindly login again and finish setting up your account. Thank you.");
         window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
         return;
@@ -39,6 +38,7 @@
     let user_data = BCA_Cache.getItemWithExpiration(BCA_Notifications.LOCALSTORAGE_USER);
     user_img.src = user_data?.prof_img || default_prof;
     user.href = `javascript:void(0)`;
+
 
     // Load number of notification counts.
     BCA_Notifications.checkNotifCount();
