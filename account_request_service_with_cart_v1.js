@@ -507,7 +507,7 @@
 
     async function listenLang() {
         const version_selector = document.getElementById('store_ver_select');
-        let versions = await getVersions();
+        // let versions = await getVersions();
 
         let new_versions = await getNewVersions();
         if (!new_versions) {
@@ -543,11 +543,18 @@
         document.getElementById('form_parent').classList.remove('ui', 'segment', 'loading');
 
         let version = version_selector.value.split('-');
-        let supabase_data = await fetchUpdatedQty(version.shift(), version.join('-'));
+        let cached_key = `buildCompactMenu-supabase_data`;
+        let supabase_data;
 
-        if(!supabase_data) {
-            alert("Sorry but there are no data from the version you are looking for. Maybe the admin has not uploaded accounts yet. Thank you!");
-            return;
+        if (BCA_Cache.getItemWithExpiration(cached_key))
+            supabase_data = BCA_Cache.getItemWithExpiration(cached_key);
+        else {
+            supabase_data = await fetchUpdatedQty(version.shift(), version.join('-'));
+            if (!supabase_data) {
+                alert("Sorry but there are no data from the version you are looking for. Maybe the admin has not uploaded accounts yet. Thank you!");
+                return;
+            }
+            BCA_Cache.setItemWithExpiration(cached_key, data, 1000 * 60);
         }
 
         for (const item of supabase_data) {
@@ -669,12 +676,12 @@
         }
 
         async function fetchUpdatedQty(lang, ver) {
-            let {data, error} = await supabase.rpc('check_accounts_quantity', {
+            let { data, error } = await supabase.rpc('check_accounts_quantity', {
                 acc_lang: lang,
                 acc_ver: ver
             });
 
-            if(data?.length === 0 || error)
+            if (data?.length === 0 || error)
                 return;
 
             return data;
