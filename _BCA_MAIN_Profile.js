@@ -12,11 +12,12 @@
         document.getElementById('bca-notif-mother').style.display = 'flex';
     });
 
-    const isUserLoggedIncached_key = `${isUserLoggedIn}-isUserLoggedIn`;
-    const isUserRegisteredcached_key = `${isUserRegistered}-isUserRegistered`;
+    let user_online = BCA_Cache.get('active_email') || await BCA_Users.checkIfUserOnline();
+    BCA_Cache.set('active_email', user_online);
+    const isUserRegisteredcached_key = `${active_email}-isUserRegistered`;
 
     // Check if the user is registered!
-    let isUserLoggedIn = BCA_Cache.getItemWithExpiration(isUserLoggedIncached_key) || await BCA_Users.checkIfUserOnline();
+    let isUserLoggedIn = user_online;
     let isUserRegistered = BCA_Cache.getItemWithExpiration(isUserRegisteredcached_key) || await BCA_Users.checkIfUserCompleteRegistration();
     let inCompleteRegistration = isUserLoggedIn && !isUserRegistered;
 
