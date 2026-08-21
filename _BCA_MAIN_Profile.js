@@ -14,10 +14,12 @@
 
     let user_online = BCA_Cache.get('active_email') || await BCA_Users.checkIfUserOnline();
     BCA_Cache.set('active_email', user_online);
+
     const isUserRegisteredcached_key = `${user_online}-isUserRegistered`;
+    const isUserLoggedIncached_key = `${user_online}-isUserLoggedIn`;
 
     // Check if the user is registered!
-    let isUserLoggedIn = user_online;
+    let isUserLoggedIn = BCA_Cache.getItemWithExpiration(isUserLoggedIncached_key) || user_online;
     let isUserRegistered = BCA_Cache.getItemWithExpiration(isUserRegisteredcached_key) || await BCA_Users.checkIfUserCompleteRegistration();
     let inCompleteRegistration = isUserLoggedIn && !isUserRegistered;
 
