@@ -579,16 +579,16 @@
 
                 queryP(clone, 'store-account-sold').textContent = `${item.r_req_count} sold`;
                 queryP(clone, 'store-account-stats').textContent = `${await getTotalRequester(item.r_id)} users like this...`;
-                queryP(clone, 'store-account-info').querySelectorAll('p')[0].innerHTML = `${item.r_desc.replaceAll('\n', '<br/>')
-                    .replaceAll('Consumables', '<b>Consumables</b>')
-                    .replaceAll('Units', '<b>Units</b>')
-                    .replaceAll('Cannons', '<b>Cannons</b>')
-                    .replaceAll('Upgrades', '<b>Upgrades</b>')
-                    .replaceAll('Stages', '<b>Stages</b>')
-                    .replaceAll('Talents', '<b>Talents</b>')
-                    .replaceAll('Medals', '<b>Medals</b>')
-                    .replaceAll('Treasures', '<b>Treasures</b>')
-                    }`; // cat food
+                // queryP(clone, 'store-account-info').querySelectorAll('p')[0].innerHTML = `${item.r_desc.replaceAll('\n', '<br/>')
+                //     .replaceAll('Consumables', '<b>Consumables</b>')
+                //     .replaceAll('Units', '<b>Units</b>')
+                //     .replaceAll('Cannons', '<b>Cannons</b>')
+                //     .replaceAll('Upgrades', '<b>Upgrades</b>')
+                //     .replaceAll('Stages', '<b>Stages</b>')
+                //     .replaceAll('Talents', '<b>Talents</b>')
+                //     .replaceAll('Medals', '<b>Medals</b>')
+                //     .replaceAll('Treasures', '<b>Treasures</b>')
+                //     }`; // cat food
 
                 // queryP(clone, 'store-account-info').querySelectorAll('p')[1].textContent = `${item.description.split('\n')[1]}`; // XP
 
@@ -656,7 +656,7 @@
             let {
                 data,
                 error
-            } = await supabase.from('accounts').select('id, name, ads, description, request_count, link').order('ads', { ascending: false });
+            } = await supabase.from('accounts').select('id, name, ads, request_count, link').order('ads', { ascending: false });
 
             if (error) {
                 window.alert(error.message);
