@@ -12,10 +12,16 @@
         document.getElementById('bca-notif-mother').style.display = 'flex';
     });
 
+    const isUserLoggedIncached_key = `${isUserLoggedIn}-isUserLoggedIn`;
+    const isUserRegisteredcached_key = `${isUserRegistered}-isUserRegistered`;
+
     // Check if the user is registered!
-    let isUserLoggedIn = await BCA_Users.checkIfUserOnline();
-    let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
+    let isUserLoggedIn = BCA_Cache.getItemWithExpiration(isUserLoggedIncached_key) || await BCA_Users.checkIfUserOnline();
+    let isUserRegistered = BCA_Cache.getItemWithExpiration(isUserRegisteredcached_key) || await BCA_Users.checkIfUserCompleteRegistration();
     let inCompleteRegistration = isUserLoggedIn && !isUserRegistered;
+
+    BCA_Cache.setItemWithExpiration(isUserLoggedIncached_key, isUserLoggedIn, 1000 * 60 * 10);
+    BCA_Cache.setItemWithExpiration(isUserRegisteredcached_key, isUserRegistered, 1000 * 60 * 10);
 
     if (inCompleteRegistration) {
         window.alert("Your account has not yet setup. Please kindly login again and finish setting up your account. Thank you.");
@@ -35,13 +41,11 @@
     BCA_Notifications.checkNotifCount();
 
     // for users login and cart
-    let user_email = await BCA_Users.checkIfUserOnline();
+    let user_email = isUserLoggedIn;
 
     if (user_email) {
         user_data = user_data || await BCA_Users.getUserInfo('email, prof_img, rank_id(rank_name), username');
-
         user_data = user_data?.[0] || user_data;
-
         user_img.src = user_data?.prof_img || default_prof;
         user.href = `javascript:void(0)`;
 
