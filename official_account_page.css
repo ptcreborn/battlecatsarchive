@@ -1,0 +1,103 @@
+.acc_req_parent {
+    display: none;
+    height: 100%;
+    width: 100%;
+    background: white;
+    border: 1px solid black;
+  }
+  
+  .acc_req_child {
+    background: black;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    line-height: 1.5rem;
+  }
+  
+  .acc_req_user_link {
+    padding: 2px 5px;
+    border-radius: 5px;
+    font-weight: 700;
+    text-decoration: auto;
+  }
+  
+  .acc_req_child img {
+    display: block;
+    height: 35px !important;
+    width: 35px !important;
+    object-fit: cover;
+    padding-left: 5px;
+  }
+  
+  .acc_req_child div {   	
+    padding-left: 5px; 
+  }
+  
+  .responsive-text {
+    font-size: 1.1rem;
+    align-items: center;
+    font-size: 12px;
+   	/*font-size: calc(12px + 0.8rem); */
+  }
+  
+  .passive-text {
+   	opacity: 0.5;
+    font-weight: 600;
+    line-height: 1rem;
+    margin-left: auto;
+    padding: 0 5px;
+  }
+  
+  button.focused {
+   	opacity: 0.8; 
+  }
+  
+  div.tab_open {
+   	display: block; 
+  }
+  
+  .disabled-elem {
+   	pointer-events: none;
+    opacity: 0.7;
+  }
+  
+  .low-stock {
+    color: orange;
+    font-weight: bold;
+  }
+  
+  .out-of-stock-enabled {
+    font-size: 12px;
+    background: #f43434;
+    color: white;
+    border-radius: 0;
+    padding: 3px 5px;
+  }
+  
+  button.add-to-cart {
+    color: white;
+    font-weight: 400;
+    font-size: 12px;
+    margin-top: auto;
+    background: green;
+    padding: 0 5px;
+    opacity: 1;
+    pointer-events: auto;
+    display: block;
+    height: 25px;
+  }
+  a.bca-learn-more {
+    color: white;
+    font-weight: 400;
+    margin: 0 5px !important;
+    background: #0e75b3;
+    border-radius: 0;
+    padding: 0 5px;
+    font-size: 12px;
+    display: block;
+    height: 25px; 
+  }
+  input#search_account::placeholder {
+    color: gray; /* Replace with your preferred color */
+    opacity: 1;    /* Fixes lower opacity defaults in Firefox */
+  }
