@@ -14,7 +14,7 @@
 
     let user_online = BCA_Cache.get('active_email') || await BCA_Users.checkIfUserOnline();
     BCA_Cache.set('active_email', user_online);
-    const isUserRegisteredcached_key = `${active_email}-isUserRegistered`;
+    const isUserRegisteredcached_key = `${user_online}-isUserRegistered`;
 
     // Check if the user is registered!
     let isUserLoggedIn = user_online;
