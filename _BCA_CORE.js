@@ -811,8 +811,10 @@ var BCA_Comment = {
         await this.renderCommentChild(comments_data);
 
         // if the form cant be seen, dont initialize!
-        if (!this.comment_form || this.comment_form_parent.dataset.flag === "disabled")
+        if (!this.comment_form || this.comment_form_parent.dataset.flag === "disabled") {
+            this.comment_form.remove();
             return;
+        }
 
         // check if the user is logged in...
         let email = await BCA_Users.checkIfUserOnline();
