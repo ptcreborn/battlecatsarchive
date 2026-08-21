@@ -1439,7 +1439,27 @@ var BCA_Blogger = {
 
         return;
     },
+    async getDataLabels(label, num_results) {
+        let data = await fetch(`${this.url}feeds/posts/default/-/${label}?alt=json&max-results=${num_results}`);
 
+        if (data.ok) {
+            data = await data.json();
+            return data;
+        }
+
+        return;
+    },
+    async getDataUrl(url) {
+        let path = new URL(url).pathname;
+        let data = await fetch(`${this.url}feeds/posts/default?alt=json&path=${path}`);
+
+        if (data.ok) {
+            data = await data.json();
+            return data;
+        }
+
+        return;
+    },
     filterData(data) {
         let filtered_data = data?.feed?.entry;
         if (!filtered_data)
