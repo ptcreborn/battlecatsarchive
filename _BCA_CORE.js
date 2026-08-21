@@ -822,7 +822,9 @@ var BCA_Comment = {
         this.initUploadAPI();
         this.initLinkAPI();
         this.initCancelReplyAPI();
-        this.initCommentEditor(this.user_id);
+
+        if (this.comment_form.dataset.flag !== "disabled")
+            this.initCommentEditor(this.user_id);
 
         // event listener for comment
         this.comment_form.addEventListener('submit', async (e) => {
@@ -1155,7 +1157,7 @@ var BCA_Comment = {
     async getCommentsData() {
         let id = await this.getPathnameID();
 
-        if(BCA_Cache.getItemWithExpiration(id))
+        if (BCA_Cache.getItemWithExpiration(id))
             return BCA_Cache.getItemWithExpiration(id);
 
         let { data, error } = await supabase.from('bca-comments').select('*, user_id(prof_img, username, email)').eq('bca_posts', id).order('id', { ascending: true });
@@ -1171,7 +1173,7 @@ var BCA_Comment = {
         if (!target_id)
             return;
 
-        if(BCA_Cache.getItemWithExpiration(target_id))
+        if (BCA_Cache.getItemWithExpiration(target_id))
             return BCA_Cache.getItemWithExpiration(target_id);
 
         let { data, error } = await supabase.from('bca-comments').select('*, user_id(prof_img, username, email)').eq('id', target_id);
@@ -1185,7 +1187,7 @@ var BCA_Comment = {
     },
     async getFBCommentData(id, root) {
         let cache_key = `${id}-${root}`;
-        if(BCA_Cache.getItemWithExpiration(cache_key))
+        if (BCA_Cache.getItemWithExpiration(cache_key))
             return BCA_Cache.getItemWithExpiration(cache_key);
 
         let data = await FirebaseModule.fetchJSON(`${this.fb_comments}/${id}/${root}.json`);
