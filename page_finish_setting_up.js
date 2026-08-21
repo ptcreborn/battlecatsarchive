@@ -22,6 +22,7 @@
     const birthday = document.getElementById('birthday');
     const country = document.getElementById('country');
     const form = document.getElementById('form');
+    const logs = document.getElementById('logs');
 
     country.innerHTML = `<img src="${country_flag}"/><span>${country_name}</span>`;
 
@@ -29,18 +30,23 @@
 
     let isUserOnline = await BCA_Users.checkIfUserOnline();
     if (isUserOnline) {
+        create_logs('User is online.');
         let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
         if (isUserRegistered) {
+            create_logs('User is registered');
             window.location.href = `https://battlecatsarchive.blogspot.com/`;
             return;
         } else {
             // show the form to complete registration
+            create_logs('User is not registered.');
             loading_img.src = 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExb3M0aG5yYTgxeG90cjZmNjdyOWIwcjZzdjRvdWduOWd4NnE5bXl5ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/r5eafWP6dcbxX8cLeN/giphy.gif';
             form.style.display = 'block';
         }
     }
-    else
+    else {
+        create_logs('user is not online.;')
         window.localtion.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
+    }
 
 
     // Functions
@@ -148,5 +154,11 @@
             country_code = "Anonymous";
             country_flag = 'https://www.crwflags.com/fotw/images/q/qt%7Danon12.jpg';
         }
+    }
+
+    function create_logs(str) {
+        let p = document.createElement('p');
+        p.textContent = `${str} -- ${new Date()}`;
+        logs.appendChild(p);
     }
 })();
