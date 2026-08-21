@@ -1,6 +1,7 @@
 (async () => {
     await initFunctions(['BCA_Notifications', 'BCA_Users', 'BCA_Cache', 'FirebaseModule', 'supabase']);
 
+    let current_url = new URL(window.location.href);
     if (current_url.pathname === `/p/signin-to-bca.html` || current_url.pathname === `/p/finish-setting-up.html`)
         return;
 
@@ -15,7 +16,6 @@
     let isUserLoggedIn = await BCA_Users.checkIfUserOnline();
     let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
     let inCompleteRegistration = isUserLoggedIn && !isUserRegistered;
-    let current_url = new URL(window.location.href);
 
     if (inCompleteRegistration) {
         window.alert("Your account has not yet setup. Please kindly login again and finish setting up your account. Thank you.");
