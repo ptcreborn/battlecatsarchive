@@ -543,7 +543,7 @@
         document.getElementById('form_parent').classList.remove('ui', 'segment', 'loading');
 
         let version = version_selector.value.split('-');
-        let cached_key = `buildCompactMenu-supabase_data`;
+        let cached_key = `buildCompactMenu-supabase_data-${version}`;
         let supabase_data;
 
         if (BCA_Cache.getItemWithExpiration(cached_key))
