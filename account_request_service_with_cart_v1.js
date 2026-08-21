@@ -541,6 +541,7 @@
         container.innerHTML = ``;
         //document.querySelector('[acc-ver-h2]').innerText = version_selector.value.split('-').length == 3 ? `EN ${version_selector.value}`: version_selector.value;
         document.getElementById('form_parent').classList.remove('ui', 'segment', 'loading');
+        document.getElementById('form_parent').style.display = 'block';
 
         let version = version_selector.value.split('-');
         let cached_key = `buildCompactMenu-supabase_data-${version}`;
