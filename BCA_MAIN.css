@@ -902,9 +902,10 @@ ul.header-menu li a {
 
 .button-href {
     font-weight: 700;
-    padding: 0;
+    padding: 5px;
     color: #fff !important;
     margin: 3px;
+    background: #242e38;
 }
 
 .header-user-profile {
