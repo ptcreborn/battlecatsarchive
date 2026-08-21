@@ -1,6 +1,9 @@
 (async () => {
     await initFunctions(['BCA_Notifications', 'BCA_Users', 'BCA_Cache', 'FirebaseModule', 'supabase']);
 
+    if (current_url.pathname === `/p/signin-to-bca.html` || current_url.pathname === `/p/finish-setting-up.html`)
+        return;
+
     // Initialize Notif and Profile Icon
     BCA_Notifications.initialize();
     document.getElementById('bca_user').addEventListener('click', async (e) => {
@@ -15,15 +18,11 @@
     let current_url = new URL(window.location.href);
 
     if (inCompleteRegistration) {
-        if (current_url.pathname === `/p/signin-to-bca.html` || current_url.pathname === `/p/finish-setting-up.html`)
-            return;
-        else {
-            window.alert("Your account has not yet setup. Please kindly login again and finish setting up your account. Thank you.");
-            window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
-            return;
-        }
+        window.alert("Your account has not yet setup. Please kindly login again and finish setting up your account. Thank you.");
+        window.location.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
+        return;
     }
-    
+
     // Get user profile from localstorage and load immediately.
     let default_prof = `https://i.redd.it/p0u2suithend1.gif`;
     let user = document.getElementById('bca_user');
