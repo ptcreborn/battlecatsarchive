@@ -473,7 +473,10 @@ var BCA_Cache = {
         let isExpired = this.checkExpiry(key);
         if (isExpired === false)
             return this.getParseItem(key).data;
-        else return;
+        else {
+            this.deleteItem(key);
+            return
+        };
     },
     setItemWithExpiration(key, val, expiry_ms) {
         let now = new Date().getTime();
