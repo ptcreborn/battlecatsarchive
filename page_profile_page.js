@@ -15,6 +15,7 @@
         await supabase.auth.signOut();
         localStorage.removeItem('user');
         localStorage.removeItem('active_email');
+        BCA_Cache.deleteItem(BCA_Notifications.LOCALSTORAGE_USER);
         window.location.href = `https://battlecatsarchive.blogspot.com/`;
     }
 
@@ -277,7 +278,6 @@
 
         return data.session;
     }
-
     async function getUserID(email) {
         let { data, error } = await supabase.from('users').select('id').eq('email', email);
         if (data?.length == 0)
