@@ -76,7 +76,7 @@
                     await sleep(1000);
                     await processRequestBypass(actionCallback);
                 }
-            } else status_msg.innerHTML = `⚠️ Please scroll and focus on the page to resume...`;
+            } else status_msg.innerHTML = `⚠️ Please click me and keep the focus on the page...`;
         }, 70);
     }
 
@@ -677,7 +677,16 @@
         const bypass_msg = document.getElementById('bypass_msg');
         const link = document.getElementById('bypass_link');
         const page_name = btoa(BCA_Url?.getUrl().split('.html')[1]) || btoa('BCA_Link_Terminal');
+
+        let isBlur = false;
+        let isHidden = false;
+        let isUnload = false;
+        let isUnlocked = false;
+        let isException = false;
+        let isUnfilled = false;
+        let isMobileSite = new URL(window.location.href).searchParams.get('m') === 1;
         let exhaust = false;
+        let isLinkOpen = false;
 
         window.focus();
 
@@ -756,11 +765,7 @@
                 await sleep(1000);
                 bypass_msg.textContent = `You have unlocked the link!`;
                 status.textContent = `Proceed now by clicking the Link Unlock. Thank you!`;
-
-                bca_link_ads.style.display = 'block';
-                bca_link_ads.style.visibility = 'visible';
-                bca_link_ads.style.opacity = '1';
-                bca_link_ads.style.position = 'static';
+                
                 link.style.display = 'block';
 
                 link.addEventListener('click', async (e) => {
