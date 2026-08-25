@@ -2,7 +2,6 @@
     let decoded_data = decodeURL();
     let parsed_data = parseData(decoded_data);
     const _signature_ = '\x62\x61\x74\x74\x6c\x65\x63\x61\x74\x73\x61\x72\x63\x68\x69\x76\x65';
-
     const go_btn = document.getElementById('go-btn');
 
     if (!decoded_data || !parsed_data)
@@ -68,15 +67,6 @@
         }, false);
     }, 3000);
 
-    function getUserDetails() {
-        if (!localStorage.getItem('user'))
-            return {
-                email: "bananamous",
-                profile: "https://media.tenor.com/UTfN6nIPrlYAAAAM/banana-dance.gif"
-            }
-        return JSON.parse(atob(localStorage.getItem('user')));
-    }
-
     function parseData(encoded_str) {
         // this function returns a JSON from url parameter.
         if (!encoded_str)
@@ -105,6 +95,23 @@
         return JSON.parse(str).name;
     }
 
+    function getHashCodeParam(param) {
+        let hash = window.location.hash.substring(1);
+
+        if (!hash)
+            return;
+
+        let hash_parts = hash.split('&');
+
+        let value = hash_parts.map(item => {
+            let item_parts = item.split(/=(.*)/s).filter(_ => _);
+            if (param === item_parts[0])
+                return item_parts[1];
+        }).filter(_ => _);
+
+        return value ? decodeURIComponent(value) : null;
+    }
+
     async function getCountryCode() {
         try {
             // 1. Fetch the geolocation data based on the visitor's current IP
@@ -125,33 +132,5 @@
             console.warn("API failed, falling back to browser locale:", error.message);
             return "ANONYMOUS";
         }
-    }
-
-    function checkHashCodeParam(param) {
-        let hash = window.location.hash.substring(1);
-
-        if (!hash)
-            return;
-
-        let hash_parts = hash.split('=');
-
-        return hash_parts.includes(`${param}`) || null;
-    }
-
-    function getHashCodeParam(param) {
-        let hash = window.location.hash.substring(1);
-
-        if (!hash)
-            return;
-
-        let hash_parts = hash.split('&');
-
-        let value = hash_parts.map(item => {
-            let item_parts = item.split(/=(.*)/s).filter(_ => _);
-            if (param === item_parts[0])
-                return item_parts[1];
-        }).filter(_ => _);
-
-        return value ? decodeURIComponent(value) : null;
     }
 })();
