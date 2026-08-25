@@ -1,10 +1,23 @@
 (async () => {
+    // Process Form
+    const username = document.getElementById('username');
+    const gender = document.getElementById('gender');
+    const birthday = document.getElementById('birthday');
+    const country = document.getElementById('country');
+    const country_form = document.getElementById('country_code');
+    const form = document.getElementById('form');
+    const logs = document.getElementById('logs');
+
+
     const isValidRequest = await checkRequestIfValid();
     if (!isValidRequest) {
         window.alert('Not valid request');
         window.alert(`Please login first.`);
+        create_logs('Not a valid requests');
         window.location.href = "https://battlecatsarchive.blogspot.com/p/signin-to-bca.html";
     }
+
+    create_logs('Valid requests.');
 
     let loading_src = 'https://media.tenor.com/TZxRpEoeslkAAAAM/running.gif';
     let loading_img = document.getElementById('loading_img');
@@ -13,22 +26,20 @@
     let country_name = '';
     let country_code = '';
 
-    await checkUserCountry();
+    country_name = "Anonymous";
+    country_code = "Anonymous";
+    country_flag = 'https://www.crwflags.com/fotw/images/q/qt%7Danon12.jpg';
+
+    create_logs('initializing...');
+
     await initFunctions(['supabase', 'BCA_Users']);
 
-    // Process Form
-    const username = document.getElementById('username');
-    const gender = document.getElementById('gender');
-    const birthday = document.getElementById('birthday');
-    const country = document.getElementById('country');
-    const form = document.getElementById('form');
-    const logs = document.getElementById('logs');
-
-    country.innerHTML = `<img src="${country_flag}"/><span>${country_name}</span>`;
-
-    loading_img.src = loading_src;
-
     let isUserOnline = await BCA_Users.checkIfUserOnline();
+    let isThereSession = await checkSession();
+
+    create_logs(`checking user online status: ${isUserOnline}`);
+    create_logs(`checking user session: ${isThereSession}`);
+
     if (isUserOnline) {
         create_logs('User is online.');
         let isUserRegistered = await BCA_Users.checkIfUserCompleteRegistration();
@@ -47,7 +58,6 @@
         create_logs('user is not online.;')
         window.localtion.href = `https://battlecatsarchive.blogspot.com/p/signin-to-bca.html`;
     }
-
 
     // Functions
     window.submitForm = async () => {
@@ -73,7 +83,7 @@
                 data_username = username.value;
                 data_gender = gender.value;
                 data_birthday = birthday.value;
-                data_country = country_code;
+                data_country = country_form.value;
                 data_rank = 1;
 
                 let create = await supabase.from('users').insert({
@@ -154,6 +164,15 @@
             country_code = "Anonymous";
             country_flag = 'https://www.crwflags.com/fotw/images/q/qt%7Danon12.jpg';
         }
+    }
+
+    async function checkSession() {
+        let { data, error } = await supabase.auth.getSession();
+
+        if (!data?.session || error)
+            return;
+
+        return true;
     }
 
     function create_logs(str) {
