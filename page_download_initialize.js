@@ -68,6 +68,7 @@
         t: encodeURIComponent(`https://battlecatsarchive.blogspot.com/p/bca-cloud-storage.html?checkpoint=${key}&api=${param}`)
     }
 
+    btn.style.display = 'block';
     btn.innerHTML = "✅Proceed Now";
     btn.href = `https://battlecatsarchive.blogspot.com/p/setup-link-terminal.html#request=${btoa(JSON.stringify(data))}`;
 
