@@ -63,7 +63,7 @@
         await sleep(1500);
         container.innerHTML += `<div>Email: ${data.account.email}</div>`;
         await sleep(1500);
-        container.innerHTML += `<div>Number of Ads: ${fb_data.ads}</div>`;
+        container.innerHTML += `<div>Number of Bypass: ${fb_data.ads}</div>`;
         await sleep(1500);
         container.innerHTML += `<button class="button-15" id="go-btn" style="display: none;">Proceed Now</button>`;
         await sleep(1500);
