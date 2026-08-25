@@ -672,24 +672,11 @@
 
     async function processRequestBypass(actionCallback) {
         const bca_link_ads = document.getElementById('bca_link_ads');
-        const bidding_ads = bca_link_ads.querySelectorAll('ins.adsbygoogle');
-        const auction_Iframe = bca_link_ads.querySelector('iframe');
         const status = document.getElementById('status_msg');
         const bypass_msg = document.getElementById('bypass_msg');
         const link = document.getElementById('bypass_link');
         const page_name = btoa(BCA_Url?.getUrl().split('.html')[1]) || btoa('BCA_Link_Terminal');
-
-        let isBlur = false;
-        let isHidden = false;
-        let isUnload = false;
-        let isUnlocked = false;
-        let isException = false;
-        let isUnfilled = false;
-        let isMobileSite = new URL(window.location.href).searchParams.get('m') === 1;
         let exhaust = false;
-        let isLinkOpen = false;
-
-        let blurTime, hiddenTime;
 
         window.focus();
 
@@ -705,13 +692,13 @@
         }
 
         const ads = Array.from(document.querySelectorAll("ins.adsbygoogle"));
-        // let checkAllAdsIframeLength = ads.filter(item => item?.querySelector('iframe'));
-        // let checkAllAdsStatus = ads.filter(item => item?.getAttribute('data-ad-status'));
-        // let isAdblockerThere = await detectAdBlock();
-        // let missingStatusAds = ads.filter(item => !item.getAttribute('data-ad-status'));
-        // let divDetection = ads.filter(item => item.querySelector('div'));
-        // let iframeHeightDetection = ads.filter(item => item.querySelector('iframe')?.style.height === "1px" || item.querySelector('iframe')?.style.maxHeight === "1px");
-        // let allADSHeightZERO = checkAllAdsIframeLength.length === 0 && checkAllAdsStatus.length === 0 && missingStatusAds.length > 0;
+        let checkAllAdsIframeLength = ads.filter(item => item?.querySelector('iframe'));
+        let checkAllAdsStatus = ads.filter(item => item?.getAttribute('data-ad-status'));
+        let isAdblockerThere = await detectAdBlock();
+        let missingStatusAds = ads.filter(item => !item.getAttribute('data-ad-status'));
+        let divDetection = ads.filter(item => item.querySelector('div'));
+        let iframeHeightDetection = ads.filter(item => item.querySelector('iframe')?.style.height === "1px" || item.querySelector('iframe')?.style.maxHeight === "1px");
+        let allADSHeightZERO = checkAllAdsIframeLength.length === 0 && checkAllAdsStatus.length === 0 && missingStatusAds.length > 0;
         let checkMaxSecurityAdblock = await strictAdBlockCheck();
 
         if (!localStorage.getItem('lem') && checkMaxSecurityAdblock) {
@@ -725,87 +712,6 @@
 
         isException = true;
         await checkIfBypassDone();
-
-        // if (bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "filled") {
-        //     // // filled
-        //     status.textContent = `You can now bypass!`;
-        //     bypass_msg.textContent = `Bypass available now. Start!`;
-        //     link.textContent = "Proceed Now";
-        // } else if (localStorage.getItem('lem') || bca_link_ads.querySelector('ins')?.getAttribute('data-ad-status') === "unfilled") {
-        //     isUnfilled = true;
-        //     status.textContent = `You can now bypass!`;
-        //     bypass_msg.textContent = `Bypass available now. Start!`;
-        //     link.textContent = "Proceed Now";
-        //     link.addEventListener('click', () => setLSTime());
-        //     console.log(`Unfilled ads: ${isUnfilled}`);
-        // } else if (bca_link_ads.querySelector('ins')?.getAttribute('ablated-ad-slot') !== null) {
-        //     isUnfilled = true;
-        //     status.textContent = `You can now bypass!`;
-        //     bypass_msg.textContent = `Bypass available now. Start!`;
-        //     link.addEventListener('click', setLSTime);
-        //     console.log(`Unfilled ads: ${isUnfilled}`);
-        //     link.textContent = "Proceed Now";
-        // } else {
-        //     isException = true;
-        //     status.innerHTML = "GG you can unlock the link now!";
-        //     console.log(`GG you can unlock the link now!`);
-        //     link.textContent = "Loading...";
-        //     checkIfBypassDone();
-        // }
-
-        // window.addEventListener('blur', onBlur, false);
-        // window.addEventListener('beforeunload', onUnload, false);
-        // document.addEventListener('visibilitychange', onVisibilityChange, false);
-
-        // function onBlur() {
-        //     if (isUnfilled)
-        //         isBlur = true;
-
-        //     setTimeout(() => {
-        //         if (document.activeElement == auction_Iframe && !isUnlocked) {
-        //             isBlur = true;
-        //             blurTime = new Date().getTime();
-        //         }
-        //     }, 0);
-        // }
-
-        // function onUnload() {
-        //     if (isBlur && !isUnlocked) {
-        //         isUnload = true;
-        //         setLSTime();
-        //     }
-        // }
-
-        // function onVisibilityChange() {
-        //     window.focus();
-        //     if (document.hidden) {
-        //         // For Unfilled ads adding new eventlistener when link is clicked, setLSTime();
-        //         if (isBlur && isUnfilled && !isUnlocked) {
-        //             isHidden = true;
-        //         }
-        //         else if ((!isUnlocked && isBlur && !isUnload)) {
-        //             setLSTime();
-        //             isHidden = true;
-        //         }
-        //     } else {
-        //         // check if the opening of link in new tab is legit by estimated less than 1,000 ms
-        //         console.log('im back!');
-        //         if ((isHidden && !isUnlocked)) {
-        //             checkIfBypassDone();
-        //             // let time_register = isMobileSite ? 2500 : 1000;
-        //             // if (hiddenTime - blurTime <= time_register)
-        //             //     checkIfBypassDone();
-        //             // else {
-        //             //     bypass_msg.innerHTML = `⚠️ Sorry but the view does not register, please click again.`;
-        //             //     status.textContent = `Try bypassing again.`;
-        //             // }
-        //         }
-        //         else {
-        //             if (!isUnlocked)
-        //                 checkIfBypassDone();
-        //         }
-        //     }
-        // }
 
         function setLSTime() {
             const label = atob(page_name);
@@ -854,6 +760,7 @@
                 bca_link_ads.style.visibility = 'visible';
                 bca_link_ads.style.opacity = '1';
                 bca_link_ads.style.position = 'static';
+                link.style.display = 'block';
 
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
