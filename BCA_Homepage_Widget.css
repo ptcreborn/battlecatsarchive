@@ -1,8 +1,8 @@
 .bca_widgets_home-container {
-  display: block;
-  min-height: 300px;
-  max-height: 400px;
-  width: 100%;
+    display: block;
+    min-height: 300px;
+    max-height: 400px;
+    width: 100%;
 }
 
 .bca_widgets_home-tabs {
@@ -22,9 +22,9 @@
     height: 100%;
     border: 1px solid #202932;
 }
-  
+
 .bca_widgets_home-tab-btn--active {
-  background: #242e38;
+    background: #242e38;
 }
 
 .bca_widgets_home-content-list {
@@ -37,12 +37,12 @@
 }
 
 .bca_widgets_home-item-link {
-  display: flex;
-  max-height: 100px;
-  align-items: center;
-  border-bottom: 1px solid #445364;
-  padding: 5px;
-  text-decoration: none;
+    display: flex;
+    max-height: 100px;
+    align-items: center;
+    border-bottom: 1px solid #445364;
+    padding: 5px;
+    text-decoration: none;
 }
 
 .bca_widgets_home-thumb-wrapper {
@@ -53,43 +53,43 @@
 }
 
 .bca_widgets_home-thumb-img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 .bca_widgets_home-item-details {
-  line-height: 1;
-  margin-left: 5px;
+    line-height: 1;
+    margin-left: 5px;
 }
 
 .bca_widgets_home-item-title {
-  font-weight: bold;
-  line-height: 1rem;
-  color: #dbdbdb;
-  display: inline-block;
-  font-size: 12px;
-  align-self: flex-start;
-  margin: 0 0 4px 0;
+    font-weight: bold;
+    line-height: 1rem;
+    color: #dbdbdb;
+    display: inline-block;
+    font-size: 12px;
+    align-self: flex-start;
+    margin: 0 0 4px 0;
 }
 
 .bca_widgets_home-item-time {
-  line-height: 1rem;
-  font-size: 11px;
-  min-width: fit-content;
-  align-self: flex-end;
-  font-weight: bold;
-  color: #8e8e8e;
+    line-height: 1rem;
+    font-size: 11px;
+    min-width: fit-content;
+    align-self: flex-end;
+    font-weight: bold;
+    color: #8e8e8e;
 }
 
 .bca_widgets_home-item-action {
-  flex: 0 0 auto;
-  line-height: 1;
-  margin-left: auto;
-  display: flex;
-  align-items: center;
+    flex: 0 0 auto;
+    line-height: 1;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
 }
-  
+
 .bca_widgets_home-time-class {
     line-height: 1rem;
     font-size: 11px;
@@ -104,16 +104,17 @@
 }
 
 .bca_widgets_home-action-icon {
-  width: 20px;
+    width: 20px;
 }
-  
+
 .bca_widgets_home-comments-list {
-  display: flex;
-  flex-direction: column; /* Fixed: standard layout direction for lists */
-  max-height: 300px;
-  overflow: auto;
-  width: 100%;
-  height: 300px;
+    display: flex;
+    flex-direction: column;
+    /* Fixed: standard layout direction for lists */
+    max-height: 300px;
+    overflow: auto;
+    width: 100%;
+    height: 300px;
 }
 
 .bca_widgets_home-comment-item {
@@ -126,16 +127,16 @@
 }
 
 .bca_widgets_home-comment-avatar-wrapper {
-  flex: 0 0 24px; 
-  height: 24px; 
-  margin-right: 5px; 
-  width: 24px;
+    flex: 0 0 24px;
+    height: 24px;
+    margin-right: 5px;
+    width: 24px;
 }
 
 .bca_widgets_home-comment-avatar {
-  height: 100%; 
-  object-fit: cover; 
-  width: 100%;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
 }
 
 .bca_widgets_home-comment-body {
@@ -143,15 +144,16 @@
 }
 
 .bca_widgets_home-comment-author {
-  color: #93a7cb;
-  font-weight: bold;
+    color: #93a7cb;
+    font-weight: bold;
 }
 
 .bca_widgets_home-comment-divider {
-  color: #ffffff;
+    color: #ffffff;
 }
 
-.bca_widgets_home-comment-text, .bca_widgets_home-comment-path {
+.bca_widgets_home-comment-text,
+.bca_widgets_home-comment-path {
     color: #b4b4b4;
     font-weight: bold;
     font-size: 12px;
@@ -160,15 +162,16 @@
 }
 
 .bca_widgets_home-comment-meta {
-  flex: 0 0 auto; 
-  font-size: 10px; 
-  margin-left: auto; 
-  opacity: 0.6; 
-  padding-left: 3px; 
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end; /* Keeps timestamp and flag nicely aligned on the right edge */
+    flex: 0 0 auto;
+    font-size: 10px;
+    margin-left: auto;
+    opacity: 0.6;
+    padding-left: 3px;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* Keeps timestamp and flag nicely aligned on the right edge */
 }
 
 .bca_widgets_home-comment-time {
@@ -179,17 +182,17 @@
 }
 
 .bca_widgets_home-comment-flag {
-  height: 20px;
-  width: auto;
+    height: 20px;
+    width: auto;
 }
-  
-  /* Scrollable outer wrapper box */
+
+/* Scrollable outer wrapper box */
 .bca_widgets_home-members-container {
-  display: block;
-  width: 100%;
-  height: 300px;
-  max-height: 300px;
-  overflow-y: auto;
+    display: block;
+    width: 100%;
+    height: 300px;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 /* Individual list item row layout rules */
@@ -203,16 +206,17 @@
 
 /* Avatar layout properties */
 .bca_widgets_home-members-avatar-wrapper {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
 }
 
 .bca_widgets_home-members-avatar {
-  width: 30px;
-  max-width: 30px;
-  height: 30px;
-  border-radius: 4px; /* Optional: minor polish to make avatars match common UI styles */
+    width: 30px;
+    max-width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    /* Optional: minor polish to make avatars match common UI styles */
 }
 
 /* Central text container alignment */
@@ -227,35 +231,36 @@
 }
 
 .bca_widgets_home-members-author {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .bca_widgets_home-members-divider {
-  color: #888;
+    color: #888;
 }
 
 /* Meta flag segment pushed all the way to the right side */
 .bca_widgets_home-members-meta {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  padding-left: 5px;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding-left: 5px;
 }
 
 .bca_widgets_home-members-flag {
-  width: 30px;
-  max-width: 30px;
-  height: auto;
+    width: 30px;
+    max-width: 30px;
+    height: auto;
 }
-  
+
 /* Outer container setup */
 .bca_widgets_home-tickets-container {
-  display: none; /* Kept hidden as in your original setup */
-  width: 100%;
-  height: 300px;
-  max-height: 300px;
-  overflow-y: auto;
+    display: none;
+    /* Kept hidden as in your original setup */
+    width: 100%;
+    height: 300px;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 /* Individual ticket row layout wrapper */
@@ -271,29 +276,30 @@
 
 /* Badge stack for clean avatar + flag badge placement */
 .bca_widgets_home-tickets-badge-group {
-  position: relative;
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Main user avatar */
 .bca_widgets_home-tickets-avatar {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
 }
 
 /* Tiny flag badged cleanly over the bottom-right corner of the avatar */
 .bca_widgets_home-tickets-flag {
-  position: absolute;
-  width: 16px; /* Scaled down slightly to look like a true badge */
-  height: auto;
-  bottom: -4px;
-  right: -4px;
+    position: absolute;
+    width: 16px;
+    /* Scaled down slightly to look like a true badge */
+    height: auto;
+    bottom: -4px;
+    right: -4px;
 }
 
 /* Middle message body styling */
@@ -306,26 +312,43 @@
 }
 
 .bca_widgets_home-tickets-author {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .bca_widgets_home-tickets-action {
-  color: #ccc;
+    color: #ccc;
 }
 
 /* Ticket subject highlighting rules */
 .bca_widgets_home-tickets-subject {
-  color: #c7c7c7;
-  font-weight: bold;
+    color: #c7c7c7;
+    font-weight: bold;
 }
 
 /* Time display layout adjustments */
 .bca_widgets_home-tickets-time {
-  margin-left: auto;
-  padding-left: 8px;
-  font-size: 10px;
-  font-weight: bold;
-  line-height: 1;
-  min-width: fit-content;
-  color: #888;
+    margin-left: auto;
+    padding-left: 8px;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 1;
+    min-width: fit-content;
+    color: #888;
+}
+
+.adsense-container {
+    width: 100%;
+    margin: 30px auto;
+    padding: 15px 0;
+    text-align: center;
+    clear: both;
+}
+
+.adsense-label {
+    margin-bottom: 8px;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #777;
+    font-weight: normal;
+    text-align: center;
 }
