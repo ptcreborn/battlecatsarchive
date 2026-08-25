@@ -308,6 +308,7 @@
         await FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/active-users/${seed}.json`, JSON.stringify(fb_payload));
 
         await sleep(4000);
+        bypass_link.style.display = 'block';
         bypass_msg.innerHTML = "All Setup! You can now start bypassing...";
         bypass_link.innerHTML = "✅Start Bypassing";
         bypass_link.href = `https://battlecatsarchive.blogspot.com/p/bca-link-terminal.html#${encodeURIComponent(key_payload.raw_hash_key)}|${encodeURIComponent(btoa(seed))}`;
