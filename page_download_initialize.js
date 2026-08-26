@@ -64,7 +64,7 @@
     await incrementCount(btoa(param));
 
     let data = {
-        a: 1,
+        a: 3,
         t: encodeURIComponent(`https://battlecatsarchive.blogspot.com/p/bca-cloud-storage.html?checkpoint=${key}&api=${param}`)
     }
 
