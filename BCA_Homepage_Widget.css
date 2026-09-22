@@ -335,20 +335,3 @@
     min-width: fit-content;
     color: #888;
 }
-
-.adsense-container {
-    width: 100%;
-    margin: 30px auto;
-    padding: 15px 0;
-    text-align: center;
-    clear: both;
-}
-
-.adsense-label {
-    margin-bottom: 8px;
-    font-size: 11px;
-    line-height: 1.4;
-    color: #777;
-    font-weight: normal;
-    text-align: center;
-}
