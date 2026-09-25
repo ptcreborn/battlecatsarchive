@@ -99,12 +99,12 @@ var BCA_Notifications = {
             width: 50px;
             float: right;
         "><p>Complete the joy and journey in playing battle cats through creating account in the server. You can store your progress, make friends with anyone and access limited resources like <i>mods and fan made bcu packs</i>.</p></div>
-        <br><a href="https://battlecatsarchive.com/p/signin-to-bca.html" class="button-15" style="
+        <br><a href="https://www.battlecatsarchive.com/p/signin-to-bca.html" class="button-15" style="
             background: #0c3e6a;
         ">Login with Google</a>
         <div style="
             align-self: center;
-        ">OR</div><a href="https://battlecatsarchive.com/p/signin-to-bca.html" class="button-15" style="
+        ">OR</div><a href="https://www.battlecatsarchive.com/p/signin-to-bca.html" class="button-15" style="
             background: #3e5d84;
         ">Login with Discord</a></div>
         `;
@@ -161,12 +161,12 @@ var BCA_Notifications = {
             BCA_Cache.setItemWithExpiration(this.LOCALSTORAGE_USER, data, 600000);
         }
 
-        document.querySelector('.bca-notif-profile-username').href = `https://battlecatsarchive.com/p/profile-page.html?view=${data.email}`;
+        document.querySelector('.bca-notif-profile-username').href = `https://www.battlecatsarchive.com/p/profile-page.html?view=${data.email}`;
         document.querySelector('.bca-notif-profile-img').src = data.prof_img;
         document.querySelector('.bca-notif-profile-username').textContent = `@${data.username}`;
         document.querySelector('.bca-notif-profile-email').textContent = data.email;
         document.querySelector('.bca-notif-profile-rank span').textContent = data.rank_id.rank_name;
-        document.querySelectorAll('.bca-notif-profile a')[1].href = `https://battlecatsarchive.com/p/profile-page.html?view=${data.email}`;
+        document.querySelectorAll('.bca-notif-profile a')[1].href = `https://www.battlecatsarchive.com/p/profile-page.html?view=${data.email}`;
         document.querySelectorAll('.bca-notif-profile a')[1].textContent = `Profile`;
     },
 
@@ -297,7 +297,7 @@ var BCA_Notifications = {
                             src='${user_data.prof_img}' />
                     <p class='bca-notif-child-right'>
                         <span class='bca-notif-child-right-time'>${moment(parseInt(item)).fromNow()}</span>
-                        <p href="https://battlecatsarchive.com/p/profile-page.html?view=${data.email}" class='bca-notif-child-right-user'>@${user_data.username}</p>
+                        <p href="https://www.battlecatsarchive.com/p/profile-page.html?view=${data.email}" class='bca-notif-child-right-user'>@${user_data.username}</p>
                         <span class='bca-notif-child-right-action'>${data.action}</span>
                         <p class='bca-notif-child-right-target'>${data.title}</p>
                     </p>
@@ -1279,7 +1279,7 @@ var BCA_Comment = {
         clone.id = `${this.id_tag}${data.id}`;
         this.wQuery(clone, 'bca-username').textContent = `${users_data.username}`;
         this.wQuery(clone, 'bca-profile').src = `${users_data.prof_img}`;
-        this.wQuery(clone, 'bca-username').href = `https://battlecatsarchive.com/p/profile-page.html?view=${users_data.email}`;
+        this.wQuery(clone, 'bca-username').href = `https://www.battlecatsarchive.com/p/profile-page.html?view=${users_data.email}`;
         this.wQuery(clone, 'bca-reply-trigger').addEventListener('click', (e) => {
             this.appendCommentEditor(e.target);
         });
@@ -1323,7 +1323,7 @@ var BCA_Comment = {
             }
             if (BCA_Url.isImgBB(item)) {
                 parent_attachments.innerHTML += `<div class="bc-attach-item bc-attach-image">
-        <img onclick='window.location.href = "https://battlecatsarchive.com/p/image-viewer.html?view=${btoa(`https://bca-image-proxy.jasonbourne181997.workers.dev${new URL(item).pathname}`)}"' src="https://bca-image-proxy.jasonbourne181997.workers.dev${new URL(item).pathname}" alt="User Attachment">
+        <img onclick='window.location.href = "https://www.battlecatsarchive.com/p/image-viewer.html?view=${btoa(`https://bca-image-proxy.jasonbourne181997.workers.dev${new URL(item).pathname}`)}"' src="https://bca-image-proxy.jasonbourne181997.workers.dev${new URL(item).pathname}" alt="User Attachment">
       </div>`;
                 return;
             }
@@ -1431,7 +1431,7 @@ var BCA_Comment = {
 }
 
 var BCA_Blogger = {
-    url: 'https://battlecatsarchive.com/',
+    url: 'https://www.battlecatsarchive.com/',
     async getData(label, num_results) {
         let data = await fetch(`${this.url}feeds/posts/default/-/${label}?alt=json&max-results=${num_results}`);
 
