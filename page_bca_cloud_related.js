@@ -4,7 +4,7 @@
 
 (async () => {
     // build html
-    const json_entry = 'https://battlecatsarchive.blogspot.com/feeds/posts/default/-/mods?alt=json&max=results=100';
+    const json_entry = '/feeds/posts/default/-/mods?alt=json&max=results=100';
 
     let data = await fetch(json_entry);
     let parsed_data = await data.json();
