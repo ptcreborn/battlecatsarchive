@@ -1431,9 +1431,8 @@ var BCA_Comment = {
 }
 
 var BCA_Blogger = {
-    url: 'https://www.battlecatsarchive.com/',
     async getData(label, num_results) {
-        let data = await fetch(`${this.url}feeds/posts/default/-/${label}?alt=json&max-results=${num_results}`);
+        let data = await fetch(`/feeds/posts/default/-/${label}?alt=json&max-results=${num_results}`);
 
         if (data.ok) {
             data = await data.json();
@@ -1443,7 +1442,7 @@ var BCA_Blogger = {
         return;
     },
     async getDataLabels(label, num_results) {
-        let data = await fetch(`${this.url}feeds/posts/default/-/${label}?alt=json&max-results=${num_results}`);
+        let data = await fetch(`/feeds/posts/default/-/${label}?alt=json&max-results=${num_results}`);
 
         if (data.ok) {
             data = await data.json();
@@ -1454,7 +1453,7 @@ var BCA_Blogger = {
     },
     async getDataUrl(url) {
         let path = new URL(url).pathname;
-        let data = await fetch(`${this.url}feeds/posts/default?alt=json&path=${path}`);
+        let data = await fetch(`/feeds/posts/default?alt=json&path=${path}`);
 
         if (data.ok) {
             data = await data.json();
