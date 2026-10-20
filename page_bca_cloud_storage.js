@@ -151,7 +151,7 @@
         let keys = Object.keys(data);
 
         keys.map(key => {
-            let isKeyExpired = Math.floor((new Date().getTime() - key) / 1000 / 60) >= 30;
+            let isKeyExpired = Math.floor((new Date().getTime() - key) / 1000 / 60) >= 60;
             if (isKeyExpired)
                 FirebaseModule.patch(`https://battlecatsarchive-eb89a-default-rtdb.firebaseio.com/checkpoint/${key}.json`, "null");
         });
