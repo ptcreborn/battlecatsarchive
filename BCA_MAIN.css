@@ -261,11 +261,6 @@ a.button:not(.ln) {
     font-size: 16px;
 }
 
-b {
-    font-weight: 800 !important;
-    color: wheat;
-}
-
 u {
     -webkit-text-underline-position: under;
     -ms-text-underline-position: below;
