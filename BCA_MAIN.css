@@ -1080,7 +1080,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] {
 /* v1: pill */
 .bca-new-dl-v1 .bca-new-dl-link{gap:10px;padding:6px 6px 6px 8px;background:var(--card);border:1px solid var(--line);border-radius:999px}
 .bca-new-dl-v1 .bca-new-dl-link:hover{border-color:var(--blue)}
-.bca-new-dl-v1 .bca-new-dl-icon{width:32px;height:32px;border-radius:9px}
+.bca-new-dl-v1 .bca-new-dl-icon{width:32px;height:32px;border-radius:9px;object-fit: cover;}
 .bca-new-dl-v1 .bca-new-dl-type{color:var(--blue)}
 .bca-new-dl-v1 .bca-new-dl-get{width:32px;height:32px;border-radius:50%;background:var(--blue);color:var(--blue-ink)}
 .bca-new-dl-v1 .bca-new-dl-get svg{width:16px;height:16px}
