@@ -1045,15 +1045,15 @@ ins.adsbygoogle[data-ad-status="unfilled"] {
 
 /* New Download Button Style */
 .bca-new-dl{
-  --green:#1f9d57; --green-ink:#ffffff; --tag:#e3f3ea;
-  --card:#ffffff; --ink:#15201a; --muted:#5b6b62; --line:#d6ddd9;
+  --blue:#1f5fd8; --blue-ink:#ffffff; --tag:#e3ecfc;
+  --card:#ffffff; --ink:#16202e; --muted:#5d6b7e; --line:#d5dbe4;
   font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   width:100%; max-width:400px;
 }
 @media (prefers-color-scheme:dark){
   .bca-new-dl{
-    --green:#3ddc84; --green-ink:#0f1512; --tag:#203a2b;
-    --card:#18211c; --ink:#e8f0eb; --muted:#93a89b; --line:#2a3731;
+    --blue:#6f9bff; --blue-ink:#0d1422; --tag:#1f2d4d;
+    --card:#171e2b; --ink:#e8edf6; --muted:#93a0b8; --line:#2a3549;
   }
 }
 .bca-new-dl *,
@@ -1065,20 +1065,23 @@ ins.adsbygoogle[data-ad-status="unfilled"] {
   padding:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;
   color:var(--ink);text-decoration:none;transition:border-color .15s,transform .15s;
 }
-.bca-new-dl .bca-new-dl-apk:hover{border-color:var(--green)}
+.bca-new-dl .bca-new-dl-apk:hover{border-color:var(--blue)}
 .bca-new-dl .bca-new-dl-apk:active{transform:scale(.985)}
-.bca-new-dl .bca-new-dl-apk:focus-visible{outline:3px solid var(--green);outline-offset:3px}
+.bca-new-dl .bca-new-dl-apk:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 
-.bca-new-dl .bca-new-dl-icon{flex:none;width:52px;height:52px;border-radius:12px;background:var(--green);display:grid;place-items:center}
-.bca-new-dl .bca-new-dl-icon svg{width:30px;height:30px;fill:var(--green-ink)}
+.bca-new-dl .bca-new-dl-icon{flex:none;width:52px;height:52px;border-radius:12px;background:var(--blue);display:grid;place-items:center}
+.bca-new-dl .bca-new-dl-icon svg{width:30px;height:30px;fill:var(--blue-ink)}
 
 .bca-new-dl .bca-new-dl-meta{flex:1;min-width:0}
 .bca-new-dl .bca-new-dl-name{display:block;font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bca-new-dl .bca-new-dl-sub{display:flex;align-items:center;gap:8px;margin-top:5px;font-size:13px;color:var(--muted)}
 .bca-new-dl .bca-new-dl-type{padding:1px 7px;border-radius:6px;background:var(--tag);color:var(--ink);font-weight:600;font-size:12px}
 
-.bca-new-dl .bca-new-dl-get{flex:none;width:44px;height:44px;border-radius:50%;background:var(--green);color:var(--green-ink);display:grid;place-items:center}
+.bca-new-dl .bca-new-dl-get{flex:none;width:44px;height:44px;border-radius:50%;background:var(--blue);color:var(--blue-ink);display:grid;place-items:center}
 .bca-new-dl .bca-new-dl-get svg{width:20px;height:20px;transition:transform .2s}
+.bca-new-dl .bca-new-dl-apk:hover .bca-new-dl-get svg{transform:translateY(2px)}
+
+@media (prefers-reduced-motion:reduce){.bca-new-dl *{transition:none!important}}
 .bca-new-dl .bca-new-dl-apk:hover .bca-new-dl-get svg{transform:translateY(2px)}
 
 @media (prefers-reduced-motion:reduce){.bca-new-dl *{transition:none!important}}
