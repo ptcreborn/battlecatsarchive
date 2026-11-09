@@ -14,7 +14,7 @@
             document.getElementById('postBody').innerHTML = `<blockquote><h1>Adblocker has been detected by our system. Please read the <a href="https://battlecatsarchive.blogspot.com/p/troubleshooting-adblocker-detected.html">possible solution</a>.</h1></blockquote>`;
         }
         // encryptAllURL
-        let blacklist_url = ['https://blogger.googleusercontent.com', 'https://battlecatsarchive.blogspot.com', 'https://battlecats.miraheze.org', 'https://storehaccounts.blogspot.com', 'https://clenchinfer.com', 'https://www.youtube.com', 'https://youtu.be', 'https://youtube.com'];
+        let blacklist_url = ['https://blogger.googleusercontent.com', 'https://www.battlecatsarchive.com', 'https://battlecatsarchive.blogspot.com', 'https://battlecats.miraheze.org', 'https://storehaccounts.blogspot.com', 'https://clenchinfer.com', 'https://www.youtube.com', 'https://youtu.be', 'https://youtube.com'];
 
         let allURLs = document.querySelectorAll('#postBody a');
         const num_ads = 5;
