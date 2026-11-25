@@ -183,6 +183,8 @@
             status: true
         });
 
+        await sleep(3000);
+
         window.location.href = `https://battlecatsarchive.blogspot.com/p/account-generator.html?resource=${acc_encoded_info}`;
     }
 
