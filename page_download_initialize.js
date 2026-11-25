@@ -6,6 +6,8 @@
 (async () => {
     // check params
 
+    const num_of_ads = 1;
+
     if (typeof Storage !== "undefined") {
         console.log("LocalStorage is supported");
     } else {
@@ -64,7 +66,7 @@
     await incrementCount(btoa(param));
 
     let data = {
-        a: 3,
+        a: num_of_ads,
         t: encodeURIComponent(`https://battlecatsarchive.blogspot.com/p/bca-cloud-storage.html?checkpoint=${key}&api=${param}`)
     }
 
